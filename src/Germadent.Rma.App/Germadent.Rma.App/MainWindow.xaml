@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Germadent.Rma.App"
         mc:Ignorable="d"
         Title="MainWindow" >
-    <Grid>
+    <Grid Margin="12">
         
     </Grid>
 </Window>
