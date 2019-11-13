@@ -10,8 +10,6 @@ namespace Germadent.UI.ViewModels.DesignTime
             : base(new DesignMockShowDialogAgent())
 		{
 			ApplicationName = "Новое приложение";
-			ApplicationIcon =
-				new BitmapImage(new Uri("pack://application:,,,/Wpf.DemoApp;component/Resources/AppIcon.ico", UriKind.Absolute));
 			UserName = "admin";
 			Password = "123456";
 		}

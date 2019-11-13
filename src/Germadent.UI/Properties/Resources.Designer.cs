@@ -22,7 +22,7 @@ namespace Germadent.UI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Germadent.UI.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Germadent.UI.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Germadent.UI.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Версия .
         /// </summary>
-        internal static string AboutWindow_ApplicationVersionName {
+        public static string AboutWindow_ApplicationVersionName {
             get {
                 return ResourceManager.GetString("AboutWindow_ApplicationVersionName", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Тeлефоны: .
         /// </summary>
-        internal static string AboutWindow_PhonesName {
+        public static string AboutWindow_PhonesName {
             get {
                 return ResourceManager.GetString("AboutWindow_PhonesName", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to О программе.
         /// </summary>
-        internal static string AboutWindow_Title {
+        public static string AboutWindow_Title {
             get {
                 return ResourceManager.GetString("AboutWindow_Title", resourceCulture);
             }
@@ -91,7 +91,7 @@ namespace Germadent.UI.Properties {
         ///   Looks up a localized string similar to Произошло непредвиденное исключение. Доступ в систему невозможен.
         ///.
         /// </summary>
-        internal static string AuthorizationWindow_FaultExceptionMessage {
+        public static string AuthorizationWindow_FaultExceptionMessage {
             get {
                 return ResourceManager.GetString("AuthorizationWindow_FaultExceptionMessage", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
-        internal static string AuthorizationWindow_Password {
+        public static string AuthorizationWindow_Password {
             get {
                 return ResourceManager.GetString("AuthorizationWindow_Password", resourceCulture);
             }
@@ -109,7 +109,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Вход в систему.
         /// </summary>
-        internal static string AuthorizationWindow_Title {
+        public static string AuthorizationWindow_Title {
             get {
                 return ResourceManager.GetString("AuthorizationWindow_Title", resourceCulture);
             }
@@ -118,7 +118,7 @@ namespace Germadent.UI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Пользователь.
         /// </summary>
-        internal static string AuthorizationWindow_UserName {
+        public static string AuthorizationWindow_UserName {
             get {
                 return ResourceManager.GetString("AuthorizationWindow_UserName", resourceCulture);
             }

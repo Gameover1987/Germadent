@@ -10,7 +10,7 @@
                           xmlns:windows="clr-namespace:Germadent.UI.Windows"
                           xmlns:designTime="clr-namespace:Germadent.UI.ViewModels.DesignTime"
                           mc:Ignorable="d"
-                          Title="{x:Static properties:Resources.AuthorizationWindow_Title}"
+                          Title="{Binding ApplicationName}"
                           WindowStartupLocation="CenterScreen"
                           SizeToContent="WidthAndHeight"
                           MinWidth="350"
@@ -625,10 +625,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.Row="0" Background="White">
-            <StackPanel Orientation="Horizontal">
-                <Image Margin="18,12,18,12" Width="32" Height="32" Source="{Binding ApplicationIcon}" />
-                <TextBlock Text="{Binding ApplicationName}" VerticalAlignment="Center"
-                           Style="{StaticResource TextBlockTitleStyle}" />
+            <StackPanel Orientation="Vertical">
+                <Image Margin="12" Width="385" Height="50" Source="{Binding ApplicationIcon}" />
             </StackPanel>
         </Border>
         <Rectangle Grid.Row="1" Fill="{x:Static SystemColors.ActiveBorderBrush}" Grid.ColumnSpan="2" Height="1" />
