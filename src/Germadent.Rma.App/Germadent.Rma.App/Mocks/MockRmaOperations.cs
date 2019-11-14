@@ -85,5 +85,29 @@ namespace Germadent.ServiceClient.Operation
 
             return orders;
         }
+
+        public Material[] GetMaterials()
+        {
+            var materials = new[]
+            {
+                new Material {Name = "ZrO"},
+                new Material {Name = "PMMA mono"},
+                new Material {Name = "PMMA multi"},
+                new Material {Name = "WAX"},
+                new Material {Name = "MIK"},
+                new Material {Name = "CAD-Temp mono"},
+                new Material {Name = "CAD-Temp multi"},
+                new Material {Name = "Enamik mono"},
+                new Material {Name = "Enamik multi"},
+                new Material {Name = "SUPRINITY"},
+                new Material {Name = "Mark II"},
+                new Material {Name = "WAX"},
+                new Material {Name = "TriLuxe forte"},
+                new Material {Name = "Ti"},
+                new Material {Name = "E.MAX"},
+            };
+
+            return materials;
+        }
     }
 }

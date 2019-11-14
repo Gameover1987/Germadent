@@ -20,4 +20,9 @@ namespace Germadent.ServiceClient.Model
 
         public string Material { get; set; }
     }
+
+    public enum Sex
+    {
+        Male, Female
+    }
 }

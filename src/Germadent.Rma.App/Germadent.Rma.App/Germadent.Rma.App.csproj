@@ -64,8 +64,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\MaterialViewModel.cs" />
+    <Compile Include="ViewModels\ILabOrderViewModel.cs" />
+    <Compile Include="ViewModels\LabOrderViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockLabOrderViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
+    <Compile Include="Views\LabOrderWindow.xaml.cs">
+      <DependentUpon>LabOrderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WindowManager.cs" />
+    <Page Include="Views\LabOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

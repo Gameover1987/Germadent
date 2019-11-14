@@ -36,6 +36,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Model\Material.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Operation\IRmaAuthorizer.cs" />
     <Compile Include="Operation\IRmaOperations.cs" />

@@ -29,7 +29,8 @@ namespace Germadent.Rma.App
             _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabOrderViewModel, LabOrderViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
         }

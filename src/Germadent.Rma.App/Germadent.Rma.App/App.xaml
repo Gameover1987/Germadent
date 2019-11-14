@@ -12,12 +12,16 @@
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DataGridDictionary.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ScrollBarDictionary.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ListBoxDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TextBoxDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TextBlockDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
+            <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StlnRadioButtonStyle}"/>
             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource StlnCheckBoxStyle}"/>
             <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource StlnDataGridStyle}"/>
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource StlnListBoxStyle}"/>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
            
         </ResourceDictionary>
     </Application.Resources>

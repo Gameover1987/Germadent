@@ -16,7 +16,7 @@ namespace Germadent.Rma.App.ViewModels
     public interface IMainViewModel
     { }
 
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaOperations _rmaOperations;
         private readonly IWindowManager _windowManager;
