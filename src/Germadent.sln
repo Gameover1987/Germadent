@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Common", "Germade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UI", "Germadent.UI\Germadent.UI.csproj", "{E3944E28-D2B6-471B-ACC7-316315C602A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.ServiceClient", "Germadent.ServiceClient\Germadent.ServiceClient.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

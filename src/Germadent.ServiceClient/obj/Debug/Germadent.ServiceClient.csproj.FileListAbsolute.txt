@@ -1,0 +1,8 @@
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\obj\Debug\Germadent.ServiceClient.csprojAssemblyReference.cache
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\bin\Debug\Germadent.ServiceClient.dll
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\bin\Debug\Germadent.ServiceClient.pdb
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\bin\Debug\Germadent.Common.dll
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\bin\Debug\Germadent.Common.pdb
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\obj\Debug\Germadent.ServiceClient.csproj.CopyComplete
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\obj\Debug\Germadent.ServiceClient.dll
+C:\Git_Public\Germadent\src\Germadent.ServiceClient\obj\Debug\Germadent.ServiceClient.pdb

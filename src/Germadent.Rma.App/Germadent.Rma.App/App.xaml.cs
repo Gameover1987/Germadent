@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
-using Germadent.Rma.App.Model;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.Views;
+using Germadent.ServiceClient.Model;
+using Germadent.ServiceClient.Operation;
+using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.Windows;
 using Unity;
@@ -23,7 +25,9 @@ namespace Germadent.Rma.App
 
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
 
-            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
 
@@ -32,11 +36,13 @@ namespace Germadent.Rma.App
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            DelegateCommand.CommandException += CommandException;
+
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
             var authorizationViewModel = new AuthorizationViewModel(
                 dialogAgent,                
-                _container.Resolve<IRmaOperations>());
-            var authorized = dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+                _container.Resolve<IRmaAuthorizer>());
+            var authorized = true; //dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
             if (authorized == true)
             {
                 MainWindow = new MainWindow();
@@ -48,6 +54,12 @@ namespace Germadent.Rma.App
             {
                 Current.Shutdown(0);
             }
+        }
+
+        private void CommandException(object sender, ExceptionEventArgs e)
+        {
+            var dialogAgent = _container.Resolve<IShowDialogAgent>();
+            dialogAgent.ShowErrorMessageDialog(e.Exception.Message, e.Exception.StackTrace);
         }
 
         private void MainWindowOnClosed(object sender, EventArgs e)

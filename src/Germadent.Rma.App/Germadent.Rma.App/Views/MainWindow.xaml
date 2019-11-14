@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App"
         xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+        xmlns:designmock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.AppTitle}" 
         MinWidth="800"
@@ -12,31 +13,64 @@
         MinHeight="600"
         Height="600"
         WindowStartupLocation="CenterScreen"
-        Background="{x:Static SystemColors.ControlBrush}">
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="3,3,3,3"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Orientation="Vertical">
             <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
-            <Button Content="Ферезерный центр" Margin="0,6,0,0"/>
-            <Button Content="Лаборатория" Margin="0,6,0,0"/>
+            <Button Content="Фрезерный центр" Margin="0,6,0,0"
+                    Command="{Binding CreateMillingCenterOrderCommand}"/>
+            <Button Content="Лаборатория" Margin="0,6,0,0"
+                    Command="{Binding CreateLabOrderCommand}"/>
 
             <TextBlock Text="Работа с данными" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
-            <Button Content="Фильтр" Margin="0,6,0,0"/>
+            <Button Content="Фильтр" Margin="0,6,0,0"
+                    Command="{Binding FilterOrdersCommand}"/>
             <Button Content="Экспорт" Margin="0,6,0,0"/>
         </StackPanel>
 
-        <DataGrid Grid.Column="1" Margin="6,0,0,0">
+        <DataGrid Grid.Column="1" Margin="6,0,0,0"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"	
+                  AlternationCount="2"
+                  ItemsSource="{Binding Orders}"
+                  SelectedItem="{Binding SelectedOrder}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" MinWidth="100"/>
-                <DataGridTextColumn Header="Сотрудник" Width="*"/>
-                <DataGridTextColumn Header="Заказчик" Width="*"/>
-                <DataGridTextColumn Header="Пациент" Width="*"/>
-                <DataGridTextColumn Header="Материал" Width="*"/>
+                <DataGridTextColumn Header="Дата" MinWidth="100" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy в HH:mm:ss'}"/>
+                <DataGridTextColumn Header="Сотрудник" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Employee}"/>
+                <DataGridTextColumn Header="Заказчик" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Customer}"/>
+                <DataGridTextColumn Header="Пациент" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Patient}"/>
+                <DataGridTextColumn Header="Материал" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Material}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!--<ListBox Grid.Column="1" Margin="6,0,0,0"></ListBox>-->
     </Grid>
 </Window>
