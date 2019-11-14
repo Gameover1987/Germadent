@@ -40,3 +40,5 @@ src/Germadent.UI/bin/
 src/Germadent.UI/obj/
 src/Germadent.Common/obj/
 src/packages/
+src/Germadent.ServiceClient/obj/
+src/Germadent.ServiceClient/bin/
