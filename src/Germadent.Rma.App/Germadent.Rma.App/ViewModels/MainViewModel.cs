@@ -68,7 +68,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void FilterOrdersCommandHandler()
         {
-
+            var filter = _windowManager.CreateOrdersFilter();
         }
     }
 }

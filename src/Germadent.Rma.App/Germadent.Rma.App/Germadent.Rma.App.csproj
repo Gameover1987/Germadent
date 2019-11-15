@@ -69,15 +69,20 @@
     <Compile Include="ViewModels\IOrderViewModel.cs" />
     <Compile Include="ViewModels\LabOrderViewModel.cs" />
     <Compile Include="ViewModels\MillingCenterOrderViewModel.cs" />
+    <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
     <Compile Include="ViewModels\TeethViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLabOrderViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMillingCenterOrderViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
     <Compile Include="Views\LabOrderWindow.xaml.cs">
       <DependentUpon>LabOrderWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MillingCenterOrderWindow.xaml.cs">
       <DependentUpon>MillingCenterOrderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrdersFilterWindow.xaml.cs">
+      <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
@@ -104,6 +109,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MillingCenterOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OrdersFilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

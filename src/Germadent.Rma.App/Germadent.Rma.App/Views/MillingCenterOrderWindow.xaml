@@ -9,7 +9,7 @@
         xmlns:usercontrols="clr-namespace:Germadent.Rma.App.Views.UserControls"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         mc:Ignorable="d"
-        Title="Заказ-наряд Лаборатория"
+        Title="Заказ-наряд Ферезерный центр"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
         SizeToContent="Height"
