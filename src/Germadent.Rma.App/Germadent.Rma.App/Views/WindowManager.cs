@@ -20,11 +20,13 @@ namespace Germadent.Rma.App.Views
     {
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ILabOrderViewModel _labOrderViewModel;
+        private readonly IMillingOrderViewModel _millingOrderViewModel;
 
-        public WindowManager(IShowDialogAgent dialogAgent, ILabOrderViewModel labOrderViewModel)
+        public WindowManager(IShowDialogAgent dialogAgent, ILabOrderViewModel labOrderViewModel, IMillingOrderViewModel millingOrderViewModel)
         {
             _dialogAgent = dialogAgent;
             _labOrderViewModel = labOrderViewModel;
+            _millingOrderViewModel = millingOrderViewModel;
         }
 
         public Order CreateLabOrder()
@@ -32,15 +34,21 @@ namespace Germadent.Rma.App.Views
             _labOrderViewModel.Initialize(false);
             if (_dialogAgent.ShowDialog<LabOrderWindow>(_labOrderViewModel) == true)
             {
-
+                return new Order();
             }
 
-            return new Order();
+            return null;
         }
 
         public Order CreateMillingCenterOrder()
         {
-            throw new NotImplementedException();
+            _millingOrderViewModel.Initialize(false);
+            if (_dialogAgent.ShowDialog<MillingCenterOrderWindow>(_millingOrderViewModel) == true)
+            {
+                return new Order();
+            }
+
+            return null;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-
+            var order = _windowManager.CreateMillingCenterOrder();
         }
 
         private void FilterOrdersCommandHandler()

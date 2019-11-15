@@ -25,4 +25,16 @@ namespace Germadent.ServiceClient.Model
     {
         Male, Female
     }
+
+    public enum AdditionalMillingInfo
+    {
+        NotPainted, 
+        Painted, 
+        PrePainted
+    }
+
+    public enum CarcasColor
+    {
+        VitaClassical, Opak, Translucen
+    }
 }

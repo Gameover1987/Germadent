@@ -10,6 +10,9 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
+    public interface ILabOrderViewModel : IOrderViewModel
+    { }
+
     public class LabOrderViewModel : ViewModelBase, ILabOrderViewModel
     {
         private readonly IRmaOperations _rmaOperations;
@@ -83,6 +86,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
 
+        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
+
         public Sex Sex
         {
             get { return _sex; }
@@ -116,7 +121,7 @@ namespace Germadent.Rma.App.ViewModels
         public bool LowOpacity
         {
             get { return _lowOpacity; }
-            set { SetProperty(() =>_lowOpacity, value); }
+            set { SetProperty(() => _lowOpacity, value); }
         }
 
         public bool Mamelons
@@ -147,7 +152,33 @@ namespace Germadent.Rma.App.ViewModels
                 Materials.Add(new MaterialViewModel(material));
             }
 
+            FillTeethCollection();
+
             OnPropertyChanged();
+        }
+
+        private void FillTeethCollection()
+        {
+            Mouth.Clear();
+            for (int i = 21; i <= 28; i++)
+            {
+                Mouth.Add(new TeethViewModel { Number = i });
+            }
+
+            for (int i = 31; i <= 38; i++)
+            {
+                Mouth.Add(new TeethViewModel { Number = i });
+            }
+
+            for (int i = 41; i <= 48; i++)
+            {
+                Mouth.Add(new TeethViewModel { Number = i });
+            }
+
+            for (int i = 11; i <= 18; i++)
+            {
+                Mouth.Add(new TeethViewModel { Number = i });
+            }
         }
     }
 }

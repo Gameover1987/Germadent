@@ -63,6 +63,7 @@
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\TextBoxProperties.cs" />
     <Compile Include="Helpers\UiSearchHelper.cs" />
+    <Compile Include="Helpers\WindowCloseHelper.cs" />
     <Compile Include="Helpers\WindowProperties.cs" />
     <Compile Include="Infrastructure\IDispatcher.cs" />
     <Compile Include="Infrastructure\IShowDialogAgent.cs" />
