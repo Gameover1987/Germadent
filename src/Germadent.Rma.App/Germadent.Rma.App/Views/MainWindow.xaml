@@ -30,10 +30,10 @@
 
         <StackPanel Grid.Column="0" Orientation="Vertical">
             <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
-            <Button Content="Фрезерный центр" Margin="0,6,0,0"
-                    Command="{Binding CreateMillingCenterOrderCommand}"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
                     Command="{Binding CreateLabOrderCommand}"/>
+            <Button Content="Фрезерный центр" Margin="0,6,0,0"
+                    Command="{Binding CreateMillingCenterOrderCommand}"/>
 
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
             <Button Content="Настроить фильтр" Margin="0,6,0,0"

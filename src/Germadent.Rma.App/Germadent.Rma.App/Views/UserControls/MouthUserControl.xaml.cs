@@ -18,6 +18,12 @@ namespace Germadent.Rma.App.Views.UserControls
             InitializeComponent();
 
             Loaded += OnLoaded;
+            SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //RenderMouth();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

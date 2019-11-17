@@ -68,15 +68,24 @@
     <Compile Include="ViewModels\IMillingOrderViewModel.cs" />
     <Compile Include="ViewModels\MaterialViewModel.cs" />
     <Compile Include="ViewModels\IOrderViewModel.cs" />
-    <Compile Include="ViewModels\LabOrderViewModel.cs" />
-    <Compile Include="ViewModels\MillingCenterOrderViewModel.cs" />
+    <Compile Include="ViewModels\Old\LabOrderViewModel.cs" />
+    <Compile Include="ViewModels\Old\MillingCenterOrderViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
     <Compile Include="ViewModels\TeethViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\LaboratoryProjectWizardStepViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\LabWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
+    <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLabOrderViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMillingCenterOrderViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\LabOrderWindow.xaml.cs">
       <DependentUpon>LabOrderWindow.xaml</DependentUpon>
     </Compile>
@@ -86,10 +95,19 @@
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\LabInfoStepUserControl.xaml.cs">
+      <DependentUpon>LabInfoStepUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
+      <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowManager.cs" />
+    <Compile Include="Views\WizardWindow.xaml.cs">
+      <DependentUpon>WizardWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\LabOrderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,7 +136,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserControls\LabInfoStepUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\LabProjectStepUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserControls\MouthUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WizardWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

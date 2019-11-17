@@ -2,6 +2,7 @@
 using System.Windows;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model.Operation;
 using Germadent.UI.Commands;
@@ -26,10 +27,10 @@ namespace Germadent.Rma.App
 
             _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ILabOrderViewModel, LabOrderViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMillingOrderViewModel, MillingCenterOrderViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
 

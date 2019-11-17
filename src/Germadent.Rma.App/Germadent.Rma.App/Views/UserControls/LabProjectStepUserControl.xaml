@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="Germadent.Rma.App.Views.UserControls.LabProjectStepUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
+             xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+             xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             mc:Ignorable="d" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="0,6,0,0"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="210" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Вид работы (описание, кол-во единиц)" Margin="0,0,0,3" VerticalAlignment="Top"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
+                     Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <ListBox Grid.Row="1" Grid.Column="1" Height="103" Margin="6,6,0,0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding Materials}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
+                    <Grid Width="140">
+                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Цвет/особенности" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
+                     Text="{Binding Color, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="Прозрачность" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
+
+        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" Margin="6,0,0,0">
+            <CheckBox IsChecked="{Binding NonOpacity}" Content="Не прозрачные зубы" Margin="0,6,0,0" />
+            <CheckBox IsChecked="{Binding LowOpacity}" Content="Зубы со слабо выраженной прозрачностью"
+                          Margin="0,6,0,0" />
+            <CheckBox IsChecked="{Binding HighOpacity}" Content="Зубы с сильно выраженной прозрачностью"
+                          Margin="0,6,0,0" />
+            <CheckBox IsChecked="{Binding Mamelons}" Content="Мамелоны" Margin="0,6,0,0" />
+            <CheckBox IsChecked="{Binding SecondaryDentin}" Content="Вторичный дентин" Margin="0,6,0,0" />
+            <CheckBox IsChecked="{Binding PaintedFissurs}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
+        </StackPanel>
+
+        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0"/>
+    </Grid>
+</UserControl>
