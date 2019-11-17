@@ -1,4 +1,4 @@
-﻿namespace Germadent.ServiceClient.Operation
+﻿namespace Germadent.Rma.Model.Operation
 {
     public interface IRmaAuthorizer
     {

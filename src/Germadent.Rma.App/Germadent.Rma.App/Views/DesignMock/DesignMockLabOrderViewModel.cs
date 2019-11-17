@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
-using Germadent.ServiceClient.Model;
-using Germadent.ServiceClient.Operation;
+
+using System;
+using System.Collections.ObjectModel;
+using Germadent.Rma.Model;
+using Germadent.Rma.Model.Operation;
+using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

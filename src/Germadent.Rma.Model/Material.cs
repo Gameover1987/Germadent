@@ -1,4 +1,4 @@
-﻿namespace Germadent.ServiceClient.Model
+﻿namespace Germadent.Rma.Model
 {
     public class Material
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Germadent.ServiceClient.Model;
-using Germadent.ServiceClient.Operation;
+using Germadent.Rma.Model;
+using Germadent.Rma.Model.Operation;
 
 namespace Germadent.Rma.App.Mocks
 {

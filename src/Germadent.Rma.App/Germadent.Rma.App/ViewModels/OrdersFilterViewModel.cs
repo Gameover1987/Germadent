@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Germadent.ServiceClient.Model;
-using Germadent.ServiceClient.Operation;
+using Germadent.Rma.Model;
+using Germadent.Rma.Model.Operation;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels

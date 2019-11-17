@@ -3,11 +3,9 @@ using System.Windows;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.Views;
-using Germadent.ServiceClient.Model;
-using Germadent.ServiceClient.Operation;
+using Germadent.Rma.Model.Operation;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
-using Germadent.UI.Windows;
 using Unity;
 using Unity.Lifetime;
 

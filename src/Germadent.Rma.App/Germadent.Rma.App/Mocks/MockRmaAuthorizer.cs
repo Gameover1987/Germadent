@@ -1,6 +1,6 @@
 ﻿using Germadent.Common;
 using Germadent.Common.Extensions;
-using Germadent.ServiceClient.Operation;
+using Germadent.Rma.Model.Operation;
 
 namespace Germadent.Rma.App.Mocks
 {
