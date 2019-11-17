@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
 using Germadent.ServiceClient.Model;
 using Germadent.ServiceClient.Operation;

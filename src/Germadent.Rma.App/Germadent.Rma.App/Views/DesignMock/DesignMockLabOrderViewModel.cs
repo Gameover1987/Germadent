@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
 using Germadent.ServiceClient.Model;
 using Germadent.ServiceClient.Operation;

@@ -1,7 +1,8 @@
 ﻿using Germadent.Common;
 using Germadent.Common.Extensions;
+using Germadent.ServiceClient.Operation;
 
-namespace Germadent.ServiceClient.Operation
+namespace Germadent.Rma.App.Mocks
 {
     public class MockRmaAuthorizer : IRmaAuthorizer
     {

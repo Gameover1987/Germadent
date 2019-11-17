@@ -3,10 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:Germadent.ServiceClient.Model;assembly=Germadent.ServiceClient"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-        xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
-        xmlns:usercontrols="clr-namespace:Germadent.Rma.App.Views.UserControls"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         mc:Ignorable="d"
         Title="Настройки фильтра заказ-нарядов"
@@ -45,9 +42,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Дата" Margin="0,0,0,3"/>
-            <DatePicker Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" HorizontalAlignment="Left" Width="150"
-                        SelectedDate="{Binding Date}"/>
+            <TextBlock Grid.Row="0" Text="Подразделение" VerticalAlignment="Top" Margin="0"/>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="6,0,0,0">
+               <CheckBox Content="Фрезерный центр" IsChecked="{Binding MillingCenter}"/>
+               <CheckBox Content="Лаборатория" IsChecked="{Binding Laboratory}" Margin="0,6,0,0"/>
+            </StackPanel>
 
             <TextBlock Grid.Row="1" Text="Заказчик"/>
             <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" 
@@ -61,8 +61,8 @@
             <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" 
                      Text="{Binding Patient}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <ListBox Grid.Row="8" Grid.Column="1" Height="103" Margin="6,6,0,0"
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="4" Grid.Column="1" Height="150" Margin="6,6,0,0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             </ListBox>
         </Grid>

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
-using Germadent.ServiceClient.Operation;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -12,7 +8,10 @@ namespace Germadent.Rma.App.Views.DesignMock
     {
         public DesignMockOrdersFilterViewModel() : base(new MockRmaOperations())
         {
-            Date = DateTime.Now;
+            MillingCenter = true;
+            Laboratory = true;
+            PeriodBegin = DateTime.Now.AddDays(-30);
+            PeriodEnd = DateTime.Now;
             Customer = "Какой то заказчик";
             Employee = "Какой то сотрудник";
             Patient = "Какой то пациент";

@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.Views
 
         Order CreateMillingCenterOrder();
 
-        IOrdersFilterViewModel CreateOrdersFilter();
+        OrdersFilter CreateOrdersFilter();
     }
 
     public class WindowManager : IWindowManager
@@ -58,11 +58,11 @@ namespace Germadent.Rma.App.Views
             return null;
         }
 
-        public IOrdersFilterViewModel CreateOrdersFilter()
+        public OrdersFilter CreateOrdersFilter()
         {
             if (_dialogAgent.ShowDialog<OrdersFilterWindow>(_ordersFilterViewModel) == true)
             {
-                return _ordersFilterViewModel;
+                return _ordersFilterViewModel.GetFilter();
             }
 
             return null;

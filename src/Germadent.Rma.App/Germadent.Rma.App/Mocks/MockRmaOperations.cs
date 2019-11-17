@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 using Germadent.ServiceClient.Model;
+using Germadent.ServiceClient.Operation;
 
-namespace Germadent.ServiceClient.Operation
+namespace Germadent.Rma.App.Mocks
 {
     public class MockRmaOperations : IRmaOperations
     {
-        public Order[] GetOrders()
+        public Order[] GetOrders(OrdersFilter ordersFilter = null)
         {
             var orders = new Order[]
             {
@@ -82,6 +84,25 @@ namespace Germadent.ServiceClient.Operation
                     Material = "PMMA mono"
                 },
             };
+
+            for (int i = 0; i < orders.Length; i++)
+            {
+                var order = orders[i];
+                order.Number = i;
+                if (i % 2 == 0)
+                {
+                    order.BranchType = BranchType.Laboratory;
+                    order.Closed = DateTime.Now;
+                }
+            }
+
+            if (ordersFilter == null)
+                return orders;
+
+            if (ordersFilter.Laboratory)
+                return orders.Where(x => x.BranchType == BranchType.Laboratory).ToArray();
+            if (ordersFilter.MillingCenter)
+                return orders.Where(x => x.BranchType == BranchType.MillingCenter).ToArray();
 
             return orders;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.Views;
 using Germadent.ServiceClient.Model;
@@ -43,7 +44,7 @@ namespace Germadent.Rma.App
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
             var authorizationViewModel = new AuthorizationViewModel(
-                dialogAgent,                
+                dialogAgent,
                 _container.Resolve<IRmaAuthorizer>());
             var authorized = true; //dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
             if (authorized == true)

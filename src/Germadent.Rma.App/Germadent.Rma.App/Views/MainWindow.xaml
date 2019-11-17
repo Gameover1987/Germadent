@@ -8,8 +8,8 @@
         xmlns:designmock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.AppTitle}" 
-        MinWidth="800"
-        Width="800"
+        MinWidth="900"
+        Width="900"
         MinHeight="600"
         Height="600"
         WindowStartupLocation="CenterScreen"
@@ -35,10 +35,11 @@
             <Button Content="Лаборатория" Margin="0,6,0,0"
                     Command="{Binding CreateLabOrderCommand}"/>
 
-            <TextBlock Text="Работа с данными" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
-            <Button Content="Фильтр" Margin="0,6,0,0"
+            <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
+            <Button Content="Настроить фильтр" Margin="0,6,0,0"
                     Command="{Binding FilterOrdersCommand}"/>
-            <Button Content="Экспорт" Margin="0,6,0,0"/>
+            <Button Content="Закрыть заказ-наряд" Margin="0,6,0,0"
+                    Command="{Binding CloseOrderCommand}"/>
         </StackPanel>
 
         <DataGrid Grid.Column="1" Margin="6,0,0,0"
@@ -51,26 +52,25 @@
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
-                  CanUserSortColumns="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"	
                   AlternationCount="2"
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" MinWidth="100" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy в HH:mm:ss'}"/>
-                <DataGridTextColumn Header="Сотрудник" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Employee}"/>
-                <DataGridTextColumn Header="Заказчик" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Номер" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Number}"/>
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
+                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Customer}"/>
-                <DataGridTextColumn Header="Пациент" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Patient}"/>
-                <DataGridTextColumn Header="Материал" Width="*" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Material}"/>
+                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
-
-        <!--<ListBox Grid.Column="1" Margin="6,0,0,0"></ListBox>-->
     </Grid>
 </Window>

@@ -36,8 +36,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\Material.cs" />
     <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\OrdersFilter.cs" />
     <Compile Include="Operation\IRmaAuthorizer.cs" />
     <Compile Include="Operation\IRmaOperations.cs" />
   </ItemGroup>

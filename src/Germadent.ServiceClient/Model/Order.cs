@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Germadent.ServiceClient.Model
 {
     public class Order
     {
-        public int Id { get; }
+        public int Id { get; set; }
+
+        public int Number { get; set; }
+
+        public BranchType BranchType { get; set; }
 
         public DateTime Created { get; set; }
+
+        public DateTime? Closed { get; set; }
 
         public string Customer { get; set; }
 
@@ -19,22 +21,5 @@ namespace Germadent.ServiceClient.Model
         public string Employee { get; set; }
 
         public string Material { get; set; }
-    }
-
-    public enum Sex
-    {
-        Male, Female
-    }
-
-    public enum AdditionalMillingInfo
-    {
-        NotPainted, 
-        Painted, 
-        PrePainted
-    }
-
-    public enum CarcasColor
-    {
-        VitaClassical, Opak, Translucen
     }
 }

@@ -4,14 +4,14 @@ namespace Germadent.ServiceClient.Operation
 {
     public interface IRmaOperations
     {
-        Order[] GetOrders();
+        Order[] GetOrders(OrdersFilter filter = null);
 
         Material[] GetMaterials();
     }
 
     public class RmaOperations : IRmaOperations
     {
-        public Order[] GetOrders()
+        public Order[] GetOrders(OrdersFilter ordersFilter = null)
         {
             throw new System.NotImplementedException();
         }
