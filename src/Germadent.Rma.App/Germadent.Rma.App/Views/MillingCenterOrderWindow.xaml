@@ -1,0 +1,159 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.MillingCenterOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
+        xmlns:usercontrols="clr-namespace:Germadent.Rma.App.Views.UserControls"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        mc:Ignorable="d"
+        Title="Заказ-наряд Ферезерный центр"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        MinWidth="720"
+        Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterOrderViewModel, IsDesignTimeCreatable=True}"
+        helpers:WindowCloseHelper.CloseKey="Escape">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Margin" Value="0,6,0,0"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="210" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Заказчик" Margin="0,0,0,3"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                     Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора"  />
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
+                     Text="{Binding PatientFio, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,6,6,0" />
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
+                     Text="{Binding TechnicFio, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Номер тел. техника" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,6,6,0" />
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
+                     Text="{Binding TechnicPhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="4" Text="Дата и время получения работы"/>
+            <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
+                        SelectedDate="{Binding Created}" SelectedDateFormat="Short" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Доп. информация" />
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+                <RadioButton Content="Неокрашенный" GroupName="info"
+                             IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.NotPainted}}"/>
+                <RadioButton Content="Окрашенный" Margin="6,0,0,0" GroupName="info"
+                             IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.Painted}}"/>
+                <RadioButton Content="Предокрашенный" Margin="6,0,0,0" GroupName="info"
+                             IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.PrePainted}}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="8" Grid.Column="1" Height="103" Margin="6,6,0,0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding Materials}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
+                        <Grid Width="140">
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
+            <TextBox Grid.Row="9" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
+                     Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="Обработка инд. абатмента" Grid.Row="10" VerticalAlignment="Top" Margin="0,6,0,0"/>
+
+            <StackPanel Orientation="Vertical" Grid.Row="10" Grid.Column="1" Margin="6,0,0,0">
+                <CheckBox IsChecked="{Binding NonOpacity}" Content="Станочная обработка" Margin="0,6,0,0" />
+                <CheckBox IsChecked="{Binding LowOpacity}" Content="Полировка"
+                          Margin="0,6,0,0" />
+                <CheckBox IsChecked="{Binding HighOpacity}" Content="Погружение уступа 0.5 мм"
+                          Margin="0,6,0,0" />
+                <CheckBox IsChecked="{Binding Mamelons}" Content="Погружение уступа 1.0 мм" Margin="0,6,0,0" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Другое" Margin="0,3,0,0"></TextBlock>
+                    <TextBox Text="{Binding LedgePlungeCustom}" Margin="6,6,0,0" Width="50"/>
+                </StackPanel>
+                <TextBlock Text="Если глубина уступа не указана, уступ погружения на 0.5 мм" HorizontalAlignment="Left" Margin="0" FontSize="10"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="11" Grid.Column="0" Text="Докомплектовать заказ" />
+
+            <TextBlock Grid.Row="12" Grid.Column="0" Text="Винт" />
+            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Screw}" Margin="6,6,0,0" />
+
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="Титановая основа" />
+            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding TitaniumBase}" Margin="6,6,0,0" />
+
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="Описание работ" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <StackPanel Grid.Row="14" Grid.Column="1" Margin="6,0,0,0">
+                <usercontrols:MouthUserControl Grid.Row="14" Grid.Column="1" Margin="0,6,0,0" Height="200" />
+                <CheckBox Content="Согласование работы" IsChecked="{Binding Agreement}" Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Поступило (кол-во)" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="15" Grid.Column="1" Height="103" Margin="6,6,0,0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            </ListBox>
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Content="В работу" Width="100" helpers:WindowCloseHelper.DialogResult="True"
+                    IsDefault="True"/>
+            <Button Content="Отмена" Width="100" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"
+                    IsCancel="False"/>
+        </StackPanel>
+    </Grid>
+</Window>

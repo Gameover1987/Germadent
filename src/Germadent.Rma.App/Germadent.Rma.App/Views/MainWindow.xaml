@@ -1,0 +1,76 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App"
+        xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+        xmlns:designmock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        mc:Ignorable="d"
+        Title="{x:Static properties:Resources.AppTitle}" 
+        MinWidth="900"
+        Width="900"
+        MinHeight="600"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="3,3,3,3"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
+            <Button Content="Лаборатория" Margin="0,6,0,0"
+                    Command="{Binding CreateLabOrderCommand}"/>
+            <Button Content="Фрезерный центр" Margin="0,6,0,0"
+                    Command="{Binding CreateMillingCenterOrderCommand}"/>
+
+            <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
+            <Button Content="Настроить фильтр" Margin="0,6,0,0"
+                    Command="{Binding FilterOrdersCommand}"/>
+            <Button Content="Закрыть заказ-наряд" Margin="0,6,0,0"
+                    Command="{Binding CloseOrderCommand}"/>
+        </StackPanel>
+
+        <DataGrid Grid.Column="1" Margin="6,0,0,0"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"	
+                  AlternationCount="2"
+                  ItemsSource="{Binding Orders}"
+                  SelectedItem="{Binding SelectedOrder}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Number}"/>
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
+                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Customer}"/>
+                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Patient}"/>
+                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}"
+                                    Binding="{Binding Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

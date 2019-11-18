@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Wizard;
+using Germadent.Rma.App.Views;
+using Germadent.Rma.Model.Operation;
+using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
+using Unity;
+using Unity.Lifetime;
 
 namespace Germadent.Rma.App
 {
@@ -13,5 +17,62 @@ namespace Germadent.Rma.App
     /// </summary>
     public partial class App : Application
     {
+        private readonly IUnityContainer _container;
+
+        public App()
+        {
+            _container = new UnityContainer();
+
+            var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
+
+            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMillingOrderViewModel, MillingCenterOrderViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+        }
+
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            DelegateCommand.CommandException += CommandException;
+
+            var dialogAgent = _container.Resolve<IShowDialogAgent>();
+            var authorizationViewModel = new AuthorizationViewModel(
+                dialogAgent,
+                _container.Resolve<IRmaAuthorizer>());
+            var authorized = true; //dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+            if (authorized == true)
+            {
+                MainWindow = new MainWindow();
+                MainWindow.Closed += MainWindowOnClosed;
+                MainWindow.DataContext = _container.Resolve<MainViewModel>();
+                MainWindow.Show();
+            }
+            else
+            {
+                Current.Shutdown(0);
+            }
+        }
+
+        private void CommandException(object sender, ExceptionEventArgs e)
+        {
+            var dialogAgent = _container.Resolve<IShowDialogAgent>();
+            dialogAgent.ShowErrorMessageDialog(e.Exception.Message, e.Exception.StackTrace);
+        }
+
+        private void MainWindowOnClosed(object sender, EventArgs e)
+        {
+            Current.Shutdown(0);
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            _container.Dispose();
+        }
     }
 }

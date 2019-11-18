@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Germadent.Rma.App
+namespace Germadent.Rma.App.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for WizardWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WizardWindow : Window
     {
-        public MainWindow()
+        public WizardWindow()
         {
             InitializeComponent();
         }

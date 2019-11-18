@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.App", "Germadent.Rma.App\Germadent.Rma.App\Germadent.Rma.App.csproj", "{D30A163A-E335-4829-B539-7DD8476B6E1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Common", "Germadent.Common\Germadent.Common.csproj", "{A73F2837-286E-4DF2-95A7-6A383B67A66B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UI", "Germadent.UI\Germadent.UI.csproj", "{E3944E28-D2B6-471B-ACC7-316315C602A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.Model", "Germadent.Rma.Model\Germadent.Rma.Model.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{D30A163A-E335-4829-B539-7DD8476B6E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D30A163A-E335-4829-B539-7DD8476B6E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D30A163A-E335-4829-B539-7DD8476B6E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A73F2837-286E-4DF2-95A7-6A383B67A66B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A73F2837-286E-4DF2-95A7-6A383B67A66B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A73F2837-286E-4DF2-95A7-6A383B67A66B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A73F2837-286E-4DF2-95A7-6A383B67A66B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
