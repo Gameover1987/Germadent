@@ -35,3 +35,8 @@ src/Germadent.Rma.App/Germadent.Rma.App/obj/Debug/App.g.i.cs
 src/Germadent.Rma.App/Germadent.Rma.App/obj/
 src/Germadent.Rma.App/Germadent.Rma.App/bin/
 src/_ReSharper.Caches/
+src/Germadent.Common/obj/
+src/Germadent.UI/obj/
+src/Germadent.UI/bin/
+src/packages/
+src/Germadent.Common/bin/
