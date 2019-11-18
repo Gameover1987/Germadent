@@ -37,9 +37,13 @@ src/Germadent.Rma.App/Germadent.Rma.App/bin/
 src/_ReSharper.Caches/
 src/Germadent.Common/bin/
 src/Germadent.Common/obj/
+src/Germadent.Common/obj/
+src/Germadent.UI/obj/
 src/Germadent.UI/bin/
 src/Germadent.UI/obj/
 src/packages/
+src/packages/
+src/Germadent.Common/bin/
 src/Germadent.ServiceClient/obj/
 src/Germadent.ServiceClient/bin/
 src/Germadent.Rma.Model/obj/
