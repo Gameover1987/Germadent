@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Germadent.Rma.App.Properties {
+namespace Germadent.UI.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Germadent.Rma.App.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Germadent.Rma.App.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Germadent.UI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,66 @@ namespace Germadent.Rma.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Рабочее место администратора.
+        ///   Looks up a localized string similar to Версия .
         /// </summary>
-        public static string AppTitle {
+        public static string AboutWindow_ApplicationVersionName {
             get {
-                return ResourceManager.GetString("AppTitle", resourceCulture);
+                return ResourceManager.GetString("AboutWindow_ApplicationVersionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тeлефоны: .
+        /// </summary>
+        public static string AboutWindow_PhonesName {
+            get {
+                return ResourceManager.GetString("AboutWindow_PhonesName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to О программе.
+        /// </summary>
+        public static string AboutWindow_Title {
+            get {
+                return ResourceManager.GetString("AboutWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошло непредвиденное исключение. Доступ в систему невозможен.
+        ///.
+        /// </summary>
+        public static string AuthorizationWindow_FaultExceptionMessage {
+            get {
+                return ResourceManager.GetString("AuthorizationWindow_FaultExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароль.
+        /// </summary>
+        public static string AuthorizationWindow_Password {
+            get {
+                return ResourceManager.GetString("AuthorizationWindow_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вход в систему.
+        /// </summary>
+        public static string AuthorizationWindow_Title {
+            get {
+                return ResourceManager.GetString("AuthorizationWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь.
+        /// </summary>
+        public static string AuthorizationWindow_UserName {
+            get {
+                return ResourceManager.GetString("AuthorizationWindow_UserName", resourceCulture);
             }
         }
     }

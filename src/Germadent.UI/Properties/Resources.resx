@@ -117,7 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppTitle" xml:space="preserve">
-    <value>Рабочее место администратора</value>
+  <data name="AboutWindow_ApplicationVersionName" xml:space="preserve">
+    <value>Версия </value>
+  </data>
+  <data name="AboutWindow_PhonesName" xml:space="preserve">
+    <value>Тeлефоны: </value>
+  </data>
+  <data name="AboutWindow_Title" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="AuthorizationWindow_FaultExceptionMessage" xml:space="preserve">
+    <value>Произошло непредвиденное исключение. Доступ в систему невозможен.
+</value>
+  </data>
+  <data name="AuthorizationWindow_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="AuthorizationWindow_Title" xml:space="preserve">
+    <value>Вход в систему</value>
+  </data>
+  <data name="AuthorizationWindow_UserName" xml:space="preserve">
+    <value>Пользователь</value>
   </data>
 </root>

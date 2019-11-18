@@ -35,8 +35,16 @@ src/Germadent.Rma.App/Germadent.Rma.App/obj/Debug/App.g.i.cs
 src/Germadent.Rma.App/Germadent.Rma.App/obj/
 src/Germadent.Rma.App/Germadent.Rma.App/bin/
 src/_ReSharper.Caches/
+<<<<<<< HEAD
 src/Germadent.Common/obj/
 src/Germadent.UI/bin/
 src/Germadent.UI/obj/
 src/packages/
 src/Germadent.Common/bin/
+=======
+src/Germadent.Common/bin/
+src/Germadent.UI/bin/
+src/Germadent.UI/obj/
+src/Germadent.Common/obj/
+src/packages/
+>>>>>>> 54c7390ededdec3c52f8c2e46d499fb4aedd95f7

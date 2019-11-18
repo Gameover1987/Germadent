@@ -2,8 +2,20 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Germadent.Rma.App"
-             StartupUri="MainWindow.xaml">
+             ShutdownMode="OnExplicitShutdown"
+             Startup="App_OnStartup"
+             Exit="App_OnExit">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ButtonDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DataGridDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource StlnCheckBoxStyle}"/>
+
+            <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource StlnDataGridStyle}"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
