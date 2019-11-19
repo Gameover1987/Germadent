@@ -19,8 +19,12 @@
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DatePickerDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <convertersUI:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <convertersUI:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter"/>
             <convertersUI:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
             <converters:BranchTypeToStringConverter x:Key="BranchTypeToStringConverter"/>
+
+            <Geometry x:Key="InfoButtonGeometry">F1 M 10.6667,16L 8,16L 8,6.66669L 10.6667,6.66669M 8,2.66669L 10.6667,2.66669L 10.6667,5.33337L 8,5.33337M 9.33333,0C 4.17867,0 0,4.17871 0,9.33337C 0,14.488 4.17867,18.6667 9.33333,18.6667C 14.488,18.6667 18.6667,14.488 18.6667,9.33337C 18.6667,4.17871 14.488,0 9.33333,0 Z</Geometry>
 
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
             <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StlnRadioButtonStyle}"/>

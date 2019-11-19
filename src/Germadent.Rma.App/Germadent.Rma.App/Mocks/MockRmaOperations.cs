@@ -130,5 +130,10 @@ namespace Germadent.Rma.App.Mocks
 
             return materials;
         }
+
+        public void AddOrder(Order order)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
