@@ -17,17 +17,19 @@ namespace Germadent.Rma.App.Views
     public class WindowManager : IWindowManager
     {
         private readonly IShowDialogAgent _dialogAgent;
-        private readonly IWizardStepsProvider _labWizardProvider;
-        
-        private readonly IMillingOrderViewModel _millingOrderViewModel;
+        private readonly ILabWizardStepsProvider _labWizardProvider;
+        private readonly IMillingCenterWizardStepsProvider _millingCenterWizardStepsProvider;
+
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
 
         public WindowManager(IShowDialogAgent dialogAgent,
             ILabWizardStepsProvider labWizardStepsProvider,
+            IMillingCenterWizardStepsProvider millingCenterWizardStepsProvider,
             IOrdersFilterViewModel ordersFilterViewModel)
         {
             _dialogAgent = dialogAgent;
             _labWizardProvider = labWizardStepsProvider;
+            _millingCenterWizardStepsProvider = millingCenterWizardStepsProvider;
 
             _ordersFilterViewModel = ordersFilterViewModel;
         }
@@ -35,7 +37,7 @@ namespace Germadent.Rma.App.Views
         public Order CreateLabOrder()
         {
             var labWizard = new WizardViewModel(_labWizardProvider);
-            labWizard.Initialize("Создание заказ-наряда для ЗТЛ",false, new Order());
+            labWizard.Initialize("Создание заказ-наряда для ЗТЛ", false, new Order());
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
                 return new Order();
@@ -46,8 +48,9 @@ namespace Germadent.Rma.App.Views
 
         public Order CreateMillingCenterOrder()
         {
-            _millingOrderViewModel.Initialize(false);
-            if (_dialogAgent.ShowDialog<MillingCenterOrderWindow>(_millingOrderViewModel) == true)
+            var millingCenterWizard = new WizardViewModel(_millingCenterWizardStepsProvider);
+            millingCenterWizard.Initialize("Создание заказ-наряда для ФЦ", false, new Order());
+            if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) == true)
             {
                 return new Order();
             }

@@ -6,19 +6,23 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class LaboratoryProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel
+    public interface IMouthProvider
     {
-        private readonly IRmaOperations _rmaOperations;
+        ObservableCollection<TeethViewModel> Mouth { get; }
+    }
 
+    public class LaboratoryProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel, IMouthProvider
+    {
+        private IRmaOperations _rmaOperations;
         private string _workDescription;
         private string _color;
-
         private bool _nonOpacity;
         private bool _highOpacity;
         private bool _lowOpacity;
         private bool _mamelons;
         private bool _secondaryDentin;
         private bool _paintedFissurs;
+
 
         public LaboratoryProjectWizardStepViewModel(IRmaOperations rmaOperations)
         {

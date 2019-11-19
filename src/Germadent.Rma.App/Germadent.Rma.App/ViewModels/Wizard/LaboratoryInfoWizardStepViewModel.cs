@@ -26,7 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public string DisplayName
         {
-            get { return "Общие данные заказ-наряда"; }
+            get { return "Общие данные"; }
         }
 
         public string Customer

@@ -30,8 +30,8 @@ namespace Germadent.Rma.App
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMillingOrderViewModel, MillingCenterOrderViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);

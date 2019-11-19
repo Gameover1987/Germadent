@@ -65,11 +65,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BranchTypeToStringConverter.cs" />
-    <Compile Include="ViewModels\IMillingOrderViewModel.cs" />
     <Compile Include="ViewModels\MaterialViewModel.cs" />
     <Compile Include="ViewModels\IOrderViewModel.cs" />
-    <Compile Include="ViewModels\Old\LabOrderViewModel.cs" />
-    <Compile Include="ViewModels\Old\MillingCenterOrderViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
     <Compile Include="ViewModels\TeethViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
@@ -77,21 +74,18 @@
     <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LaboratoryProjectWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LabWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\MillingCenterInfoWizardStepViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\MillingCenterProjectWizardStepViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\MillingCenterWizardStepsProvider.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockLabOrderViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockMillingCenterOrderViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockMillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
-    <Compile Include="Views\LabOrderWindow.xaml.cs">
-      <DependentUpon>LabOrderWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MillingCenterOrderWindow.xaml.cs">
-      <DependentUpon>MillingCenterOrderWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -101,6 +95,12 @@
     <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
       <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml.cs">
+      <DependentUpon>MillingCenterInfoStepUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml.cs">
+      <DependentUpon>MillingCenterProjectStepUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
@@ -108,10 +108,6 @@
     <Compile Include="Views\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\LabOrderWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,10 +124,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\MillingCenterOrderWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\OrdersFilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,6 +133,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserControls\LabProjectStepUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

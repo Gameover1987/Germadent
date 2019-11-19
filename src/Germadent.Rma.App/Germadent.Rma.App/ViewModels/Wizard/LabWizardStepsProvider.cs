@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.App.Mocks;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {

@@ -13,8 +13,8 @@
         Title="{Binding Title}"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
-        MinHeight="700"
-        Height="700"
+        MinHeight="800"
+        Height="800"
         MinWidth="800"
         Width="800"
         WindowStartupLocation="CenterOwner"
@@ -29,6 +29,14 @@
 
             <DataTemplate DataType="{x:Type wizard:LaboratoryProjectWizardStepViewModel}">
                 <usercontrols:LabProjectStepUserControl/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:MillingCenterInfoWizardStepViewModel}">
+                <usercontrols:MillingCenterInfoStepUserControl/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:MillingCenterProjectWizardStepViewModel}">
+                <usercontrols:MillingCenterProjectStepUserControl/>
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
@@ -51,7 +59,7 @@
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Width="100" Content="Назад"
                     Command="{Binding BackCommand}"/>
-            <Button Width="100" Content="Вперед" Margin="6,0,0,0"
+            <Button Width="100" Content="Далее" Margin="6,0,0,0"
                     Command="{Binding NextCommand}"/>
             <Button Width="100" Content="В работу" Margin="32,0,0,0"
                     Command="{Binding OKCommand}"/>

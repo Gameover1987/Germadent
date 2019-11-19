@@ -58,7 +58,7 @@
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Номер" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Number}"/>
                 <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>

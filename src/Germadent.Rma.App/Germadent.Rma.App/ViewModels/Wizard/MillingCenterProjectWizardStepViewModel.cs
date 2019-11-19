@@ -4,22 +4,13 @@ using Germadent.Rma.Model;
 using Germadent.Rma.Model.Operation;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rma.App.ViewModels
+namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public interface ILabOrderViewModel : IOrderViewModel
-    { }
-
-    public class LabOrderViewModel : ViewModelBase, ILabOrderViewModel
+    public class MillingCenterProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel, IMouthProvider
     {
         private readonly IRmaOperations _rmaOperations;
 
-        private string _customer;
-        private string _doctorFio;
-        private string _patientFio;
-        private DateTime _created;
         private string _workDescription;
-        private DateTime? _workStarted;
-        private DateTime? _workCompleted;
         private string _color;
 
         private bool _nonOpacity;
@@ -28,72 +19,32 @@ namespace Germadent.Rma.App.ViewModels
         private bool _mamelons;
         private bool _secondaryDentin;
         private bool _paintedFissurs;
-        private Sex _sex;
-        private int _age;
+        private AdditionalMillingInfo _additionalMillingInfo;
+        private int _ledgePlungeCustom;
+        private string _screw;
+        private string _titaniumBase;
+        private bool _agreement;
 
-        public LabOrderViewModel(IRmaOperations rmaOperations)
+        public MillingCenterProjectWizardStepViewModel(IRmaOperations rmaOperations)
         {
             _rmaOperations = rmaOperations;
         }
 
-        public bool IsReadOnly { get; private set; }
-
-        public string Customer
+        public string DisplayName
         {
-            get { return _customer; }
-            set { SetProperty(() => _customer, value); }
+            get { return "Проект"; }
         }
 
-        public string DoctorFio
+        public AdditionalMillingInfo AdditionalMillingInfo
         {
-            get { return _doctorFio; }
-            set { SetProperty(() => _doctorFio, value); }
-        }
-
-        public string PatientFio
-        {
-            get { return _patientFio; }
-            set { SetProperty(() => _patientFio, value); }
-        }
-
-        public DateTime Created
-        {
-            get { return _created; }
-            set { SetProperty(() => _created, value); }
+            get { return _additionalMillingInfo; }
+            set { SetProperty(() => _additionalMillingInfo, value); }
         }
 
         public string WorkDescription
         {
             get { return _workDescription; }
             set { SetProperty(() => _workDescription, value); }
-        }
-
-        public DateTime? WorkStarted
-        {
-            get { return _workStarted; }
-            set { SetProperty(() => _workStarted, value); }
-        }
-
-        public DateTime? WorkCompleted
-        {
-            get { return _workCompleted; }
-            set { SetProperty(() => _workCompleted, value); }
-        }
-
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-
-        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
-
-        public Sex Sex
-        {
-            get { return _sex; }
-            set { SetProperty(() => _sex, value); }
-        }
-
-        public int Age
-        {
-            get { return _age; }
-            set { SetProperty(() => _age, value); }
         }
 
         public string Color
@@ -138,19 +89,50 @@ namespace Germadent.Rma.App.ViewModels
             set { SetProperty(() => _paintedFissurs, value); }
         }
 
-        public void Initialize(bool isReadOnly)
+        public int LedgePlungeCustom
         {
-            IsReadOnly = isReadOnly;
+            get { return _ledgePlungeCustom; }
+            set { SetProperty(() => _ledgePlungeCustom, value); }
+        }
 
+        public string Screw
+        {
+            get { return _screw; }
+            set { SetProperty(() => _screw, value); }
+        }
+
+        public string TitaniumBase
+        {
+            get { return _titaniumBase; }
+            set { SetProperty(() => _titaniumBase, value); }
+        }
+
+        public bool Agreement
+        {
+            get { return _agreement; }
+            set { SetProperty(() => _agreement, value); }
+        }
+
+        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+
+        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
+
+        public void Initialize(Order order)
+        {
+            FillMaterials();
+
+            FillTeethCollection();
+
+            OnPropertyChanged();
+        }
+
+        private void FillMaterials()
+        {
             var materials = _rmaOperations.GetMaterials();
             foreach (var material in materials)
             {
                 Materials.Add(new MaterialViewModel(material));
             }
-
-            FillTeethCollection();
-
-            OnPropertyChanged();
         }
 
         private void FillTeethCollection()
