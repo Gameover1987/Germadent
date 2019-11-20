@@ -1,13 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Germadent.Rma.App.ServiceClient;
+using System.Text;
+using System.Threading.Tasks;
+using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
+using Nancy;
+using Newtonsoft.Json;
 
-namespace Germadent.Rma.App.Mocks
+namespace Germadent.DataAccessService
 {
-    public class MockRmaOperations : IRmaOperations
+    public class OrdersModule : NancyModule
     {
-        public Order[] GetOrders(OrdersFilter ordersFilter = null)
+        private List<Order> _orders = new List<Order>();
+
+        public OrdersModule()
+        {
+            FillOrders();
+
+            ModulePath = "api/Orders";
+
+            Get("/", GetOrders);
+        }
+
+        private void FillOrders()
         {
             var orders = new Order[]
             {
@@ -48,44 +64,13 @@ namespace Germadent.Rma.App.Mocks
                 }
             }
 
-            if (ordersFilter == null)
-                return orders;
-
-            if (ordersFilter.Laboratory)
-                return orders.Where(x => x.BranchType == BranchType.Laboratory).ToArray();
-            if (ordersFilter.MillingCenter)
-                return orders.Where(x => x.BranchType == BranchType.MillingCenter).ToArray();
-
-            return orders;
+            _orders.Clear();
+            _orders.AddRange(orders);
         }
 
-        public Material[] GetMaterials()
+        private object GetOrders(object arg)
         {
-            var materials = new[]
-            {
-                new Material {Name = "ZrO"},
-                new Material {Name = "PMMA mono"},
-                new Material {Name = "PMMA multi"},
-                new Material {Name = "WAX"},
-                new Material {Name = "MIK"},
-                new Material {Name = "CAD-Temp mono"},
-                new Material {Name = "CAD-Temp multi"},
-                new Material {Name = "Enamik mono"},
-                new Material {Name = "Enamik multi"},
-                new Material {Name = "SUPRINITY"},
-                new Material {Name = "Mark II"},
-                new Material {Name = "WAX"},
-                new Material {Name = "TriLuxe forte"},
-                new Material {Name = "Ti"},
-                new Material {Name = "E.MAX"},
-            };
-
-            return materials;
-        }
-
-        public void AddOrder(Order order)
-        {
-            throw new NotImplementedException();
+            return _orders.SerializeToJson();
         }
     }
 }

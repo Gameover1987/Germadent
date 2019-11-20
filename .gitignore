@@ -45,3 +45,5 @@ src/Germadent.ServiceClient/obj/
 src/Germadent.Rma.Model/bin/
 src/Germadent.Rma.Model/obj/
 
+src/Germadent.DataAccessService/bin/
+src/Germadent.DataAccessService/obj/

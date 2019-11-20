@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
-using Germadent.Rma.Model.Operation;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
+using Germadent.UI.Windows;
 using Unity;
 using Unity.Lifetime;
 
@@ -18,22 +20,21 @@ namespace Germadent.Rma.App
     public partial class App : Application
     {
         private readonly IUnityContainer _container;
+        private readonly IConfiguration _configuration;
 
         public App()
         {
             _container = new UnityContainer();
 
+            _configuration = new RmaConfiguration();
+            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
+
+            if (_configuration.WorkMode == WorkMode.Server)
+                InitilizeBattle();
+            else
+                InitializeMock();
+
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
-
-            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
         }
 
@@ -45,7 +46,16 @@ namespace Germadent.Rma.App
             var authorizationViewModel = new AuthorizationViewModel(
                 dialogAgent,
                 _container.Resolve<IRmaAuthorizer>());
-            var authorized = true; //dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+            bool? authorized= true;
+            if (_configuration.WorkMode == WorkMode.Mock)
+            {
+                authorized = true;
+            }
+            else
+            {
+                //authorized= dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+            }
+            
             if (authorized == true)
             {
                 MainWindow = new MainWindow();
@@ -57,6 +67,30 @@ namespace Germadent.Rma.App
             {
                 Current.Shutdown(0);
             }
+        }
+
+        private void InitializeMock()
+        {
+            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+        }
+
+        private void InitilizeBattle()
+        {
+            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void CommandException(object sender, ExceptionEventArgs e)

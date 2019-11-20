@@ -1,6 +1,5 @@
 ﻿using System;
 using Germadent.Rma.Model;
-using Germadent.Rma.Model.Operation;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard

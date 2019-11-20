@@ -4,7 +4,7 @@ using System;
 using System.Windows.Media.Imaging;
 using Germadent.Common;
 using Germadent.Rma.App.Properties;
-using Germadent.Rma.Model.Operation;
+using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.ViewModels
 {

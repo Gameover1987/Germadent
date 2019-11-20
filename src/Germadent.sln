@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UI", "Germadent.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.Model", "Germadent.Rma.Model\Germadent.Rma.Model.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.DataAccessService", "Germadent.DataAccessService\Germadent.DataAccessService.csproj", "{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,11 +35,16 @@ Global
 		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
 	EndGlobalSection
 EndGlobal

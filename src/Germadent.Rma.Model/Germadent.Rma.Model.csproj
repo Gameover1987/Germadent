@@ -38,8 +38,6 @@
   <ItemGroup>
     <Compile Include="Enums.cs" />
     <Compile Include="Material.cs" />
-    <Compile Include="Operation\IRmaAuthorizer.cs" />
-    <Compile Include="Operation\IRmaOperations.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrdersFilter.cs" />
   </ItemGroup>
