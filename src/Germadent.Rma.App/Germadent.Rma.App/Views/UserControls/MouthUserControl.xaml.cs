@@ -29,6 +29,7 @@ namespace Germadent.Rma.App.Views.UserControls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             _orderViewModel = DataContext as IOrderViewModel;
+
             if (_orderViewModel == null)
                 return;
 
