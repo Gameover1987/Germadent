@@ -24,7 +24,13 @@ namespace Germadent.Rma.App.ServiceClient
 
         public Order[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            var responseTask = _client.GetAsync(_configuration.DataServiceUrl + "/api/Orders");
+            var getOrdersUrl = _configuration.DataServiceUrl + "/api/Orders";
+            if (ordersFilter != null)
+            {
+                getOrdersUrl = string.Format("{0}/api/Orders/{1}",_configuration.DataServiceUrl, ordersFilter.SerializeToJson());
+            }
+
+            var responseTask = _client.GetAsync(getOrdersUrl);
             responseTask.Wait();
 
             var response = responseTask.Result;

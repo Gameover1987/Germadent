@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Nancy;
+using Nancy.ModelBinding;
 using Newtonsoft.Json;
 
 namespace Germadent.DataAccessService
@@ -21,6 +22,7 @@ namespace Germadent.DataAccessService
             ModulePath = "api/Orders";
 
             Get("/", GetOrders);
+            Get("/{filter}", GetOrdersByFilter);
         }
 
         private void FillOrders()
@@ -70,7 +72,16 @@ namespace Germadent.DataAccessService
 
         private object GetOrders(object arg)
         {
-            return _orders.SerializeToJson();
+            return Response.AsJson(_orders);
+        }
+
+        private object GetOrdersByFilter(object arg)
+        {
+            var filterValue = ((DynamicDictionary)arg)["filter"];
+
+            var filter = JsonExtensions.DeserializeFromJson<OrdersFilter>(filterValue as DynamicDictionaryValue);
+
+            return Response.AsJson(_orders);
         }
     }
 }

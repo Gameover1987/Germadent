@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.Windows;
