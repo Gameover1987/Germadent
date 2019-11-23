@@ -3,7 +3,7 @@
 -- Create date: 23.11.2019
 -- Description:	Справочник способов протезирования
 -- =============================================
-CREATE FUNCTION EquipmentsList 
+CREATE FUNCTION [GetEquipmentsList] 
 (	
 	
 )

@@ -3,7 +3,7 @@
 -- Create date: 12.11.2019
 -- Description:	Вычисление полных лет на текущую дату
 -- =============================================
-CREATE FUNCTION [dbo].[PersonAge] 
+CREATE FUNCTION [dbo].[GetPersonAge] 
 (	
 	--Дата рождения
 	@birthday datetime

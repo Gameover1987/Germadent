@@ -28,7 +28,7 @@ BEGIN
 	-- Собственно вставка:
 	
 	INSERT INTO WorkOrder
-		(BrachID, Status, DocNumber, CustomerID, PatientID, DateTimeCreated, WorkDescription)
+		(BrachID, Status, DocNumber, CustomerID, PatientID, Created, WorkDescription)
 	VALUES
 		(1,	@status, @docNumber, @customerID, @patientID, GETDATE(), @workDescription)
 

@@ -3,7 +3,7 @@
 -- Create date: 23.11.2019
 -- Description:	Справочник прозрачностей зубов
 -- =============================================
-CREATE FUNCTION TransparencesList 
+CREATE FUNCTION [GetTransparencesList] 
 (	
 	
 )

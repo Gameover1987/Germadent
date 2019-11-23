@@ -3,7 +3,7 @@
 -- Create date: 21.11.2019
 -- Description:	Справочник материалов для зубной карты заказ-наряда
 -- =============================================
-CREATE FUNCTION [dbo].[MaterialsList] 
+CREATE FUNCTION [dbo].[GetMaterialsList] 
 (	
 	
 )

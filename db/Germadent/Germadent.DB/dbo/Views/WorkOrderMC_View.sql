@@ -1,24 +1,13 @@
 ﻿CREATE VIEW dbo.WorkOrderMC_View
 AS
-SELECT   wo.WorkOrderID, b.BranchName, wo.DocNumber, wo.Status, cs.CustomerName, p.FamilyName, wmc.AdditionalInfo, wmc.Carcass, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, e.FamilyName AS Администратор,
-                    (SELECT   FamilyName
-                     FROM      dbo.Employee AS em
-                     WHERE   (EmployeeID = wp.EmployeeID) AND (tw.Position LIKE '%оператор%')) AS Оператор,
-                    (SELECT   FamilyName
-                     FROM      dbo.Employee AS em
-                     WHERE   (EmployeeID = wp.EmployeeID) AND (tw.Position LIKE '%техник%')) AS Техник,
-                    (SELECT   FamilyName
-                     FROM      dbo.Employee AS em
-                     WHERE   (EmployeeID = wp.EmployeeID) AND (tw.Position LIKE '%моделиров%')) AS Моделировщик
+SELECT   wo.WorkOrderID, b.BranchName, wo.DocNumber, wo.Status, cs.CustomerName, p.FamilyName, wmc.AdditionalInfo, wmc.Carcass, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, e.FamilyName AS Администратор
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID INNER JOIN
                 dbo.Branches AS b ON wo.BrachID = b.BranchID INNER JOIN
                 dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID INNER JOIN
                 dbo.Patients AS p ON wo.PatientID = p.PatientID INNER JOIN
-                dbo.Users AS u ON wo.UserIDCreated = u.UserID AND wo.UserIDLastUpdated = u.UserID INNER JOIN
-                dbo.Employee AS e ON wo.AdministratorID = e.EmployeeID INNER JOIN
-                dbo.WorkProcesses AS wp ON wo.WorkOrderID = wp.WorkOrderID INNER JOIN
-                dbo.TypesOfWorks AS tw ON wp.WorkID = tw.WorkID
+                dbo.Employee AS e ON wo.AdministratorID = e.EmployeeID
+WHERE   (b.BranchID = 1)
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane1', @value = N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
@@ -26,7 +15,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[50] 4[26] 2[24] 3) )"
+         Configuration = "(H (1[33] 4[45] 2[22] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -92,6 +81,16 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
+         Begin Table = "wo"
+            Begin Extent = 
+               Top = 153
+               Left = 428
+               Bottom = 570
+               Right = 635
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
          Begin Table = "wmc"
             Begin Extent = 
                Top = 19
@@ -132,56 +131,12 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "u"
-            Begin Extent = 
-               Top = 741
-               Left = 122
-               Bottom = 906
-               Right = 303
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
          Begin Table = "e"
             Begin Extent = 
                Top = 203
                Left = 702
                Bottom = 380
                Right = 883
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "wp"
-            Begin Extent = 
-               Top = 23
-               Left = 742
-               Bottom = 186
-               Right = 923
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderMC_View';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'End
-         Begin Table = "tw"
-            Begin Extent = 
-               Top = 6
-               Left = 398
-               Bottom = 128
-               Right = 579
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "wo"
-            Begin Extent = 
-               Top = 153
-               Left = 428
-               Bottom = 570
-               Right = 635
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -199,7 +154,13 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'End
          Column = 1440
          Alias = 898
          Table = 1169
-         Output = 727
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderMC_View';
+
+
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'         Output = 727
          Append = 1400
          NewValue = 1170
          SortType = 1354
@@ -213,6 +174,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'End
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderMC_View';
+
+
 
 
 GO

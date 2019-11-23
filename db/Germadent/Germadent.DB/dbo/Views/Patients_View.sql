@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.Patients_View
 AS
-SELECT   PatientID, FamilyName AS Фамилия, Name AS Имя, Patronymic AS Отчество, Gender AS Пол, Birthday AS [Дата рождения], dbo.PersonAge(Birthday) AS Возраст, Address AS Адрес, Phone AS Телефон
+SELECT   PatientID, FamilyName AS Фамилия, Name AS Имя, Patronymic AS Отчество, Gender AS Пол, Birthday AS [Дата рождения], dbo.GetPersonAge(Birthday) AS Возраст
 FROM      dbo.Patients
 
 GO

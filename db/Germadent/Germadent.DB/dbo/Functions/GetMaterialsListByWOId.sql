@@ -3,7 +3,7 @@
 -- Create date: 21.11.2019
 -- Description:	Список материалов из заказ-наряда
 -- =============================================
-CREATE FUNCTION MaterialsListFromWOByID 
+CREATE FUNCTION [GetMaterialsListByWOId] 
 (	
 	@workOrderID int
 )
