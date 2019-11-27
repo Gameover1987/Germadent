@@ -5,14 +5,14 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[spAddNewWorkOrderMC] 
 	
-	@status tinyint,
 	@docNumber nchar(10),
 	@customerID int,
 	@patientID int,
-	@workDescription nvarchar(250),
-	@additionalInfo nvarchar(70),
-	@implantSystem nvarchar(70),
-	@individualAbutmentProcessing nvarchar(70)
+	@workDescription nvarchar(250) = NULL,
+	@administratorID int,
+	@additionalInfo nvarchar(70) = NULL,
+	@implantSystem nvarchar(70) = NULL,
+	@individualAbutmentProcessing nvarchar(70) = NULL
 
 AS
 BEGIN
@@ -23,14 +23,14 @@ BEGIN
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	SELECT @max_Id = MAX(WorkOrderID)
 	FROM WorkOrder
-	DBCC checkident (WorkOrder, reseed, @max_Id);
+	DBCC checkident (WorkOrder, reseed, @max_Id)
 
 	-- Собственно вставка:
 	
 	INSERT INTO WorkOrder
-		(BrachID, Status, DocNumber, CustomerID, PatientID, Created, WorkDescription)
-	VALUES
-		(1,	@status, @docNumber, @customerID, @patientID, GETDATE(), @workDescription)
+		(BrachID, DocNumber, CustomerID, PatientID, Created, WorkDescription, AdministratorID)
+	VALUES 
+		(1, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @administratorID)
 
 	SELECT @workOrderID = SCOPE_IDENTITY()
 
@@ -38,4 +38,6 @@ BEGIN
 		(WorkOrderMCID, AdditionalInfo, ImplantSystem, IndividualAbutmentProcessing)
 	VALUES
 		(@workOrderID, @additionalInfo, @implantSystem, @individualAbutmentProcessing)
+
+
 END
