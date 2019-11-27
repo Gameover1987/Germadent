@@ -9,3 +9,10 @@
     CONSTRAINT [FK_ToothCard_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX-WorkOrderID]
+    ON [dbo].[ToothCard]([WorkOrderID] ASC);
+
