@@ -40,6 +40,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TextExtensions.cs" />
     <Compile Include="Extensions\ThreadTaskExtensions.cs" />
+    <Compile Include="FileSystem\IFileManager.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="UserMessageException.cs" />
   </ItemGroup>

@@ -40,6 +40,8 @@
                     Command="{Binding FilterOrdersCommand}"/>
             <Button Content="Закрыть заказ-наряд" Margin="0,6,0,0"
                     Command="{Binding CloseOrderCommand}"/>
+            <Button Content="Распечатать" Margin="0,6,0,0"
+                    Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
 
         <DataGrid Grid.Column="1" Margin="6,0,0,0"

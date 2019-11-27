@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Windows;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.Printing.Implementation;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
@@ -81,6 +84,9 @@ namespace Germadent.Rma.App
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
         }
 
         private void InitilizeBattle()
@@ -93,6 +99,9 @@ namespace Germadent.Rma.App
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
         }
 
         private void CommandException(object sender, ExceptionEventArgs e)

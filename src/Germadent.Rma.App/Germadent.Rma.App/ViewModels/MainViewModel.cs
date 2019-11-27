@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
@@ -20,20 +21,23 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IRmaOperations _rmaOperations;
         private readonly IWindowManager _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
+        private readonly IPrintModule _printModule;
         private Order _selectedOrder;
 
-        public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent)
+        public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule)
         {
             _rmaOperations = rmaOperations;
             _windowManager = windowManager;
             _dialogAgent = dialogAgent;
-            
+            _printModule = printModule;
+
             SelectedOrder = Orders.FirstOrDefault();
 
             CreateLabOrderCommand = new DelegateCommand(x => CreateLabOrderCommandHandler());
             CreateMillingCenterOrderCommand = new DelegateCommand(x => CreateMillingCenterOrderCommandHandler());
             FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
             CloseOrderCommand = new DelegateCommand(x => CloseOrderCommandHandler(), x => CanCloseOrderCommandHandler());
+            PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
 
             FillOrders();
         }
@@ -61,6 +65,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public ICommand CloseOrderCommand { get; }
 
+        public ICommand PrintOrderCommand { get; }
+
         private void CreateLabOrderCommandHandler()
         {
              _windowManager.CreateLabOrder();
@@ -80,6 +86,16 @@ namespace Germadent.Rma.App.ViewModels
             FillOrders(filter);
         }
 
+        private void FillOrders(OrdersFilter filter = null)
+        {
+            Orders.Clear();
+            var orders = _rmaOperations.GetOrders(filter);
+            foreach (var order in orders)
+            {
+                Orders.Add(order);
+            }
+        }
+
         private bool CanCloseOrderCommandHandler()
         {
             return SelectedOrder != null;
@@ -93,14 +109,14 @@ namespace Germadent.Rma.App.ViewModels
             SelectedOrder.Closed = DateTime.Now;
         }
 
-        private void FillOrders(OrdersFilter filter = null)
+        private bool CanPrintOrderCommandHandler()
         {
-            Orders.Clear();
-            var orders = _rmaOperations.GetOrders(filter);
-            foreach (var order in orders)
-            {
-                Orders.Add(order);
-            }
+            return SelectedOrder != null;
+        }
+
+        private void PrintOrderCommandHandler()
+        {
+            _printModule.Print(SelectedOrder);
         }
     }
 }
