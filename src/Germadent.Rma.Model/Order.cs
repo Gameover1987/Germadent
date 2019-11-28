@@ -21,5 +21,12 @@ namespace Germadent.Rma.Model
         public string Employee { get; set; }
 
         public string Material { get; set; }
+        public string ResponsiblePerson { get; set; }
+        public string RespPersPhone { get; set; }
+        public string AdditionalInfo { get; set; }
+        public string CarcassColor { get; set; }
+        public string ImplantSystem { get; set; }
+        public string IndividualAbutmentProcessing { get; set; }
+        public string WorkDescription { get; set; }
     }
 }
