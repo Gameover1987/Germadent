@@ -16,7 +16,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             Age = 22;
 
             Created = DateTime.Now;
-            WorkStarted = DateTime.Now;
+            FittingDate = DateTime.Now;
             WorkCompleted = DateTime.Now;
         }
     }

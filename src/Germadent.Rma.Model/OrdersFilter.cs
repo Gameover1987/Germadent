@@ -6,14 +6,14 @@ namespace Germadent.Rma.Model
 {
     public class OrdersFilter
     {
+        private static OrdersFilter _emptyFilter = new OrdersFilter();
+
         public bool MillingCenter { get; set; }
 
         public bool Laboratory { get; set; }
-
-        [JsonConverter(typeof(RussianDateTimeFormatConverter), "dd.MM.yyyy HH:mm:ss")]
+        
         public DateTime PeriodBegin { get; set; }
-
-        [JsonConverter(typeof(RussianDateTimeFormatConverter), "dd.MM.yyyy HH:mm:ss")]
+        
         public DateTime PeriodEnd { get; set; }
 
         public string Customer { get; set; }
@@ -23,13 +23,10 @@ namespace Germadent.Rma.Model
         public string Patient { get; set; }
 
         public Material[] Materials { get; set; }
-    }
 
-    public class RussianDateTimeFormatConverter : IsoDateTimeConverter
-    {
-        public RussianDateTimeFormatConverter(string format)
+        public static OrdersFilter Empty
         {
-            this.DateTimeFormat = format;
+            get { return _emptyFilter; }
         }
     }
 }

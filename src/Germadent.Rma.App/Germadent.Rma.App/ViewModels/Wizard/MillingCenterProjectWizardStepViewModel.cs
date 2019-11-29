@@ -126,6 +126,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             OnPropertyChanged();
         }
 
+        public void AssemblyOrder(Order order)
+        {
+            
+        }
+
         private void FillMaterials()
         {
             var materials = _rmaOperations.GetMaterials();

@@ -1,69 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Nancy;
 using Nancy.ModelBinding;
-using Newtonsoft.Json;
 
 namespace Germadent.DataAccessService
 {
     public class OrdersModule : NancyModule
     {
-        private List<Order> _orders = new List<Order>();
+        private readonly IOrdersRepository _ordersRepository;
 
         public OrdersModule()
         {
-            FillOrders();
+            _ordersRepository = new OrdersRepository();
 
             ModulePath = "api/Orders";
 
             Get("/", GetOrders);
-            Post("/", GetOrdersByFilter);
+            Post("/getOrdersByFilter", GetOrdersByFilter);
+            Post("/laboratoryOrder", AddLaboratoryOrder);
+            Post("/millingCenterOrder", AddMillingCenterOrder);
         }
 
-        private void FillOrders()
+        private object AddLaboratoryOrder(object arg)
         {
-            var orders = new Order[]
-            {
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Иванов Иван Иванович",
-                    
-                    Customer = "ООО Рога и Копыта",
-                    
-                }
-            };
+            var labOrder = this.Bind<LaboratoryOrder>();
+            _ordersRepository.AddOrder(labOrder);
 
-            for (int i = 0; i < orders.Length; i++)
-            {
-                var order = orders[i];
-                order.Number = i;
-                if (i % 2 == 0)
-                {
-                    order.BranchType = BranchType.Laboratory;
-                    order.Closed = DateTime.Now;
-                }
-            }
-
-            _orders.Clear();
-            _orders.AddRange(orders);
+            return Response.AsJson("OK");
         }
+
+        private object AddMillingCenterOrder(object arg)
+        {
+            var millingCenterOrder = this.Bind<MillingCenterOrder>();
+            _ordersRepository.AddOrder(millingCenterOrder);
+
+            return Response.AsJson("OK");
+        }
+
 
         private object GetOrders(object arg)
         {
-            return Response.AsJson(_orders);
+            return Response.AsJson(_ordersRepository.GetOrders(OrdersFilter.Empty));
         }
 
         private object GetOrdersByFilter(object arg)
         {
             var filter = this.Bind<OrdersFilter>();
 
-            return Response.AsJson(_orders);
+            return Response.AsJson(_ordersRepository.GetOrders(filter));
         }
     }
 }

@@ -60,5 +60,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             
         }
+
+        public void AssemblyOrder(Order order)
+        {
+          
+        }
     }
 }

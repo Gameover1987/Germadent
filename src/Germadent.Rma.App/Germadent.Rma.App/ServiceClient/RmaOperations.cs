@@ -25,13 +25,12 @@ namespace Germadent.Rma.App.ServiceClient
 
         public Order[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            StringContent content = null;
-            if (ordersFilter != null)
-            {
-                content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
-            }
+            if (ordersFilter == null)
+                ordersFilter = new OrdersFilter();
 
-            var apiUrl =_configuration.DataServiceUrl+  "/api/Orders";
+            var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
+
+            var apiUrl = _configuration.DataServiceUrl + "/api/Orders/getOrdersByFilter";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order[]>();
@@ -51,7 +50,13 @@ namespace Germadent.Rma.App.ServiceClient
 
         public void AddOrder(Order order)
         {
-            throw new System.NotImplementedException();
+            var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
+
+            var apiUrl = _configuration.DataServiceUrl + "/api/Orders/laboratoryOrder";
+            using (var response = _client.PostAsync(apiUrl, content).Result)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+            }
         }
     }
 }

@@ -28,7 +28,9 @@ namespace Germadent.Rma.Model
 
         public int Age { get; set; }
 
-        public DateTime FittingDate { get; set; }
+        public DateTime? FittingDate { get; set; }
+
+        public string WorkDescription { get; set; }
 
         public DateTime Completed { get; set; }
 

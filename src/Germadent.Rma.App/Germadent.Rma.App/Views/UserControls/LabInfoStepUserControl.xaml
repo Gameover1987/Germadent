@@ -62,9 +62,9 @@
 
         
 
-        <TextBlock Grid.Row="5" Text="Дата приемки"/>
+        <TextBlock Grid.Row="5" Text="Дата примерки"/>
         <DatePicker Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
-                        SelectedDate="{Binding WorkStarted}" SelectedDateFormat="Short" />
+                        SelectedDate="{Binding FittingDate}" SelectedDateFormat="Short" />
         <TextBlock Grid.Row="6" Text="Дата сдачи"/>
         <DatePicker Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
                         SelectedDate="{Binding WorkCompleted}" SelectedDateFormat="Short" />

@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         private IRmaOperations _rmaOperations;
         private string _workDescription;
-        private string _color;
+        private string _colorAndFeatures;
         private bool _nonOpacity;
         private bool _highOpacity;
         private bool _lowOpacity;
@@ -40,10 +40,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workDescription, value); }
         }
 
-        public string Color
+        public string ColorAndFeatures
         {
-            get { return _color; }
-            set { SetProperty(() => _color, value); }
+            get { return _colorAndFeatures; }
+            set { SetProperty(() => _colorAndFeatures, value); }
         }
 
         public bool NonOpacity
@@ -93,6 +93,20 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             FillTeethCollection();
 
             OnPropertyChanged();
+        }
+
+        public void AssemblyOrder(Order order)
+        {
+            var labOrder = (LaboratoryOrder) order;
+
+            labOrder.WorkDescription = WorkDescription;
+            labOrder.ColorAndFeatures = ColorAndFeatures;
+            labOrder.NonOpacity = NonOpacity;
+            labOrder.HighOpacity = HighOpacity;
+            labOrder.LowOpacity = LowOpacity;
+            labOrder.Mamelons = Mamelons;
+            labOrder.SecondaryDentin = SecondaryDentin;
+            labOrder.PaintedFissurs = PaintedFissurs;
         }
 
         private void FillMaterials()

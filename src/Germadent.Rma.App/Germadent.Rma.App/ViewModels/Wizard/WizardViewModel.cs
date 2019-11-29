@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -19,9 +20,15 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class WizardViewModel : ViewModelBase, IWizardViewModel
     {
         private IWizardStepViewModel _currentStep;
+        private BranchType _branchType;
 
         public WizardViewModel(IWizardStepsProvider stepsProvider)
         {
+            if (stepsProvider is ILabWizardStepsProvider)
+                _branchType = BranchType.Laboratory;
+            else
+                _branchType = BranchType.MillingCenter;
+
             Steps = new ObservableCollection<IWizardStepViewModel>(stepsProvider.GetSteps());
             CurrentStep = Steps.First();
 
@@ -103,7 +110,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public Order GetOrder()
         {
-            return new Order();
+            Order order = null;
+            if (_branchType == BranchType.Laboratory)
+                order = new LaboratoryOrder();
+            else
+                order = new MillingCenterOrder();
+
+            foreach (var step in Steps)
+            {
+                step.AssemblyOrder(order);
+            }
+
+            return order;
         }
     }
 }

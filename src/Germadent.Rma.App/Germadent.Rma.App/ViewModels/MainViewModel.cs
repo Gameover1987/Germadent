@@ -69,7 +69,8 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateLabOrderCommandHandler()
         {
-             _windowManager.CreateLabOrder();
+             var labOrder = _windowManager.CreateLabOrder();
+             _rmaOperations.AddOrder(labOrder);
         }
 
         private void CreateMillingCenterOrderCommandHandler()

@@ -61,7 +61,7 @@
                     Command="{Binding BackCommand}"/>
             <Button Width="100" Content="Далее" Margin="6,0,0,0"
                     Command="{Binding NextCommand}"/>
-            <Button Width="100" Content="В работу" Margin="32,0,0,0"
+            <Button Width="100" Content="В работу" Margin="32,0,0,0" helpers:WindowCloseHelper.DialogResult="True"
                     Command="{Binding OKCommand}"/>
         </StackPanel>
     </Grid>

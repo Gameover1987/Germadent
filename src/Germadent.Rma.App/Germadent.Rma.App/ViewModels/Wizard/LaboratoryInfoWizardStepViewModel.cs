@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private DateTime _created;
 
-        private DateTime? _workStarted;
+        private DateTime? _fittingDate;
         private DateTime? _workCompleted;
 
         public LaboratoryInfoWizardStepViewModel()
@@ -64,10 +64,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _created, value); }
         }
 
-        public DateTime? WorkStarted
+        public DateTime? FittingDate
         {
-            get { return _workStarted; }
-            set { SetProperty(() => _workStarted, value); }
+            get { return _fittingDate; }
+            set { SetProperty(() => _fittingDate, value); }
         }
 
         public DateTime? WorkCompleted
@@ -78,7 +78,31 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(Order order)
         {
-            
+            var labOrder = (LaboratoryOrder)order;
+
+            Customer = labOrder.Customer;
+            DoctorFio = labOrder.Doctor;
+            Sex = labOrder.Sex;
+            Age = labOrder.Age;
+            PatientFio = labOrder.Patient;
+            Created = labOrder.Created;
+            FittingDate = labOrder.FittingDate;
+            WorkCompleted = labOrder.Closed;
+        }
+
+        public void AssemblyOrder(Order order)
+        {
+            var labOrder = (LaboratoryOrder) order;
+
+            labOrder.BranchType = BranchType.Laboratory;
+            labOrder.Customer = Customer;
+            labOrder.Doctor = DoctorFio;
+            labOrder.Sex = Sex;
+            labOrder.Age = Age;
+            labOrder.Patient = PatientFio;
+            labOrder.Created = Created;
+            labOrder.FittingDate = FittingDate;
+            labOrder.Closed = WorkCompleted;
         }
     }
 }

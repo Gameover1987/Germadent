@@ -55,7 +55,7 @@
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Цвет/особенности" VerticalAlignment="Center"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
-                     Text="{Binding Color, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding ColorAndFeatures, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Text="Прозрачность" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
