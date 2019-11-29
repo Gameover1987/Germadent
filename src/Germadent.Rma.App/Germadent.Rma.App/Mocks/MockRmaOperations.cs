@@ -15,25 +15,14 @@ namespace Germadent.Rma.App.Mocks
                 {
                     Created = DateTime.Now,
                     Patient = "Иванов Иван Иванович",
-                    Employee = "Петров Петр Петрович",
+                    
                     Customer = "ООО Рога и Копыта",
-                    Material = "ZrO"
                 },
                 new Order
                 {
                     Created = DateTime.Now,
                     Patient = "Сергей Сергеевич Серегин",
-                    Employee = "Петров Петр Петрович",
                     Customer = "ООО Рога и Копыта",
-                    Material = "PMMA multi"
-                },
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Антон Антонович Антонов",
-                    Employee = "Петров Петр Петрович",
-                    Customer = "ООО Рога и Копыта",
-                    Material = "PMMA mono"
                 }
             };
 
@@ -84,6 +73,11 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public void AddOrder(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Order GetOrderDetails(int orderId)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
@@ -24,22 +25,23 @@ namespace Germadent.Rma.App.ServiceClient
 
         public Order[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            var getOrdersUrl = _configuration.DataServiceUrl + "/api/Orders";
+            StringContent content = null;
             if (ordersFilter != null)
             {
-                getOrdersUrl = string.Format("{0}/api/Orders/{1}",_configuration.DataServiceUrl, ordersFilter.SerializeToJson());
+                content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
             }
 
-            var responseTask = _client.GetAsync(getOrdersUrl);
-            responseTask.Wait();
+            var apiUrl =_configuration.DataServiceUrl+  "/api/Orders";
+            using (var response = _client.PostAsync(apiUrl, content).Result)
+            {
+                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order[]>();
+                return orders;
+            }
+        }
 
-            var response = responseTask.Result;
-
-            var readDataTask = response.Content.ReadAsStringAsync();
-            readDataTask.Wait();
-
-            var orders = readDataTask.Result.DeserializeFromJson<Order[]>();
-            return orders;
+        public Order GetOrderDetails(int orderId)
+        {
+            throw new NotImplementedException();
         }
 
         public Material[] GetMaterials()

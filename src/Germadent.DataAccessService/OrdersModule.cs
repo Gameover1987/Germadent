@@ -22,7 +22,7 @@ namespace Germadent.DataAccessService
             ModulePath = "api/Orders";
 
             Get("/", GetOrders);
-            Get("/{filter}", GetOrdersByFilter);
+            Post("/", GetOrdersByFilter);
         }
 
         private void FillOrders()
@@ -33,25 +33,9 @@ namespace Germadent.DataAccessService
                 {
                     Created = DateTime.Now,
                     Patient = "Иванов Иван Иванович",
-                    Employee = "Петров Петр Петрович",
+                    
                     Customer = "ООО Рога и Копыта",
-                    Material = "ZrO"
-                },
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Сергей Сергеевич Серегин",
-                    Employee = "Петров Петр Петрович",
-                    Customer = "ООО Рога и Копыта",
-                    Material = "PMMA multi"
-                },
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Антон Антонович Антонов",
-                    Employee = "Петров Петр Петрович",
-                    Customer = "ООО Рога и Копыта",
-                    Material = "PMMA mono"
+                    
                 }
             };
 
@@ -77,9 +61,7 @@ namespace Germadent.DataAccessService
 
         private object GetOrdersByFilter(object arg)
         {
-            var filterValue = ((DynamicDictionary)arg)["filter"];
-
-            var filter = JsonExtensions.DeserializeFromJson<OrdersFilter>(filterValue as DynamicDictionaryValue);
+            var filter = this.Bind<OrdersFilter>();
 
             return Response.AsJson(_orders);
         }

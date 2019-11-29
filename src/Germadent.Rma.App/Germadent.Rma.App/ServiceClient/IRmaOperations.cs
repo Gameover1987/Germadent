@@ -6,6 +6,8 @@ namespace Germadent.Rma.App.ServiceClient
     {
         Order[] GetOrders(OrdersFilter filter = null);
 
+        Order GetOrderDetails(int orderId);
+
         Material[] GetMaterials();
 
         void AddOrder(Order order);
