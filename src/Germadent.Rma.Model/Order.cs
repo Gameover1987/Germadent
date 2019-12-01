@@ -34,5 +34,6 @@ namespace Germadent.Rma.Model
         public DateTime DateOfCompletion { get; set; }
         public DateTime FittingDate { get; set; }
         public string ColorAndFeatures { get; set; }
+        public string TransparenceName { get; set; }
     }
 }
