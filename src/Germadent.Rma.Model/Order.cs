@@ -5,6 +5,7 @@ namespace Germadent.Rma.Model
     public class Order
     {
         public int OrderId { get; set; }
+        public int BranchId { get; set; }
 
         public int Number { get; set; }
 
@@ -13,9 +14,9 @@ namespace Germadent.Rma.Model
         public DateTime Created { get; set; }
 
         public DateTime? Closed { get; set; }
-
+        public int CustomerId { get; set; }
         public string Customer { get; set; }
-
+        public int PatientId { get; set; }
         public string Patient { get; set; }
         public int PatientAge { get; set; }
         public bool PatientGender { get; set; }
@@ -26,9 +27,11 @@ namespace Germadent.Rma.Model
         public string Material { get; set; }
         public string ResponsiblePerson { get; set; }
         public string RespPersPhone { get; set; }
+        public string AdditionalInfo { get; set; }
         public string CarcassColor { get; set; }
         public string ImplantSystem { get; set; }
         public string IndividualAbutmentProcessing { get; set; }
+        public string Understaff  { get; set; }
         public string WorkDescription { get; set; }
         public string TypeOfWork { get; set; }
         public DateTime DateOfCompletion { get; set; }
