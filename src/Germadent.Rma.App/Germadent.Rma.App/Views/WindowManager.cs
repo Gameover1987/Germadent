@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ViewModels;
+﻿using System;
+using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
@@ -7,7 +8,7 @@ namespace Germadent.Rma.App.Views
 {
     public interface IWindowManager
     {
-        LaboratoryOrder CreateLabOrder();
+        LaboratoryOrder CreateLabOrder(LaboratoryOrder laboratoryOrder);
 
         MillingCenterOrder CreateMillingCenterOrder();
 
@@ -34,10 +35,10 @@ namespace Germadent.Rma.App.Views
             _ordersFilterViewModel = ordersFilterViewModel;
         }
 
-        public LaboratoryOrder CreateLabOrder()
+        public LaboratoryOrder CreateLabOrder(LaboratoryOrder laboratoryOrder)
         {
             var labWizard = new WizardViewModel(_labWizardProvider);
-            labWizard.Initialize("Создание заказ-наряда для ЗТЛ", false, new LaboratoryOrder());
+            labWizard.Initialize("Создание заказ-наряда для ЗТЛ", false, laboratoryOrder);
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
                 return (LaboratoryOrder)labWizard.GetOrder();

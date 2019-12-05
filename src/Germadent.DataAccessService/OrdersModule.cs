@@ -8,47 +8,63 @@ namespace Germadent.DataAccessService
 {
     public class OrdersModule : NancyModule
     {
-        private readonly IOrdersRepository _ordersRepository;
+        private readonly IRmaRepository _rmaRepository;
 
         public OrdersModule()
         {
-            _ordersRepository = new OrdersRepository();
+            _rmaRepository = new RmaRepository();
 
-            ModulePath = "api/Orders";
-
-            Get("/", GetOrders);
+            ModulePath = "api/Rma";
+            
+            Get("/orders/{id}", GetOrderById);
             Post("/getOrdersByFilter", GetOrdersByFilter);
             Post("/laboratoryOrder", AddLaboratoryOrder);
+            Put("/laboratoryOrder", Action);
             Post("/millingCenterOrder", AddMillingCenterOrder);
+
+            Get("/materials", GetMaterials);
         }
 
-        private object AddLaboratoryOrder(object arg)
+        private object GetOrderById(dynamic arg)
         {
-            var labOrder = this.Bind<LaboratoryOrder>();
-            _ordersRepository.AddOrder(labOrder);
-
-            return Response.AsJson("OK");
-        }
-
-        private object AddMillingCenterOrder(object arg)
-        {
-            var millingCenterOrder = this.Bind<MillingCenterOrder>();
-            _ordersRepository.AddOrder(millingCenterOrder);
-
-            return Response.AsJson("OK");
-        }
-
-
-        private object GetOrders(object arg)
-        {
-            return Response.AsJson(_ordersRepository.GetOrders(OrdersFilter.Empty));
+            var id = (int)int.Parse(arg.id.ToString());
+            return Response.AsJson(_rmaRepository.GetOrderDetails(id));
         }
 
         private object GetOrdersByFilter(object arg)
         {
             var filter = this.Bind<OrdersFilter>();
 
-            return Response.AsJson(_ordersRepository.GetOrders(filter));
+            return Response.AsJson(_rmaRepository.GetOrders(filter));
+        }
+
+        private object AddLaboratoryOrder(object arg)
+        {
+            var labOrder = this.Bind<LaboratoryOrder>();
+            _rmaRepository.AddLabOrder(labOrder);
+
+            return Response.AsJson(labOrder);
+        }
+
+        private object Action(object arg)
+        {
+            var labOrder = this.Bind<LaboratoryOrder>();
+            _rmaRepository.UpdateLabOrder(labOrder);
+
+            return Response.AsJson(labOrder);
+        }
+
+        private object AddMillingCenterOrder(object arg)
+        {
+            var millingCenterOrder = this.Bind<MillingCenterOrder>();
+            _rmaRepository.AddMcOrder(millingCenterOrder);
+
+            return Response.AsJson(millingCenterOrder);
+        }
+
+        private object GetMaterials(object arg)
+        {
+            return Response.AsJson(_rmaRepository.GetMaterials());
         }
     }
 }

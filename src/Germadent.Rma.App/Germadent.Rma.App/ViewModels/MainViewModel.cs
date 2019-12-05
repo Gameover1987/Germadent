@@ -22,7 +22,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IWindowManager _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
-        private Order _selectedOrder;
+        private OrderLightViewModel _selectedOrder;
 
         public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule)
         {
@@ -38,13 +38,14 @@ namespace Germadent.Rma.App.ViewModels
             FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
             CloseOrderCommand = new DelegateCommand(x => CloseOrderCommandHandler(), x => CanCloseOrderCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
+            OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
 
             FillOrders();
         }
 
-        public ObservableCollection<Order> Orders { get; } = new ObservableCollection<Order>();
+        public ObservableCollection<OrderLightViewModel> Orders { get; } = new ObservableCollection<OrderLightViewModel>();
 
-        public Order SelectedOrder
+        public OrderLightViewModel SelectedOrder
         {
             get { return _selectedOrder; }
             set
@@ -67,10 +68,16 @@ namespace Germadent.Rma.App.ViewModels
 
         public ICommand PrintOrderCommand { get; }
 
+        public ICommand OpenOrderCommand { get; }
+
         private void CreateLabOrderCommandHandler()
         {
-             var labOrder = _windowManager.CreateLabOrder();
-             _rmaOperations.AddOrder(labOrder);
+            var labOrder = _windowManager.CreateLabOrder(new LaboratoryOrder { Created = DateTime.Now });
+            if (labOrder == null)
+                return;
+
+            var order = _rmaOperations.AddLaboratoryOrder(labOrder);
+            Orders.Add(new OrderLightViewModel(order));
         }
 
         private void CreateMillingCenterOrderCommandHandler()
@@ -80,7 +87,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void FilterOrdersCommandHandler()
         {
-            var filter =_windowManager.CreateOrdersFilter();
+            var filter = _windowManager.CreateOrdersFilter();
             if (filter == null)
                 return;
 
@@ -93,7 +100,7 @@ namespace Germadent.Rma.App.ViewModels
             var orders = _rmaOperations.GetOrders(filter);
             foreach (var order in orders)
             {
-                Orders.Add(order);
+                Orders.Add(new OrderLightViewModel(order));
             }
         }
 
@@ -104,10 +111,10 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CloseOrderCommandHandler()
         {
-            if (_dialogAgent.ShowMessageDialog("Вы действительно хотите закрыть заказ наряд?",MessageBoxButton.YesNo,MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (_dialogAgent.ShowMessageDialog("Вы действительно хотите закрыть заказ наряд?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            SelectedOrder.Closed = DateTime.Now;
+            SelectedOrder.Model.Closed = DateTime.Now;
         }
 
         private bool CanPrintOrderCommandHandler()
@@ -117,7 +124,26 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(SelectedOrder);
+            _printModule.Print(SelectedOrder.Model);
+        }
+
+        private bool CanOpenOrderCommandHandler()
+        {
+            return SelectedOrder != null;
+        }
+
+        private void OpenOrderCommandHandler()
+        {
+            if (SelectedOrder.Model.BranchType == BranchType.Laboratory)
+            {
+                var labOrder = _rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id);
+                var changedLabOrder  = _windowManager.CreateLabOrder(labOrder);
+                if (changedLabOrder == null)
+                    return;
+
+                var labOrderFromService = _rmaOperations.UpdateLaboratoryOrder(changedLabOrder);
+                SelectedOrder.Update(labOrderFromService);
+            }
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private IWizardStepViewModel _currentStep;
         private BranchType _branchType;
 
+        private Order _order;
+
         public WizardViewModel(IWizardStepsProvider stepsProvider)
         {
             if (stepsProvider is ILabWizardStepsProvider)
@@ -98,6 +100,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             Title = title;
 
+            _order = order;
+
             foreach (var step in Steps)
             {
                 step.Initialize(order);
@@ -119,6 +123,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             foreach (var step in Steps)
             {
                 step.AssemblyOrder(order);
+
+                order.Id = _order.Id;
+                order.BranchType = _order.BranchType;
+                order.Number = _order.Number;
+                order.Closed = _order.Closed;
             }
 
             return order;

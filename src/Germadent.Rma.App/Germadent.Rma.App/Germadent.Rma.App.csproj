@@ -94,6 +94,7 @@
     <Compile Include="ServiceClient\RmaOperations.cs" />
     <Compile Include="ViewModels\MaterialViewModel.cs" />
     <Compile Include="ViewModels\IOrderViewModel.cs" />
+    <Compile Include="ViewModels\OrderLightViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
     <Compile Include="ViewModels\TeethViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
@@ -108,9 +109,11 @@
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockLaboratoryWizardStepsProvider.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">

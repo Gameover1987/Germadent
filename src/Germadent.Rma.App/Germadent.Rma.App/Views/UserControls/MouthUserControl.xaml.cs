@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Wizard;
 
 namespace Germadent.Rma.App.Views.UserControls
 {
@@ -11,8 +12,6 @@ namespace Germadent.Rma.App.Views.UserControls
     /// </summary>
     public partial class MouthUserControl : UserControl
     {
-        private IOrderViewModel _orderViewModel;
-
         public MouthUserControl()
         {
             InitializeComponent();
@@ -23,21 +22,22 @@ namespace Germadent.Rma.App.Views.UserControls
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //RenderMouth();
+            if (!IsLoaded)
+                return;
+
+            RenderMouth(DataContext as IMouthProvider);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _orderViewModel = DataContext as IOrderViewModel;
-
-            if (_orderViewModel == null)
-                return;
-
-            RenderMouth();
+            RenderMouth(DataContext as IMouthProvider);
         }
 
-        private void RenderMouth()
+        private void RenderMouth(IMouthProvider mouth)
         {
+            if (mouth == null)
+                return;
+
             var canvasWidth = _mouthListBox.ActualWidth;
             var canvasHeight = _mouthListBox.ActualHeight - 40;
 

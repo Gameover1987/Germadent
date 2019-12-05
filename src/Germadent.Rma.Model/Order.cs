@@ -18,6 +18,10 @@ namespace Germadent.Rma.Model
 
         public DateTime? Closed { get; set; }
 
+        public Material[] Materials { get; set; }
+
+        public Teeth[] Mouth { get; set; }
+
     }
 
     public class LaboratoryOrder : Order

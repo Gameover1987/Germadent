@@ -64,9 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IOrdersRepository.cs" />
+    <Compile Include="IRmaRepository.cs" />
     <Compile Include="OrdersModule.cs" />
-    <Compile Include="OrdersRepository.cs" />
+    <Compile Include="RmaRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

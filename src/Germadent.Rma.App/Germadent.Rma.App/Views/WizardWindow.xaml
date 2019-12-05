@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         Title="{Binding Title}"
         ShowInTaskbar="False"
-        ResizeMode="NoResize"
+        
         MinHeight="800"
         Height="800"
         MinWidth="800"

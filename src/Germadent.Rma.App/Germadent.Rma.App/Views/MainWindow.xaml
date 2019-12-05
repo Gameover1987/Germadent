@@ -38,7 +38,9 @@
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
             <Button Content="Настроить фильтр" Margin="0,6,0,0"
                     Command="{Binding FilterOrdersCommand}"/>
-            <Button Content="Закрыть заказ-наряд" Margin="0,6,0,0"
+            <Button Content="Открыть" Margin="0,6,0,0"
+                    Command="{Binding OpenOrderCommand}"/>
+            <Button Content="Закрыть" Margin="0,6,0,0"
                     Command="{Binding CloseOrderCommand}"/>
             <Button Content="Распечатать" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
@@ -61,17 +63,17 @@
                   SelectedItem="{Binding SelectedOrder}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Number}"/>
+                                    Binding="{Binding Model.Number}"/>
                 <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
+                                    Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
                 <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                                    Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
                 <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Customer}"/>
+                                    Binding="{Binding Model.Customer}"/>
                 <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Patient}"/>
+                                    Binding="{Binding Model.Patient}"/>
                 <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                                    Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

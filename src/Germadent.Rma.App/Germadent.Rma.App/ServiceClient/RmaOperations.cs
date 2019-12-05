@@ -30,7 +30,7 @@ namespace Germadent.Rma.App.ServiceClient
 
             var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Orders/getOrdersByFilter";
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/getOrdersByFilter";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order[]>();
@@ -38,24 +38,47 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public Order GetOrderDetails(int orderId)
+        public T GetOrderDetails<T>(int id)
         {
-            throw new NotImplementedException();
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/{0}", id);
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<T>();
+                return order;
+            }
         }
 
         public Material[] GetMaterials()
         {
-            return new Material[0];
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/materials";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var materials = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Material[]>();
+                return materials;
+            }
         }
 
-        public void AddOrder(Order order)
+        public LaboratoryOrder AddLaboratoryOrder(LaboratoryOrder order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Orders/laboratoryOrder";
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/laboratoryOrder";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
+                return result.DeserializeFromJson<LaboratoryOrder>();
+            }
+        }
+
+        public LaboratoryOrder UpdateLaboratoryOrder(LaboratoryOrder order)
+        {
+            var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
+
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/laboratoryOrder";
+            using (var response = _client.PutAsync(apiUrl, content).Result)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result.DeserializeFromJson<LaboratoryOrder>();
             }
         }
     }

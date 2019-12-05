@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
@@ -27,6 +28,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public LaboratoryProjectWizardStepViewModel(IRmaOperations rmaOperations)
         {
             _rmaOperations = rmaOperations;
+            
         }
 
         public string DisplayName
@@ -88,9 +90,20 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(Order order)
         {
-            FillMaterials();
+            var labOrder = (LaboratoryOrder)order;
 
-            FillTeethCollection();
+            FillMaterials(labOrder);
+
+            FillTeethCollection(labOrder);
+
+            WorkDescription = labOrder.WorkDescription;
+            ColorAndFeatures = labOrder.ColorAndFeatures;
+            NonOpacity = labOrder.NonOpacity;
+            HighOpacity = labOrder.HighOpacity;
+            LowOpacity = labOrder.LowOpacity;
+            Mamelons = labOrder.Mamelons;
+            SecondaryDentin = labOrder.SecondaryDentin;
+            PaintedFissurs = labOrder.PaintedFissurs;
 
             OnPropertyChanged();
         }
@@ -107,18 +120,26 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             labOrder.Mamelons = Mamelons;
             labOrder.SecondaryDentin = SecondaryDentin;
             labOrder.PaintedFissurs = PaintedFissurs;
+
+            labOrder.Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray();
+            labOrder.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
-        private void FillMaterials()
+        private void FillMaterials(LaboratoryOrder laboratoryOrder)
         {
+            var materialsFromOrder = laboratoryOrder.Materials == null ? new string[0] : laboratoryOrder.Materials.Select(x => x.Name).ToArray();
+
             var materials = _rmaOperations.GetMaterials();
             foreach (var material in materials)
             {
-                Materials.Add(new MaterialViewModel(material));
+                Materials.Add(new MaterialViewModel(material)
+                {
+                    IsChecked = materialsFromOrder.Contains(material.Name)
+                });
             }
         }
 
-        private void FillTeethCollection()
+        private void FillTeethCollection(LaboratoryOrder laboratoryOrder)
         {
             Mouth.Clear();
             for (int i = 21; i <= 28; i++)
@@ -139,6 +160,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             for (int i = 11; i <= 18; i++)
             {
                 Mouth.Add(new TeethViewModel { Number = i });
+            }
+
+            if (laboratoryOrder.Mouth != null)
+            {
+                foreach (var teethFromOrder in laboratoryOrder.Mouth)
+                {
+                    var teeth = Mouth.Single(x => x.Number == teethFromOrder.Number);
+                    teeth.IsChecked = true;
+                    teeth.HasBridge = teethFromOrder.HasBridge;
+                }
             }
         }
     }

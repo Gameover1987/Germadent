@@ -1,4 +1,6 @@
-﻿namespace Germadent.Rma.App.ViewModels
+﻿using Germadent.Rma.Model;
+
+namespace Germadent.Rma.App.ViewModels
 {
     public class TeethViewModel
     {
@@ -7,6 +9,18 @@
         public bool IsChecked { get; set; }
 
         public bool HasBridge { get; set; }
+
+        public Material Material { get; set; }
+
+        public Teeth ToModel()
+        {
+            return new Teeth
+            {
+                Number = Number,
+                HasBridge = HasBridge,
+                Material = Material
+            };
+        }
 
         public override string ToString()
         {

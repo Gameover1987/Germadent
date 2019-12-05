@@ -10,6 +10,7 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.DesignMock;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;

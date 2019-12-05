@@ -13,24 +13,6 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
     }
 
-    public class DesignMockWindowManager : IWindowManager
-    {
-        public LaboratoryOrder CreateLabOrder()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public MillingCenterOrder CreateMillingCenterOrder()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public OrdersFilter CreateOrdersFilter()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
     public class DesignMockPrintModule : IPrintModule
     {
         public void Print(Order order)

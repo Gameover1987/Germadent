@@ -70,6 +70,6 @@
             <CheckBox IsChecked="{Binding PaintedFissurs}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
         </StackPanel>
 
-        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" Height="200"/>
+        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
     </Grid>
 </UserControl>
