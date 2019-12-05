@@ -13,7 +13,7 @@ namespace Germadent.Rma.App.Converters
             switch (branchType)
             {
                 case BranchType.MillingCenter:
-                    return "Фрезерныцй центр";
+                    return "Фрезерный центр";
 
                 case BranchType.Laboratory:
                     return "Лаборатория";

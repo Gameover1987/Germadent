@@ -26,6 +26,11 @@ namespace Germadent.Rma.Model
 
     public class LaboratoryOrder : Order
     {
+        public LaboratoryOrder()
+        {
+            BranchType = BranchType.Laboratory;
+        }
+
         public string Doctor { get; set; }
 
         public Sex Sex { get; set; }
@@ -55,6 +60,11 @@ namespace Germadent.Rma.Model
 
     public class MillingCenterOrder : Order
     {
+        public MillingCenterOrder()
+        {
+            BranchType = BranchType.MillingCenter;
+        }
+
         public string TechnicFio { get; set; }
 
         public string TechnikPhone { get; set; }

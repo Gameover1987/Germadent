@@ -121,7 +121,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(SelectedOrder.Model);
+            _printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id));
         }
 
         private bool CanOpenOrderCommandHandler()
