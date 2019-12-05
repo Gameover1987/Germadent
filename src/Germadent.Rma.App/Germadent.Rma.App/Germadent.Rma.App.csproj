@@ -92,6 +92,7 @@
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />
+    <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\MaterialViewModel.cs" />
     <Compile Include="ViewModels\IOrderViewModel.cs" />
     <Compile Include="ViewModels\OrderLightViewModel.cs" />

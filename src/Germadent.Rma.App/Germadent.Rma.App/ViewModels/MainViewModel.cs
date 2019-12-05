@@ -13,9 +13,6 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public interface IMainViewModel
-    { }
-
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaOperations _rmaOperations;
@@ -58,17 +55,17 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
-        public ICommand CreateLabOrderCommand { get; }
+        public IDelegateCommand CreateLabOrderCommand { get; }
 
-        public ICommand CreateMillingCenterOrderCommand { get; }
+        public IDelegateCommand CreateMillingCenterOrderCommand { get; }
 
-        public ICommand FilterOrdersCommand { get; }
+        public IDelegateCommand FilterOrdersCommand { get; }
 
-        public ICommand CloseOrderCommand { get; }
+        public IDelegateCommand CloseOrderCommand { get; }
 
-        public ICommand PrintOrderCommand { get; }
+        public IDelegateCommand PrintOrderCommand { get; }
 
-        public ICommand OpenOrderCommand { get; }
+        public IDelegateCommand OpenOrderCommand { get; }
 
         private void CreateLabOrderCommandHandler()
         {

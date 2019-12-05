@@ -61,6 +61,11 @@
                   AlternationCount="2"
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Model.Number}"/>

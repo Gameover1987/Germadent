@@ -10,7 +10,9 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-        <ListBox x:Name="_mouthListBox" ItemsSource="{Binding Mouth}">
+        <ListBox x:Name="_mouthListBox" 
+                 ItemsSource="{Binding Mouth}"
+                 SelectionMode="Extended">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas x:Name="_canvas" IsItemsHost="True"/>
@@ -19,14 +21,13 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:TeethViewModel}">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Number}"/>
-                        <!--<TextBlock Grid.Column="0" Text="{Binding Number}"/>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding IsChecked}" Margin="6,0,0,0"/>-->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{Binding Number}"/>
+                        <CheckBox Grid.Row="1" IsChecked="{Binding IsChecked}" Margin="0,0,0,0" HorizontalAlignment="Center" Width="11"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

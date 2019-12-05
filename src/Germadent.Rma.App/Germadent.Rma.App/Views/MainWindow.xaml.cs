@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Input;
+using Germadent.Rma.App.ViewModels;
 
 namespace Germadent.Rma.App.Views
 {
@@ -10,6 +12,12 @@ namespace Germadent.Rma.App.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnOrderRowDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var mainViewModel = (IMainViewModel) DataContext;
+            mainViewModel.OpenOrderCommand.TryExecute();
         }
     }
 }
