@@ -74,9 +74,9 @@
                 <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
                 <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Model.Customer}"/>
+                                    Binding="{Binding Model.CustomerName}"/>
                 <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Model.Patient}"/>
+                                    Binding="{Binding Model.PatientFnp}"/>
                 <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>

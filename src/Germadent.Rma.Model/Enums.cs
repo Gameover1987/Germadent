@@ -19,7 +19,7 @@
 
     public enum BranchType
     {
-        MillingCenter,
-        Laboratory
+        MillingCenter = 1,
+        Laboratory = 2
     }
 }

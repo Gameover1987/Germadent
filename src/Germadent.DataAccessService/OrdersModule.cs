@@ -12,7 +12,7 @@ namespace Germadent.DataAccessService
 
         public OrdersModule()
         {
-            _rmaRepository = new RmaRepository();
+            _rmaRepository = new RmaRepository(new EntityToDtoConverter());
 
             ModulePath = "api/Rma";
             
@@ -35,7 +35,9 @@ namespace Germadent.DataAccessService
         {
             var filter = this.Bind<OrdersFilter>();
 
-            return Response.AsJson(_rmaRepository.GetOrders(filter));
+            var orders = _rmaRepository.GetOrders(filter);
+
+            return Response.AsJson(orders);
         }
 
         private object AddLaboratoryOrder(object arg)

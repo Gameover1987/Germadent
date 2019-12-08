@@ -7,45 +7,9 @@ namespace Germadent.Rma.App.Mocks
 {
     public class MockRmaOperations : IRmaOperations
     {
-        public Order[] GetOrders(OrdersFilter ordersFilter = null)
+        public OrderLite[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            var orders = new Order[]
-            {
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Иванов Иван Иванович",
-                    
-                    Customer = "ООО Рога и Копыта",
-                },
-                new Order
-                {
-                    Created = DateTime.Now,
-                    Patient = "Сергей Сергеевич Серегин",
-                    Customer = "ООО Рога и Копыта",
-                }
-            };
-
-            for (int i = 0; i < orders.Length; i++)
-            {
-                var order = orders[i];
-                order.Number = i;
-                if (i % 2 == 0)
-                {
-                    order.BranchType = BranchType.Laboratory;
-                    order.Closed = DateTime.Now;
-                }
-            }
-
-            if (ordersFilter == null)
-                return orders;
-
-            if (ordersFilter.Laboratory)
-                return orders.Where(x => x.BranchType == BranchType.Laboratory).ToArray();
-            if (ordersFilter.MillingCenter)
-                return orders.Where(x => x.BranchType == BranchType.MillingCenter).ToArray();
-
-            return orders;
+            return new OrderLite[0];
         }
 
         public T GetOrderDetails<T>(int id)

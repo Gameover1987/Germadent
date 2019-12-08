@@ -6,7 +6,7 @@ namespace Germadent.DataAccessService
     {
         Order GetOrderDetails(int id);
 
-        Order[] GetOrders(OrdersFilter filter);
+        OrderLite[] GetOrders(OrdersFilter filter);
 
         void AddLabOrder(LaboratoryOrder laboratoryOrder);
 

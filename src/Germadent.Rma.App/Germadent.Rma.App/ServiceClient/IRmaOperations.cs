@@ -4,7 +4,7 @@ namespace Germadent.Rma.App.ServiceClient
 {
     public interface IRmaOperations
     {
-        Order[] GetOrders(OrdersFilter filter = null);
+        OrderLite[] GetOrders(OrdersFilter filter = null);
 
         T GetOrderDetails<T>(int id);
 

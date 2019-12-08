@@ -23,7 +23,7 @@ namespace Germadent.Rma.App.ServiceClient
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public Order[] GetOrders(OrdersFilter ordersFilter = null)
+        public OrderLite[] GetOrders(OrdersFilter ordersFilter = null)
         {
             if (ordersFilter == null)
                 ordersFilter = new OrdersFilter();
@@ -33,7 +33,7 @@ namespace Germadent.Rma.App.ServiceClient
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/getOrdersByFilter";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
-                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order[]>();
+                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLite[]>();
                 return orders;
             }
         }

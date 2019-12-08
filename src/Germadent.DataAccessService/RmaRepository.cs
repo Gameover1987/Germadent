@@ -1,86 +1,38 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Germadent.Common.Extensions;
+﻿using Germadent.DataAccessService.Entitties;
 using Germadent.Rma.Model;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Germadent.DataAccessService
 {
+
     public class RmaRepository : IRmaRepository
     {
-        private const string LabOrdersDataFile = "LabOrders.txt";
-        private const string MillingCenterOrdersDataFile = "MCOrders.txt";
+        private const string _connectionString = @"Data Source=lex23;Initial Catalog=Germadent;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly IEntityToDtoConverter _converter;
 
-        private readonly List<LaboratoryOrder> _labOrders = new List<LaboratoryOrder>();
-        private readonly List<MillingCenterOrder> _mcOrders = new List<MillingCenterOrder>();
-
-        private List<Material> _materials = new List<Material>();
-
-        public RmaRepository()
+        public RmaRepository(IEntityToDtoConverter converter)
         {
-            if (File.Exists(LabOrdersDataFile))
-            {
-                _labOrders = new List<LaboratoryOrder>(File.ReadAllText(LabOrdersDataFile).DeserializeFromJson<LaboratoryOrder[]>());
-            }
-
-            if (File.Exists(MillingCenterOrdersDataFile))
-            {
-                _mcOrders = new List<MillingCenterOrder>(File.ReadAllText(MillingCenterOrdersDataFile).DeserializeFromJson<MillingCenterOrder[]>());
-            }
-
-            FillMaterials();
-        }
-
-        public Order GetOrderDetails(int id)
-        {
-            return _labOrders.FirstOrDefault(x => x.Id == id);
-        }
-
-        public Order[] GetOrders(OrdersFilter filter)
-        {
-            if (filter.IsNullOrEmpty())
-                return _labOrders.ToArray();
-
-            return _labOrders.Where(x => x.MatchByFilter(filter)).ToArray();
+            _converter = converter;
         }
 
         public void AddLabOrder(LaboratoryOrder laboratoryOrder)
         {
-            laboratoryOrder.Id = _labOrders.Count + 1;
-            _labOrders.Add(laboratoryOrder);
-
-            SaveLabOrders();
-        }
-
-        public void UpdateLabOrder(LaboratoryOrder laboratoryOrder)
-        {
-            var oldOrder = _labOrders.First(x => x.Id == laboratoryOrder.Id);
-            var positionToUpdate = _labOrders.IndexOf(oldOrder);
-
-            _labOrders[positionToUpdate] = laboratoryOrder;
-
-            SaveLabOrders();
+            throw new NotImplementedException();
         }
 
         public void AddMcOrder(MillingCenterOrder millingCenterOrder)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Material[] GetMaterials()
         {
-            return _materials.ToArray();
-        }
-
-        private void SaveLabOrders()
-        {
-            File.WriteAllText(LabOrdersDataFile, _labOrders.SerializeToJson(Formatting.Indented));
-        }
-
-        private void FillMaterials()
-        {
-            _materials = new List<Material>
+            return new Material[]
             {
                 new Material{Name = "ZrO"},
                 new Material{Name = "PMMA mono"},
@@ -99,6 +51,54 @@ namespace Germadent.DataAccessService
                 new Material{Name = "Ti"},
                 new Material{Name = "E.Max"},
             };
+        }
+
+        public Order GetOrderDetails(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OrderLite[] GetOrders(OrdersFilter filter)
+        {
+            var builder = new SqlConnectionStringBuilder();
+            builder.ConnectionString = _connectionString;
+            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default)";
+
+            using (var connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    Console.WriteLine("{0}\t{1}\t{2}", reader.GetName(0), reader.GetName(2), reader.GetName(3));
+                    var orders = new List<OrderLiteEntity>();
+                    while (reader.Read())
+                    {
+                        var orderLite = new OrderLiteEntity();
+                        orderLite.BranchType = reader[nameof(orderLite.BranchType)].ToString();
+                        orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
+                        orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
+                        orderLite.ResponsiblePerson = reader[nameof(orderLite.ResponsiblePerson)].ToString();
+                        orderLite.PatientFnp = reader[nameof(orderLite.PatientFnp)].ToString();
+                        orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
+
+                        var closed = reader[nameof(orderLite.Closed)];
+                        if (closed != DBNull.Value)
+                            orderLite.Closed = DateTime.Parse(closed.ToString());
+
+                        orders.Add(orderLite);
+                    }
+                    reader.Close();
+
+                    return orders.Select(x => _converter.ConvertFrom(x)).ToArray();                    
+                }
+            }
+        }     
+
+        public void UpdateLabOrder(LaboratoryOrder laboratoryOrder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

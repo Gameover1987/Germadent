@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IWindowManager _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
-        private OrderLightViewModel _selectedOrder;
+        private OrderLiteViewModel _selectedOrder;
 
         public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule)
         {
@@ -40,9 +40,9 @@ namespace Germadent.Rma.App.ViewModels
             FillOrders();
         }
 
-        public ObservableCollection<OrderLightViewModel> Orders { get; } = new ObservableCollection<OrderLightViewModel>();
+        public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
-        public OrderLightViewModel SelectedOrder
+        public OrderLiteViewModel SelectedOrder
         {
             get { return _selectedOrder; }
             set
@@ -73,8 +73,8 @@ namespace Germadent.Rma.App.ViewModels
             if (labOrder == null)
                 return;
 
-            var order = _rmaOperations.AddLaboratoryOrder(labOrder);
-            Orders.Add(new OrderLightViewModel(order));
+            //var order = _rmaOperations.AddLaboratoryOrder(labOrder);
+            //Orders.Add(new OrderLiteViewModel(order));
         }
 
         private void CreateMillingCenterOrderCommandHandler()
@@ -97,7 +97,7 @@ namespace Germadent.Rma.App.ViewModels
             var orders = _rmaOperations.GetOrders(filter);
             foreach (var order in orders)
             {
-                Orders.Add(new OrderLightViewModel(order));
+                Orders.Add(new OrderLiteViewModel(order));
             }
         }
 
@@ -121,7 +121,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id));
+            //_printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id));
         }
 
         private bool CanOpenOrderCommandHandler()
@@ -131,16 +131,16 @@ namespace Germadent.Rma.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            if (SelectedOrder.Model.BranchType == BranchType.Laboratory)
-            {
-                var labOrder = _rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id);
-                var changedLabOrder  = _windowManager.CreateLabOrder(labOrder);
-                if (changedLabOrder == null)
-                    return;
+            //if (SelectedOrder.Model.BranchType == BranchType.Laboratory)
+            //{
+            //    var labOrder = _rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id);
+            //    var changedLabOrder  = _windowManager.CreateLabOrder(labOrder);
+            //    if (changedLabOrder == null)
+            //        return;
 
-                var labOrderFromService = _rmaOperations.UpdateLaboratoryOrder(changedLabOrder);
-                SelectedOrder.Update(labOrderFromService);
-            }
+            //    var labOrderFromService = _rmaOperations.UpdateLaboratoryOrder(changedLabOrder);
+            //    SelectedOrder.Update(labOrderFromService);
+            //}
         }
     }
 }

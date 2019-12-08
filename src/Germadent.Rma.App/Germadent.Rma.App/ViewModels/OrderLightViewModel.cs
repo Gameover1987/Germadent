@@ -8,21 +8,21 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class OrderLightViewModel : ViewModelBase
+    public class OrderLiteViewModel : ViewModelBase
     {
-        private Order _model;
+        private OrderLite _model;
 
-        public OrderLightViewModel(Order model)
+        public OrderLiteViewModel(OrderLite model)
         {
             _model = model;
         }
 
-        public Order Model
+        public OrderLite Model
         {
             get { return _model; }
         }
 
-        public void Update(Order order)
+        public void Update(OrderLite order)
         {
             _model = order;
 
