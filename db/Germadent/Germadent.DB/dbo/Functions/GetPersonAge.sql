@@ -14,7 +14,7 @@ BEGIN
 	
 	DECLARE 
 		@age int,
-		@thisYearBirthday datetime -- день рпождения в текущем году
+		@thisYearBirthday datetime -- день рождения в текущем году
 
 	SET @age = DATEDIFF(YEAR, @birthday, GETDATE());
 	SET @thisYearBirthday = DATEADD(YEAR, @age, @birthday);

@@ -11,7 +11,6 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT MaterialID, MaterialName
+	SELECT MaterialID, MaterialName, FlagUnused
 	FROM Materials
-	WHERE FlagUsed = 1
 )

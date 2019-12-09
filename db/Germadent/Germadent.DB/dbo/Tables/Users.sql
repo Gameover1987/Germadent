@@ -3,8 +3,17 @@
     [Login]    NVARCHAR (30) NOT NULL,
     [Password] NVARCHAR (10) NULL,
     [FlagLock] BIT           CONSTRAINT [DF_Users_FlagLock] DEFAULT ((0)) NOT NULL,
-    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([UserID] ASC)
+    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([UserID] ASC),
+    CONSTRAINT [IX_Users] UNIQUE NONCLUSTERED ([UserID] ASC)
 );
 
 
+
+
+
+
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Обеспечивает уникальность логина пользователя', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Users', @level2type = N'CONSTRAINT', @level2name = N'IX_Users';
 
