@@ -17,7 +17,7 @@ RETURN
 			CONCAT_WS(' ', p.FamilyName, p.Name, p.Patronymic) AS PatientFNP, 
 			ISNULL((SELECT dbo.GetPersonAge(p.Birthday)), 0) AS PatientAge, 
 			p.Gender AS PatientGender,
-			cs.ResponsiblePerson, cs.RespPersPhone, 
+			rp.RP_Position, rp.ResponsiblePersonName, rp.RP_Phone, 
 			ISNULL(wo.Created, '') AS Created,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,
 			wo.FlagWorkAccept, 
@@ -37,6 +37,7 @@ RETURN
 	FROM	 WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
+			INNER JOIN ResponsiblePersons rp ON cs.CustomerID = rp.CustomerID
 			INNER JOIN Patients p ON wo.PatientID = p.PatientID	
 			INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID

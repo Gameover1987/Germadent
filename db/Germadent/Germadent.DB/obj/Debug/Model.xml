@@ -86,7 +86,7 @@
 								<Element Type="SqlTypeSpecifier">
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[int]" />
+											<References ExternalSource="BuiltIns" Name="[tinyint]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -102,12 +102,824 @@
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="3" />
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="4" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
 		</Element>
-		<Element Type="SqlTable" Name="[dbo].[Branches]">
+		<Element Type="SqlView" Name="[dbo].[AdditionalEquipments_View]">
+			<Property Name="QueryScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+SELECT   ae.WorkOrderMCID, ae.EquipmentID, e.EquipmentName, ae.Quantity
+FROM      dbo.AdditionalEquipment AS ae INNER JOIN
+                dbo.Equipments AS e ON ae.EquipmentID = e.EquipmentID]]></Value>
+			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Branches].[BranchID]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[AdditionalEquipments_View].[WorkOrderMCID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[AdditionalEquipment].[WorkOrderMCID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[AdditionalEquipments_View].[EquipmentID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[AdditionalEquipment].[EquipmentID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[AdditionalEquipments_View].[EquipmentName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Equipments].[EquipmentName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[AdditionalEquipments_View].[Quantity]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[AdditionalEquipment].[Quantity]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Equipments]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[EquipmentID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Equipments].[EquipmentID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Equipments].[EquipmentName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[Quantity]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="241" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.AdditionalEquipments_View&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[AddNewEquipmentInWOMC]">
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+BEGIN
+	
+	INSERT INTO AdditionalEquipment
+		(WorkOrderMCID, EquipmentID, Quantity)
+	SELECT WorkOrderMCID, EquipmentID, Quantity
+	FROM OPENJSON (@jsonString)
+		WITH (workOrderMCId int, equipmentId int, quantity tinyint)
+    
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[EquipmentID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment].[Quantity]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewEquipmentInWOMC].[@jsonString]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="212" />
+				<Property Name="Length" Value="525" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 01.12.2019&#xD;&#xA;-- Description:&#x9;Добавление оснастки в заказ-наряд ФЦ&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [AddNewEquipmentInWOMC] &#xD;&#xA;&#x9;&#xD;&#xA;&#x9;@jsonString varchar(MAX)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[AddNewToothCardInWO]">
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+BEGIN
+	
+	INSERT INTO ToothCard
+		(WorkOrderID, ToothNumber, MaterialID, ProstheticsID)
+	SELECT ToothNumber, WorkOrderID, MaterialID, ProstheticsID
+	FROM OPENJSON (@jsonString)
+		WITH (workOrderID int, toothNumber int, materialID int, prostheticsID int)		
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[dbo].[ToothCard]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[ToothNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[MaterialID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[ProstheticsID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewToothCardInWO].[@jsonString]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="214" />
+				<Property Name="Length" Value="563" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 01.12.2019&#xD;&#xA;-- Description:&#x9;Добавление зубной карты в заказ-наряд&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [dbo].[AddNewToothCardInWO] &#xD;&#xA;&#xD;&#xA;&#x9;@jsonString varchar(MAX)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[AddNewWorkOrderDL]">
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+BEGIN
+
+	DECLARE @max_Id int,
+			@workOrderID int;
+
+	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
+	SELECT @max_Id = MAX(WorkOrderID)
+	FROM WorkOrder
+	DBCC checkident (WorkOrder, reseed, @max_Id)
+
+	-- Собственно вставка:
+	INSERT INTO WorkOrder
+		(BranchTypeID, DocNumber, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
+	VALUES 
+		(2, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
+
+	SELECT @workOrderID = SCOPE_IDENTITY()
+
+	INSERT INTO WorkOrderDL
+		(WorkOrderDLID, TransparenceID, TypeOfWork, FittingDate, DateOfCompletion, ColorAndFeatures)
+	VALUES
+		(@workOrderID, @transparenceID, @typeOfWork, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@docNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@customerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@patientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@workDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@officeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TypeOfWork]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@transparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@typeOfWork]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@fittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@dateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderDL].[@colorAndFeatures]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@docNumber]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@customerID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@patientID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@workDescription]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@officeAdminID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@transparenceID]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@typeOfWork]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@fittingDate]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@dateOfCompletion]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderDL].[@colorAndFeatures]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="226" />
+				<Property Name="Length" Value="1351" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 30.11.2019&#xD;&#xA;-- Description:&#x9;Создание заказ-наряда зуботехнической лаборатории&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [dbo].[AddNewWorkOrderDL] &#xD;&#xA;&#xD;&#xA;&#x9;@docNumber nchar(10),&#xD;&#xA;&#x9;@customerID int,&#xD;&#xA;&#x9;@patientID int,&#xD;&#xA;&#x9;@workDescription nvarchar(250) = NULL,&#xD;&#xA;&#x9;@officeAdminID int,&#xD;&#xA;&#x9;@transparenceID int = NULL,&#xD;&#xA;&#x9;@typeOfWork nvarchar(250) = NULL,&#xD;&#xA;&#x9;@fittingDate datetime = NULL,&#xD;&#xA;&#x9;@dateOfCompletion datetime = NULL,&#xD;&#xA;&#x9;@colorAndFeatures nvarchar(100) = NULL&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[AddNewWorkOrderMC]">
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+BEGIN
+	
+	DECLARE @max_Id int,
+			@workOrderID int;
+
+	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
+	SELECT @max_Id = MAX(WorkOrderID)
+	FROM WorkOrder
+	DBCC checkident (WorkOrder, reseed, @max_Id)
+
+	-- Собственно вставка:
+	
+	INSERT INTO WorkOrder
+		(BranchTypeID, DocNumber, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
+	VALUES 
+		(1, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
+
+	SELECT @workOrderID = SCOPE_IDENTITY()
+
+	INSERT INTO WorkOrderMC
+		(WorkOrderMCID, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
+	VALUES
+		(@workOrderID, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
+
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@docNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@customerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@patientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@workDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@officeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[Understaff]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@additionalInfo]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@carcassColor]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@implantSystem]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@individualAbutmentProcessing]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[AddNewWorkOrderMC].[@understaff]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@docNumber]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@customerID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@patientID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@workDescription]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@officeAdminID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@additionalInfo]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="70" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@carcassColor]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@implantSystem]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="70" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@individualAbutmentProcessing]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="70" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[AddNewWorkOrderMC].[@understaff]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="224" />
+				<Property Name="Length" Value="1402" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;&lt;Alexey Kolosenok&gt;&#xD;&#xA;-- Create date: &lt;16.11.2019&gt;&#xD;&#xA;-- Description:&#x9;&lt;Добавление заказ-нарядов фрезерного центра&gt;&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [dbo].[AddNewWorkOrderMC] &#xD;&#xA;&#x9;&#xD;&#xA;&#x9;@docNumber nchar(10),&#xD;&#xA;&#x9;@customerID int,&#xD;&#xA;&#x9;@patientID int,&#xD;&#xA;&#x9;@workDescription nvarchar(250) = NULL,&#xD;&#xA;&#x9;@officeAdminID int,&#xD;&#xA;&#x9;@additionalInfo nvarchar(70) = NULL,&#xD;&#xA;&#x9;@carcassColor nvarchar(30) = NULL,&#xD;&#xA;&#x9;@implantSystem nvarchar(70) = NULL,&#xD;&#xA;&#x9;@individualAbutmentProcessing nvarchar(70) = NULL,&#xD;&#xA;&#x9;@understaff nvarchar(100) = NULL&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[BranchTypes]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[BranchTypes].[BranchTypeID]">
 						<Property Name="IsNullable" Value="False" />
 						<Property Name="IsIdentity" Value="True" />
 						<Relationship Name="TypeSpecifier">
@@ -124,7 +936,7 @@
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Branches].[BranchName]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[BranchTypes].[BranchType]">
 						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
@@ -146,7 +958,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="6" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Customers]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -185,61 +997,13 @@
 						</Relationship>
 					</Element>
 				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Customers].[ResponsiblePerson]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="100" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Customers].[Position]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Customers].[Phone]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="20" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
 			</Relationship>
 			<Relationship Name="Schema">
 				<Entry>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="6" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="7" />
 		</Element>
 		<Element Type="SqlDefaultConstraint" Name="[dbo].[DF_Materials_Used]">
 			<Property Name="DefaultExpressionScript">
@@ -252,10 +1016,10 @@
 			</Relationship>
 			<Relationship Name="ForColumn">
 				<Entry>
-					<References Name="[dbo].[Materials].[FlagUsed]" />
+					<References Name="[dbo].[Materials].[FlagUnused]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="7" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="8" />
 		</Element>
 		<Element Type="SqlDefaultConstraint" Name="[dbo].[DF_Users_FlagLock]">
 			<Property Name="DefaultExpressionScript">
@@ -271,7 +1035,7 @@
 					<References Name="[dbo].[Users].[FlagLock]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="8" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="9" />
 		</Element>
 		<Element Type="SqlDefaultConstraint" Name="[dbo].[DF_WorkOrder_Status]">
 			<Property Name="DefaultExpressionScript">
@@ -287,7 +1051,7 @@
 					<References Name="[dbo].[WorkOrder].[Status]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="9" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="10" />
 		</Element>
 		<Element Type="SqlDefaultConstraint" Name="[dbo].[DF_WorkOrder_WorkAccept]">
 			<Property Name="DefaultExpressionScript">
@@ -300,10 +1064,10 @@
 			</Relationship>
 			<Relationship Name="ForColumn">
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkAccept]" />
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="10" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="11" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Employee]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -397,7 +1161,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="11" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="12" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Equipments]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -441,7 +1205,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="12" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="13" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_AdditionalEquipment_Equipments]">
 			<Relationship Name="Columns">
@@ -489,6 +1253,29 @@
 			</Relationship>
 			<AttachedAnnotation Disambiguator="4" />
 		</Element>
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ResponsiblePersons_Customers]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[CustomerID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[Customers].[CustomerID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[Customers]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="14" />
+		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ToothCard_Materials]">
 			<Relationship Name="Columns">
 				<Entry>
@@ -510,7 +1297,7 @@
 					<References Name="[dbo].[Materials]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="13" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="15" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ToothCard_TypeOfProsthetics]">
 			<Relationship Name="Columns">
@@ -533,7 +1320,7 @@
 					<References Name="[dbo].[TypesOfProsthetics]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="14" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="16" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ToothCard_WorkOrder]">
 			<Relationship Name="Columns">
@@ -556,13 +1343,13 @@
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="15" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="17" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrder_Branches]">
 			<Property Name="OnUpdateAction" Value="1" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[BrachID]" />
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
@@ -572,15 +1359,15 @@
 			</Relationship>
 			<Relationship Name="ForeignColumns">
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
+					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignTable">
 				<Entry>
-					<References Name="[dbo].[Branches]" />
+					<References Name="[dbo].[BranchTypes]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="16" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="18" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrder_Customers]">
 			<Property Name="OnUpdateAction" Value="1" />
@@ -604,13 +1391,13 @@
 					<References Name="[dbo].[Customers]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="17" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="19" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrder_Employee]">
 			<Property Name="OnUpdateAction" Value="1" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[AdministratorID]" />
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
@@ -628,7 +1415,7 @@
 					<References Name="[dbo].[Employee]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="18" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="20" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrder_Patients]">
 			<Relationship Name="Columns">
@@ -651,7 +1438,7 @@
 					<References Name="[dbo].[Patients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="19" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="21" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrderDL_Transparences]">
 			<Relationship Name="Columns">
@@ -674,7 +1461,7 @@
 					<References Name="[dbo].[Transparences]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="20" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="22" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrderDL_WorkOrder]">
 			<Relationship Name="Columns">
@@ -697,7 +1484,7 @@
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="21" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="23" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_WorkOrderMC_WorkOrder]">
 			<Relationship Name="Columns">
@@ -720,7 +1507,7 @@
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="22" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="24" />
 		</Element>
 		<Element Type="SqlInlineTableValuedFunction" Name="[dbo].[GetEquipmentsList]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -794,7 +1581,7 @@
 					<References Name="[dbo].[Materials].[MaterialName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Materials].[FlagUsed]" />
+					<References Name="[dbo].[Materials].[FlagUnused]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Columns">
@@ -816,6 +1603,15 @@
 						</Relationship>
 					</Element>
 				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetMaterialsList].[FlagUnused]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Materials].[FlagUnused]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
 			</Relationship>
 			<Relationship Name="FunctionBody">
 				<Entry>
@@ -823,14 +1619,13 @@
 						<Property Name="BodyScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
 (
-	SELECT MaterialID, MaterialName
+	SELECT MaterialID, MaterialName, FlagUnused
 	FROM Materials
-	WHERE FlagUsed = 1
 )]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
 							<Property Name="CreateOffset" Value="227" />
-							<Property Name="Length" Value="385" />
+							<Property Name="Length" Value="376" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
 							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 21.11.2019&#xD;&#xA;-- Description:&#x9;Справочник материалов для зубной карты заказ-наряда&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetMaterialsList] &#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
@@ -956,7 +1751,7 @@ BEGIN
 	
 	DECLARE 
 		@age int,
-		@thisYearBirthday datetime -- день рпождения в текущем году
+		@thisYearBirthday datetime -- день рождения в текущем году
 
 	SET @age = DATEDIFF(YEAR, @birthday, GETDATE());
 	SET @thisYearBirthday = DATEADD(YEAR, @age, @birthday);
@@ -970,7 +1765,7 @@ END]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
 							<Property Name="CreateOffset" Value="213" />
-							<Property Name="Length" Value="641" />
+							<Property Name="Length" Value="640" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
 							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 12.11.2019&#xD;&#xA;-- Description:&#x9;Вычисление полных лет на текущую дату&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetPersonAge] &#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;--Дата рождения&#xD;&#xA;&#x9;@birthday datetime&#xD;&#xA;)&#xD;&#xA;RETURNS int&#xD;&#xA;AS" />
@@ -1046,6 +1841,9 @@ END]]></Value>
 					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsID]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[ToothCard].[ToothNumber]" />
 				</Entry>
 				<Entry>
@@ -1055,13 +1853,19 @@ END]]></Value>
 					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
-				</Entry>
-				<Entry>
 					<References Name="[dbo].[GetToothCardByWOId].[@WorkOrderID]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetToothCardByWOId].[WorkOrderID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
 				<Entry>
 					<Element Type="SqlComputedColumn" Name="[dbo].[GetToothCardByWOId].[ToothNumber]">
 						<Relationship Name="ExpressionDependencies">
@@ -1096,7 +1900,7 @@ END]]></Value>
 						<Property Name="BodyScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
 (
-	SELECT tc.ToothNumber, m.MaterialName, p.ProstheticsName
+	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialName, p.ProstheticsName
 	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
 		INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
 		INNER JOIN TypesOfProsthetics p ON tc.ProstheticsID = p.ProstheticsID
@@ -1105,7 +1909,7 @@ END]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
 							<Property Name="CreateOffset" Value="215" />
-							<Property Name="Length" Value="632" />
+							<Property Name="Length" Value="648" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
 							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 23.11.2019&#xD;&#xA;-- Description:&#x9;Зубная карта из заказ-наряда по его ID&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetToothCardByWOId] &#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;&#xD;&#xA;&#x9;@WorkOrderID int&#xD;&#xA;&#x9;&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
@@ -1195,29 +1999,20 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 		</Element>
-		<Element Type="SqlInlineTableValuedFunction" Name="[dbo].[GetWorkOrderByID]">
+		<Element Type="SqlInlineTableValuedFunction" Name="[dbo].[GetWorkOrderById]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="BodyDependencies">
 				<Entry>
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC]" />
+					<References Name="[dbo].[BranchTypes]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Branches]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[BrachID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
+					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Customers]" />
@@ -1227,6 +2022,15 @@ END]]></Value>
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Customers].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Customers].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[CustomerID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Patients]" />
@@ -1241,34 +2045,112 @@ END]]></Value>
 					<References Name="[dbo].[Employee]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[AdministratorID]" />
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Employee].[EmployeeID]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[WorkOrderMC]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchName]" />
+					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Transparences]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Transparences].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrder].[DocNumber]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[Status]" />
+					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[BranchTypes].[BranchType]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Customers].[CustomerID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Customers].[CustomerName]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[Patients].[PatientID]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[Patients].[FamilyName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Patients].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Patients].[Patronymic]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Patients].[Birthday]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[GetPersonAge]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Patients].[Gender]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[RP_Position]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[ResponsiblePersonName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[RP_Phone]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Employee].[FamilyName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Employee].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Employee].[Patronymic]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[Carcass]" />
+					<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
@@ -1277,18 +2159,30 @@ END]]></Value>
 					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Employee].[FamilyName]" />
+					<References Name="[dbo].[WorkOrderMC].[Understaff]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[GetWorkOrderByID].[@workOrderID]" />
+					<References Name="[dbo].[WorkOrderDL].[TypeOfWork]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
+					<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Transparences].[TransparenceName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[GetWorkOrderById].[@workOrderID]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[WorkOrderID]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[WorkOrderID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
@@ -1297,16 +2191,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[BranchName]">
-						<Relationship Name="ExpressionDependencies">
-							<Entry>
-								<References Name="[dbo].[Branches].[BranchName]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[DocNumber]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[DocNumber]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[DocNumber]" />
@@ -1315,16 +2200,34 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[Status]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[BranchTypeID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrder].[Status]" />
+								<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[CustomerName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[BranchType]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[BranchTypes].[BranchType]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[CustomerID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Customers].[CustomerID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[CustomerName]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Customers].[CustomerName]" />
@@ -1333,58 +2236,106 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[FamilyName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[PatientID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Patients].[FamilyName]" />
+								<References Name="[dbo].[Patients].[PatientID]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[AdditionalInfo]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[PatientFNP]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[PatientAge]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[PatientGender]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
+								<References Name="[dbo].[Patients].[Gender]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[Carcass]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[RP_Position]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrderMC].[Carcass]" />
+								<References Name="[dbo].[ResponsiblePersons].[RP_Position]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[ImplantSystem]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[ResponsiblePersonName]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
+								<References Name="[dbo].[ResponsiblePersons].[ResponsiblePersonName]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[IndividualAbutmentProcessing]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[RP_Phone]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
+								<References Name="[dbo].[ResponsiblePersons].[RP_Phone]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderByID].[Администратор]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[Created]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[FlagWorkAccept]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Employee].[FamilyName]" />
+								<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
 							</Entry>
 						</Relationship>
 					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[Closed]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[OfficeAdminFNP]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[AdditionalInfo]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[CarcassColor]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[ImplantSystem]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[IndividualAbutmentProcessing]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[Understaff]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[TypeOfWork]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[ColorAndFeatures]" />
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrderById].[TransparenceName]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="FunctionBody">
@@ -1394,32 +2345,57 @@ END]]></Value>
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
 (
 	
-	SELECT wo.WorkOrderID, b.BranchName, wo.DocNumber, wo.Status, cs.CustomerName, p.FamilyName,
-			wmc.AdditionalInfo, wmc.Carcass, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing,
-			e.FamilyName AS Администратор
-	FROM WorkOrder wo INNER JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
-			INNER JOIN Branches b ON wo.BrachID = b.BranchID
-			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
-			INNER JOIN Patients p ON wo.PatientID = p.PatientID	
-			INNER JOIN Employee e ON wo.AdministratorID = e.EmployeeID
+	SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType, cs.CustomerID, cs.CustomerName, 
+			p.PatientID,
+			CONCAT_WS(' ', p.FamilyName, p.Name, p.Patronymic) AS PatientFNP, 
+			ISNULL((SELECT dbo.GetPersonAge(p.Birthday)), 0) AS PatientAge, 
+			p.Gender AS PatientGender,
+			rp.RP_Position, rp.ResponsiblePersonName, rp.RP_Phone, 
+			ISNULL(wo.Created, '') AS Created,
+			ISNULL(wo.WorkDescription, '') AS WorkDescription,
+			wo.FlagWorkAccept, 
+			ISNULL(wo.Closed, '') AS Closed,
+			CONCAT(e.FamilyName,' ', LEFT(e.Name, 1), '.', LEFT(e.Patronymic, 1), '.') AS OfficeAdminFNP,
+			ISNULL(wmc.AdditionalInfo, '') AS AdditionalInfo,
+			ISNULL(wmc.CarcassColor, '') AS CarcassColor,
+			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
+			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
+			ISNULL(wmc.Understaff, '') AS Understaff,
+			ISNULL(wdl.TypeOfWork, '') AS TypeOfWork, 
+			ISNULL(wdl.DateOfCompletion, '') DateOfCompletion, 
+			ISNULL(wdl.FittingDate, '') AS FittingDate, 
+			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
+			ISNULL(tr.TransparenceName, '') AS TransparenceName
 
-	WHERE wo.WorkOrderID = @workOrderID
-		AND b.BranchID = 1
+	FROM	 WorkOrder wo 
+			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
+			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
+			INNER JOIN ResponsiblePersons rp ON cs.CustomerID = rp.CustomerID
+			INNER JOIN Patients p ON wo.PatientID = p.PatientID	
+			INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
+			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
+			LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
+			LEFT JOIN Transparences tr ON wdl.TransparenceID = tr.TransparenceID
+
+	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
-							<Property Name="CreateOffset" Value="204" />
-							<Property Name="Length" Value="955" />
+							<Property Name="CreateOffset" Value="256" />
+							<Property Name="Length" Value="2132" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
-							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 21.11.2019&#xD;&#xA;-- Description:&#x9;Получение заказ-наряда по ID&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrderByID] &#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;-- Add the parameters for the function here&#xD;&#xA;&#x9;@workOrderID int&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
+							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 21.11.2019&#xD;&#xA;-- Description:&#x9;Получение заказ-наряда по ID. Если не указан конкретный id - выводим весь список&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrderById] &#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;@workOrderID int = NULL&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
 						</Annotation>
 					</Element>
 				</Entry>
 			</Relationship>
 			<Relationship Name="Parameters">
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrderByID].[@workOrderID]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrderById].[@workOrderID]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
 						<Relationship Name="Type">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -1447,13 +2423,13 @@ END]]></Value>
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches]" />
+					<References Name="[dbo].[BranchTypes]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[BrachID]" />
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
+					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Customers]" />
@@ -1465,6 +2441,15 @@ END]]></Value>
 					<References Name="[dbo].[Customers].[CustomerID]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[ResponsiblePersons]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Customers].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[CustomerID]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[Patients]" />
 				</Entry>
 				<Entry>
@@ -1474,7 +2459,10 @@ END]]></Value>
 					<References Name="[dbo].[Patients].[PatientID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchName]" />
+					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[BranchTypes].[BranchType]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrder].[DocNumber]" />
@@ -1483,16 +2471,37 @@ END]]></Value>
 					<References Name="[dbo].[Customers].[CustomerName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Customers].[ResponsiblePerson]" />
+					<References Name="[dbo].[ResponsiblePersons].[RP_Position]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[ResponsiblePersonName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ResponsiblePersons].[RP_Phone]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Patients].[FamilyName]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[Patients].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Patients].[Patronymic]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[WorkOrder].[Created]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[GetWorkOrdersList].[@branchName]" />
+					<References Name="[dbo].[WorkOrder].[Status]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[GetWorkOrdersList].[@branchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[GetWorkOrdersList].[@branchType]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[GetWorkOrdersList].[@docNumber]" />
@@ -1501,7 +2510,7 @@ END]]></Value>
 					<References Name="[dbo].[GetWorkOrdersList].[@customerName]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[GetWorkOrdersList].[@responsiblePerson]" />
+					<References Name="[dbo].[GetWorkOrdersList].[@responsiblePersonName]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[GetWorkOrdersList].[@patientFamilyName]" />
@@ -1513,21 +2522,27 @@ END]]></Value>
 					<References Name="[dbo].[GetWorkOrdersList].[@createDateTo]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+					<References Name="[dbo].[GetWorkOrdersList].[@closeDateFrom]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[GetWorkOrdersList].[@deliveryDateFrom]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[GetWorkOrdersList].[@deliveryDateTo]" />
+					<References Name="[dbo].[GetWorkOrdersList].[@closeDateTo]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[BranchName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[BranchTypeID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Branches].[BranchName]" />
+								<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[BranchType]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[BranchTypes].[BranchType]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -1551,28 +2566,58 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[ResponsiblePerson]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[RP_Position]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Customers].[ResponsiblePerson]" />
+								<References Name="[dbo].[ResponsiblePersons].[RP_Position]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[FamilyName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[ResponsiblePersonName]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Patients].[FamilyName]" />
+								<References Name="[dbo].[ResponsiblePersons].[ResponsiblePersonName]" />
 							</Entry>
 						</Relationship>
 					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[RP_Phone]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[ResponsiblePersons].[RP_Phone]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[PatientFNP]" />
 				</Entry>
 				<Entry>
 					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[Created]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[Created]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[Status]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Status]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[Closed]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Closed]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -1584,34 +2629,56 @@ END]]></Value>
 						<Property Name="BodyScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
 (	
-	SELECT b.BranchName, wo.DocNumber, cs.CustomerName, cs.ResponsiblePerson, p.FamilyName, wo.Created
+	SELECT b.BranchTypeID, b.BranchType, wo.DocNumber, cs.CustomerName, rp.RP_Position, rp.ResponsiblePersonName, rp.RP_Phone,
+			CONCAT(p.FamilyName,' ', LEFT(p.Name, 1), '.', LEFT(p.Patronymic, 1), '.') AS PatientFNP, 
+			wo.Created, wo.Status, wo.Closed
 
-	FROM WorkOrder wo INNER JOIN Branches b	ON wo.BrachID = b.BranchID
+	FROM WorkOrder wo INNER JOIN BranchTypes b	ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN Customers cs	ON wo.CustomerID = cs.CustomerID
+		INNER JOIN ResponsiblePersons rp ON cs.CustomerID = rp.CustomerID
 		INNER JOIN Patients p ON wo.PatientID = p.PatientID
 
-	WHERE b.BranchName = ISNULL(@branchName, b.BranchName)
+	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
+		AND b.BranchType = ISNULL(@branchType, b.BranchType)
 		AND wo.DocNumber LIKE '%'+ISNULL(@docNumber, '')+'%'
 		AND cs.CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
-		AND cs.ResponsiblePerson LIKE '%'+ISNULL(@responsiblePerson, '')+'%'
+		AND rp.ResponsiblePersonName LIKE '%'+ISNULL(@responsiblePersonName, '')+'%'
 		AND p.FamilyName LIKE '%'+ISNULL(@patientFamilyName, '')+'%'
-		AND wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231')
-		AND wo.DateDelivery BETWEEN ISNULL(@deliveryDateFrom, '17530101') AND ISNULL(@deliveryDateTo, '99991231')
+		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231')
+				OR wo.Closed BETWEEN ISNULL(@closeDateFrom, NULL) AND ISNULL(@closeDateTo, NULL)) -- Пока так, поскольку дата завершения заказов - пустая. Дальше надо что-то с этим делать
 )]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
 							<Property Name="CreateOffset" Value="242" />
-							<Property Name="Length" Value="1463" />
+							<Property Name="Length" Value="1868" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
-							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 17.11.2019&#xD;&#xA;-- Description:&#x9;Выводит на экран список заказ-нарядов по заданным критериям отбора&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrdersList]&#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;@branchName nvarchar(30) = NULL, &#xD;&#xA;&#x9;@docNumber nvarchar(10) = NULL,&#xD;&#xA;&#x9;@customerName nvarchar(50) = NULL,&#xD;&#xA;&#x9;@responsiblePerson nvarchar(100) = NULL,&#xD;&#xA;&#x9;@patientFamilyName nchar(30) = NULL,&#xD;&#xA;&#x9;@createDateFrom datetime = NULL,&#xD;&#xA;&#x9;@createDateTo datetime = NULL,&#xD;&#xA;&#x9;@deliveryDateFrom datetime = NULL,&#xD;&#xA;&#x9;@deliveryDateTo datetime = NULL&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
+							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 17.11.2019&#xD;&#xA;-- Description:&#x9;Выводит на экран список заказ-нарядов по заданным критериям отбора&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrdersList]&#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;@branchTypeID int = NULL,&#xD;&#xA;&#x9;@branchType nvarchar(30) = NULL, &#xD;&#xA;&#x9;@docNumber nvarchar(10) = NULL,&#xD;&#xA;&#x9;@customerName nvarchar(50) = NULL,&#xD;&#xA;&#x9;@responsiblePersonName nvarchar(100) = NULL,&#xD;&#xA;&#x9;@patientFamilyName nvarchar(30) = NULL,&#xD;&#xA;&#x9;@createDateFrom datetime = NULL,&#xD;&#xA;&#x9;@createDateTo datetime = NULL,&#xD;&#xA;&#x9;@closeDateFrom datetime = NULL,&#xD;&#xA;&#x9;@closeDateTo datetime = NULL&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
 						</Annotation>
 					</Element>
 				</Entry>
 			</Relationship>
 			<Relationship Name="Parameters">
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@branchName]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@branchTypeID]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@branchType]">
 						<Property Name="DefaultExpressionScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
 						</Property>
@@ -1668,7 +2735,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@responsiblePerson]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@responsiblePersonName]">
 						<Property Name="DefaultExpressionScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
 						</Property>
@@ -1697,7 +2764,7 @@ END]]></Value>
 									<Property Name="Length" Value="30" />
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nchar]" />
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -1742,7 +2809,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@deliveryDateFrom]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@closeDateFrom]">
 						<Property Name="DefaultExpressionScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
 						</Property>
@@ -1760,7 +2827,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@deliveryDateTo]">
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@closeDateTo]">
 						<Property Name="DefaultExpressionScript">
 							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
 						</Property>
@@ -1784,6 +2851,83 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 		</Element>
+		<Element Type="SqlUniqueConstraint" Name="[dbo].[IX_AdditionalEquipment]">
+			<Property Name="IsClustered" Value="True" />
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[AdditionalEquipment].[WorkOrderMCID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[AdditionalEquipment].[EquipmentID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipment]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="5" />
+		</Element>
+		<Element Type="SqlUniqueConstraint" Name="[dbo].[IX_ToothCard]">
+			<Property Name="IsClustered" Value="True" />
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[WorkOrderID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[ToothNumber]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[ToothCard]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="25" />
+		</Element>
+		<Element Type="SqlUniqueConstraint" Name="[dbo].[IX_Users]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Users].[UserID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Users]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="26" />
+		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Materials]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
@@ -1806,6 +2950,7 @@ END]]></Value>
 				</Entry>
 				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[Materials].[MaterialName]">
+						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -1821,7 +2966,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Materials].[FlagUsed]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Materials].[FlagUnused]">
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -1833,7 +2978,7 @@ END]]></Value>
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="7" />
+						<AttachedAnnotation Disambiguator="8" />
 					</Element>
 				</Entry>
 			</Relationship>
@@ -1842,7 +2987,69 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="23" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="27" />
+		</Element>
+		<Element Type="SqlView" Name="[dbo].[Materials_SimpleView]">
+			<Property Name="QueryScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+SELECT   MaterialID, MaterialName, FlagUnused
+FROM      dbo.Materials]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[Materials_SimpleView].[MaterialID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Materials].[MaterialID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[Materials_SimpleView].[MaterialName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Materials].[MaterialName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[Materials_SimpleView].[FlagUnused]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Materials].[FlagUnused]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[dbo].[Materials]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[MaterialID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[MaterialName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[FlagUnused]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="112" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.Materials_SimpleView&#xD;&#xA;AS" />
+			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Patients]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -1870,7 +3077,7 @@ END]]></Value>
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
+									<Property Name="Length" Value="25" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -1886,7 +3093,7 @@ END]]></Value>
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
+									<Property Name="Length" Value="20" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -1902,7 +3109,7 @@ END]]></Value>
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
+									<Property Name="Length" Value="20" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -1949,18 +3156,18 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="24" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="28" />
 		</Element>
-		<Element Type="SqlView" Name="[dbo].[Patients_View]">
+		<Element Type="SqlView" Name="[dbo].[Patients_SimpleView]">
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
-SELECT   PatientID, FamilyName AS Фамилия, Name AS Имя, Patronymic AS Отчество, Gender AS Пол, Birthday AS [Дата рождения], dbo.GetPersonAge(Birthday) AS Возраст
-FROM      dbo.Patients]]></Value>
+SELECT        PatientID, FamilyName, Name, Patronymic, Gender, Birthday, dbo.GetPersonAge(Birthday) AS Age
+FROM            dbo.Patients]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[PatientID]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[PatientID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[PatientID]" />
@@ -1969,7 +3176,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Фамилия]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[FamilyName]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[FamilyName]" />
@@ -1978,7 +3185,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Имя]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[Name]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[Name]" />
@@ -1987,7 +3194,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Отчество]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[Patronymic]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[Patronymic]" />
@@ -1996,7 +3203,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Пол]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[Gender]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[Gender]" />
@@ -2005,7 +3212,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Дата рождения]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[Birthday]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[Patients].[Birthday]" />
@@ -2014,7 +3221,7 @@ FROM      dbo.Patients]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_View].[Возраст]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[Patients_SimpleView].[Age]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[GetPersonAge]" />
@@ -2055,10 +3262,10 @@ FROM      dbo.Patients]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="Length" Value="220" />
+				<Property Name="Length" Value="179" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value="CREATE VIEW dbo.Patients_View&#xD;&#xA;AS" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.[Patients_SimpleView]&#xD;&#xA;AS" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Branches]">
@@ -2067,7 +3274,7 @@ FROM      dbo.Patients]]></Value>
 					<Element Type="SqlIndexedColumnSpecification">
 						<Relationship Name="Column">
 							<Entry>
-								<References Name="[dbo].[Branches].[BranchID]" />
+								<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -2075,10 +3282,10 @@ FROM      dbo.Patients]]></Value>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[Branches]" />
+					<References Name="[dbo].[BranchTypes]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="5" />
+			<AttachedAnnotation Disambiguator="6" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Customers]">
 			<Relationship Name="ColumnSpecifications">
@@ -2097,7 +3304,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Customers]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="6" />
+			<AttachedAnnotation Disambiguator="7" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Employee]">
 			<Relationship Name="ColumnSpecifications">
@@ -2116,7 +3323,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Employee]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="11" />
+			<AttachedAnnotation Disambiguator="12" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Equipments]">
 			<Relationship Name="ColumnSpecifications">
@@ -2135,7 +3342,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Equipments]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="12" />
+			<AttachedAnnotation Disambiguator="13" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Materials]">
 			<Relationship Name="ColumnSpecifications">
@@ -2154,7 +3361,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Materials]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="23" />
+			<AttachedAnnotation Disambiguator="27" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Patients]">
 			<Relationship Name="ColumnSpecifications">
@@ -2173,15 +3380,15 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Patients]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="24" />
+			<AttachedAnnotation Disambiguator="28" />
 		</Element>
-		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_ToothCard]">
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_ResponsiblePersons]">
 			<Relationship Name="ColumnSpecifications">
 				<Entry>
 					<Element Type="SqlIndexedColumnSpecification">
 						<Relationship Name="Column">
 							<Entry>
-								<References Name="[dbo].[ToothCard].[ToothNumber]" />
+								<References Name="[dbo].[ResponsiblePersons].[ResponsiblePersonID]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -2189,10 +3396,10 @@ FROM      dbo.Patients]]></Value>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[ToothCard]" />
+					<References Name="[dbo].[ResponsiblePersons]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="25" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="29" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Transparences]">
 			<Relationship Name="ColumnSpecifications">
@@ -2211,7 +3418,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Transparences]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="26" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="30" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_TypeOfProsthetics]">
 			<Relationship Name="ColumnSpecifications">
@@ -2230,7 +3437,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[TypesOfProsthetics]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="27" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="31" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Users]">
 			<Relationship Name="ColumnSpecifications">
@@ -2249,7 +3456,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[Users]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="28" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="32" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_WorkOrder]">
 			<Relationship Name="ColumnSpecifications">
@@ -2268,7 +3475,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[WorkOrder]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="29" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="33" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_WorkOrderDL]">
 			<Relationship Name="ColumnSpecifications">
@@ -2287,7 +3494,7 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[WorkOrderDL]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="30" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="34" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_WorkOrderMC]">
 			<Relationship Name="ColumnSpecifications">
@@ -2306,146 +3513,66 @@ FROM      dbo.Patients]]></Value>
 					<References Name="[dbo].[WorkOrderMC]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="31" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="35" />
 		</Element>
-		<Element Type="SqlProcedure" Name="[dbo].[spAddNewWorkOrderMC]">
-			<Property Name="BodyScript">
+		<Element Type="SqlView" Name="[dbo].[Procthetics_SimpleView]">
+			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
-BEGIN
-	
-	DECLARE @max_Id int,
-			@workOrderID int;
-
-	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	SELECT @max_Id = MAX(WorkOrderID)
-	FROM WorkOrder
-	DBCC checkident (WorkOrder, reseed, @max_Id);
-
-	-- Собственно вставка:
-	
-	INSERT INTO WorkOrder
-		(BrachID, Status, DocNumber, CustomerID, PatientID, Created, WorkDescription)
-	VALUES
-		(1,	@status, @docNumber, @customerID, @patientID, GETDATE(), @workDescription)
-
-	SELECT @workOrderID = SCOPE_IDENTITY()
-
-	INSERT INTO WorkOrderMC
-		(WorkOrderMCID, AdditionalInfo, ImplantSystem, IndividualAbutmentProcessing)
-	VALUES
-		(@workOrderID, @additionalInfo, @implantSystem, @individualAbutmentProcessing)
-END]]></Value>
+SELECT   ProstheticsID, ProstheticsName
+FROM      dbo.TypesOfProsthetics]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
-			<Relationship Name="BodyDependencies">
+			<Relationship Name="Columns">
 				<Entry>
-					<References ExternalSource="BuiltIns" Name="[int]" />
+					<Element Type="SqlComputedColumn" Name="[dbo].[Procthetics_SimpleView].[ProstheticsID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[TypesOfProsthetics].[ProstheticsID]" />
+							</Entry>
+						</Relationship>
+					</Element>
 				</Entry>
 				<Entry>
-					<References ExternalSource="BuiltIns" Name="[int]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[BrachID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[Status]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[DocNumber]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[CustomerID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[PatientID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[Created]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@status]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@docNumber]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@customerID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@patientID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@workDescription]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@additionalInfo]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@implantSystem]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[spAddNewWorkOrderMC].[@individualAbutmentProcessing]" />
+					<Element Type="SqlComputedColumn" Name="[dbo].[Procthetics_SimpleView].[ProstheticsName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[TypesOfProsthetics].[ProstheticsName]" />
+							</Entry>
+						</Relationship>
+					</Element>
 				</Entry>
 			</Relationship>
-			<Relationship Name="Parameters">
+			<Relationship Name="QueryDependencies">
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@status]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[tinyint]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
+					<References Name="[dbo].[TypesOfProsthetics]" />
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@docNumber]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="10" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
+					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsID]" />
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@customerID]">
-						<Relationship Name="Type">
+					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsName]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="117" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.Procthetics_SimpleView&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[ResponsiblePersons]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ResponsiblePersons].[ResponsiblePersonID]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
 									<Relationship Name="Type">
@@ -2459,8 +3586,9 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@patientID]">
-						<Relationship Name="Type">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ResponsiblePersons].[CustomerID]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
 									<Relationship Name="Type">
@@ -2474,11 +3602,12 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@workDescription]">
-						<Relationship Name="Type">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ResponsiblePersons].[ResponsiblePersonName]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="250" />
+									<Property Name="Length" Value="50" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -2490,11 +3619,12 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@additionalInfo]">
-						<Relationship Name="Type">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ResponsiblePersons].[RP_Position]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="70" />
+									<Property Name="Length" Value="30" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -2506,30 +3636,14 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@implantSystem]">
-						<Relationship Name="Type">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ResponsiblePersons].[RP_Phone]">
+						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="70" />
+									<Property Name="Length" Value="15" />
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSubroutineParameter" Name="[dbo].[spAddNewWorkOrderMC].[@individualAbutmentProcessing]">
-						<Relationship Name="Type">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="70" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -2543,33 +3657,12 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="CreateOffset" Value="224" />
-				<Property Name="Length" Value="1223" />
-				<Property Name="StartLine" Value="1" />
-				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;&lt;Alexey Kolosenok&gt;&#xD;&#xA;-- Create date: &lt;16.11.2019&gt;&#xD;&#xA;-- Description:&#x9;&lt;Добавление заказ-нарядов фрезерного центра&gt;&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [dbo].[spAddNewWorkOrderMC] &#xD;&#xA;&#x9;&#xD;&#xA;&#x9;@status tinyint,&#xD;&#xA;&#x9;@docNumber nchar(10),&#xD;&#xA;&#x9;@customerID int,&#xD;&#xA;&#x9;@patientID int,&#xD;&#xA;&#x9;@workDescription nvarchar(250),&#xD;&#xA;&#x9;@additionalInfo nvarchar(70),&#xD;&#xA;&#x9;@implantSystem nvarchar(70),&#xD;&#xA;&#x9;@individualAbutmentProcessing nvarchar(70)&#xD;&#xA;&#xD;&#xA;AS" />
-			</Annotation>
+			<AttachedAnnotation Disambiguator="29" />
+			<AttachedAnnotation Disambiguator="14" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[ToothCard]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[ToothCard].[ToothNumber]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[tinyint]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
 				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[ToothCard].[WorkOrderID]">
 						<Property Name="IsNullable" Value="False" />
@@ -2579,6 +3672,22 @@ END]]></Value>
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[ToothCard].[ToothNumber]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[tinyint]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -2623,10 +3732,180 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="25" />
-			<AttachedAnnotation Disambiguator="13" />
-			<AttachedAnnotation Disambiguator="14" />
 			<AttachedAnnotation Disambiguator="15" />
+			<AttachedAnnotation Disambiguator="16" />
+			<AttachedAnnotation Disambiguator="17" />
+			<AttachedAnnotation Disambiguator="25" />
+		</Element>
+		<Element Type="SqlView" Name="[dbo].[ToothCard_View]">
+			<Property Name="QueryScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+SELECT   tc.WorkOrderID, tc.ToothNumber, tc.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName
+FROM      dbo.ToothCard AS tc INNER JOIN
+                dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
+                dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID
+WHERE   (m.FlagUnused IS NULL) OR
+                (m.FlagUnused <> 1)]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[WorkOrderID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[WorkOrderID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[ToothNumber]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[ToothNumber]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[MaterialID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[MaterialID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[MaterialName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Materials].[MaterialName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[ProstheticsID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[ToothCard].[ProstheticsID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[ToothCard_View].[ProstheticsName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[TypesOfProsthetics].[ProstheticsName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[dbo].[ToothCard]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[MaterialID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[MaterialID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[TypesOfProsthetics]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[ProstheticsID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[ToothNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[ToothCard].[MaterialID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[MaterialName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[TypesOfProsthetics].[ProstheticsName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Materials].[FlagUnused]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="419" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.ToothCard_View&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlView" Name="[dbo].[Transparence_SimpleView]">
+			<Property Name="QueryScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+SELECT   TransparenceID, TransparenceName
+FROM      dbo.Transparences]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[Transparence_SimpleView].[TransparenceID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Transparences].[TransparenceID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[Transparence_SimpleView].[TransparenceName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[Transparences].[TransparenceName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[dbo].[Transparences]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Transparences].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Transparences].[TransparenceName]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="115" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.Transparence_SimpleView&#xD;&#xA;AS" />
+			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Transparences]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -2671,7 +3950,7 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="26" />
+			<AttachedAnnotation Disambiguator="30" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[TypesOfProsthetics]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -2715,7 +3994,7 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="27" />
+			<AttachedAnnotation Disambiguator="31" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Users]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -2784,7 +4063,7 @@ END]]></Value>
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="8" />
+						<AttachedAnnotation Disambiguator="9" />
 					</Element>
 				</Entry>
 			</Relationship>
@@ -2793,7 +4072,8 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="28" />
+			<AttachedAnnotation Disambiguator="32" />
+			<AttachedAnnotation Disambiguator="26" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[WorkOrder]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -2816,7 +4096,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[BrachID]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[BranchTypeID]">
 						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
@@ -2845,7 +4125,7 @@ END]]></Value>
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="9" />
+						<AttachedAnnotation Disambiguator="10" />
 					</Element>
 				</Entry>
 				<Entry>
@@ -2944,7 +4224,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[WorkAccept]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[FlagWorkAccept]">
 						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
@@ -2957,11 +4237,11 @@ END]]></Value>
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="10" />
+						<AttachedAnnotation Disambiguator="11" />
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[AdministratorID]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[OfficeAdminID]">
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -2976,7 +4256,7 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[LastUpdated]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrder].[Closed]">
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -2996,11 +4276,11 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="29" />
-			<AttachedAnnotation Disambiguator="16" />
-			<AttachedAnnotation Disambiguator="17" />
+			<AttachedAnnotation Disambiguator="33" />
 			<AttachedAnnotation Disambiguator="18" />
 			<AttachedAnnotation Disambiguator="19" />
+			<AttachedAnnotation Disambiguator="20" />
+			<AttachedAnnotation Disambiguator="21" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[WorkOrder].[IX-CustomerID]">
 			<Relationship Name="ColumnSpecifications">
@@ -3044,7 +4324,6 @@ END]]></Value>
 				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrderDL].[WorkOrderDLID]">
 						<Property Name="IsNullable" Value="False" />
-						<Property Name="IsIdentity" Value="True" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -3078,10 +4357,10 @@ END]]></Value>
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="255" />
+									<Property Name="Length" Value="250" />
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nchar]" />
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -3141,9 +4420,247 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="30" />
-			<AttachedAnnotation Disambiguator="20" />
-			<AttachedAnnotation Disambiguator="21" />
+			<AttachedAnnotation Disambiguator="34" />
+			<AttachedAnnotation Disambiguator="22" />
+			<AttachedAnnotation Disambiguator="23" />
+		</Element>
+		<Element Type="SqlView" Name="[dbo].[WorkOrderDL_SimpleView]">
+			<Property Name="QueryScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
+SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed, wdl.TransparenceID, wdl.TypeOfWork, 
+                wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures
+FROM      dbo.WorkOrder AS wo INNER JOIN
+                dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[WorkOrderID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[BranchTypeID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[Status]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Status]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[DocNumber]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[DocNumber]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[CustomerID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[CustomerID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[PatientID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[PatientID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[Created]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Created]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[DateDelivery]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[WorkDescription]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[FlagWorkAccept]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[OfficeAdminID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[Closed]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Closed]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[TransparenceID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[TypeOfWork]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrderDL].[TypeOfWork]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[FittingDate]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[DateOfCompletion]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderDL_SimpleView].[ColorAndFeatures]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[dbo].[WorkOrder]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Status]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TypeOfWork]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="470" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.WorkOrderDL_SimpleView&#xD;&#xA;AS" />
+			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[WorkOrderMC]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -3181,13 +4698,14 @@ END]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrderMC].[Carcass]">
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrderMC].[CarcassColor]">
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[int]" />
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -3216,10 +4734,26 @@ END]]></Value>
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="70" />
+									<Property Name="Length" Value="80" />
 									<Relationship Name="Type">
 										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nchar]" />
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[WorkOrderMC].[Understaff]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -3233,25 +4767,21 @@ END]]></Value>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="31" />
-			<AttachedAnnotation Disambiguator="22" />
+			<AttachedAnnotation Disambiguator="35" />
+			<AttachedAnnotation Disambiguator="24" />
 		</Element>
-		<Element Type="SqlView" Name="[dbo].[WorkOrderMC_View]">
+		<Element Type="SqlView" Name="[dbo].[WorkOrderMC_SimpleView]">
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[
-SELECT   wo.WorkOrderID, b.BranchName, wo.DocNumber, wo.Status, cs.CustomerName, p.FamilyName, wmc.AdditionalInfo, wmc.Carcass, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, e.FamilyName AS Администратор
+SELECT   wo.WorkOrderID, wo.DocNumber, wo.BranchTypeID, wo.Status, wo.CustomerID, wo.PatientID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.Created, 
+                wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed
 FROM      dbo.WorkOrder AS wo INNER JOIN
-                dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID INNER JOIN
-                dbo.Branches AS b ON wo.BrachID = b.BranchID INNER JOIN
-                dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID INNER JOIN
-                dbo.Patients AS p ON wo.PatientID = p.PatientID INNER JOIN
-                dbo.Employee AS e ON wo.AdministratorID = e.EmployeeID
-WHERE   (b.BranchID = 1)]]></Value>
+                dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[WorkOrderID]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[WorkOrderID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
@@ -3260,16 +4790,7 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[BranchName]">
-						<Relationship Name="ExpressionDependencies">
-							<Entry>
-								<References Name="[dbo].[Branches].[BranchName]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[DocNumber]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[DocNumber]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[DocNumber]" />
@@ -3278,7 +4799,16 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[Status]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[BranchTypeID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[Status]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrder].[Status]" />
@@ -3287,25 +4817,25 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[CustomerName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[CustomerID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Customers].[CustomerName]" />
+								<References Name="[dbo].[WorkOrder].[CustomerID]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[FamilyName]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[PatientID]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Patients].[FamilyName]" />
+								<References Name="[dbo].[WorkOrder].[PatientID]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[AdditionalInfo]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[AdditionalInfo]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
@@ -3314,16 +4844,16 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[Carcass]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[CarcassColor]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[WorkOrderMC].[Carcass]" />
+								<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
 							</Entry>
 						</Relationship>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[ImplantSystem]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[ImplantSystem]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
@@ -3332,7 +4862,7 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[IndividualAbutmentProcessing]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[IndividualAbutmentProcessing]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
 								<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
@@ -3341,10 +4871,64 @@ WHERE   (b.BranchID = 1)]]></Value>
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_View].[Администратор]">
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[Understaff]">
 						<Relationship Name="ExpressionDependencies">
 							<Entry>
-								<References Name="[dbo].[Employee].[FamilyName]" />
+								<References Name="[dbo].[WorkOrderMC].[Understaff]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[Created]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Created]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[DateDelivery]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[WorkDescription]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[FlagWorkAccept]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[OfficeAdminID]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[WorkOrderMC_SimpleView].[Closed]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[WorkOrder].[Closed]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -3364,64 +4948,25 @@ WHERE   (b.BranchID = 1)]]></Value>
 					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[BrachID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Customers]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[CustomerID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Customers].[CustomerID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Patients]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[PatientID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Patients].[PatientID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Employee]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[AdministratorID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Employee].[EmployeeID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
-				</Entry>
-				<Entry>
-					<References Name="[dbo].[Branches].[BranchName]" />
-				</Entry>
-				<Entry>
 					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrder].[Status]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Customers].[CustomerName]" />
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Patients].[FamilyName]" />
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC].[Carcass]" />
+					<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
@@ -3430,10 +4975,25 @@ WHERE   (b.BranchID = 1)]]></Value>
 					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Employee].[FamilyName]" />
+					<References Name="[dbo].[WorkOrderMC].[Understaff]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[Branches].[BranchID]" />
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Schema">
@@ -3442,10 +5002,10 @@ WHERE   (b.BranchID = 1)]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="Length" Value="707" />
+				<Property Name="Length" Value="480" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value="CREATE VIEW dbo.WorkOrderMC_View&#xD;&#xA;AS" />
+				<Property Name="HeaderContents" Value="CREATE VIEW dbo.WorkOrderMC_SimpleView&#xD;&#xA;AS" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Patients].[Birthday].[MS_Description]">
@@ -3458,7 +5018,17 @@ WHERE   (b.BranchID = 1)]]></Value>
 				</Entry>
 			</Relationship>
 		</Element>
-		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Patients_View].[MS_DiagramPane1]">
+		<Element Type="SqlExtendedProperty" Name="[SqlConstraint].[dbo].[IX_Users].[MS_Description]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'Обеспечивает уникальность логина пользователя']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[IX_Users]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[AdditionalEquipments_View].[MS_DiagramPane1]">
 			<Property Name="Value">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
@@ -3531,6 +5101,270 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
+         Begin Table = "ae"
+            Begin Extent = 
+               Top = 6
+               Left = 40
+               Bottom = 128
+               Right = 216
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "e"
+            Begin Extent = 
+               Top = 24
+               Left = 325
+               Bottom = 127
+               Right = 497
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipments_View]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[AdditionalEquipments_View].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[AdditionalEquipments_View]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Materials_SimpleView].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Materials"
+            Begin Extent = 
+               Top = 6
+               Left = 40
+               Bottom = 128
+               Right = 221
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Materials_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Materials_SimpleView].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Materials_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Patients_SimpleView].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[33] 4[37] 2[13] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = -96
+         Left = 0
+      End
+      Begin Tables = 
          Begin Table = "Patients"
             Begin Extent = 
                Top = 6
@@ -3551,16 +5385,16 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 4163
-         Alias = 898
-         Table = 1169
-         Output = 727
+         Column = 4170
+         Alias = 900
+         Table = 1170
+         Output = 720
          Append = 1400
          NewValue = 1170
-         SortType = 1354
-         SortOrder = 1411
+         SortType = 1350
+         SortOrder = 1410
          GroupBy = 1350
-         Filter = 1354
+         Filter = 1350
          Or = 1350
          Or = 1350
          Or = 1350
@@ -3571,28 +5405,429 @@ End
 			</Property>
 			<Relationship Name="Host">
 				<Entry>
-					<References Name="[dbo].[Patients_View]" />
+					<References Name="[dbo].[Patients_SimpleView]" />
 				</Entry>
 			</Relationship>
 		</Element>
-		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Patients_View].[MS_DiagramPaneCount]">
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Patients_SimpleView].[MS_DiagramPaneCount]">
 			<Property Name="Value">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
 			</Property>
 			<Relationship Name="Host">
 				<Entry>
-					<References Name="[dbo].[Patients_View]" />
+					<References Name="[dbo].[Patients_SimpleView]" />
 				</Entry>
 			</Relationship>
 		</Element>
-		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderMC_View].[MS_DiagramPane1]">
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Procthetics_SimpleView].[MS_DiagramPane1]">
 			<Property Name="Value">
 				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[33] 4[45] 2[22] 3) )"
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "TypesOfProsthetics"
+            Begin Extent = 
+               Top = 6
+               Left = 40
+               Bottom = 134
+               Right = 241
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Procthetics_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Procthetics_SimpleView].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Procthetics_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[ToothCard_View].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[33] 4[32] 2[16] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "tc"
+            Begin Extent = 
+               Top = 51
+               Left = 78
+               Bottom = 192
+               Right = 259
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "m"
+            Begin Extent = 
+               Top = 31
+               Left = 321
+               Bottom = 153
+               Right = 502
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "p"
+            Begin Extent = 
+               Top = 195
+               Left = 319
+               Bottom = 298
+               Right = 507
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 2338
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[ToothCard_View]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[ToothCard_View].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[ToothCard_View]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Transparence_SimpleView].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Transparences"
+            Begin Extent = 
+               Top = 6
+               Left = 40
+               Bottom = 127
+               Right = 236
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Transparence_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[Transparence_SimpleView].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Transparence_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderDL_SimpleView].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[41] 4[32] 2[9] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -3660,60 +5895,20 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "wo"
             Begin Extent = 
-               Top = 153
-               Left = 428
-               Bottom = 570
-               Right = 635
+               Top = 6
+               Left = 40
+               Bottom = 323
+               Right = 227
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "wmc"
+         Begin Table = "wdl"
             Begin Extent = 
-               Top = 19
-               Left = 94
-               Bottom = 197
-               Right = 358
-            End
-            DisplayFlags = 280
-            TopColumn = 1
-         End
-         Begin Table = "b"
-            Begin Extent = 
-               Top = 216
-               Left = 95
-               Bottom = 331
-               Right = 276
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "cs"
-            Begin Extent = 
-               Top = 350
-               Left = 63
-               Bottom = 478
-               Right = 244
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "p"
-            Begin Extent = 
-               Top = 495
-               Left = 61
-               Bottom = 710
-               Right = 242
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "e"
-            Begin Extent = 
-               Top = 203
-               Left = 702
-               Bottom = 380
-               Right = 883
+               Top = 7
+               Left = 357
+               Bottom = 209
+               Right = 555
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -3731,17 +5926,7 @@ Begin DesignProperties =
          Column = 1440
          Alias = 898
          Table = 1169
-']]></Value>
-			</Property>
-			<Relationship Name="Host">
-				<Entry>
-					<References Name="[dbo].[WorkOrderMC_View]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderMC_View].[MS_DiagramPane2]">
-			<Property Name="Value">
-				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'         Output = 727
+         Output = 727
          Append = 1400
          NewValue = 1170
          SortType = 1354
@@ -3758,17 +5943,154 @@ End
 			</Property>
 			<Relationship Name="Host">
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC_View]" />
+					<References Name="[dbo].[WorkOrderDL_SimpleView]" />
 				</Entry>
 			</Relationship>
 		</Element>
-		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderMC_View].[MS_DiagramPaneCount]">
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderDL_SimpleView].[MS_DiagramPaneCount]">
 			<Property Name="Value">
-				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[2]]></Value>
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
 			</Property>
 			<Relationship Name="Host">
 				<Entry>
-					<References Name="[dbo].[WorkOrderMC_View]" />
+					<References Name="[dbo].[WorkOrderDL_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderMC_SimpleView].[MS_DiagramPane1]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[33] 4[41] 2[16] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "wo"
+            Begin Extent = 
+               Top = 6
+               Left = 40
+               Bottom = 308
+               Right = 222
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "wmc"
+            Begin Extent = 
+               Top = 6
+               Left = 330
+               Bottom = 196
+               Right = 578
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 898
+         Table = 1169
+         Output = 727
+         Append = 1400
+         NewValue = 1170
+         SortType = 1354
+         SortOrder = 1411
+         GroupBy = 1350
+         Filter = 1354
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC_SimpleView]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlView].[dbo].[WorkOrderMC_SimpleView].[MS_DiagramPaneCount]">
+			<Property Name="Value">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[1]]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC_SimpleView]" />
 				</Entry>
 			</Relationship>
 		</Element>

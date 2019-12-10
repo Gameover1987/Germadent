@@ -9,7 +9,7 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	@branchType nvarchar(30) = NULL, 
 	@docNumber nvarchar(10) = NULL,
 	@customerName nvarchar(50) = NULL,
-	@responsiblePerson nvarchar(100) = NULL,
+	@responsiblePersonName nvarchar(100) = NULL,
 	@patientFamilyName nvarchar(30) = NULL,
 	@createDateFrom datetime = NULL,
 	@createDateTo datetime = NULL,
@@ -20,19 +20,20 @@ RETURNS TABLE
 AS
 RETURN 
 (	
-	SELECT b.BranchTypeID, b.BranchType, wo.DocNumber, cs.CustomerName, cs.ResponsiblePerson, 
+	SELECT b.BranchTypeID, b.BranchType, wo.DocNumber, cs.CustomerName, rp.RP_Position, rp.ResponsiblePersonName, rp.RP_Phone,
 			CONCAT(p.FamilyName,' ', LEFT(p.Name, 1), '.', LEFT(p.Patronymic, 1), '.') AS PatientFNP, 
 			wo.Created, wo.Status, wo.Closed
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b	ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN Customers cs	ON wo.CustomerID = cs.CustomerID
+		INNER JOIN ResponsiblePersons rp ON cs.CustomerID = rp.CustomerID
 		INNER JOIN Patients p ON wo.PatientID = p.PatientID
 
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
 		AND b.BranchType = ISNULL(@branchType, b.BranchType)
 		AND wo.DocNumber LIKE '%'+ISNULL(@docNumber, '')+'%'
 		AND cs.CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
-		AND cs.ResponsiblePerson LIKE '%'+ISNULL(@responsiblePerson, '')+'%'
+		AND rp.ResponsiblePersonName LIKE '%'+ISNULL(@responsiblePersonName, '')+'%'
 		AND p.FamilyName LIKE '%'+ISNULL(@patientFamilyName, '')+'%'
 		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231')
 				OR wo.Closed BETWEEN ISNULL(@closeDateFrom, NULL) AND ISNULL(@closeDateTo, NULL)) -- Пока так, поскольку дата завершения заказов - пустая. Дальше надо что-то с этим делать
