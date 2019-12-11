@@ -80,13 +80,15 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\RmaConfiguration.cs" />
     <Compile Include="Converters\BranchTypeToStringConverter.cs" />
-    <Compile Include="Printing\Implementation\IWordAssembler.cs" />
-    <Compile Include="Printing\Implementation\MetaNames.cs" />
-    <Compile Include="Printing\Implementation\WordJsonAssembler.cs" />
-    <Compile Include="Printing\Implementation\WordXmlPartAssembler.cs" />
-    <Compile Include="Printing\Implementation\Wrd.cs" />
-    <Compile Include="Printing\Implementation\XElementExtensions.cs" />
-    <Compile Include="Printing\Implementation\XElementFactory.cs" />
+    <Compile Include="Printing\IPrintableOrderConverter.cs" />
+    <Compile Include="Printing\PrintableOrder.cs" />
+    <Compile Include="Printing\TemplateProcessing\IWordAssembler.cs" />
+    <Compile Include="Printing\TemplateProcessing\MetaNames.cs" />
+    <Compile Include="Printing\TemplateProcessing\WordJsonAssembler.cs" />
+    <Compile Include="Printing\TemplateProcessing\WordXmlPartAssembler.cs" />
+    <Compile Include="Printing\TemplateProcessing\Wrd.cs" />
+    <Compile Include="Printing\TemplateProcessing\XElementExtensions.cs" />
+    <Compile Include="Printing\TemplateProcessing\XElementFactory.cs" />
     <Compile Include="Printing\IPrintModule.cs" />
     <Compile Include="Printing\PrintModule.cs" />
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />

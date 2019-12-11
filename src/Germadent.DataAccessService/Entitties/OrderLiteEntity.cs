@@ -19,7 +19,7 @@ namespace Germadent.DataAccessService.Entitties
 
         public string CustomerName { get; set; }
 
-        public string ResponsiblePerson { get; set; }
+        public string ResponsiblePersonName { get; set; }
 
         public string PatientFnp { get; set; }
 

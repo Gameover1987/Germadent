@@ -2,7 +2,7 @@
 using System.IO;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
-using Germadent.Rma.App.Printing.Implementation;
+using Germadent.Rma.App.Printing.TemplateProcessing;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
@@ -13,22 +13,25 @@ namespace Germadent.Rma.App.Printing
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IWordAssembler _wordAssembler;
         private readonly IFileManager _fileManager;
+        private readonly IPrintableOrderConverter _converter;
 
         private const string PathToMcTemplate = @"Templates\GermadentLab_MC.docx";
         private const string PathToZtlTemplate = @"Templates\GermadentLab_ZTL.docx";
 
-        public PrintModule(IShowDialogAgent dialogAgent, IWordAssembler wordAssembler, IFileManager fileManager)
+        public PrintModule(IShowDialogAgent dialogAgent, IWordAssembler wordAssembler, IFileManager fileManager, IPrintableOrderConverter converter)
         {
             _dialogAgent = dialogAgent;
             _wordAssembler = wordAssembler;
             _fileManager = fileManager;
+            _converter = converter;
         }
 
         public void Print(Order order)
         {
             var pathToTemplate = GetTemplatePathForOrder(order);
             var template = _fileManager.ReadAllBytes(pathToTemplate);
-            var wordDocument = _wordAssembler.Assembly(template, order.SerializeToJson());
+            var printableOrder = _converter.ConvertFrom(order);
+            var wordDocument = _wordAssembler.Assembly(template, printableOrder.SerializeToJson());
 
             const string fileFilter = "Word XML (*.docx)|*.docx";
             string fileName;

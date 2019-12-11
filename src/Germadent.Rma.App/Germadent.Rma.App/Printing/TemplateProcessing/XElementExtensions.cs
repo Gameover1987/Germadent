@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Germadent.Rma.App.Printing.Implementation
+namespace Germadent.Rma.App.Printing.TemplateProcessing
 {
     public static class XElementExtensions
     {

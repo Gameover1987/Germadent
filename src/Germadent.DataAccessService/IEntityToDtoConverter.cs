@@ -19,7 +19,7 @@ namespace Germadent.DataAccessService
                 CustomerName = entity.CustomerName,
                 PatientFnp = entity.PatientFnp,
                 DocNumber = entity.DocNumber,
-                ResponsiblePerson = entity.ResponsiblePerson,
+                ResponsiblePerson = entity.ResponsiblePersonName,
                 Status = entity.Status,
                 Created = entity.Created,
                 Closed = entity.Closed

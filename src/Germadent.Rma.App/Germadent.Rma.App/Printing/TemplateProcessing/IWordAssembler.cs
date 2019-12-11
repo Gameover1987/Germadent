@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.App.Printing.Implementation
+﻿namespace Germadent.Rma.App.Printing.TemplateProcessing
 {
     public interface IWordAssembler
     {

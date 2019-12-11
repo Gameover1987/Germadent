@@ -12,7 +12,7 @@ namespace Germadent.DataAccessService
 
     public class RmaRepository : IRmaRepository
     {
-        private const string _connectionString = @"Data Source=lex23;Initial Catalog=Germadent;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private const string _connectionString = @"Data Source=.\GAMEOVERSQL;Initial Catalog=Germadent;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private readonly IEntityToDtoConverter _converter;
 
         public RmaRepository(IEntityToDtoConverter converter)
@@ -79,7 +79,7 @@ namespace Germadent.DataAccessService
                         orderLite.BranchType = reader[nameof(orderLite.BranchType)].ToString();
                         orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
                         orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
-                        orderLite.ResponsiblePerson = reader[nameof(orderLite.ResponsiblePerson)].ToString();
+                        orderLite.ResponsiblePersonName = reader[nameof(orderLite.ResponsiblePersonName)].ToString();
                         orderLite.PatientFnp = reader[nameof(orderLite.PatientFnp)].ToString();
                         orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
 

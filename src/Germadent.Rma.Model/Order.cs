@@ -7,7 +7,7 @@ namespace Germadent.Rma.Model
     {
         public int Id { get; set; }
 
-        public int Number { get; set; }
+        public string Number { get; set; }
 
         public BranchType BranchType { get; set; }
 

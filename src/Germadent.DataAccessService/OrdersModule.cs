@@ -13,6 +13,7 @@ namespace Germadent.DataAccessService
         public OrdersModule()
         {
             _rmaRepository = new RmaRepository(new EntityToDtoConverter());
+            //_rmaRepository = new RmaFileRepository();
 
             ModulePath = "api/Rma";
             

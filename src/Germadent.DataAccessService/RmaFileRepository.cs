@@ -39,12 +39,32 @@ namespace Germadent.DataAccessService
 
         public OrderLite[] GetOrders(OrdersFilter filter)
         {
-            return null;
+            if (filter.IsNullOrEmpty())
+            {
+                return _labOrders.Select(x => new OrderLite
+                {
+                    BranchType = x.BranchType,
+                    Created = x.Created,
+                    Closed = x.Closed,
+                    CustomerName = x.Customer,
+                    DocNumber = x.Number,
+                    PatientFnp = x.Number,
+                    ResponsiblePerson = x.Doctor,
+                }).ToArray();
+            }
 
-            //if (filter.IsNullOrEmpty())
-            //    return _labOrders.ToArray();
-
-            //return _labOrders.Where(x => x.MatchByFilter(filter)).ToArray();
+            return _labOrders
+                .Where(x => x.MatchByFilter(filter))
+                .Select(x => new OrderLite
+                {
+                    BranchType = x.BranchType,
+                    Created = x.Created,
+                    Closed = x.Closed,
+                    CustomerName = x.Customer,
+                    DocNumber = x.Number,
+                    PatientFnp = x.Number,
+                    ResponsiblePerson = x.Doctor,
+                }).ToArray();
         }
 
         public void AddLabOrder(LaboratoryOrder laboratoryOrder)
