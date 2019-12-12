@@ -114,12 +114,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public Order GetOrder()
         {
-            Order order = null;
-            if (_branchType == BranchType.Laboratory)
-                order = new LaboratoryOrder();
-            else
-                order = new MillingCenterOrder();
-
+            var order = new Order();
             foreach (var step in Steps)
             {
                 step.AssemblyOrder(order);

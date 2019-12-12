@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockLaboratoryProjectWizardStepViewModel()
             : base(new MockRmaOperations())
         {
-            var laboratoryOrder = new LaboratoryOrder
+            var order = new Order()
             {
                 WorkDescription =
                     "Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем!",
@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.Views.DesignMock
                 SecondaryDentin = true,
                 PaintedFissurs = true,
             };
-            Initialize(laboratoryOrder);
+            Initialize(order);
         }
     }
 }

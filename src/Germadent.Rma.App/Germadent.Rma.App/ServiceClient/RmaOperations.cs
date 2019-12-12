@@ -38,12 +38,12 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public T GetOrderDetails<T>(int id)
+        public Order GetOrderDetails(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/{0}", id);
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<T>();
+                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order>();
                 return order;
             }
         }
@@ -58,27 +58,27 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public LaboratoryOrder AddLaboratoryOrder(LaboratoryOrder order)
+        public Order AddOrder(Order order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/laboratoryOrder";
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/addOrder";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<LaboratoryOrder>();
+                return result.DeserializeFromJson<Order>();
             }
         }
 
-        public LaboratoryOrder UpdateLaboratoryOrder(LaboratoryOrder order)
+        public Order UpdateOrder(Order order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/laboratoryOrder";
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/updateOrder";
             using (var response = _client.PutAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<LaboratoryOrder>();
+                return result.DeserializeFromJson<Order>();
             }
         }
     }

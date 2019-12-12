@@ -69,7 +69,11 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateLabOrderCommandHandler()
         {
-            var labOrder = _windowManager.CreateLabOrder(new LaboratoryOrder { Created = DateTime.Now });
+            var labOrder = _windowManager.CreateLabOrder(new Order()
+            {
+                Created = DateTime.Now,
+                BranchType = BranchType.Laboratory
+            });
             if (labOrder == null)
                 return;
 
@@ -79,7 +83,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            _windowManager.CreateMillingCenterOrder();
+            //_windowManager.CreateMillingCenterOrder();
         }
 
         private void FilterOrdersCommandHandler()

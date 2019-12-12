@@ -78,31 +78,27 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(Order order)
         {
-            var labOrder = (LaboratoryOrder)order;
-
-            Customer = labOrder.Customer;
-            DoctorFio = labOrder.Doctor;
-            Sex = labOrder.Sex;
-            Age = labOrder.Age;
-            PatientFio = labOrder.Patient;
-            Created = labOrder.Created;
-            FittingDate = labOrder.FittingDate;
-            WorkCompleted = labOrder.Closed;
+            Customer = order.Customer;
+            DoctorFio = order.Doctor;
+            Sex = order.Sex;
+            Age = order.Age;
+            PatientFio = order.Patient;
+            Created = order.Created;
+            FittingDate = order.FittingDate;
+            WorkCompleted = order.Closed;
         }
 
         public void AssemblyOrder(Order order)
         {
-            var labOrder = (LaboratoryOrder) order;
-
-            labOrder.BranchType = BranchType.Laboratory;
-            labOrder.Customer = Customer;
-            labOrder.Doctor = DoctorFio;
-            labOrder.Sex = Sex;
-            labOrder.Age = Age;
-            labOrder.Patient = PatientFio;
-            labOrder.Created = Created;
-            labOrder.FittingDate = FittingDate;
-            labOrder.Closed = WorkCompleted;
+            order.BranchType = BranchType.Laboratory;
+            order.Customer = Customer;
+            order.Doctor = DoctorFio;
+            order.Sex = Sex;
+            order.Age = Age;
+            order.Patient = PatientFio;
+            order.Created = Created;
+            order.FittingDate = FittingDate;
+            order.Closed = WorkCompleted;
         }
     }
 }

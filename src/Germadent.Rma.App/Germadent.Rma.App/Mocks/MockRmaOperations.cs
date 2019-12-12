@@ -12,11 +12,6 @@ namespace Germadent.Rma.App.Mocks
             return new OrderLite[0];
         }
 
-        public T GetOrderDetails<T>(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Order GetOrderDetails(int id)
         {
             throw new NotImplementedException();
@@ -46,12 +41,12 @@ namespace Germadent.Rma.App.Mocks
             return materials;
         }
 
-        public LaboratoryOrder AddLaboratoryOrder(LaboratoryOrder order)
+        public Order AddOrder(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public LaboratoryOrder UpdateLaboratoryOrder(LaboratoryOrder order)
+        public Order UpdateOrder(Order order)
         {
             throw new NotImplementedException();
         }

@@ -68,7 +68,7 @@
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}"
-                                    Binding="{Binding Model.Id}"/>
+                                    Binding="{Binding Model.DocNumber}"/>
                 <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
                                     Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
                 <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"

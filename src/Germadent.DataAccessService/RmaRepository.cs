@@ -1,13 +1,12 @@
-﻿using Germadent.DataAccessService.Entitties;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Germadent.DataAccessService.Entities;
 
 namespace Germadent.DataAccessService
 {
-
     public class RmaRepository : IRmaRepository
     {
         private const string _connectionString = @"Data Source=.\GAMEOVERSQL;Initial Catalog=Germadent;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -18,37 +17,41 @@ namespace Germadent.DataAccessService
             _converter = converter;
         }
 
-        public void AddLabOrder(LaboratoryOrder laboratoryOrder)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddMcOrder(MillingCenterOrder millingCenterOrder)
+        public void UpdateOrder(Order laboratoryOrder)
         {
             throw new NotImplementedException();
         }
 
         public Material[] GetMaterials()
         {
-            return new Material[]
+            var cmdText = "select * from GetMaterialsList()";
+
+            using (var connection = new SqlConnection(_connectionString))
             {
-                new Material{Name = "ZrO"},
-                new Material{Name = "PMMA mono"},
-                new Material{Name = "PMMA multi"},
-                new Material{Name = "WAX"},
-                new Material{Name = "MIK"},
+                connection.Open();
 
-                new Material{Name = "CAD-Temp mono"},
-                new Material{Name = "CAD-Temp multi"},
-                new Material{Name = "Enamic mono"},
-                new Material{Name = "Enamic multi"},
-                new Material{Name = "SUPRINITY"},
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var materials = new List<MaterialEntity>();
+                    while (reader.Read())
+                    {
+                        var materialEntity = new MaterialEntity();
+                        materialEntity.MaterialId = int.Parse(reader[nameof(materialEntity.MaterialId)].ToString());
+                        materialEntity.MaterialName = reader[nameof(materialEntity.MaterialName)].ToString();
 
-                new Material{Name = "MARK II"},
-                new Material{Name = "TriLuxe forte"},
-                new Material{Name = "Ti"},
-                new Material{Name = "E.Max"},
-            };
+                        if (bool.TryParse(reader[nameof(materialEntity.FlagUnused)].ToString(), out bool flagUnused))
+                        {
+                            materialEntity.FlagUnused = flagUnused;
+                        }
+
+                        materials.Add(materialEntity);
+                    }
+                    reader.Close();
+
+                    return materials.Select(x => _converter.ConvertToMaterial(x)).ToArray();
+                }
+            }
         }
 
         public Order GetOrderDetails(int id)
@@ -58,42 +61,41 @@ namespace Germadent.DataAccessService
 
         public OrderLite[] GetOrders(OrdersFilter filter)
         {
-            var builder = new SqlConnectionStringBuilder();
-            builder.ConnectionString = _connectionString;
             var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default)";
 
-            using (var connection = new SqlConnection(builder.ConnectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var orders = new List<OrderLiteEntity>();
+                    var orderLiteEntities = new List<OrderLiteEntity>();
                     while (reader.Read())
                     {
                         var orderLite = new OrderLiteEntity();
-                        orderLite.BranchType = reader[nameof(orderLite.BranchType)].ToString();
                         orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
                         orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
                         orderLite.ResponsiblePersonName = reader[nameof(orderLite.ResponsiblePersonName)].ToString();
                         orderLite.PatientFnp = reader[nameof(orderLite.PatientFnp)].ToString();
+                        orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
                         orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
 
                         var closed = reader[nameof(orderLite.Closed)];
                         if (closed != DBNull.Value)
                             orderLite.Closed = DateTime.Parse(closed.ToString());
 
-                        orders.Add(orderLite);
+                        orderLiteEntities.Add(orderLite);
                     }
                     reader.Close();
 
-                    return orders.Select(x => _converter.ConvertFrom(x)).ToArray();                    
+                    var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
+                    return orders;
                 }
             }
-        }     
+        }
 
-        public void UpdateLabOrder(LaboratoryOrder laboratoryOrder)
+        public void AddOrder(Order laboratoryOrder)
         {
             throw new NotImplementedException();
         }

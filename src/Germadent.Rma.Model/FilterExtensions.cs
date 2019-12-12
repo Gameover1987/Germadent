@@ -4,23 +4,6 @@ namespace Germadent.Rma.Model
 {
     public static class FilterExtensions
     {
-        public static bool MatchByFilter(this Order order, OrdersFilter filter)
-        {
-            if (!filter.Laboratory && order is LaboratoryOrder)
-                return false;
-
-            if (!filter.MillingCenter && order is MillingCenterOrder)
-                return false;
-
-            if (!filter.Customer.IsNullOrWhiteSpace() && filter.Customer.ToLower() != order.Customer.ToLower())
-                return false;
-
-            if (!filter.Patient.IsNullOrWhiteSpace() && filter.Patient.ToLower() != order.Patient.ToLower())
-                return false;
-
-            return true;
-        }
-
         public static bool IsNullOrEmpty(this OrdersFilter filter)
         {
             if (filter == null)

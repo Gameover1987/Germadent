@@ -2,7 +2,9 @@
 
 namespace Germadent.Rma.Model
 {
-
+    /// <summary>
+    /// Заказ наряд
+    /// </summary>
     public class Order
     {
         public int Id { get; set; }
@@ -22,15 +24,6 @@ namespace Germadent.Rma.Model
         public Material[] Materials { get; set; }
 
         public Teeth[] Mouth { get; set; }
-
-    }
-
-    public class LaboratoryOrder : Order
-    {
-        public LaboratoryOrder()
-        {
-            BranchType = BranchType.Laboratory;
-        }
 
         public string Doctor { get; set; }
 
@@ -57,14 +50,6 @@ namespace Germadent.Rma.Model
         public bool SecondaryDentin { get; set; }
 
         public bool PaintedFissurs { get; set; }
-    }
-
-    public class MillingCenterOrder : Order
-    {
-        public MillingCenterOrder()
-        {
-            BranchType = BranchType.MillingCenter;
-        }
 
         public string TechnicFio { get; set; }
 
@@ -77,7 +62,5 @@ namespace Germadent.Rma.Model
         public string ImplantSystem { get; set; }
 
         public string IndividualAbutmentProcessing { get; set; }
-
-        public string WorkDescription { get; set; }
     }
 }

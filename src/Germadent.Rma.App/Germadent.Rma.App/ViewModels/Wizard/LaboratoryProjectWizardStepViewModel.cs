@@ -90,44 +90,39 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(Order order)
         {
-            var labOrder = (LaboratoryOrder)order;
+            FillMaterials(order);
 
-            FillMaterials(labOrder);
+            FillTeethCollection(order);
 
-            FillTeethCollection(labOrder);
-
-            WorkDescription = labOrder.WorkDescription;
-            ColorAndFeatures = labOrder.ColorAndFeatures;
-            NonOpacity = labOrder.NonOpacity;
-            HighOpacity = labOrder.HighOpacity;
-            LowOpacity = labOrder.LowOpacity;
-            Mamelons = labOrder.Mamelons;
-            SecondaryDentin = labOrder.SecondaryDentin;
-            PaintedFissurs = labOrder.PaintedFissurs;
+            WorkDescription = order.WorkDescription;
+            ColorAndFeatures = order.ColorAndFeatures;
+            NonOpacity = order.NonOpacity;
+            HighOpacity = order.HighOpacity;
+            LowOpacity = order.LowOpacity;
+            Mamelons = order.Mamelons;
+            SecondaryDentin = order.SecondaryDentin;
+            PaintedFissurs = order.PaintedFissurs;
 
             OnPropertyChanged();
         }
 
         public void AssemblyOrder(Order order)
         {
-            var labOrder = (LaboratoryOrder) order;
-
-            labOrder.WorkDescription = WorkDescription;
-            labOrder.ColorAndFeatures = ColorAndFeatures;
-            labOrder.NonOpacity = NonOpacity;
-            labOrder.HighOpacity = HighOpacity;
-            labOrder.LowOpacity = LowOpacity;
-            labOrder.Mamelons = Mamelons;
-            labOrder.SecondaryDentin = SecondaryDentin;
-            labOrder.PaintedFissurs = PaintedFissurs;
-
-            labOrder.Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray();
-            labOrder.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            order.WorkDescription = WorkDescription;
+            order.ColorAndFeatures = ColorAndFeatures;
+            order.NonOpacity = NonOpacity;
+            order.HighOpacity = HighOpacity;
+            order.LowOpacity = LowOpacity;
+            order.Mamelons = Mamelons;
+            order.SecondaryDentin = SecondaryDentin;
+            order.PaintedFissurs = PaintedFissurs;
+            order.Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray();
+            order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
-        private void FillMaterials(LaboratoryOrder laboratoryOrder)
+        private void FillMaterials(Order order)
         {
-            var materialsFromOrder = laboratoryOrder.Materials == null ? new string[0] : laboratoryOrder.Materials.Select(x => x.Name).ToArray();
+            var materialsFromOrder = order.Materials == null ? new string[0] : order.Materials.Select(x => x.Name).ToArray();
 
             var materials = _rmaOperations.GetMaterials();
             foreach (var material in materials)
@@ -139,7 +134,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
-        private void FillTeethCollection(LaboratoryOrder laboratoryOrder)
+        private void FillTeethCollection(Order order)
         {
             Mouth.Clear();
             for (int i = 21; i <= 28; i++)
@@ -162,9 +157,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 Mouth.Add(new TeethViewModel { Number = i });
             }
 
-            if (laboratoryOrder.Mouth != null)
+            if (order.Mouth != null)
             {
-                foreach (var teethFromOrder in laboratoryOrder.Mouth)
+                foreach (var teethFromOrder in order.Mouth)
                 {
                     var teeth = Mouth.Single(x => x.Number == teethFromOrder.Number);
                     teeth.IsChecked = true;

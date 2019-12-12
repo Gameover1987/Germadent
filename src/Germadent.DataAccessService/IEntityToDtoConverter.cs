@@ -1,16 +1,18 @@
-﻿using Germadent.DataAccessService.Entitties;
+﻿using Germadent.DataAccessService.Entities;
 using Germadent.Rma.Model;
 
 namespace Germadent.DataAccessService
 {
     public interface IEntityToDtoConverter
     {
-        OrderLite ConvertFrom(OrderLiteEntity entity);
+        OrderLite ConvertToOrderLite(OrderLiteEntity entity);
+
+        Material ConvertToMaterial(MaterialEntity entity);
     }
 
     public class EntityToDtoConverter : IEntityToDtoConverter
     {
-        public OrderLite ConvertFrom(OrderLiteEntity entity)
+        public OrderLite ConvertToOrderLite(OrderLiteEntity entity)
         {
             return new OrderLite
             {
@@ -23,6 +25,15 @@ namespace Germadent.DataAccessService
                 Status = entity.Status,
                 Created = entity.Created,
                 Closed = entity.Closed
+            };
+        }
+
+        public Material ConvertToMaterial(MaterialEntity entity)
+        {
+            return new Material
+            {
+                Name = entity.MaterialName,
+                IsObsolete = entity.FlagUnused
             };
         }
     }

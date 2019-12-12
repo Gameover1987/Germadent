@@ -4,16 +4,36 @@ namespace Germadent.DataAccessService
 {
     public interface IRmaRepository
     {
+        /// <summary>
+        /// Возвращает заказ наряд по ижентификатору
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Order GetOrderDetails(int id);
 
+        /// <summary>
+        /// Возвращает список заказ нарядов по фильтру
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         OrderLite[] GetOrders(OrdersFilter filter);
 
-        void AddLabOrder(LaboratoryOrder laboratoryOrder);
+        /// <summary>
+        /// Добавляет заказ наряд
+        /// </summary>
+        /// <param name="laboratoryOrder"></param>
+        void AddOrder(Order laboratoryOrder);
 
-        void UpdateLabOrder(LaboratoryOrder laboratoryOrder);
+        /// <summary>
+        /// Обновляет заказ наряд
+        /// </summary>
+        /// <param name="laboratoryOrder"></param>
+        void UpdateOrder(Order laboratoryOrder);
 
-        void AddMcOrder(MillingCenterOrder millingCenterOrder);
-
+        /// <summary>
+        /// Возвращает список материалов
+        /// </summary>
+        /// <returns></returns>
         Material[] GetMaterials();
     }
 }

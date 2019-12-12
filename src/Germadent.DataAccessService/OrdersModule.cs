@@ -13,15 +13,13 @@ namespace Germadent.DataAccessService
         public OrdersModule()
         {
             _rmaRepository = new RmaRepository(new EntityToDtoConverter());
-            //_rmaRepository = new RmaFileRepository();
 
             ModulePath = "api/Rma";
             
             Get("/orders/{id}", GetOrderById);
             Post("/getOrdersByFilter", GetOrdersByFilter);
-            Post("/laboratoryOrder", AddLaboratoryOrder);
-            Put("/laboratoryOrder", Action);
-            Post("/millingCenterOrder", AddMillingCenterOrder);
+            Post("/addOrder", AddOrder);
+            Put("/updateOrder", UpdateOrder);
 
             Get("/materials", GetMaterials);
         }
@@ -41,28 +39,20 @@ namespace Germadent.DataAccessService
             return Response.AsJson(orders);
         }
 
-        private object AddLaboratoryOrder(object arg)
+        private object AddOrder(object arg)
         {
-            var labOrder = this.Bind<LaboratoryOrder>();
-            _rmaRepository.AddLabOrder(labOrder);
+            var labOrder = this.Bind<Order>();
+            _rmaRepository.AddOrder(labOrder);
 
             return Response.AsJson(labOrder);
         }
 
-        private object Action(object arg)
+        private object UpdateOrder(object arg)
         {
-            var labOrder = this.Bind<LaboratoryOrder>();
-            _rmaRepository.UpdateLabOrder(labOrder);
+            var labOrder = this.Bind<Order>();
+            _rmaRepository.UpdateOrder(labOrder);
 
             return Response.AsJson(labOrder);
-        }
-
-        private object AddMillingCenterOrder(object arg)
-        {
-            var millingCenterOrder = this.Bind<MillingCenterOrder>();
-            _rmaRepository.AddMcOrder(millingCenterOrder);
-
-            return Response.AsJson(millingCenterOrder);
         }
 
         private object GetMaterials(object arg)

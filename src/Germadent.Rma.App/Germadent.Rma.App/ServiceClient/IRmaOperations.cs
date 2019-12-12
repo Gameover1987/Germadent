@@ -6,12 +6,12 @@ namespace Germadent.Rma.App.ServiceClient
     {
         OrderLite[] GetOrders(OrdersFilter filter = null);
 
-        T GetOrderDetails<T>(int id);
+        Order GetOrderDetails(int id);
 
         Material[] GetMaterials();
 
-        LaboratoryOrder AddLaboratoryOrder(LaboratoryOrder order);
+        Order AddOrder(Order order);
 
-        LaboratoryOrder UpdateLaboratoryOrder(LaboratoryOrder order);
+        Order UpdateOrder(Order order);
     }
 }

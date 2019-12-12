@@ -3,6 +3,8 @@
     public class Material
     {
         public string Name { get; set; }
+
+        public bool IsObsolete { get; set; }
     }
 
     public class Teeth

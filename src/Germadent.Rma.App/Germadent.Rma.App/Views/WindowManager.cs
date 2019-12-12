@@ -8,9 +8,9 @@ namespace Germadent.Rma.App.Views
 {
     public interface IWindowManager
     {
-        LaboratoryOrder CreateLabOrder(LaboratoryOrder laboratoryOrder);
+        Order CreateLabOrder(Order order);
 
-        MillingCenterOrder CreateMillingCenterOrder();
+        Order CreateMillingCenterOrder(Order order);
 
         OrdersFilter CreateOrdersFilter();
     }
@@ -35,25 +35,25 @@ namespace Germadent.Rma.App.Views
             _ordersFilterViewModel = ordersFilterViewModel;
         }
 
-        public LaboratoryOrder CreateLabOrder(LaboratoryOrder laboratoryOrder)
+        public Order CreateLabOrder(Order order)
         {
             var labWizard = new WizardViewModel(_labWizardProvider);
-            labWizard.Initialize("Создание заказ-наряда для ЗТЛ", false, laboratoryOrder);
+            labWizard.Initialize("Создание заказ-наряда для ЗТЛ", false, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
-                return (LaboratoryOrder)labWizard.GetOrder();
+                return labWizard.GetOrder();
             }
 
             return null;
         }
 
-        public MillingCenterOrder CreateMillingCenterOrder()
+        public Order CreateMillingCenterOrder(Order order)
         {
             var millingCenterWizard = new WizardViewModel(_millingCenterWizardStepsProvider);
-            millingCenterWizard.Initialize("Создание заказ-наряда для ФЦ", false, new MillingCenterOrder());
+            millingCenterWizard.Initialize("Создание заказ-наряда для ФЦ", false, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) == true)
             {
-               return (MillingCenterOrder)millingCenterWizard.GetOrder();
+               return millingCenterWizard.GetOrder();
             }
 
             return null;

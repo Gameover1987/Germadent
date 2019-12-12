@@ -64,11 +64,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entitties\OrderLiteEntity.cs" />
+    <Compile Include="Entities\MaterialEntity.cs" />
+    <Compile Include="Entities\OrderLiteEntity.cs" />
     <Compile Include="IEntityToDtoConverter.cs" />
     <Compile Include="IRmaRepository.cs" />
     <Compile Include="OrdersModule.cs" />
-    <Compile Include="RmaFileRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RmaRepository.cs" />
