@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private bool _paintedFissurs;
         private AdditionalMillingInfo _additionalMillingInfo;
         private int _ledgePlungeCustom;
-        private string _screw;
+        private string _understaff;
         private string _titaniumBase;
         private bool _agreement;
 
@@ -95,16 +95,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _ledgePlungeCustom, value); }
         }
 
-        public string Screw
+        public string Understaff
         {
-            get { return _screw; }
-            set { SetProperty(() => _screw, value); }
-        }
-
-        public string TitaniumBase
-        {
-            get { return _titaniumBase; }
-            set { SetProperty(() => _titaniumBase, value); }
+            get { return _understaff; }
+            set { SetProperty(() => _understaff, value); }
         }
 
         public bool Agreement

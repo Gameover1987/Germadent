@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="800"
-             d:DataContext="{d:DesignInstance Type=designMock:DesingMockMillingCenterProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=designMock:DesingMockMillingCenterProjectWizardStepViewModel, IsDesignTimeCreatable=False}">
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type TextBlock}">
@@ -67,12 +67,7 @@
         </StackPanel>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Докомплектовать заказ" />
-
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Винт" />
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Screw}" Margin="6,6,0,0" />
-
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Титановая основа" />
-        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding TitaniumBase}" Margin="6,6,0,0" />
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
 
         <local:MouthUserControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" Height="200" />
         <CheckBox Grid.Row="8" Grid.Column="1"  Content="Согласование работы" IsChecked="{Binding Agreement}" Margin="0,6,0,0"/>

@@ -13,8 +13,8 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 AdditionalInfo = entity.AdditionalInfo,
                 BranchType = (BranchType)entity.BranchTypeId,
                 CarcassColor = entity.CarcassColor,
-                Customer = entity.Customer,
-                ColorAndFeatures = entity.ColorAnFeatures,
+                Customer = entity.CustomerName,
+                ColorAndFeatures = entity.ColorAndFeatures,
                 Closed = entity.Closed,
                 Created = entity.Created,
                 FittingDate = entity.FittingDate,
@@ -28,7 +28,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 //TechnikPhone = 
                 //Mouth = 
                 WorkDescription = entity.WorkDescription,
-                WorkAccepted = entity.FlagWorkAccepted,
+                WorkAccepted = entity.FlagWorkAccept,
             };
         }
 
@@ -36,12 +36,13 @@ namespace Germadent.DataAccessService.Entities.Conversion
         {
             return new OrderLiteDto
             {
+                WorkOrderId = entity.WorkOrderId,
                 BranchType = (BranchType)entity.BranchTypeId,
                 BranchTypeId = entity.BranchTypeId,
                 CustomerName = entity.CustomerName,
                 PatientFnp = entity.PatientFnp,
                 DocNumber = entity.DocNumber,
-                ResponsiblePerson = entity.ResponsiblePersonName,
+                ResponsiblePerson = entity.ResponsiblePerson,
                 Status = entity.Status,
                 Created = entity.Created,
                 Closed = entity.Closed

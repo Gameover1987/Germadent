@@ -74,14 +74,40 @@ namespace Germadent.DataAccessService.Repository
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var orderEntity = new OrderEntity();
+                    
                     while (reader.Read())
                     {
+                        var orderEntity = new OrderEntity();
                         orderEntity.WorkOrderId = int.Parse(reader[nameof(orderEntity.WorkOrderId)].ToString());
+                        orderEntity.CustomerName = reader[nameof(orderEntity.CustomerName)].ToString();
+                        orderEntity.AdditionalInfo = reader[nameof(orderEntity.AdditionalInfo)].ToString();
+                        orderEntity.BranchTypeId = int.Parse(reader[nameof(orderEntity.BranchTypeId)].ToString());
+                        orderEntity.AdditionalInfo = reader[nameof(orderEntity.CarcassColor)].ToString();
+                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))
+                        {
+                            orderEntity.Closed = closed;
+                        }
+
+                        orderEntity.ColorAndFeatures = reader[nameof(orderEntity.ColorAndFeatures)].ToString();
+                        orderEntity.Created = DateTime.Parse(reader[nameof(orderEntity.Created)].ToString());
+                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var dateDelivery))
+                        {
+                            orderEntity.DateDelivery = dateDelivery;
+                        }
+
+                        orderEntity.DocNumber = reader[nameof(orderEntity.DocNumber)].ToString();
+                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var fittingDate))
+                        {
+                            orderEntity.FittingDate = fittingDate;
+                        }
+
+                        orderEntity.FlagWorkAccept = bool.Parse(reader[nameof(orderEntity.FlagWorkAccept)].ToString());
+
+                        return _converter.ConvertToOrder(orderEntity);
                     }
                     reader.Close();
 
-                    return _converter.ConvertToOrder(orderEntity);
+                    return null;
                 }
             }
         }
@@ -101,9 +127,10 @@ namespace Germadent.DataAccessService.Repository
                     while (reader.Read())
                     {
                         var orderLite = new OrderLiteEntity();
+                        orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
                         orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
                         orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
-                        orderLite.ResponsiblePersonName = reader[nameof(orderLite.ResponsiblePersonName)].ToString();
+                        orderLite.ResponsiblePerson = reader[nameof(orderLite.ResponsiblePerson)].ToString();
                         orderLite.PatientFnp = reader[nameof(orderLite.PatientFnp)].ToString();
                         orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
                         orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());

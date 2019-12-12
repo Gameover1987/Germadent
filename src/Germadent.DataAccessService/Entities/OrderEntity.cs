@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Germadent.DataAccessService.Entities
 {
     /// <summary>
     /// Заказ-наряд (все типы)
     /// </summary>
-    public class OrderEntity
+    public partial class OrderEntity
     {
         /// <summary>
         /// Идентификатор заказ наряда
@@ -27,14 +23,14 @@ namespace Germadent.DataAccessService.Entities
         public int Status { get; set; }
 
         /// <summary>
-        /// Номер
+        /// Номер заказ-наряда
         /// </summary>
         public string DocNumber { get; set; }
 
         /// <summary>
         /// Заказчик
         /// </summary>
-        public string Customer { get; set; }
+        public string CustomerName { get; set; }
 
         /// <summary>
         /// Пациент
@@ -46,9 +42,6 @@ namespace Germadent.DataAccessService.Entities
         /// </summary>
         public DateTime Created { get; set; }
 
-        
-        public DateTime? DateDelivery { get; set; }
-
         /// <summary>
         /// Описание работ
         /// </summary>
@@ -57,48 +50,11 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// Флаг согласования работ
         /// </summary>
-        public bool FlagWorkAccepted { get; set; }
+        public bool FlagWorkAccept { get; set; }
 
         /// <summary>
         /// Дата закрытия заказа
         /// </summary>
         public DateTime? Closed { get; set; }
-
-        public string Transparences { get; set; }
-
-        public string TypeofWork { get; set; }
-
-        /// <summary>
-        /// Дата примерки
-        /// </summary>
-        public DateTime? FittingDate { get; set; }
-
-        /// <summary>
-        /// Цвет и особенности
-        /// </summary>
-        public string ColorAnFeatures { get; set; }
-
-        /// <summary>
-        /// Дополнительная ифнормация
-        /// </summary>
-        public string AdditionalInfo { get; set; }
-
-        /// <summary>
-        /// Каркас
-        /// </summary>
-        public string CarcassColor { get; set; }
-
-        /// <summary>
-        /// Система имплантов
-        /// </summary>
-        public string ImplantSystem { get; set; }
-
-        /// <summary>
-        /// Индивидуальная обработка абатмента
-        /// </summary>
-        public string IndividualAbutmentProcessing { get; set; }
-
-
-        public string Undestaff { get; set; }
     }
 }

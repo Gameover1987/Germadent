@@ -135,7 +135,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            var labOrder = _rmaOperations.GetOrderDetails(7);
+            var labOrder = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
             var changedLabOrder = _windowManager.CreateLabOrder(labOrder);
             if (changedLabOrder == null)
                 return;

@@ -4,7 +4,7 @@ namespace Germadent.Rma.Model
 {
     public class OrderLiteDto
     {
-        public int OrderId { get; set; }
+        public int WorkOrderId { get; set; }
 
         public int BranchTypeId { get; set; }
 

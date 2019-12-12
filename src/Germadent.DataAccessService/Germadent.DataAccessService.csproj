@@ -69,6 +69,8 @@
     <Compile Include="Entities\Conversion\EntityToDtoConverter.cs" />
     <Compile Include="Entities\MaterialEntity.cs" />
     <Compile Include="Entities\OrderEntity.cs" />
+    <Compile Include="Entities\OrderEntity.Laboratory.cs" />
+    <Compile Include="Entities\OrderEntity.MillingCenter.cs" />
     <Compile Include="Entities\OrderLiteEntity.cs" />
     <Compile Include="Entities\Conversion\IEntityToDtoConverter.cs" />
     <Compile Include="Repository\IRmaRepository.cs" />

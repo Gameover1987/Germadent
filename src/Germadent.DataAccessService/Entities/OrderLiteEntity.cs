@@ -10,7 +10,7 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// Идентификатор заказ-наряда
         /// </summary>
-        public int OrderId { get; set; }
+        public int WorkOrderId { get; set; }
 
         /// <summary>
         /// Тип филиала
@@ -30,7 +30,7 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// Ответственное лицо
         /// </summary>
-        public string ResponsiblePersonName { get; set; }
+        public string ResponsiblePerson { get; set; }
 
         /// <summary>
         /// ФИО пациента
