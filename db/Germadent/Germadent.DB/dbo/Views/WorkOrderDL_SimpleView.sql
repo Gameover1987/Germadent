@@ -1,7 +1,7 @@
 ﻿CREATE VIEW dbo.WorkOrderDL_SimpleView
 AS
-SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed, wdl.TransparenceID, wdl.TypeOfWork, 
-                wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures
+SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed, 
+                wdl.TransparenceID, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
 GO
@@ -14,7 +14,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[41] 4[32] 2[9] 3) )"
+         Configuration = "(H (1[42] 4[33] 2[9] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -85,17 +85,17 @@ Begin DesignProperties =
                Top = 6
                Left = 40
                Bottom = 323
-               Right = 227
+               Right = 243
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "wdl"
             Begin Extent = 
-               Top = 7
-               Left = 357
-               Bottom = 209
-               Right = 555
+               Top = 6
+               Left = 361
+               Bottom = 208
+               Right = 559
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -127,4 +127,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderDL_SimpleView';
+
+
 

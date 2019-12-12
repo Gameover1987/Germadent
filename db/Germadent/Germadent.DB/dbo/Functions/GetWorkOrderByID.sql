@@ -28,7 +28,6 @@ RETURN
 			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
 			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
 			ISNULL(wmc.Understaff, '') AS Understaff,
-			ISNULL(wdl.TypeOfWork, '') AS TypeOfWork, 
 			ISNULL(wdl.DateOfCompletion, '') DateOfCompletion, 
 			ISNULL(wdl.FittingDate, '') AS FittingDate, 
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
@@ -37,7 +36,7 @@ RETURN
 	FROM	 WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
-			INNER JOIN ResponsiblePersons rp ON cs.CustomerID = rp.CustomerID
+			INNER JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 			INNER JOIN Patients p ON wo.PatientID = p.PatientID	
 			INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
