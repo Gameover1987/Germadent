@@ -23,7 +23,7 @@ namespace Germadent.Rma.App.ServiceClient
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public OrderLite[] GetOrders(OrdersFilter ordersFilter = null)
+        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
             if (ordersFilter == null)
                 ordersFilter = new OrdersFilter();
@@ -33,32 +33,32 @@ namespace Germadent.Rma.App.ServiceClient
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/getOrdersByFilter";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
-                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLite[]>();
+                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLiteDto[]>();
                 return orders;
             }
         }
 
-        public Order GetOrderDetails(int id)
+        public OrderDto GetOrderDetails(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/{0}", id);
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Order>();
+                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
                 return order;
             }
         }
 
-        public Material[] GetMaterials()
+        public MaterialDto[] GetMaterials()
         {
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/materials";
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var materials = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<Material[]>();
+                var materials = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<MaterialDto[]>();
                 return materials;
             }
         }
 
-        public Order AddOrder(Order order)
+        public OrderLiteDto AddOrder(OrderDto order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
@@ -66,11 +66,11 @@ namespace Germadent.Rma.App.ServiceClient
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<Order>();
+                return result.DeserializeFromJson<OrderLiteDto>();
             }
         }
 
-        public Order UpdateOrder(Order order)
+        public OrderLiteDto UpdateOrder(OrderDto order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
@@ -78,7 +78,7 @@ namespace Germadent.Rma.App.ServiceClient
             using (var response = _client.PutAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<Order>();
+                return result.DeserializeFromJson<OrderLiteDto>();
             }
         }
     }

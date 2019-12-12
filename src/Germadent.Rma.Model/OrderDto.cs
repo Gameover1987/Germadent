@@ -5,7 +5,7 @@ namespace Germadent.Rma.Model
     /// <summary>
     /// Заказ наряд
     /// </summary>
-    public class Order
+    public class OrderDto
     {
         public int Id { get; set; }
 

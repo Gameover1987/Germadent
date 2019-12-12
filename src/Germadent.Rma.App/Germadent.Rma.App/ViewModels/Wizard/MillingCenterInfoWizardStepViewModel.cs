@@ -56,12 +56,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _created, value); }
         }
 
-        public void Initialize(Order order)
+        public void Initialize(OrderDto order)
         {
             
         }
 
-        public void AssemblyOrder(Order order)
+        public void AssemblyOrder(OrderDto order)
         {
           
         }

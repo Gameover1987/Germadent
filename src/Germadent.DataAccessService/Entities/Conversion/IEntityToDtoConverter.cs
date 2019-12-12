@@ -4,10 +4,10 @@ namespace Germadent.DataAccessService.Entities.Conversion
 {
     public interface IEntityToDtoConverter
     {
-        Order ConvertToOrder(OrderEntity entity);
+        OrderDto ConvertToOrder(OrderEntity entity);
 
-        OrderLite ConvertToOrderLite(OrderLiteEntity entity);
+        OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
-        Material ConvertToMaterial(MaterialEntity entity);
+        MaterialDto ConvertToMaterial(MaterialEntity entity);
     }
 }

@@ -4,14 +4,14 @@ namespace Germadent.Rma.App.ServiceClient
 {
     public interface IRmaOperations
     {
-        OrderLite[] GetOrders(OrdersFilter filter = null);
+        OrderLiteDto[] GetOrders(OrdersFilter filter = null);
 
-        Order GetOrderDetails(int id);
+        OrderDto GetOrderDetails(int id);
 
-        Material[] GetMaterials();
+        MaterialDto[] GetMaterials();
 
-        Order AddOrder(Order order);
+        OrderLiteDto AddOrder(OrderDto order);
 
-        Order UpdateOrder(Order order);
+        OrderLiteDto UpdateOrder(OrderDto order);
     }
 }

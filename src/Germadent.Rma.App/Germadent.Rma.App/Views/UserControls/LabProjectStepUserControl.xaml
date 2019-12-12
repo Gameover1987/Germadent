@@ -9,7 +9,7 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
-             d:DesignHeight="700"
+             d:DesignHeight="600"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.Resources>
@@ -35,24 +35,6 @@
         <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                      Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
-
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
-        <ListBox Grid.Row="1" Grid.Column="1" Height="103" Margin="6,6,0,0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ItemsSource="{Binding Materials}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
-                    <Grid Width="140">
-                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Цвет/особенности" VerticalAlignment="Center"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"

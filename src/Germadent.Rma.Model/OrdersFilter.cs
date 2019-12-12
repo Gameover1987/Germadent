@@ -22,7 +22,7 @@ namespace Germadent.Rma.Model
 
         public string Patient { get; set; }
 
-        public Material[] Materials { get; set; }
+        public MaterialDto[] Materials { get; set; }
 
         public static OrdersFilter Empty
         {

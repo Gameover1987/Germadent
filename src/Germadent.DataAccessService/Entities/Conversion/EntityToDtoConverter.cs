@@ -4,9 +4,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
 {
     public class EntityToDtoConverter : IEntityToDtoConverter
     {
-        public Order ConvertToOrder(OrderEntity entity)
+        public OrderDto ConvertToOrder(OrderEntity entity)
         {
-            return new Order
+            return new OrderDto
             {
                 Id = entity.WorkOrderId,
                 Status =  entity.Status,
@@ -32,9 +32,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
             };
         }
 
-        public OrderLite ConvertToOrderLite(OrderLiteEntity entity)
+        public OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity)
         {
-            return new OrderLite
+            return new OrderLiteDto
             {
                 BranchType = (BranchType)entity.BranchTypeId,
                 BranchTypeId = entity.BranchTypeId,
@@ -48,9 +48,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
             };
         }
 
-        public Material ConvertToMaterial(MaterialEntity entity)
+        public MaterialDto ConvertToMaterial(MaterialEntity entity)
         {
-            return new Material
+            return new MaterialDto
             {
                 Name = entity.MaterialName,
                 IsObsolete = entity.FlagUnused

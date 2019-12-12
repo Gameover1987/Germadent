@@ -26,7 +26,7 @@ namespace Germadent.Rma.App.Printing
             _converter = converter;
         }
 
-        public void Print(Order order)
+        public void Print(OrderDto order)
         {
             var pathToTemplate = GetTemplatePathForOrder(order);
             var template = _fileManager.ReadAllBytes(pathToTemplate);
@@ -41,7 +41,7 @@ namespace Germadent.Rma.App.Printing
             }
         }
 
-        private string GetTemplatePathForOrder(Order order)
+        private string GetTemplatePathForOrder(OrderDto order)
         {
             var fullPathToTemplate = string.Empty;
             if (order.BranchType == BranchType.Laboratory)
@@ -56,7 +56,7 @@ namespace Germadent.Rma.App.Printing
             return fullPathToTemplate;
         }
 
-        private string GetOrderDocumentName(Order order)
+        private string GetOrderDocumentName(OrderDto order)
         {
             if (order.BranchType == BranchType.Laboratory)
             {

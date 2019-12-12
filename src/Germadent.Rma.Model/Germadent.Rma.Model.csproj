@@ -37,10 +37,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
-    <Compile Include="FilterExtensions.cs" />
-    <Compile Include="Material.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="OrderLite.cs" />
+    <Compile Include="MaterialDto.cs" />
+    <Compile Include="OrderDto.cs" />
+    <Compile Include="OrderLiteDto.cs" />
     <Compile Include="OrdersFilter.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.Rma.Model;
@@ -11,24 +12,30 @@ namespace Germadent.DataAccessService.Repository
 {
     public class RmaRepository : IRmaRepository
     {
-        private const string _connectionString = @"Data Source=.\GAMEOVERSQL;Initial Catalog=Germadent;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private readonly IEntityToDtoConverter _converter;
+        private readonly IServiceConfiguration _configuration;
 
-        public RmaRepository(IEntityToDtoConverter converter)
+        public RmaRepository(IEntityToDtoConverter converter, IServiceConfiguration configuration)
         {
             _converter = converter;
+            _configuration = configuration;
         }
 
-        public void UpdateOrder(Order laboratoryOrder)
+        public void AddOrder(OrderDto order)
+        {
+            
+        }
+
+        public void UpdateOrder(OrderDto order)
         {
             throw new NotImplementedException();
         }
 
-        public Material[] GetMaterials()
+        public MaterialDto[] GetMaterials()
         {
             var cmdText = "select * from GetMaterialsList()";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
@@ -56,11 +63,11 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        public Order GetOrderDetails(int id)
+        public OrderDto GetOrderDetails(int id)
         {
             var cmdText = string.Format("select * from GetWorkOrderById({0})", id);
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
@@ -79,11 +86,11 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        public OrderLite[] GetOrders(OrdersFilter filter)
+        public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
             var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
@@ -113,11 +120,6 @@ namespace Germadent.DataAccessService.Repository
                     return orders;
                 }
             }
-        }
-
-        public void AddOrder(Order laboratoryOrder)
-        {
-            throw new NotImplementedException();
         }
     }
 }

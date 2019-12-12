@@ -10,7 +10,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool HasBridge { get; set; }
 
-        public Material Material { get; set; }
+        public MaterialDto Material { get; set; }
 
         public Teeth ToModel()
         {

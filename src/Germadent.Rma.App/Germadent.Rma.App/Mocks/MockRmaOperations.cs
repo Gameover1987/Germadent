@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 
@@ -7,46 +6,46 @@ namespace Germadent.Rma.App.Mocks
 {
     public class MockRmaOperations : IRmaOperations
     {
-        public OrderLite[] GetOrders(OrdersFilter ordersFilter = null)
+        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            return new OrderLite[0];
+            return new OrderLiteDto[0];
         }
 
-        public Order GetOrderDetails(int id)
+        public OrderDto GetOrderDetails(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Material[] GetMaterials()
+        public MaterialDto[] GetMaterials()
         {
             var materials = new[]
             {
-                new Material {Name = "ZrO"},
-                new Material {Name = "PMMA mono"},
-                new Material {Name = "PMMA multi"},
-                new Material {Name = "WAX"},
-                new Material {Name = "MIK"},
-                new Material {Name = "CAD-Temp mono"},
-                new Material {Name = "CAD-Temp multi"},
-                new Material {Name = "Enamik mono"},
-                new Material {Name = "Enamik multi"},
-                new Material {Name = "SUPRINITY"},
-                new Material {Name = "Mark II"},
-                new Material {Name = "WAX"},
-                new Material {Name = "TriLuxe forte"},
-                new Material {Name = "Ti"},
-                new Material {Name = "E.MAX"},
+                new MaterialDto {Name = "ZrO"},
+                new MaterialDto {Name = "PMMA mono"},
+                new MaterialDto {Name = "PMMA multi"},
+                new MaterialDto {Name = "WAX"},
+                new MaterialDto {Name = "MIK"},
+                new MaterialDto {Name = "CAD-Temp mono"},
+                new MaterialDto {Name = "CAD-Temp multi"},
+                new MaterialDto {Name = "Enamik mono"},
+                new MaterialDto {Name = "Enamik multi"},
+                new MaterialDto {Name = "SUPRINITY"},
+                new MaterialDto {Name = "Mark II"},
+                new MaterialDto {Name = "WAX"},
+                new MaterialDto {Name = "TriLuxe forte"},
+                new MaterialDto {Name = "Ti"},
+                new MaterialDto {Name = "E.MAX"},
             };
 
             return materials;
         }
 
-        public Order AddOrder(Order order)
+        public OrderLiteDto AddOrder(OrderDto order)
         {
             throw new NotImplementedException();
         }
 
-        public Order UpdateOrder(Order order)
+        public OrderLiteDto UpdateOrder(OrderDto order)
         {
             throw new NotImplementedException();
         }

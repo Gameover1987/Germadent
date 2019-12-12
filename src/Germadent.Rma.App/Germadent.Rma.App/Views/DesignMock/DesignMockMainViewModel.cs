@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockPrintModule : IPrintModule
     {
-        public void Print(Order order)
+        public void Print(OrderDto order)
         {
             throw new System.NotImplementedException();
         }

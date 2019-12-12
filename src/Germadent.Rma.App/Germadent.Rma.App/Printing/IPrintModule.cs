@@ -4,6 +4,6 @@ namespace Germadent.Rma.App.Printing
 {
     public interface IPrintModule
     {
-        void Print(Order order);
+        void Print(OrderDto order);
     }
 }

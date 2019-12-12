@@ -113,31 +113,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _agreement, value); }
         }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
 
-        public void Initialize(Order order)
+        public void Initialize(OrderDto order)
         {
-            FillMaterials();
-
             FillTeethCollection();
 
             OnPropertyChanged();
         }
 
-        public void AssemblyOrder(Order order)
+        public void AssemblyOrder(OrderDto order)
         {
             
-        }
-
-        private void FillMaterials()
-        {
-            var materials = _rmaOperations.GetMaterials();
-            foreach (var material in materials)
-            {
-                Materials.Add(new MaterialViewModel(material));
-            }
         }
 
         private void FillTeethCollection()

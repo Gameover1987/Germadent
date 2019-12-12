@@ -12,9 +12,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         bool IsReadOnly { get; }
 
-        void Initialize(string title, bool isReadOnly, Order order);
+        void Initialize(string title, bool isReadOnly, OrderDto order);
 
-        Order GetOrder();
+        OrderDto GetOrder();
     }
 
     public class WizardViewModel : ViewModelBase, IWizardViewModel
@@ -22,7 +22,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private IWizardStepViewModel _currentStep;
         private BranchType _branchType;
 
-        private Order _order;
+        private OrderDto _order;
 
         public WizardViewModel(IWizardStepsProvider stepsProvider)
         {
@@ -96,7 +96,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         }
 
-        public void Initialize(string title, bool isReadOnly, Order order)
+        public void Initialize(string title, bool isReadOnly, OrderDto order)
         {
             Title = title;
 
@@ -112,9 +112,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             OnPropertyChanged();
         }
 
-        public Order GetOrder()
+        public OrderDto GetOrder()
         {
-            var order = new Order();
+            var order = new OrderDto();
             foreach (var step in Steps)
             {
                 step.AssemblyOrder(order);

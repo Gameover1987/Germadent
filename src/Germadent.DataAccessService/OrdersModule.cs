@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.DataAccessService.Repository;
 using Germadent.Rma.Model;
@@ -14,7 +15,7 @@ namespace Germadent.DataAccessService
 
         public OrdersModule()
         {
-            _rmaRepository = new RmaRepository(new EntityToDtoConverter());
+            _rmaRepository = new RmaRepository(new EntityToDtoConverter(), new ServiceConfiguration());
 
             ModulePath = "api/Rma";
             
@@ -43,7 +44,7 @@ namespace Germadent.DataAccessService
 
         private object AddOrder(object arg)
         {
-            var labOrder = this.Bind<Order>();
+            var labOrder = this.Bind<OrderDto>();
             _rmaRepository.AddOrder(labOrder);
 
             return Response.AsJson(labOrder);
@@ -51,7 +52,7 @@ namespace Germadent.DataAccessService
 
         private object UpdateOrder(object arg)
         {
-            var labOrder = this.Bind<Order>();
+            var labOrder = this.Bind<OrderDto>();
             _rmaRepository.UpdateOrder(labOrder);
 
             return Response.AsJson(labOrder);

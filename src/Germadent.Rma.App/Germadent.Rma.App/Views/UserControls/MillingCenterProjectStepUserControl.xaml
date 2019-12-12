@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
              xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-             xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -36,24 +35,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,0,0,0"/>
-        <ListBox Grid.Row="0" Grid.Column="1" Height="103" Margin="6,0,0,0"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ItemsSource="{Binding Materials}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
-                    <Grid Width="140">
-                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Доп. информация" />
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="Неокрашенный" GroupName="info"
@@ -69,7 +50,7 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <TextBlock  Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" Margin="6,0,0,0">
             <CheckBox IsChecked="{Binding NonOpacity}" Content="Станочная обработка" Margin="0,6,0,0" />

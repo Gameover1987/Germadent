@@ -2,7 +2,7 @@
 
 namespace Germadent.Rma.Model
 {
-    public class OrderLite
+    public class OrderLiteDto
     {
         public int OrderId { get; set; }
 

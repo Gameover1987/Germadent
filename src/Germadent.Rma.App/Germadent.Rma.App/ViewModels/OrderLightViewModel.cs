@@ -10,19 +10,19 @@ namespace Germadent.Rma.App.ViewModels
 {
     public class OrderLiteViewModel : ViewModelBase
     {
-        private OrderLite _model;
+        private OrderLiteDto _model;
 
-        public OrderLiteViewModel(OrderLite model)
+        public OrderLiteViewModel(OrderLiteDto model)
         {
             _model = model;
         }
 
-        public OrderLite Model
+        public OrderLiteDto Model
         {
             get { return _model; }
         }
 
-        public void Update(OrderLite order)
+        public void Update(OrderLiteDto order)
         {
             _model = order;
 

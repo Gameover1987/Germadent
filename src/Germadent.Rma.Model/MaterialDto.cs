@@ -1,6 +1,6 @@
 ﻿namespace Germadent.Rma.Model
 {
-    public class Material
+    public class MaterialDto
     {
         public string Name { get; set; }
 
@@ -11,7 +11,7 @@
     {
         public int Number { get; set; }
 
-        public Material Material { get; set; }
+        public MaterialDto Material { get; set; }
 
         public bool HasBridge { get; set; }
     }

@@ -76,7 +76,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workCompleted, value); }
         }
 
-        public void Initialize(Order order)
+        public void Initialize(OrderDto order)
         {
             Customer = order.Customer;
             DoctorFio = order.Doctor;
@@ -88,7 +88,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             WorkCompleted = order.Closed;
         }
 
-        public void AssemblyOrder(Order order)
+        public void AssemblyOrder(OrderDto order)
         {
             order.BranchType = BranchType.Laboratory;
             order.Customer = Customer;

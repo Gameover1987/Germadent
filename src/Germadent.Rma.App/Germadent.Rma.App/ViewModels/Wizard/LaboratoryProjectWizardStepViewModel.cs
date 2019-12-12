@@ -84,11 +84,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _paintedFissurs, value); }
         }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
 
-        public void Initialize(Order order)
+        public void Initialize(OrderDto order)
         {
             FillTeethCollection(order);
 
@@ -104,7 +102,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             OnPropertyChanged();
         }
 
-        public void AssemblyOrder(Order order)
+        public void AssemblyOrder(OrderDto order)
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
@@ -117,7 +115,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
-        private void FillTeethCollection(Order order)
+        private void FillTeethCollection(OrderDto order)
         {
             Mouth.Clear();
             for (int i = 21; i <= 28; i++)

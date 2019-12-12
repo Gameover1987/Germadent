@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockLaboratoryProjectWizardStepViewModel()
             : base(new MockRmaOperations())
         {
-            var order = new Order()
+            var order = new OrderDto()
             {
                 WorkDescription =
                     "Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем!",

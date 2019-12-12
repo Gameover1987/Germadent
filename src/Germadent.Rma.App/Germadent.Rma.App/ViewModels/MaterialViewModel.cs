@@ -6,9 +6,9 @@ namespace Germadent.Rma.App.ViewModels
     public class MaterialViewModel : ViewModelBase
     {
         private bool _isChecked;
-        private Material _item;
+        private MaterialDto _item;
 
-        public MaterialViewModel(Material material)
+        public MaterialViewModel(MaterialDto material)
         {
             _item = material;
         }
@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels
             set { SetProperty(() => _isChecked, value); }
         }
 
-        public Material Item
+        public MaterialDto Item
         {
             get { return _item; }
             set { SetProperty(() => _item, value); }

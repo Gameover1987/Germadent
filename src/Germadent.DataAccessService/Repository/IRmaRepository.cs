@@ -9,31 +9,31 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Order GetOrderDetails(int id);
+        OrderDto GetOrderDetails(int id);
 
         /// <summary>
         /// Возвращает список заказ нарядов по фильтру
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        OrderLite[] GetOrders(OrdersFilter filter);
+        OrderLiteDto[] GetOrders(OrdersFilter filter);
 
         /// <summary>
         /// Добавляет заказ наряд
         /// </summary>
-        /// <param name="laboratoryOrder"></param>
-        void AddOrder(Order laboratoryOrder);
+        /// <param name="order"></param>
+        void AddOrder(OrderDto order);
 
         /// <summary>
         /// Обновляет заказ наряд
         /// </summary>
-        /// <param name="laboratoryOrder"></param>
-        void UpdateOrder(Order laboratoryOrder);
+        /// <param name="order"></param>
+        void UpdateOrder(OrderDto order);
 
         /// <summary>
         /// Возвращает список материалов
         /// </summary>
         /// <returns></returns>
-        Material[] GetMaterials();
+        MaterialDto[] GetMaterials();
     }
 }

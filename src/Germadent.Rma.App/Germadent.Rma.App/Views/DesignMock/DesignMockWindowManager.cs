@@ -4,12 +4,12 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockWindowManager : IWindowManager
     {
-        public Order CreateLabOrder(Order order)
+        public OrderDto CreateLabOrder(OrderDto order)
         {
             throw new System.NotImplementedException();
         }
 
-        public Order CreateMillingCenterOrder(Order order)
+        public OrderDto CreateMillingCenterOrder(OrderDto order)
         {
             throw new System.NotImplementedException();
         }
