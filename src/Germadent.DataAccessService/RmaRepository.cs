@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Germadent.DataAccessService
 {
@@ -71,7 +69,6 @@ namespace Germadent.DataAccessService
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    Console.WriteLine("{0}\t{1}\t{2}", reader.GetName(0), reader.GetName(2), reader.GetName(3));
                     var orders = new List<OrderLiteEntity>();
                     while (reader.Read())
                     {
