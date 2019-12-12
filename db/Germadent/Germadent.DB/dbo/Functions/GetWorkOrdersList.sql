@@ -20,9 +20,9 @@ RETURNS TABLE
 AS
 RETURN 
 (	
-	SELECT b.BranchTypeID, b.BranchType, wo.DocNumber, cs.CustomerName, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone,
+	SELECT b.BranchTypeID, b.BranchType, wo.WorkOrderID, wo.DocNumber, cs.CustomerName, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone,
 			CONCAT(p.FamilyName,' ', LEFT(p.Name, 1), '.', LEFT(p.Patronymic, 1), '.') AS PatientFNP, 
-			wo.Created, wo.Status, wo.Closed
+			wo.Created, wo.Status, wo.FlagWorkAccept, wo.Closed, wo.WorkDescription
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b	ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN Customers cs	ON wo.CustomerID = cs.CustomerID

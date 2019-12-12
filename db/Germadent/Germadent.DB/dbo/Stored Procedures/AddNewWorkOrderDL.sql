@@ -14,15 +14,16 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderDL]
 	@typeOfWork nvarchar(250) = NULL,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
-	@colorAndFeatures nvarchar(100) = NULL
+	@colorAndFeatures nvarchar(100) = NULL,
+	@workOrderID int output
 
 AS
 BEGIN
 
-	DECLARE @max_Id int,
-			@workOrderID int;
+	
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
+	DECLARE @max_Id int
 	SELECT @max_Id = MAX(WorkOrderID)
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
