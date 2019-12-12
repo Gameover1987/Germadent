@@ -1,10 +1,9 @@
-﻿CREATE VIEW dbo.Customers_View
+﻿CREATE VIEW dbo.ResponsiblePersons_SimpleView
 AS
-SELECT   cs.CustomerID, cs.CustomerName, rp.ResponsiblePersonID, rp.ResponsiblePerson, rp.RP_Position, rp.RP_Phone
-FROM      dbo.Customers AS cs INNER JOIN
-                dbo.ResponsiblePersons AS rp ON cs.CustomerID = rp.CustomerID
+SELECT   ResponsiblePersonID, CustomerID, RP_Position, ResponsiblePerson, RP_Phone
+FROM      dbo.ResponsiblePersons
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'Customers_View';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ResponsiblePersons_SimpleView';
 
 
 GO
@@ -79,25 +78,15 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "cs"
+         Begin Table = "ResponsiblePersons"
             Begin Extent = 
-               Top = 27
-               Left = 39
-               Bottom = 143
-               Right = 220
+               Top = 6
+               Left = 40
+               Bottom = 199
+               Right = 265
             End
             DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "rp"
-            Begin Extent = 
-               Top = 7
-               Left = 324
-               Bottom = 177
-               Right = 561
-            End
-            DisplayFlags = 280
-            TopColumn = 0
+            TopColumn = 1
          End
       End
    End
@@ -110,22 +99,20 @@ Begin DesignProperties =
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 898
-         Table = 1169
-         Output = 727
+         Alias = 900
+         Table = 1170
+         Output = 720
          Append = 1400
          NewValue = 1170
-         SortType = 1354
-         SortOrder = 1411
+         SortType = 1350
+         SortOrder = 1410
          GroupBy = 1350
-         Filter = 1354
+         Filter = 1350
          Or = 1350
          Or = 1350
          Or = 1350
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'Customers_View';
-
-
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ResponsiblePersons_SimpleView';
 

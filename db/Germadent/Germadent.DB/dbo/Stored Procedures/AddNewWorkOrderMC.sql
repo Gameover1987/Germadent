@@ -19,10 +19,13 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 AS
 BEGIN
 	
+	
 	DECLARE @max_Id int,
-			@workOrderID int;
+			@workOrderID int		
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
+	
+
 	SELECT @max_Id = MAX(WorkOrderID)
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
@@ -34,7 +37,7 @@ BEGIN
 	VALUES 
 		(1, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
 
-	SELECT @workOrderID = SCOPE_IDENTITY()
+	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderMC
 		(WorkOrderMCID, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
