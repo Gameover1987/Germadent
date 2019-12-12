@@ -1,11 +1,13 @@
-﻿using Germadent.Rma.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Germadent.DataAccessService.Entities;
+using Germadent.DataAccessService.Entities.Conversion;
+using Germadent.Rma.Model;
 
-namespace Germadent.DataAccessService
+namespace Germadent.DataAccessService.Repository
 {
     public class RmaRepository : IRmaRepository
     {
@@ -56,7 +58,25 @@ namespace Germadent.DataAccessService
 
         public Order GetOrderDetails(int id)
         {
-            throw new NotImplementedException();
+            var cmdText = string.Format("select * from GetWorkOrderById({0})", id);
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var orderEntity = new OrderEntity();
+                    while (reader.Read())
+                    {
+                        orderEntity.WorkOrderId = int.Parse(reader[nameof(orderEntity.WorkOrderId)].ToString());
+                    }
+                    reader.Close();
+
+                    return _converter.ConvertToOrder(orderEntity);
+                }
+            }
         }
 
         public OrderLite[] GetOrders(OrdersFilter filter)

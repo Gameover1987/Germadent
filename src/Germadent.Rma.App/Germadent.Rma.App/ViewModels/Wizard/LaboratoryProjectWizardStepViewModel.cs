@@ -90,8 +90,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(Order order)
         {
-            FillMaterials(order);
-
             FillTeethCollection(order);
 
             WorkDescription = order.WorkDescription;
@@ -116,22 +114,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Mamelons = Mamelons;
             order.SecondaryDentin = SecondaryDentin;
             order.PaintedFissurs = PaintedFissurs;
-            order.Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray();
             order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
-        }
-
-        private void FillMaterials(Order order)
-        {
-            var materialsFromOrder = order.Materials == null ? new string[0] : order.Materials.Select(x => x.Name).ToArray();
-
-            var materials = _rmaOperations.GetMaterials();
-            foreach (var material in materials)
-            {
-                Materials.Add(new MaterialViewModel(material)
-                {
-                    IsChecked = materialsFromOrder.Contains(material.Name)
-                });
-            }
         }
 
         private void FillTeethCollection(Order order)

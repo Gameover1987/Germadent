@@ -8,6 +8,11 @@ namespace Germadent.DataAccessService.Entities
     public class OrderLiteEntity
     {  
         /// <summary>
+        /// Идентификатор заказ-наряда
+        /// </summary>
+        public int OrderId { get; set; }
+
+        /// <summary>
         /// Тип филиала
         /// </summary>
         public int BranchTypeId { get; set; }

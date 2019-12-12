@@ -9,6 +9,8 @@ namespace Germadent.Rma.Model
     {
         public int Id { get; set; }
 
+        public int Status { get; set; }
+
         public string Number { get; set; }
 
         public BranchType BranchType { get; set; }
@@ -21,8 +23,6 @@ namespace Germadent.Rma.Model
 
         public DateTime? Closed { get; set; }
 
-        public Material[] Materials { get; set; }
-
         public Teeth[] Mouth { get; set; }
 
         public string Doctor { get; set; }
@@ -34,8 +34,6 @@ namespace Germadent.Rma.Model
         public DateTime? FittingDate { get; set; }
 
         public string WorkDescription { get; set; }
-
-        public DateTime Completed { get; set; }
 
         public string ColorAndFeatures { get; set; }
 
@@ -62,5 +60,7 @@ namespace Germadent.Rma.Model
         public string ImplantSystem { get; set; }
 
         public string IndividualAbutmentProcessing { get; set; }
+
+        public bool WorkAccepted { get; set; }
     }
 }

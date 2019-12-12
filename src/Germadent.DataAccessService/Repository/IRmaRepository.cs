@@ -1,6 +1,6 @@
 ﻿using Germadent.Rma.Model;
 
-namespace Germadent.DataAccessService
+namespace Germadent.DataAccessService.Repository
 {
     public interface IRmaRepository
     {

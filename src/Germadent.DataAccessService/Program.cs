@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Nancy;
-using Nancy.Bootstrapper;
-using Nancy.Configuration;
+using Germadent.DataAccessService.Configuration;
 using Nancy.Hosting.Self;
 
 namespace Germadent.DataAccessService
@@ -14,11 +8,11 @@ namespace Germadent.DataAccessService
     {
         static void Main(string[] args)
         {
-            var url = new Uri("http://localhost:4444");
-            using (var host = new NancyHost(url))
+            var configuration = new ServiceConfiguration();
+            using (var host = new NancyHost(new Uri(configuration.Url)))
             {
                 host.Start();
-                Console.WriteLine("Service started at {0}", url);
+                Console.WriteLine("Service started at {0}", configuration.Url);
                 Console.ReadKey();
             }
         }
