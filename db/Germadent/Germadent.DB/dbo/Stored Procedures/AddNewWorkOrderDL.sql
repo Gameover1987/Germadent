@@ -33,7 +33,7 @@ BEGIN
 	VALUES 
 		(2, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
 
-	SELECT @workOrderID = SCOPE_IDENTITY()
+	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
 		(WorkOrderDLID, TransparenceID, TypeOfWork, FittingDate, DateOfCompletion, ColorAndFeatures)
