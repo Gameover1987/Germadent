@@ -14,18 +14,15 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	@carcassColor nvarchar(30) = NULL,
 	@implantSystem nvarchar(70) = NULL,
 	@individualAbutmentProcessing nvarchar(70) = NULL,
-	@understaff nvarchar(100) = NULL
+	@understaff nvarchar(100) = NULL,
+	@workOrderID int	 output
 
 AS
 BEGIN
-	
-	
-	DECLARE @max_Id int,
-			@workOrderID int		
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	
-
+	DECLARE @max_Id int
 	SELECT @max_Id = MAX(WorkOrderID)
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
