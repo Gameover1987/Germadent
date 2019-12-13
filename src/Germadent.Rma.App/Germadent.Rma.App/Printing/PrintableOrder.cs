@@ -13,11 +13,8 @@ namespace Germadent.Rma.App.Printing
     {
         public int WorkOrderID { get; set; }
         public string DocNumber { get; set; }
-        public int BranchTypeID { get; set; }
         public string BranchType { get; set; }
-        public int CustomerID { get; set; }
         public string CustomerName { get; set; }
-        public int PatientID { get; set; }
         public string PatientFullName { get; set; }
         public int PatientAge { get; set; }
         public bool PatientGender { get; set; }
@@ -34,7 +31,6 @@ namespace Germadent.Rma.App.Printing
         public string ImplantSystem { get; set; }
         public string IndividualAbutmentProcessing { get; set; }
         public string Understaff { get; set; }
-        public string TypeOfWork { get; set; }
         public DateTime DateOfCompletion { get; set; }
         public string FittingDate { get; set; }
         public string ColorAndFeatures { get; set; }
