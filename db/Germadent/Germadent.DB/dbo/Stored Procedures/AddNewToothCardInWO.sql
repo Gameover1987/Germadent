@@ -11,9 +11,9 @@ AS
 BEGIN
 	
 	INSERT INTO ToothCard
-		(WorkOrderID, ToothNumber, MaterialID, ProstheticsID)
-	SELECT ToothNumber, WorkOrderID, MaterialID, ProstheticsID
+		(WorkOrderID, ToothNumber, MaterialID, ProstheticsID, Bridge)
+	SELECT WorkOrderID, ToothNumber, MaterialID, ProstheticsID, Bridge
 	FROM OPENJSON (@jsonString)
-		WITH (workOrderID int, toothNumber int, materialID int, prostheticsID int)		
+		WITH (workOrderID int, toothNumber int, materialID int, prostheticsID int, bridge int)		
 
 END
