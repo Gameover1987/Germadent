@@ -4,7 +4,7 @@
     [Status]              TINYINT        CONSTRAINT [DF_WorkOrder_Status] DEFAULT ((0)) NOT NULL,
     [DocNumber]           NVARCHAR (10)  NOT NULL,
     [CustomerID]          INT            NOT NULL,
-    [ResponsiblePersonID] INT            NULL,
+    [ResponsiblePersonID] INT            NOT NULL,
     [PatientID]           INT            NOT NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
@@ -27,6 +27,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX-CustomerID]
     ON [dbo].[WorkOrder]([CustomerID] ASC);
@@ -35,4 +37,9 @@ CREATE NONCLUSTERED INDEX [IX-CustomerID]
 GO
 CREATE NONCLUSTERED INDEX [IX-PatientID]
     ON [dbo].[WorkOrder]([PatientID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ResponsiblePerson]
+    ON [dbo].[WorkOrder]([ResponsiblePersonID] ASC);
 

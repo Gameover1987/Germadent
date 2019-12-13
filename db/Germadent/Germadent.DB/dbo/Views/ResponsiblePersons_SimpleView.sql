@@ -1,7 +1,8 @@
 ﻿CREATE VIEW dbo.ResponsiblePersons_SimpleView
 AS
-SELECT   ResponsiblePersonID, CustomerID, RP_Position, ResponsiblePerson, RP_Phone
-FROM      dbo.ResponsiblePersons
+SELECT   rp.ResponsiblePersonID, rp.CustomerID, c.CustomerName, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone
+FROM      dbo.ResponsiblePersons AS rp INNER JOIN
+                dbo.Customers AS c ON rp.CustomerID = c.CustomerID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ResponsiblePersons_SimpleView';
 
@@ -78,7 +79,7 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "ResponsiblePersons"
+         Begin Table = "rp"
             Begin Extent = 
                Top = 6
                Left = 40
@@ -87,6 +88,16 @@ Begin DesignProperties =
             End
             DisplayFlags = 280
             TopColumn = 1
+         End
+         Begin Table = "c"
+            Begin Extent = 
+               Top = 24
+               Left = 365
+               Bottom = 127
+               Right = 546
+            End
+            DisplayFlags = 280
+            TopColumn = 0
          End
       End
    End
@@ -99,15 +110,15 @@ Begin DesignProperties =
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -115,4 +126,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ResponsiblePersons_SimpleView';
+
+
 
