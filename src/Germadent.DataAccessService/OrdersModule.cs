@@ -40,10 +40,10 @@ namespace Germadent.DataAccessService
 
         private object AddOrder()
         {
-            var labOrder = this.Bind<OrderDto>();
-            _rmaRepository.AddOrder(labOrder);
+            var order = this.Bind<OrderDto>();
+            _rmaRepository.AddOrder(order);
 
-            return Response.AsJson(labOrder);
+            return Response.AsJson(order);
         }
 
         private object UpdateOrder()

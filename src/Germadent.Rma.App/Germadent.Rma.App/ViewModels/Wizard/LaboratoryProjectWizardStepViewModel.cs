@@ -64,7 +64,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
-            order.Transparency = order.Transparency;
+            order.Transparency = Transparency;
 
             order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }

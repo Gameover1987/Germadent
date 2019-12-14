@@ -35,7 +35,7 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// ФИО пациента
         /// </summary>
-        public string PatientFnp { get; set; }
+        public string PatientFullName { get; set; }
 
         /// <summary>
         /// Дата создания

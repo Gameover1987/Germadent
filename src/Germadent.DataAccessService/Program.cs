@@ -23,8 +23,8 @@ namespace Germadent.DataAccessService
 
         static void Main(string[] args)
         {
-            var resolver = new DataAccessServiceBootstrapper();
-            var serviceConfiguration = resolver.GetServiceConfiguration();
+            var bootstrapper = new DataAccessServiceBootstrapper();
+            var serviceConfiguration = bootstrapper.GetServiceConfiguration();
 
             var host = HostFactory.New(hostConfigurator =>
             {
