@@ -50,3 +50,6 @@ src/Germadent.DataAccessService/obj/
 db/Germadent/.vs/
 db/Germadent/Germadent.DB/obj/
 db/Germadent/Germadent.DB/bin/
+src/Germadent.Rma.Model.Test/obj/
+src/Germadent.Rma.Model.Test/bin/
+src/.vs/

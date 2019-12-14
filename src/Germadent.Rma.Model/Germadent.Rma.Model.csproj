@@ -39,6 +39,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="MaterialDto.cs" />
     <Compile Include="OrderDto.cs" />
+    <Compile Include="OrderDtoExtenisons.cs" />
     <Compile Include="OrderLiteDto.cs" />
     <Compile Include="OrdersFilter.cs" />
   </ItemGroup>

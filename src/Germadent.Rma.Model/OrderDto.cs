@@ -7,7 +7,7 @@ namespace Germadent.Rma.Model
     /// </summary>
     public class OrderDto
     {
-        public int Id { get; set; }
+        public int WorkOrderId { get; set; }
 
         public int Status { get; set; }
 

@@ -129,7 +129,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             {
                 step.AssemblyOrder(order);
 
-                order.Id = _order.Id;
+                order.WorkOrderId = _order.WorkOrderId;
                 order.BranchType = _order.BranchType;
                 order.Number = _order.Number;
                 order.Closed = _order.Closed;

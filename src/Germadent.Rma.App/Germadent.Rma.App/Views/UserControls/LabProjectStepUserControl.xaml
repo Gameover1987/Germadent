@@ -9,7 +9,6 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
-             d:DesignHeight="600"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.Resources>
@@ -54,6 +53,6 @@
             <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=6}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
         </StackPanel>
 
-        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
+        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" Height="300" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

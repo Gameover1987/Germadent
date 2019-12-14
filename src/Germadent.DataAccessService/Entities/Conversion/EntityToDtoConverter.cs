@@ -8,7 +8,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         {
             return new OrderDto
             {
-                Id = entity.WorkOrderId,
+                WorkOrderId = entity.WorkOrderId,
                 Status =  entity.Status,
                 AdditionalInfo = entity.AdditionalInfo,
                 BranchType = (BranchType)entity.BranchTypeId,

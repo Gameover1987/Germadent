@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Germadent.Common.Extensions;
 
 namespace Germadent.UI.Converters
 {
@@ -17,7 +18,13 @@ namespace Germadent.UI.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var boolValue = (bool) value;
+            if (boolValue)
+            {
+                return parameter.ToInt();
+            }
+
+            return Binding.DoNothing;
         }
     }
 }

@@ -24,7 +24,18 @@ namespace Germadent.DataAccessService.Repository
 
         public void AddOrder(OrderDto order)
         {
+            var cmdText = "AddNewWorkOrderDL";
 
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.GetOrderDocNumber();
+                }
+            }
         }
 
         public void UpdateOrder(OrderDto order)
