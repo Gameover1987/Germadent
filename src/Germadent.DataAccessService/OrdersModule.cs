@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Germadent.DataAccessService.Configuration;
-using Germadent.DataAccessService.Entities.Conversion;
-using Germadent.DataAccessService.Repository;
+﻿using Germadent.DataAccessService.Repository;
 using Germadent.Rma.Model;
 using Nancy;
 using Nancy.ModelBinding;
@@ -13,18 +9,18 @@ namespace Germadent.DataAccessService
     {
         private readonly IRmaRepository _rmaRepository;
 
-        public OrdersModule()
+        public OrdersModule(IRmaRepository rmaRepository)
         {
-            _rmaRepository = new RmaRepository(new EntityToDtoConverter(), new ServiceConfiguration());
+            _rmaRepository = rmaRepository;
 
             ModulePath = "api/Rma";
-            
-            Get("/orders/{id}", GetOrderById);
-            Post("/getOrdersByFilter", GetOrdersByFilter);
-            Post("/addOrder", AddOrder);
-            Put("/updateOrder", UpdateOrder);
 
-            Get("/materials", GetMaterials);
+            Get["/orders/{id}"] = x => GetOrderById(x);
+            Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
+            Post["/addOrder"] = x => AddOrder();
+            Put["/updateOrder"] = x => UpdateOrder();
+
+            Get["/materials"] = x => GetMaterials();
         }
 
         private object GetOrderById(dynamic arg)
@@ -33,7 +29,7 @@ namespace Germadent.DataAccessService
             return Response.AsJson(_rmaRepository.GetOrderDetails(id));
         }
 
-        private object GetOrdersByFilter(object arg)
+        private object GetOrdersByFilter()
         {
             var filter = this.Bind<OrdersFilter>();
 
@@ -42,7 +38,7 @@ namespace Germadent.DataAccessService
             return Response.AsJson(orders);
         }
 
-        private object AddOrder(object arg)
+        private object AddOrder()
         {
             var labOrder = this.Bind<OrderDto>();
             _rmaRepository.AddOrder(labOrder);
@@ -50,7 +46,7 @@ namespace Germadent.DataAccessService
             return Response.AsJson(labOrder);
         }
 
-        private object UpdateOrder(object arg)
+        private object UpdateOrder()
         {
             var labOrder = this.Bind<OrderDto>();
             _rmaRepository.UpdateOrder(labOrder);
@@ -58,7 +54,7 @@ namespace Germadent.DataAccessService
             return Response.AsJson(labOrder);
         }
 
-        private object GetMaterials(object arg)
+        private object GetMaterials()
         {
             return Response.AsJson(_rmaRepository.GetMaterials());
         }
