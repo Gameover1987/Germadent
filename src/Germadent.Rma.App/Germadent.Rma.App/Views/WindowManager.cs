@@ -1,5 +1,4 @@
-﻿using System;
-using Germadent.Rma.App.ViewModels;
+﻿using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;

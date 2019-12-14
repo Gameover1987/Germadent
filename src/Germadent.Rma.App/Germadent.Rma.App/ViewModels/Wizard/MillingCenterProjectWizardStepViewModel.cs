@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;

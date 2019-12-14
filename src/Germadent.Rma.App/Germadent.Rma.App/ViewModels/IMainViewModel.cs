@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Germadent.UI.Commands;
+﻿using Germadent.UI.Commands;
 
 namespace Germadent.Rma.App.ViewModels
 {

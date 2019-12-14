@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;

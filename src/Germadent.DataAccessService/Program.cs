@@ -1,7 +1,4 @@
-﻿using System;
-using Germadent.DataAccessService.Configuration;
-using Germadent.DataAccessService.Infrastructure;
-using Nancy.Hosting.Self;
+﻿using Germadent.DataAccessService.Infrastructure;
 using Topshelf;
 
 namespace Germadent.DataAccessService

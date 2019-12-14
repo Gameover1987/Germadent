@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 
 namespace Germadent.Rma.App.Views.UserControls
