@@ -8,12 +8,23 @@ namespace Germadent.DataAccessService
 {
     public class DataAccessServiceBootstrapper : UnityNancyBootstrapper
     {
-        protected override void RegisterBootstrapperTypes(IUnityContainer applicationContainer)
+        private readonly IUnityContainer _container = new UnityContainer();
+
+        public DataAccessServiceBootstrapper()
         {
-            base.RegisterBootstrapperTypes(applicationContainer);
-            applicationContainer.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
-            applicationContainer.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
-            applicationContainer.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
+        }
+
+        protected override IUnityContainer GetApplicationContainer()
+        {
+            return _container;
+        }
+
+        public IServiceConfiguration GetServiceConfiguration()
+        {
+            return _container.Resolve<IServiceConfiguration>();
         }
     }
 }

@@ -56,13 +56,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Topshelf, Version=4.2.1.215, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Topshelf.4.2.1\lib\net452\Topshelf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\IServiceConfiguration.cs" />
@@ -75,6 +80,14 @@
     <Compile Include="Entities\OrderLiteEntity.cs" />
     <Compile Include="Entities\Conversion\IEntityToDtoConverter.cs" />
     <Compile Include="DataAccessServiceBootstrapper.cs" />
+    <Compile Include="Infrastructure\NancyService.cs" />
+    <Compile Include="Infrastructure\NancyServiceConfiguration.cs" />
+    <Compile Include="Infrastructure\NancyServiceConfiguratorExtensions.cs" />
+    <Compile Include="Infrastructure\NetSh.cs" />
+    <Compile Include="Infrastructure\NetShResult.cs" />
+    <Compile Include="Infrastructure\NetShResultCode.cs" />
+    <Compile Include="Infrastructure\UacHelper.cs" />
+    <Compile Include="Infrastructure\UrlReservationsHelper.cs" />
     <Compile Include="Repository\IRmaRepository.cs" />
     <Compile Include="OrdersModule.cs" />
     <Compile Include="Program.cs" />
