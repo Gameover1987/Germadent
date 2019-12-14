@@ -25,9 +25,11 @@ namespace Germadent.Rma.Model
 
         public Teeth[] Mouth { get; set; }
 
-        public string Doctor { get; set; }
+        public string ResponsiblePerson { get; set; }
 
-        public Sex Sex { get; set; }
+        public string ResponsiblePersonPhone { get; set; }
+
+        public Gender Gender { get; set; }
 
         public int Age { get; set; }
 
@@ -36,22 +38,6 @@ namespace Germadent.Rma.Model
         public string WorkDescription { get; set; }
 
         public string ColorAndFeatures { get; set; }
-
-        public bool NonOpacity { get; set; }
-
-        public bool LowOpacity { get; set; }
-
-        public bool HighOpacity { get; set; }
-
-        public bool Mamelons { get; set; }
-
-        public bool SecondaryDentin { get; set; }
-
-        public bool PaintedFissurs { get; set; }
-
-        public string TechnicFio { get; set; }
-
-        public string TechnikPhone { get; set; }
 
         public string AdditionalInfo { get; set; }
 

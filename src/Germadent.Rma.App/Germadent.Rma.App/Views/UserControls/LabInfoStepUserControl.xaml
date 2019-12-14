@@ -48,9 +48,9 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Пол" />
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="М" GroupName="sex"
-                             IsChecked="{Binding Sex, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:Sex.Male}}"/>
+                             IsChecked="{Binding Gender, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:Gender.Male}}"/>
             <RadioButton Content="Ж" Margin="6,0,0,0" GroupName="sex"
-                             IsChecked="{Binding Sex, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:Sex.Female}}"/>
+                             IsChecked="{Binding Gender, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:Gender.Female}}"/>
             <TextBlock Text="Возраст" Margin="32,0,0,3" />
             <TextBox Margin="6,0,0,0" Width="50" HorizontalAlignment="Left"
                          Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" />

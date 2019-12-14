@@ -22,13 +22,12 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 IndividualAbutmentProcessing = entity.IndividualAbutmentProcessing,
                 Number = entity.DocNumber,
                 Patient = entity.Patient,
-                //Age = 
-                //Doctor = entity.
-                //Sex = 
-                //TechnikPhone = 
-                //Mouth = 
+                Age = entity.Age,
+                ResponsiblePerson = entity.ResponsiblePerson,
+                ResponsiblePersonPhone = entity.ResponsiblePersonPhone,
+                Gender = entity.PatientGender == true ? Gender.Male : Gender.Female,
                 WorkDescription = entity.WorkDescription,
-                WorkAccepted = entity.FlagWorkAccept,
+                WorkAccepted = entity.FlagWorkAccept
             };
         }
 

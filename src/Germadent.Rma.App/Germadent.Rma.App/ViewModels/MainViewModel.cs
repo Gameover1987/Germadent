@@ -135,13 +135,21 @@ namespace Germadent.Rma.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            var labOrder = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
-            var changedLabOrder = _windowManager.CreateLabOrder(labOrder);
-            if (changedLabOrder == null)
+            OrderDto changedOrderDto = null;
+            var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
+            if (orderDto.BranchType == BranchType.Laboratory)
+            {
+                changedOrderDto = _windowManager.CreateLabOrder(orderDto);
+            }
+            else if (orderDto.BranchType == BranchType.MillingCenter)
+            {
+                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto);
+            }
+
+            if (changedOrderDto == null)
                 return;
 
-            var labOrderFromService = _rmaOperations.UpdateOrder(changedLabOrder);
-            //SelectedOrder.Update(labOrderFromService);
+            _rmaOperations.UpdateOrder(changedOrderDto);
         }
     }
 }

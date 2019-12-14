@@ -1,8 +1,9 @@
 ﻿namespace Germadent.Rma.Model
 {
-    public enum Sex
+    public enum Gender
     {
-        Male, Female
+        Female = 0,
+        Male = 1, 
     }
 
     public enum AdditionalMillingInfo

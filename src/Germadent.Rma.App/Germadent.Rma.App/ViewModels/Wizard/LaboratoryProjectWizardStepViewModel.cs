@@ -92,13 +92,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             WorkDescription = order.WorkDescription;
             ColorAndFeatures = order.ColorAndFeatures;
-            NonOpacity = order.NonOpacity;
-            HighOpacity = order.HighOpacity;
-            LowOpacity = order.LowOpacity;
-            Mamelons = order.Mamelons;
-            SecondaryDentin = order.SecondaryDentin;
-            PaintedFissurs = order.PaintedFissurs;
-
+          
             OnPropertyChanged();
         }
 
@@ -106,12 +100,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
-            order.NonOpacity = NonOpacity;
-            order.HighOpacity = HighOpacity;
-            order.LowOpacity = LowOpacity;
-            order.Mamelons = Mamelons;
-            order.SecondaryDentin = SecondaryDentin;
-            order.PaintedFissurs = PaintedFissurs;
             order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 

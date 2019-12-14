@@ -27,5 +27,15 @@ namespace Germadent.DataAccessService.Entities
         /// Прозрачность
         /// </summary>
         public int Transparency { get; set; }
+
+        /// <summary>
+        /// Возраст
+        /// </summary>
+        public int Age { get; set; }
+
+        /// <summary>
+        /// Пол
+        /// </summary>
+        public bool PatientGender { get; set; }
     }
 }

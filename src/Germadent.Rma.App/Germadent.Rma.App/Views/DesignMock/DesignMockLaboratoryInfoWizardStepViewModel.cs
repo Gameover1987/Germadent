@@ -9,10 +9,10 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockLaboratoryInfoWizardStepViewModel()
         {
             Customer = "Customer";
-            DoctorFio = "Doctor";
+            DoctorFio = "ResponsiblePerson";
             PatientFio = "Patient";
 
-            Sex = Sex.Female;
+            Gender = Gender.Female;
             Age = 22;
 
             Created = DateTime.Now;
