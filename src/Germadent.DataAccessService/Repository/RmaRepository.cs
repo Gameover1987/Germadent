@@ -22,7 +22,7 @@ namespace Germadent.DataAccessService.Repository
             _configuration = configuration;
         }
 
-        public void AddOrder(OrderDto order)
+        public OrderDto AddOrder(OrderDto order)
         {
             var cmdText = "AddNewWorkOrderDL";
 
@@ -34,6 +34,17 @@ namespace Germadent.DataAccessService.Repository
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.GetOrderDocNumber();
+                    command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.NVarChar)).Value = order.Customer;
+                    command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
+                    command.Parameters.Add(new SqlParameter("@patientID", SqlDbType.NVarChar)).Value = order.Patient;
+                    command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                    command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
+                    command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
+                    command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
+                    command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.DateTime)).Value = order.ColorAndFeatures;
+
+                    order.WorkOrderId = command.ExecuteNonQuery();
+                    return order;
                 }
             }
         }

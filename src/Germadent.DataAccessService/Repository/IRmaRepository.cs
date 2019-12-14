@@ -22,7 +22,7 @@ namespace Germadent.DataAccessService.Repository
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        void AddOrder(OrderDto order);
+        OrderDto AddOrder(OrderDto order);
 
         /// <summary>
         /// Обновляет заказ наряд
