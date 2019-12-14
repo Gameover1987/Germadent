@@ -7,11 +7,11 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderDL]
 
 	@docNumber nchar(10),
 	@customerID int,
+	@responsiblePersonId int,
 	@patientID int,
 	@workDescription nvarchar(250) = NULL,
 	@officeAdminID int,
 	@transparenceID int = NULL,
-	@typeOfWork nvarchar(250) = NULL,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
 	@colorAndFeatures nvarchar(100) = NULL,
@@ -30,15 +30,15 @@ BEGIN
 
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
+		(BranchTypeID, DocNumber, ResponsiblePersonID, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
 	VALUES 
-		(2, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
+		(2, @docNumber, @customerID, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
-		(WorkOrderDLID, TransparenceID, TypeOfWork, FittingDate, DateOfCompletion, ColorAndFeatures)
+		(WorkOrderDLID, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
 	VALUES
-		(@workOrderID, @transparenceID, @typeOfWork, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+		(@workOrderID, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
 
 END

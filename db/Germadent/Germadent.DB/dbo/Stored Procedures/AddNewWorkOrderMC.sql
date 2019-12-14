@@ -7,6 +7,7 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	
 	@docNumber nchar(10),
 	@customerID int,
+	@responsiblePersonId int,
 	@patientID int,
 	@workDescription nvarchar(250) = NULL,
 	@officeAdminID int,
@@ -30,9 +31,9 @@ BEGIN
 	-- Собственно вставка:
 	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
+		(BranchTypeID, DocNumber, CustomerID, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID)
 	VALUES 
-		(1, @docNumber, @customerID, @patientID, GETDATE(), @workDescription, @officeAdminID)
+		(1, @docNumber, @customerID, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 

@@ -1,7 +1,7 @@
 ﻿CREATE VIEW dbo.WorkOrderMC_SimpleView
 AS
-SELECT   wo.WorkOrderID, wo.DocNumber, wo.BranchTypeID, wo.Status, wo.CustomerID, wo.PatientID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.Created, 
-                wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed
+SELECT   wo.WorkOrderID, wo.DocNumber, wo.BranchTypeID, wo.Status, wo.CustomerID, wo.ResponsiblePersonID, wo.PatientID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, 
+                wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.Closed
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 GO
@@ -14,7 +14,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[33] 4[41] 2[16] 3) )"
+         Configuration = "(H (1[35] 4[40] 2[16] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -84,7 +84,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 40
-               Bottom = 308
+               Bottom = 322
                Right = 222
             End
             DisplayFlags = 280
@@ -127,4 +127,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderMC_SimpleView';
+
+
 
