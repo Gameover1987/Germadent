@@ -26,8 +26,10 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 ResponsiblePerson = entity.ResponsiblePerson,
                 ResponsiblePersonPhone = entity.ResponsiblePersonPhone,
                 Gender = entity.PatientGender == true ? Gender.Male : Gender.Female,
+                Transparency = entity.Transparency,
                 WorkDescription = entity.WorkDescription,
-                WorkAccepted = entity.FlagWorkAccept
+                WorkAccepted = entity.FlagWorkAccept,
+                Understaff = entity.Understaff
             };
         }
 

@@ -11,19 +11,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly IRmaOperations _rmaOperations;
 
         private string _workDescription;
-        private string _color;
-
-        private bool _nonOpacity;
-        private bool _highOpacity;
-        private bool _lowOpacity;
-        private bool _mamelons;
-        private bool _secondaryDentin;
-        private bool _paintedFissurs;
-        private AdditionalMillingInfo _additionalMillingInfo;
-        private int _ledgePlungeCustom;
+        private string _carcassColor;
+        private string _additionalMillingInfo;
+        private string _individualAbutmentProcessing;
         private string _understaff;
-        private string _titaniumBase;
-        private bool _agreement;
+        private bool _workAccepted;
 
         public MillingCenterProjectWizardStepViewModel(IRmaOperations rmaOperations)
         {
@@ -35,7 +27,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return "Проект"; }
         }
 
-        public AdditionalMillingInfo AdditionalMillingInfo
+        public string AdditionalMillingInfo
         {
             get { return _additionalMillingInfo; }
             set { SetProperty(() => _additionalMillingInfo, value); }
@@ -47,52 +39,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workDescription, value); }
         }
 
-        public string Color
+        public string CarcassColor
         {
-            get { return _color; }
-            set { SetProperty(() => _color, value); }
+            get { return _carcassColor; }
+            set { SetProperty(() => _carcassColor, value); }
         }
 
-        public bool NonOpacity
+       
+        public string IndividualAbutmentProcessing
         {
-            get { return _nonOpacity; }
-            set { SetProperty(() => _nonOpacity, value); }
-        }
-
-        public bool HighOpacity
-        {
-            get { return _highOpacity; }
-            set { SetProperty(() => _highOpacity, value); }
-        }
-
-        public bool LowOpacity
-        {
-            get { return _lowOpacity; }
-            set { SetProperty(() => _lowOpacity, value); }
-        }
-
-        public bool Mamelons
-        {
-            get { return _mamelons; }
-            set { SetProperty(() => _mamelons, value); }
-        }
-
-        public bool SecondaryDentin
-        {
-            get { return _secondaryDentin; }
-            set { SetProperty(() => _secondaryDentin, value); }
-        }
-
-        public bool PaintedFissurs
-        {
-            get { return _paintedFissurs; }
-            set { SetProperty(() => _paintedFissurs, value); }
-        }
-
-        public int LedgePlungeCustom
-        {
-            get { return _ledgePlungeCustom; }
-            set { SetProperty(() => _ledgePlungeCustom, value); }
+            get { return _individualAbutmentProcessing; }
+            set { SetProperty(() => _individualAbutmentProcessing, value); }
         }
 
         public string Understaff
@@ -101,16 +58,23 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _understaff, value); }
         }
 
-        public bool Agreement
+        public bool WorkAccepted
         {
-            get { return _agreement; }
-            set { SetProperty(() => _agreement, value); }
+            get { return _workAccepted; }
+            set { SetProperty(() => _workAccepted, value); }
         }
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
 
         public void Initialize(OrderDto order)
         {
+            AdditionalMillingInfo = order.AdditionalInfo;
+            WorkDescription = order.WorkDescription;
+            CarcassColor = order.CarcassColor;
+            IndividualAbutmentProcessing = order.IndividualAbutmentProcessing;
+            Understaff = order.Understaff;
+            WorkAccepted = order.WorkAccepted;
+
             FillTeethCollection();
 
             OnPropertyChanged();
@@ -118,7 +82,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void AssemblyOrder(OrderDto order)
         {
-            
+            order.AdditionalInfo = AdditionalMillingInfo;
+            order.WorkDescription = WorkDescription;
+            order.CarcassColor = CarcassColor;
+            order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
+            order.Understaff = Understaff;
+            order.WorkAccepted = WorkAccepted;
         }
 
         private void FillTeethCollection()

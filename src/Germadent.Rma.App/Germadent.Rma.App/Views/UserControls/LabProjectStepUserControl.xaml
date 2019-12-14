@@ -43,14 +43,15 @@
         <TextBlock Text="Прозрачность" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" Margin="6,0,0,0">
-            <CheckBox IsChecked="{Binding NonOpacity}" Content="Не прозрачные зубы" Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding LowOpacity}" Content="Зубы со слабо выраженной прозрачностью"
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=1}" 
+                         Content="Непрозрачные зубы" Margin="0,6,0,0" />
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=2}"  Margin="0,6,0,0" 
+                         Content="Зубы со слабо выраженной прозрачностью"/>
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=3}" Content="Зубы с сильно выраженной прозрачностью"
                           Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding HighOpacity}" Content="Зубы с сильно выраженной прозрачностью"
-                          Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding Mamelons}" Content="Мамелоны" Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding SecondaryDentin}" Content="Вторичный дентин" Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding PaintedFissurs}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=4}" Content="Мамелоны" Margin="0,6,0,0" />
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=5}" Content="Вторичный дентин" Margin="0,6,0,0" />
+            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=6}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
         </StackPanel>
 
         <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />

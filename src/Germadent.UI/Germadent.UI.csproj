@@ -58,6 +58,7 @@
     <Compile Include="Converters\EnumToBoolConverter.cs" />
     <Compile Include="Converters\EnumToInvisibilityConverter.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
+    <Compile Include="Converters\IntToBoolConverter.cs" />
     <Compile Include="Helpers\EventManagerEx.cs" />
     <Compile Include="Helpers\FocusProperties.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />

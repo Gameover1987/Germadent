@@ -98,7 +98,8 @@ namespace Germadent.DataAccessService.Repository
                             ResponsiblePerson = reader["ResponsiblePerson"].ToString(),
                             ResponsiblePersonPhone = reader["RP_Phone"].ToString(),
                             PatientGender = reader["PatientGender"].ToBool(),
-                            Age = reader["PatientAge"].ToInt()
+                            Age = reader["PatientAge"].ToInt(),
+                            Transparency = reader["TransparenceId"].ToInt()
                         };
 
                         if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))

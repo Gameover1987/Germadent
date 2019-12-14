@@ -36,40 +36,23 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Доп. информация" />
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
-            <RadioButton Content="Неокрашенный" GroupName="info"
-                         IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.NotPainted}}"/>
-            <RadioButton Content="Окрашенный" Margin="6,0,0,0" GroupName="info"
-                         IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.Painted}}"/>
-            <RadioButton Content="Предокрашенный" Margin="6,0,0,0" GroupName="info"
-                         IsChecked="{Binding AdditionalMillingInfo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static models:AdditionalMillingInfo.PrePainted}}"/>
-        </StackPanel>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AdditionalMillingInfo}" Margin="6,6,0,0" />
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock  Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" Margin="6,0,0,0">
-            <CheckBox IsChecked="{Binding NonOpacity}" Content="Станочная обработка" Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding LowOpacity}" Content="Полировка"
-                      Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding HighOpacity}" Content="Погружение уступа 0.5 мм"
-                      Margin="0,6,0,0" />
-            <CheckBox IsChecked="{Binding Mamelons}" Content="Погружение уступа 1.0 мм" Margin="0,6,0,0" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Другое" Margin="0,3,0,0"></TextBlock>
-                <TextBox Text="{Binding LedgePlungeCustom}" Margin="6,6,0,0" Width="50"/>
-            </StackPanel>
-            <TextBlock Text="Если глубина уступа не указана, уступ погружения на 0.5 мм" HorizontalAlignment="Left" Margin="0" FontSize="10"/>
-        </StackPanel>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
+                 Text="{Binding IndividualAbutmentProcessing, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Докомплектовать заказ" />
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
 
         <local:MouthUserControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" Height="200" />
-        <CheckBox Grid.Row="8" Grid.Column="1"  Content="Согласование работы" IsChecked="{Binding Agreement}" Margin="0,6,0,0"/>
+        <CheckBox Grid.Row="8" Grid.Column="1"  Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="0,6,0,0"/>
     </Grid>
 </UserControl>

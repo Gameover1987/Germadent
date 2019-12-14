@@ -73,7 +73,7 @@ namespace Germadent.Rma.App.ViewModels
             {
                 Created = DateTime.Now,
                 BranchType = BranchType.Laboratory
-            });
+            }, WizardMode.Create);
             if (labOrder == null)
                 return;
 
@@ -139,11 +139,11 @@ namespace Germadent.Rma.App.ViewModels
             var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
             if (orderDto.BranchType == BranchType.Laboratory)
             {
-                changedOrderDto = _windowManager.CreateLabOrder(orderDto);
+                changedOrderDto = _windowManager.CreateLabOrder(orderDto, WizardMode.Edit);
             }
             else if (orderDto.BranchType == BranchType.MillingCenter)
             {
-                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto);
+                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto, WizardMode.Edit);
             }
 
             if (changedOrderDto == null)

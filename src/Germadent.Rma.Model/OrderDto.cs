@@ -48,5 +48,9 @@ namespace Germadent.Rma.Model
         public string IndividualAbutmentProcessing { get; set; }
 
         public bool WorkAccepted { get; set; }
+
+        public int Transparency { get; set; }
+
+        public string Understaff { get; set; }
     }
 }

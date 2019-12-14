@@ -35,17 +35,17 @@
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора"  />
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
-                 Text="{Binding PatientFio, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding Patient, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="0,6,6,0" />
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
-                 Text="{Binding TechnicFio, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Номер тел. техника" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="0,6,6,0" />
         <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
-                 Text="{Binding TechnicPhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding ResponsiblePersonPhone, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Row="4" Text="Дата и время получения работы"/>
         <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"

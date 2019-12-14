@@ -7,9 +7,9 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockMillingCenterInfoWizardStepViewModel()
         {
             Customer = "Customer";
-            PatientFio = "PatientInfo";
-            TechnicFio = "TechnicFio";
-            TechnicPhoneNumber = "TechnicPhoneNumber";
+            Patient = "PatientInfo";
+            ResponsiblePerson = "ResponsiblePerson";
+            ResponsiblePersonPhone = "ResponsiblePersonPhone";
         }
     }
 }

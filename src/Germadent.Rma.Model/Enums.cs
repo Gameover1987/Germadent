@@ -6,13 +6,6 @@
         Male = 1, 
     }
 
-    public enum AdditionalMillingInfo
-    {
-        NotPainted,
-        Painted,
-        PrePainted
-    }
-
     public enum CarcasColor
     {
         VitaClassical, Opak, Translucen

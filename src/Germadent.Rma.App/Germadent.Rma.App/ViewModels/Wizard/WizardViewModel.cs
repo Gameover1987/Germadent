@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -10,9 +11,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IWizardViewModel
     {
-        bool IsReadOnly { get; }
+        WizardMode WizardMode { get; }
 
-        void Initialize(string title, bool isReadOnly, OrderDto order);
+        void Initialize(WizardMode wizardMode, OrderDto order);
 
         OrderDto GetOrder();
     }
@@ -42,7 +43,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public string Title { get; protected set; }
 
-        public bool IsReadOnly { get; private set; }
+        public WizardMode WizardMode { get; private set; }
 
         public ObservableCollection<IWizardStepViewModel> Steps { get; }
 
@@ -96,9 +97,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         }
 
-        public void Initialize(string title, bool isReadOnly, OrderDto order)
+        public void Initialize(WizardMode wizardMode, OrderDto order)
         {
-            Title = title;
+            var branchName = _branchType == BranchType.Laboratory ? "ЗТЛ" : "ФЦ";
+
+            if (wizardMode == WizardMode.Create)
+            {
+                Title = "Создание заказ наряда "+ branchName;
+            }
+            else if (wizardMode == WizardMode.Edit)
+            {
+                Title = $"Редактирование данных заказ наряда №'{order.Number}' для {branchName}";
+            }
 
             _order = order;
 
@@ -107,7 +117,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 step.Initialize(order);
             }
 
-            IsReadOnly = isReadOnly;
+            WizardMode = wizardMode;
 
             OnPropertyChanged();
         }

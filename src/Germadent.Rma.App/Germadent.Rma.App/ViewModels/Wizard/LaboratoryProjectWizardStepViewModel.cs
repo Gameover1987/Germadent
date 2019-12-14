@@ -15,20 +15,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class LaboratoryProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel, IMouthProvider
     {
         private IRmaOperations _rmaOperations;
+
         private string _workDescription;
         private string _colorAndFeatures;
-        private bool _nonOpacity;
-        private bool _highOpacity;
-        private bool _lowOpacity;
-        private bool _mamelons;
-        private bool _secondaryDentin;
-        private bool _paintedFissurs;
-
+        private int _transparency;
 
         public LaboratoryProjectWizardStepViewModel(IRmaOperations rmaOperations)
         {
             _rmaOperations = rmaOperations;
-            
         }
 
         public string DisplayName
@@ -48,40 +42,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _colorAndFeatures, value); }
         }
 
-        public bool NonOpacity
+        public int Transparency
         {
-            get { return _nonOpacity; }
-            set { SetProperty(() => _nonOpacity, value); }
-        }
-
-        public bool HighOpacity
-        {
-            get { return _highOpacity; }
-            set { SetProperty(() => _highOpacity, value); }
-        }
-
-        public bool LowOpacity
-        {
-            get { return _lowOpacity; }
-            set { SetProperty(() => _lowOpacity, value); }
-        }
-
-        public bool Mamelons
-        {
-            get { return _mamelons; }
-            set { SetProperty(() => _mamelons, value); }
-        }
-
-        public bool SecondaryDentin
-        {
-            get { return _secondaryDentin; }
-            set { SetProperty(() => _secondaryDentin, value); }
-        }
-
-        public bool PaintedFissurs
-        {
-            get { return _paintedFissurs; }
-            set { SetProperty(() => _paintedFissurs, value); }
+            get { return _transparency; }
+            set { SetProperty(() => _transparency, value); }
         }
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
@@ -92,7 +56,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             WorkDescription = order.WorkDescription;
             ColorAndFeatures = order.ColorAndFeatures;
-          
+            Transparency = order.Transparency;
+
             OnPropertyChanged();
         }
 
@@ -100,6 +65,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
+            order.Transparency = order.Transparency;
+
             order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
