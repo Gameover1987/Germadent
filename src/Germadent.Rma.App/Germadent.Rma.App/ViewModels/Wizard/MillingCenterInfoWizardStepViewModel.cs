@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
@@ -11,9 +7,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class MillingCenterInfoWizardStepViewModel : ViewModelBase, IWizardStepViewModel
     {
         private string _customer;
-        private string _patientFio;
-        private string _technicFio;
-        private string _technicPhone;
+        private string _patient;
+        private string _responsiblePerson;
+        private string _responsiblePersonPhone;
         private DateTime _created;
 
         public MillingCenterInfoWizardStepViewModel()
@@ -32,22 +28,22 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _customer, value); }
         }
 
-        public string PatientFio
+        public string Patient
         {
-            get { return _patientFio; }
-            set { SetProperty(() => _patientFio, value); }
+            get { return _patient; }
+            set { SetProperty(() => _patient, value); }
         }
 
-        public string TechnicFio
+        public string ResponsiblePerson
         {
-            get { return _technicFio; }
-            set { SetProperty(() => _technicFio, value); }
+            get { return _responsiblePerson; }
+            set { SetProperty(() => _responsiblePerson, value); }
         }
 
-        public string TechnicPhoneNumber
+        public string ResponsiblePersonPhone
         {
-            get { return _technicPhone; }
-            set { SetProperty(() => _technicPhone, value); }
+            get { return _responsiblePersonPhone; }
+            set { SetProperty(() => _responsiblePersonPhone, value); }
         }
 
         public DateTime Created
@@ -58,12 +54,20 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public void Initialize(OrderDto order)
         {
-            
+            Customer = order.Customer;
+            Patient = order.Patient;
+            ResponsiblePerson = order.ResponsiblePerson;
+            ResponsiblePersonPhone = order.ResponsiblePersonPhone;
+            Created = order.Created;
         }
 
         public void AssemblyOrder(OrderDto order)
         {
-          
+            order.Customer = Customer;
+            order.Patient = Patient;
+            order.ResponsiblePerson = ResponsiblePerson;
+            order.ResponsiblePersonPhone = ResponsiblePersonPhone;
+            order.Created = Created;
         }
     }
 }

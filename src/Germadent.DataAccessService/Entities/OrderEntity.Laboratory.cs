@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Germadent.DataAccessService.Entities
 {
@@ -27,5 +23,15 @@ namespace Germadent.DataAccessService.Entities
         /// Прозрачность
         /// </summary>
         public int Transparency { get; set; }
+
+        /// <summary>
+        /// Возраст
+        /// </summary>
+        public int Age { get; set; }
+
+        /// <summary>
+        /// Пол
+        /// </summary>
+        public bool PatientGender { get; set; }
     }
 }

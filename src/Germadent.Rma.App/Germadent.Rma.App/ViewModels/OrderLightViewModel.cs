@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels

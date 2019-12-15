@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.Model", "Germ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.DataAccessService", "Germadent.DataAccessService\Germadent.DataAccessService.csproj", "{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4DD6BEFD-A887-4337-8312-58A00439E1AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.Model.Test", "Germadent.Rma.Model.Test\Germadent.Rma.Model.Test.csproj", "{A8961CED-F328-4422-AB3A-1EE35E512442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,12 +43,19 @@ Global
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8961CED-F328-4422-AB3A-1EE35E512442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8961CED-F328-4422-AB3A-1EE35E512442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8961CED-F328-4422-AB3A-1EE35E512442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8961CED-F328-4422-AB3A-1EE35E512442}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A8961CED-F328-4422-AB3A-1EE35E512442} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

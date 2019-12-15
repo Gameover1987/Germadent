@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-using System;
-using Newtonsoft.Json;
+﻿using System;
 
 namespace Germadent.Rma.Model
 {

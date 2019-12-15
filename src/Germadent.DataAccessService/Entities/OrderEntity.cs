@@ -33,6 +33,21 @@ namespace Germadent.DataAccessService.Entities
         public string CustomerName { get; set; }
 
         /// <summary>
+        /// ФИО доктора
+        /// </summary>
+        public string DoctorFullName { get; set; }
+
+        /// <summary>
+        /// ФИО техника
+        /// </summary>
+        public string TechnicFullName { get; set; }
+
+        /// <summary>
+        /// Телефон ответственного лица
+        /// </summary>
+        public string ResponsiblePersonPhone { get; set; }
+
+        /// <summary>
         /// Пациент
         /// </summary>
         public string Patient { get; set; }

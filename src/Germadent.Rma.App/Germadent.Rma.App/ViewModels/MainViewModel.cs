@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;
@@ -73,7 +72,7 @@ namespace Germadent.Rma.App.ViewModels
             {
                 Created = DateTime.Now,
                 BranchType = BranchType.Laboratory
-            });
+            }, WizardMode.Create);
             if (labOrder == null)
                 return;
 
@@ -125,7 +124,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            //_printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.Id));
+            //_printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.WorkOrderId));
         }
 
         private bool CanOpenOrderCommandHandler()
@@ -135,13 +134,21 @@ namespace Germadent.Rma.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            var labOrder = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
-            var changedLabOrder = _windowManager.CreateLabOrder(labOrder);
-            if (changedLabOrder == null)
+            OrderDto changedOrderDto = null;
+            var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
+            if (orderDto.BranchType == BranchType.Laboratory)
+            {
+                changedOrderDto = _windowManager.CreateLabOrder(orderDto, WizardMode.Edit);
+            }
+            else if (orderDto.BranchType == BranchType.MillingCenter)
+            {
+                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto, WizardMode.Edit);
+            }
+
+            if (changedOrderDto == null)
                 return;
 
-            var labOrderFromService = _rmaOperations.UpdateOrder(changedLabOrder);
-            //SelectedOrder.Update(labOrderFromService);
+            _rmaOperations.UpdateOrder(changedOrderDto);
         }
     }
 }

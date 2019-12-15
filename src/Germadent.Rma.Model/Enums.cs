@@ -1,15 +1,9 @@
 ﻿namespace Germadent.Rma.Model
 {
-    public enum Sex
+    public enum Gender
     {
-        Male, Female
-    }
-
-    public enum AdditionalMillingInfo
-    {
-        NotPainted,
-        Painted,
-        PrePainted
+        Female = 0,
+        Male = 1, 
     }
 
     public enum CarcasColor

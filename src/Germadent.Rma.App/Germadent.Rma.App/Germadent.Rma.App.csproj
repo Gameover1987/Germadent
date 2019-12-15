@@ -119,6 +119,7 @@
     <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
+    <Compile Include="Views\IWindowManager.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -138,6 +139,7 @@
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowManager.cs" />
+    <Compile Include="Views\WizardMode.cs" />
     <Compile Include="Views\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>
     </Compile>

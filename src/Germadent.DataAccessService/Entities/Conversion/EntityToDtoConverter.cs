@@ -8,7 +8,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         {
             return new OrderDto
             {
-                Id = entity.WorkOrderId,
+                WorkOrderId = entity.WorkOrderId,
                 Status =  entity.Status,
                 AdditionalInfo = entity.AdditionalInfo,
                 BranchType = (BranchType)entity.BranchTypeId,
@@ -22,13 +22,14 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 IndividualAbutmentProcessing = entity.IndividualAbutmentProcessing,
                 Number = entity.DocNumber,
                 Patient = entity.Patient,
-                //Age = 
-                //Doctor = entity.
-                //Sex = 
-                //TechnikPhone = 
-                //Mouth = 
+                Age = entity.Age,
+                ResponsiblePerson = entity.DoctorFullName,
+                ResponsiblePersonPhone = entity.ResponsiblePersonPhone,
+                Gender = entity.PatientGender == true ? Gender.Male : Gender.Female,
+                Transparency = entity.Transparency,
                 WorkDescription = entity.WorkDescription,
                 WorkAccepted = entity.FlagWorkAccept,
+                Understaff = entity.Understaff
             };
         }
 
@@ -40,7 +41,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 BranchType = (BranchType)entity.BranchTypeId,
                 BranchTypeId = entity.BranchTypeId,
                 CustomerName = entity.CustomerName,
-                PatientFnp = entity.PatientFnp,
+                PatientFnp = entity.PatientFullName,
                 DocNumber = entity.DocNumber,
                 ResponsiblePerson = entity.ResponsiblePerson,
                 Status = entity.Status,

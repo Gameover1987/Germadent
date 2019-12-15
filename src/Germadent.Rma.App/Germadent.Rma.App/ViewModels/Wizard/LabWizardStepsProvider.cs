@@ -1,6 +1,4 @@
-﻿using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {

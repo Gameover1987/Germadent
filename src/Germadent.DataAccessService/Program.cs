@@ -1,50 +1,54 @@
-﻿using System;
-using Germadent.DataAccessService.Configuration;
-using Germadent.DataAccessService.Entities.Conversion;
-using Germadent.DataAccessService.Repository;
-using Microsoft.Practices.Unity;
-using Nancy.Bootstrappers.Unity;
-using Nancy.Configuration;
-using Nancy.Hosting.Self;
+﻿using Germadent.DataAccessService.Infrastructure;
+using Topshelf;
 
 namespace Germadent.DataAccessService
 {
-    //public class MyBootstrapper : UnityNancyBootstrapper
-    //{
-    //    protected override INancyEnvironmentConfigurator GetEnvironmentConfigurator()
-    //    {
-    //        return this.ApplicationContainer.Resolve<INancyEnvironmentConfigurator>();
-    //    }
+    public class SampleService
+    {
+        public bool Start()
+        {
+            return true;
+        }
 
-    //    public override INancyEnvironment GetEnvironment()
-    //    {
-    //        return this.ApplicationContainer.Resolve<INancyEnvironment>();
-    //    }
-
-    //    protected override void RegisterNancyEnvironment(IUnityContainer container, INancyEnvironment environment)
-    //    {
-    //        container.RegisterInstance(environment);
-    //    }
-
-    //    protected override void RegisterBootstrapperTypes(IUnityContainer applicationContainer)
-    //    {
-    //        applicationContainer.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
-    //        applicationContainer.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
-    //        applicationContainer.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
-    //    }
-    //}
+        public bool Stop()
+        {
+            return true;
+        }
+    }
 
     class Program
     {
+        private const string ServiceName = "Germadent.DataAccessService";
+        private const string ServiceDescription = "Сервис для доступа к данным РМА";
+
         static void Main(string[] args)
         {
-            var configuration = new ServiceConfiguration();
-            using (var host = new NancyHost(new Uri(configuration.Url)))
+            var bootstrapper = new DataAccessServiceBootstrapper();
+            var serviceConfiguration = bootstrapper.GetServiceConfiguration();
+
+            var host = HostFactory.New(hostConfigurator =>
             {
-                host.Start();
-                Console.WriteLine("Service started at {0}", configuration.Url);
-                Console.ReadKey();
-            }
+                hostConfigurator.Service<SampleService>(serviceConfigurator =>
+                {
+                    serviceConfigurator.ConstructUsing(settings => new SampleService());
+                    serviceConfigurator.WhenStarted(service => service.Start());
+                    serviceConfigurator.WhenStopped(service => service.Stop());
+                    serviceConfigurator.WithNancyEndpoint(hostConfigurator, nancy =>
+                    {
+                        nancy.AddHost(port: serviceConfiguration.Port);
+                        nancy.CreateUrlReservationsOnInstall();
+                        nancy.OpenFirewallPortsOnInstall(firewallRuleName: ServiceName);
+                        nancy.UseBootstrapper(new DataAccessServiceBootstrapper());
+                    });
+                });
+                hostConfigurator.StartAutomatically();
+                hostConfigurator.SetServiceName(ServiceName);
+                hostConfigurator.SetDisplayName(ServiceName);
+                hostConfigurator.SetDescription(ServiceDescription);
+                hostConfigurator.RunAsNetworkService();
+            });
+
+            host.Run();
         }
     }
 }

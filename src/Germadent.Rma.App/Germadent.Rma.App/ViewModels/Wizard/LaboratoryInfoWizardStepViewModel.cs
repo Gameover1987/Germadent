@@ -10,7 +10,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _doctorFio;
         private string _patientFio;
 
-        private Sex _sex;
+        private Gender _gender;
         private int _age;
 
         private DateTime _created;
@@ -40,10 +40,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _doctorFio, value); }
         }
 
-        public Sex Sex
+        public Gender Gender
         {
-            get { return _sex; }
-            set { SetProperty(() => _sex, value); }
+            get { return _gender; }
+            set { SetProperty(() => _gender, value); }
         }
 
         public int Age
@@ -79,8 +79,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public void Initialize(OrderDto order)
         {
             Customer = order.Customer;
-            DoctorFio = order.Doctor;
-            Sex = order.Sex;
+            DoctorFio = order.ResponsiblePerson;
+            Gender = order.Gender;
             Age = order.Age;
             PatientFio = order.Patient;
             Created = order.Created;
@@ -92,8 +92,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             order.BranchType = BranchType.Laboratory;
             order.Customer = Customer;
-            order.Doctor = DoctorFio;
-            order.Sex = Sex;
+            order.ResponsiblePerson = DoctorFio;
+            order.Gender = Gender;
             order.Age = Age;
             order.Patient = PatientFio;
             order.Created = Created;
