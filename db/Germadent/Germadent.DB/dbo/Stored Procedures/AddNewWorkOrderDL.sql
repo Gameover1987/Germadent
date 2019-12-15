@@ -5,7 +5,7 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddNewWorkOrderDL] 
 
-	@docNumber nchar(10),
+	@docNumber nvarchar(10),
 	@customerID int,
 	@responsiblePersonId int,
 	@patientID int,

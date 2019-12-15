@@ -19,18 +19,20 @@ RETURN
 			p.Gender AS PatientGender,
 			rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, 
 			ISNULL(wo.Created, '') AS Created,
+			wo.Status,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,
 			wo.FlagWorkAccept, 
-			ISNULL(wo.Closed, '') AS Closed,
+			wo.Closed,
 			CONCAT(e.FamilyName,' ', LEFT(e.Name, 1), '.', LEFT(e.Patronymic, 1), '.') AS OfficeAdmin,
 			ISNULL(wmc.AdditionalInfo, '') AS AdditionalInfo,
 			ISNULL(wmc.CarcassColor, '') AS CarcassColor,
 			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
 			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
 			ISNULL(wmc.Understaff, '') AS Understaff,
-			ISNULL(wdl.DateOfCompletion, '') DateOfCompletion, 
-			ISNULL(wdl.FittingDate, '') AS FittingDate, 
+			wdl.DateOfCompletion,
+			wdl.FittingDate,
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
+			ISNULL(tr.TransparenceID, 0) AS TransparenceID,
 			ISNULL(tr.TransparenceName, '') AS TransparenceName
 
 	FROM	 WorkOrder wo 
