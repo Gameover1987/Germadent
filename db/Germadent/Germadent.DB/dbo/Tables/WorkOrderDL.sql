@@ -1,6 +1,9 @@
 ﻿CREATE TABLE [dbo].[WorkOrderDL] (
     [WorkOrderDLID]    INT            NOT NULL,
     [TransparenceID]   INT            NULL,
+    [DoctorFullName]   NVARCHAR (150) NULL,
+    [PatientFullName]  NVARCHAR (150) NULL,
+    [PatientAge]       TINYINT        NULL,
     [FittingDate]      DATE           NULL,
     [DateOfCompletion] DATE           NULL,
     [ColorAndFeatures] NVARCHAR (100) NULL,
@@ -8,6 +11,8 @@
     CONSTRAINT [FK_WorkOrderDL_Transparences] FOREIGN KEY ([TransparenceID]) REFERENCES [dbo].[Transparences] ([TransparenceID]),
     CONSTRAINT [FK_WorkOrderDL_WorkOrder] FOREIGN KEY ([WorkOrderDLID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
+
+
 
 
 

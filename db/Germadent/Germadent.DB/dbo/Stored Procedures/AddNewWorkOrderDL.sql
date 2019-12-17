@@ -4,13 +4,17 @@
 -- Description:	Создание заказ-наряда зуботехнической лаборатории
 -- =============================================
 CREATE PROCEDURE [dbo].[AddNewWorkOrderDL] 
-
-	@docNumber nvarchar(10),
-	@customerID int,
-	@responsiblePersonId int,
-	@patientID int,
+	
+	@customerID int = NULL,
+	@customerName nvarchar(100),
+	@responsiblePersonId int = NULL,
+	@doctorFullName nvarchar(150) = NULL,
+	@patientID int = NULL,
+	@patientFullName nvarchar(150) = NULL,
+	@patientAge tinyint = NULL,
 	@workDescription nvarchar(250) = NULL,
-	@officeAdminID int,
+	@officeAdminID int = NULL,
+	@officeAdminName nvarchar(50) = NULL,
 	@transparenceID int = NULL,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
@@ -28,17 +32,22 @@ BEGIN
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
 
+	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:
+	DECLARE 
+	@docNumber nvarchar(10)
+	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ЗТЛ')
+	
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, ResponsiblePersonID, CustomerID, PatientID, Created, WorkDescription, OfficeAdminID)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(2, @docNumber, @customerID, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID)
+		(2, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
-		(WorkOrderDLID, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
+		(WorkOrderDLID, DoctorFullName, PatientFullName, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
 	VALUES
-		(@workOrderID, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+		(@workOrderID, @doctorFullName, @patientFullName, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
 
 END

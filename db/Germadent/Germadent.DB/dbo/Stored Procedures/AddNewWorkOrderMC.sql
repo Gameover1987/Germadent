@@ -5,18 +5,21 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddNewWorkOrderMC] 
 	
-	@docNumber nchar(10),
-	@customerID int,
-	@responsiblePersonId int,
-	@patientID int,
+	@customerID int = NULL,
+	@customerName nvarchar(100),
+	@responsiblePersonId int = NULL,
+	@technicFullName nvarchar(150) = NULL,
+	@technicPhone varchar(15) = NULL,
+	@patientID int = NULL,
 	@workDescription nvarchar(250) = NULL,
-	@officeAdminID int,
+	@officeAdminID int = NULL,
+	@officeAdminName nvarchar(50) = NULL,
 	@additionalInfo nvarchar(70) = NULL,
 	@carcassColor nvarchar(30) = NULL,
 	@implantSystem nvarchar(70) = NULL,
 	@individualAbutmentProcessing nvarchar(70) = NULL,
 	@understaff nvarchar(100) = NULL,
-	@workOrderID int	 output
+	@workOrderID int output
 
 AS
 BEGIN
@@ -28,19 +31,23 @@ BEGIN
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
 
+	DECLARE 
+	@docNumber nvarchar(10)
+	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ФЦ')
+
 	-- Собственно вставка:
 	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(1, @docNumber, @customerID, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID)
+		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderMC
-		(WorkOrderMCID, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
+		(WorkOrderMCID, TechnicFullName, TechnicPhone, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
 	VALUES
-		(@workOrderID, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
+		(@workOrderID, @technicFullName, @technicPhone, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
 
 
 END
