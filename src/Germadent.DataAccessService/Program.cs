@@ -25,6 +25,9 @@ namespace Germadent.DataAccessService
         {
             var bootstrapper = new DataAccessServiceBootstrapper();
             var serviceConfiguration = bootstrapper.GetServiceConfiguration();
+            var logger = bootstrapper.GetLogger();
+
+            logger.Info("Service is ready to config...");
 
             var host = HostFactory.New(hostConfigurator =>
             {
@@ -47,6 +50,8 @@ namespace Germadent.DataAccessService
                 hostConfigurator.SetDescription(ServiceDescription);
                 hostConfigurator.RunAsNetworkService();
             });
+
+            logger.Info("Service is ready to start...");
 
             host.Run();
         }

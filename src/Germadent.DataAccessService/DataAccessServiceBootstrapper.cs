@@ -1,4 +1,5 @@
-﻿using Germadent.DataAccessService.Configuration;
+﻿using Germadent.Common.Logging;
+using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.DataAccessService.Repository;
 using Microsoft.Practices.Unity;
@@ -15,6 +16,8 @@ namespace Germadent.DataAccessService
             _container.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
         }
 
         protected override IUnityContainer GetApplicationContainer()
@@ -25,6 +28,11 @@ namespace Germadent.DataAccessService
         public IServiceConfiguration GetServiceConfiguration()
         {
             return _container.Resolve<IServiceConfiguration>();
+        }
+
+        public ILogger GetLogger()
+        {
+            return _container.Resolve<ILogger>();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Germadent.DataAccessService.Repository;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.DataAccessService.Repository;
 using Germadent.Rma.Model;
 using Nancy;
 using Nancy.ModelBinding;
@@ -8,10 +10,12 @@ namespace Germadent.DataAccessService
     public class OrdersModule : NancyModule
     {
         private readonly IRmaRepository _rmaRepository;
+        private readonly ILogger _logger;
 
-        public OrdersModule(IRmaRepository rmaRepository)
+        public OrdersModule(IRmaRepository rmaRepository, ILogger logger)
         {
             _rmaRepository = rmaRepository;
+            _logger = logger;
 
             ModulePath = "api/Rma";
 
@@ -25,38 +29,60 @@ namespace Germadent.DataAccessService
 
         private object GetOrderById(dynamic arg)
         {
-            var id = (int)int.Parse(arg.id.ToString());
-            return Response.AsJson(_rmaRepository.GetOrderDetails(id));
+            return ExecuteWithLogging(() =>
+            {
+                var id = (int)int.Parse(arg.id.ToString());
+                return Response.AsJson(_rmaRepository.GetOrderDetails(id));
+            });
         }
 
         private object GetOrdersByFilter()
         {
-            var filter = this.Bind<OrdersFilter>();
-
-            var orders = _rmaRepository.GetOrders(filter);
-
-            return Response.AsJson(orders);
+            return ExecuteWithLogging(() =>
+            {
+                var filter = this.Bind<OrdersFilter>();
+                var orders = _rmaRepository.GetOrders(filter);
+                return Response.AsJson(orders);
+            });
         }
 
         private object AddOrder()
         {
-            var order = this.Bind<OrderDto>();
-            _rmaRepository.AddOrder(order);
-
-            return Response.AsJson(order);
+            return ExecuteWithLogging(() =>
+            {
+                var order = this.Bind<OrderDto>();
+                _rmaRepository.AddOrder(order);
+                return Response.AsJson(order);
+            });
         }
 
         private object UpdateOrder()
         {
-            var labOrder = this.Bind<OrderDto>();
-            _rmaRepository.UpdateOrder(labOrder);
-
-            return Response.AsJson(labOrder);
+            return ExecuteWithLogging(() =>
+            {
+                var labOrder = this.Bind<OrderDto>();
+                _rmaRepository.UpdateOrder(labOrder);
+                return Response.AsJson(labOrder);
+            });
         }
 
         private object GetMaterials()
         {
-            return Response.AsJson(_rmaRepository.GetMaterials());
+            return ExecuteWithLogging(() => { return Response.AsJson(_rmaRepository.GetMaterials()); });
+        }
+
+        private object ExecuteWithLogging(Func<object> func)
+        {
+            try
+            {
+                return func();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+            }
+
+            return null;
         }
     }
 }
