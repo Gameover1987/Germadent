@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using NLog;
 
 namespace Germadent.Common.Logging
