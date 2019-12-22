@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace Germadent.Rma.Model.Test
 {
-    [TestClass]
+    [TestFixture]
     public class OrderExtensionsTest
     {
         /// <summary>
         /// Должен сгенерировать правильный нмоер заказ-наряда
-        /// </summary>
-        [TestMethod]
-        [DataRow(1, BranchType.Laboratory,"1-ЗТЛ")]
+        /// </summary>                
+        [TestCase(1, BranchType.Laboratory,"1-ЗТЛ")]
         public void ShouldGenerateOrderDocNumber(int workOrderId, BranchType branchType, string expectedDocNumber)
         {
             // Given

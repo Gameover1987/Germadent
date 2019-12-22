@@ -71,7 +71,8 @@ namespace Germadent.Rma.App.ViewModels
             var labOrder = _windowManager.CreateLabOrder(new OrderDto()
             {
                 Created = DateTime.Now,
-                BranchType = BranchType.Laboratory
+                BranchType = BranchType.Laboratory,
+                Gender = Gender.Male
             }, WizardMode.Create);
             if (labOrder == null)
                 return;
