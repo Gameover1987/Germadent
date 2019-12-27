@@ -6,8 +6,6 @@ namespace Germadent.Rma.Model
     {
         public int WorkOrderId { get; set; }
 
-        public int BranchTypeId { get; set; }
-
         public BranchType BranchType { get; set; }
 
         public string DocNumber { get; set; }

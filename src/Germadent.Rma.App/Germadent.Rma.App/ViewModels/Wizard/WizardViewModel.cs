@@ -106,7 +106,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
             else if (wizardMode == WizardMode.Edit)
             {
-                Title = $"Редактирование данных заказ наряда №'{order.Number}' для {branchName}";
+                Title = $"Редактирование данных заказ наряда №'{order.DocNumber}' для {branchName}";
             }
 
             _order = order;
@@ -130,7 +130,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
                 order.WorkOrderId = _order.WorkOrderId;
                 order.BranchType = _order.BranchType;
-                order.Number = _order.Number;
+                order.DocNumber = _order.DocNumber;
                 order.Closed = _order.Closed;
             }
 

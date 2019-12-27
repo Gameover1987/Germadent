@@ -58,7 +58,7 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public OrderLiteDto AddOrder(OrderDto order)
+        public OrderDto AddOrder(OrderDto order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
@@ -66,11 +66,11 @@ namespace Germadent.Rma.App.ServiceClient
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<OrderLiteDto>();
+                return result.DeserializeFromJson<OrderDto>();
             }
         }
 
-        public OrderLiteDto UpdateOrder(OrderDto order)
+        public OrderDto UpdateOrder(OrderDto order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
 
@@ -78,7 +78,7 @@ namespace Germadent.Rma.App.ServiceClient
             using (var response = _client.PutAsync(apiUrl, content).Result)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<OrderLiteDto>();
+                return result.DeserializeFromJson<OrderDto>();
             }
         }
     }

@@ -40,12 +40,12 @@ namespace Germadent.Rma.App.Mocks
             return materials;
         }
 
-        public OrderLiteDto AddOrder(OrderDto order)
+        public OrderDto AddOrder(OrderDto order)
         {
             throw new NotImplementedException();
         }
 
-        public OrderLiteDto UpdateOrder(OrderDto order)
+        public OrderDto UpdateOrder(OrderDto order)
         {
             throw new NotImplementedException();
         }

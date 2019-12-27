@@ -77,8 +77,8 @@ namespace Germadent.Rma.App.ViewModels
             if (labOrder == null)
                 return;
 
-            var orderLite = _rmaOperations.AddOrder(labOrder);
-            Orders.Add(new OrderLiteViewModel(orderLite));
+            var orderDto = _rmaOperations.AddOrder(labOrder);
+            Orders.Add(new OrderLiteViewModel(orderDto.ToOrderLite()));
         }
 
         private void CreateMillingCenterOrderCommandHandler()

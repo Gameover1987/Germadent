@@ -10,8 +10,8 @@ namespace Germadent.Rma.App.ServiceClient
 
         MaterialDto[] GetMaterials();
 
-        OrderLiteDto AddOrder(OrderDto order);
+        OrderDto AddOrder(OrderDto order);
 
-        OrderLiteDto UpdateOrder(OrderDto order);
+        OrderDto UpdateOrder(OrderDto order);
     }
 }

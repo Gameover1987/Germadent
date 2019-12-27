@@ -17,5 +17,21 @@ namespace Germadent.Rma.Model
 
             throw new NotSupportedException("Неизвестный тип филиала");
         }
+
+        public static OrderLiteDto ToOrderLite(this  OrderDto orderDto)
+        {
+            return new OrderLiteDto
+            {
+                WorkOrderId = orderDto.WorkOrderId,
+                BranchType = orderDto.BranchType,
+                Closed = orderDto.Closed,
+                Created = orderDto.Created,
+                CustomerName = orderDto.Customer,
+                PatientFnp = orderDto.Patient,
+                ResponsiblePerson = orderDto.ResponsiblePerson,
+                Status = orderDto.Status,
+                DocNumber = orderDto.DocNumber
+            };
+        }
     }
 }

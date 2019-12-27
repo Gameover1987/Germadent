@@ -43,7 +43,7 @@ using System.Windows;
 //
 //      Major Version
 //      Minor Version
-//      Build Number
+//      Build DocNumber
 //      Revision
 //
 // You can specify all the values or you can default the Build and Revision Numbers

@@ -20,7 +20,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 FittingDate = entity.FittingDate,
                 ImplantSystem = entity.ImplantSystem,
                 IndividualAbutmentProcessing = entity.IndividualAbutmentProcessing,
-                Number = entity.DocNumber,
+                DocNumber = entity.DocNumber,
                 Patient = entity.Patient,
                 Age = entity.Age,
                 ResponsiblePerson = entity.DoctorFullName,
@@ -39,14 +39,13 @@ namespace Germadent.DataAccessService.Entities.Conversion
             {
                 WorkOrderId = entity.WorkOrderId,
                 BranchType = (BranchType)entity.BranchTypeId,
-                BranchTypeId = entity.BranchTypeId,
                 CustomerName = entity.CustomerName,
                 PatientFnp = entity.PatientFullName,
                 DocNumber = entity.DocNumber,
                 ResponsiblePerson = entity.ResponsiblePerson,
                 Status = entity.Status,
                 Created = entity.Created,
-                Closed = entity.Closed
+                Closed = entity.Closed,
             };
         }
 

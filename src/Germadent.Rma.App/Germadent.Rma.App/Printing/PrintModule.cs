@@ -60,11 +60,11 @@ namespace Germadent.Rma.App.Printing
         {
             if (order.BranchType == BranchType.Laboratory)
             {
-                return string.Format("Заказ-наряд в зуботехническую лабораторию №{0}", order.Number);
+                return string.Format("Заказ-наряд в зуботехническую лабораторию №{0}", order.DocNumber);
             }
             else if (order.BranchType == BranchType.MillingCenter)
             {
-                return string.Format("Заказ-наряд во фрезерный центр №{0}", order.Number);
+                return string.Format("Заказ-наряд во фрезерный центр №{0}", order.DocNumber);
             }
 
             throw new NotSupportedException("Неизвестный тип филиала");

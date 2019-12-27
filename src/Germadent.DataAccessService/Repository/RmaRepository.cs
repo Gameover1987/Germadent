@@ -62,10 +62,12 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int){Direction = ParameterDirection.Output});
+                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10});
 
                 command.ExecuteNonQuery();
 
                 order.WorkOrderId = command.Parameters["@workOrderId"].Value.ToInt();
+                order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
 
                 return order;
             }
@@ -194,7 +196,7 @@ namespace Germadent.DataAccessService.Repository
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
-            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default)";
+            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default)";
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
