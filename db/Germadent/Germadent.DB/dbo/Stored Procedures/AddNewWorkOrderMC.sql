@@ -19,24 +19,22 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	@implantSystem nvarchar(70) = NULL,
 	@individualAbutmentProcessing nvarchar(70) = NULL,
 	@understaff nvarchar(100) = NULL,
-	@workOrderID int output
+	@workOrderID int output,
+	@docNumber nvarchar(10) output
 
 AS
 BEGIN
 
-	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	
+	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":	
 	DECLARE @max_Id int
 	SELECT @max_Id = MAX(WorkOrderID)
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
 
-	DECLARE 
-	@docNumber nvarchar(10)
+	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:
 	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ФЦ')
 
-	-- Собственно вставка:
-	
+	-- Собственно вставка:	
 	INSERT INTO WorkOrder
 		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 

@@ -19,8 +19,9 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderDL]
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
 	@colorAndFeatures nvarchar(100) = NULL,
-	@workOrderID int output
-
+	@workOrderID int output,
+	@docNumber nvarchar(10) output
+	
 AS
 BEGIN
 
@@ -32,9 +33,7 @@ BEGIN
 	FROM WorkOrder
 	DBCC checkident (WorkOrder, reseed, @max_Id)
 
-	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:
-	DECLARE 
-	@docNumber nvarchar(10)
+	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:	
 	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ЗТЛ')
 	
 	-- Собственно вставка:
