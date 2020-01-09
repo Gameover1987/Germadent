@@ -12,7 +12,9 @@ namespace Germadent.Rma.Model
 
         public string CustomerName { get; set; }
 
-        public string ResponsiblePerson { get; set; }
+        public string DoctorFullName { get; set; }
+
+        public string TechnicFullName { get; set; }
 
         public string PatientFnp { get; set; }
 

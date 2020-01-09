@@ -28,7 +28,7 @@ namespace Germadent.Rma.Model
                 Created = orderDto.Created,
                 CustomerName = orderDto.Customer,
                 PatientFnp = orderDto.Patient,
-                ResponsiblePerson = orderDto.ResponsiblePerson,
+                DoctorFullName = orderDto.ResponsiblePerson,
                 Status = orderDto.Status,
                 DocNumber = orderDto.DocNumber
             };

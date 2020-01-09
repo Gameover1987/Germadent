@@ -28,9 +28,14 @@ namespace Germadent.DataAccessService.Entities
         public string CustomerName { get; set; }
 
         /// <summary>
-        /// Ответственное лицо
+        /// Доктор
         /// </summary>
-        public string ResponsiblePerson { get; set; }
+        public string DoctorFullName { get; set; }
+
+        /// <summary>
+        /// Техник
+        /// </summary>
+        public string TechnicFullName { get; set; }
 
         /// <summary>
         /// ФИО пациента
