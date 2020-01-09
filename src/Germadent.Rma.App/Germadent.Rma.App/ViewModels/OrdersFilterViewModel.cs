@@ -177,7 +177,7 @@ namespace Germadent.Rma.App.ViewModels
                 PeriodBegin = PeriodBegin,
                 PeriodEnd = PeriodEnd,
                 Customer = Customer,
-                Employee = Employee,
+                Doctor = Employee,
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray()
             };

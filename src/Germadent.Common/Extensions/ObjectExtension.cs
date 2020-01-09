@@ -24,6 +24,9 @@ namespace Germadent.Common.Extensions
             if (obj == null)
                 return DBNull.Value;
 
+            if (obj.ToString().IsNullOrWhiteSpace())
+                return DBNull.Value;
+
             return obj;
         }
     }

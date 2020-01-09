@@ -279,7 +279,22 @@ namespace Germadent.DataAccessService.Repository
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
-            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default)";
+            if (filter.IsEmpty())
+                return GetOrdersByEmptyFilter();
+
+            return GetOrdersByFilter(filter);
+        }
+
+        private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
+        {
+            var branchtypeid = "@branchTypeId";
+            var customername = "@customerName";
+            var patientfullname = "@patientFullName";
+            var doctorFullName = "@doctorFullName";
+            var createDateFrom = "@createDateFrom";
+            var createDateTo = "@createDateTo";
+            var cmdText =
+                $"select * from GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, default, default, default)";
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -287,31 +302,66 @@ namespace Germadent.DataAccessService.Repository
 
                 using (var command = new SqlCommand(cmdText, connection))
                 {
-                    var reader = command.ExecuteReader();
-                    var orderLiteEntities = new List<OrderLiteEntity>();
-                    while (reader.Read())
+                    if (filter.Laboratory && filter.MillingCenter)
                     {
-                        var orderLite = new OrderLiteEntity();
-                        orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
-                        orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
-                        orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
-                        //orderLite.DoctorFullName = reader[nameof(orderLite.DoctorFullName)].ToString();
-                        orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
-                        orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
-                        orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
-
-                        var closed = reader[nameof(orderLite.Closed)];
-                        if (closed != DBNull.Value)
-                            orderLite.Closed = DateTime.Parse(closed.ToString());
-
-                        orderLiteEntities.Add(orderLite);
+                        command.Parameters.Add(new SqlParameter(branchtypeid, SqlDbType.Int)).Value = DBNull.Value;
                     }
-                    reader.Close();
+                    else
+                    {
+                        command.Parameters.Add(new SqlParameter(branchtypeid, SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
+                    }
+                    command.Parameters.Add(new SqlParameter(customername, SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter(patientfullname, SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter(doctorFullName, SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter(createDateFrom, SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter(createDateTo, SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
 
-                    var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
-                    return orders;
+                    return GetOrderLiteCollectionFromReader(command);
                 }
             }
+        }
+
+        private OrderLiteDto[] GetOrdersByEmptyFilter()
+        {
+            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default, default)";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    return GetOrderLiteCollectionFromReader(command);
+                }
+            }
+        }
+
+        private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command)
+        {
+            var reader = command.ExecuteReader();
+
+            var orderLiteEntities = new List<OrderLiteEntity>();
+            while (reader.Read())
+            {
+                var orderLite = new OrderLiteEntity();
+                orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
+                orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
+                orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
+                orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
+                orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
+                orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
+
+                var closed = reader[nameof(orderLite.Closed)];
+                if (closed != DBNull.Value)
+                    orderLite.Closed = DateTime.Parse(closed.ToString());
+
+                orderLiteEntities.Add(orderLite);
+            }
+
+            reader.Close();
+
+            var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
+            return orders;
         }
     }
 }
