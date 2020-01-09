@@ -23,12 +23,16 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Vertical">
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
                     Command="{Binding CreateLabOrderCommand}"/>
@@ -46,7 +50,7 @@
                     Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
 
-        <DataGrid Grid.Column="1" Margin="6,0,0,0"
+        <DataGrid Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   EnableColumnVirtualization="True"
@@ -81,5 +85,10 @@
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,3,0,0">
+            <TextBlock Text="Записей:"/>
+            <TextBlock Text="{Binding Orders.Count}" Margin="3,0,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>
