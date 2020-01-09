@@ -11,7 +11,6 @@ namespace Germadent.Rma.App.ViewModels
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
         private readonly IRmaAuthorizer _authorizer;
-        private IShowDialogAgent dialogAgent;
 
         public AuthorizationViewModel(IShowDialogAgent agent, IRmaAuthorizer authorizer)
             : base(agent)

@@ -4,7 +4,7 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterInfoWizardStepViewModel : ViewModelBase, IWizardStepViewModel
+    public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
         private string _customer;
         private string _patient;
@@ -17,7 +17,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "Общие данные"; }
         }
@@ -52,7 +52,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _created, value); }
         }
 
-        public void Initialize(OrderDto order)
+        public override void Initialize(OrderDto order)
         {
             Customer = order.Customer;
             Patient = order.Patient;
@@ -61,7 +61,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             Created = order.Created;
         }
 
-        public void AssemblyOrder(OrderDto order)
+        public override void AssemblyOrder(OrderDto order)
         {
             order.Customer = Customer;
             order.Patient = Patient;

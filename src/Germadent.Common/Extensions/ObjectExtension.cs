@@ -18,5 +18,13 @@ namespace Germadent.Common.Extensions
         {
             return bool.Parse(obj.ToString());
         }
+
+        public static object GetValueOrDbNull(this object obj)
+        {
+            if (obj == null)
+                return DBNull.Value;
+
+            return obj;
+        }
     }
 }

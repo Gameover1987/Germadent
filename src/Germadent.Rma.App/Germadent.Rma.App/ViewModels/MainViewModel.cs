@@ -136,7 +136,8 @@ namespace Germadent.Rma.App.ViewModels
         private void OpenOrderCommandHandler()
         {
             OrderDto changedOrderDto = null;
-            var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
+            var orderLiteViewModel = SelectedOrder;
+            var orderDto = _rmaOperations.GetOrderDetails(orderLiteViewModel.Model.WorkOrderId);
             if (orderDto.BranchType == BranchType.Laboratory)
             {
                 changedOrderDto = _windowManager.CreateLabOrder(orderDto, WizardMode.Edit);
@@ -150,6 +151,7 @@ namespace Germadent.Rma.App.ViewModels
                 return;
 
             _rmaOperations.UpdateOrder(changedOrderDto);
+            orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
     }
 }

@@ -108,6 +108,7 @@
     <Compile Include="ViewModels\Wizard\MillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterProjectWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\WizardStepViewModelBase.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />

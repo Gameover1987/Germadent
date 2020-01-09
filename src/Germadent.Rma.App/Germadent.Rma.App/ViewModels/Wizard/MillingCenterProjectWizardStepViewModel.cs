@@ -5,7 +5,7 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel, IMouthProvider
+    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
     {
         private readonly IRmaOperations _rmaOperations;
 
@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _rmaOperations = rmaOperations;
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "Проект"; }
         }
@@ -65,7 +65,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
 
-        public void Initialize(OrderDto order)
+        public override void Initialize(OrderDto order)
         {
             AdditionalMillingInfo = order.AdditionalInfo;
             WorkDescription = order.WorkDescription;
@@ -79,7 +79,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             OnPropertyChanged();
         }
 
-        public void AssemblyOrder(OrderDto order)
+        public override void AssemblyOrder(OrderDto order)
         {
             order.AdditionalInfo = AdditionalMillingInfo;
             order.WorkDescription = WorkDescription;

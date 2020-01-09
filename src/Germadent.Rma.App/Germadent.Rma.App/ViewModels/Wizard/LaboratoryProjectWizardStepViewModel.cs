@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         ObservableCollection<TeethViewModel> Mouth { get; }
     }
 
-    public class LaboratoryProjectWizardStepViewModel : ViewModelBase, IWizardStepViewModel, IMouthProvider
+    public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
     {
         private IRmaOperations _rmaOperations;
 
@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _rmaOperations = rmaOperations;
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "Проект"; }
         }
@@ -49,7 +49,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
 
-        public void Initialize(OrderDto order)
+        public override void Initialize(OrderDto order)
         {
             FillTeethCollection(order);
 
@@ -60,7 +60,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             OnPropertyChanged();
         }
 
-        public void AssemblyOrder(OrderDto order)
+        public override void AssemblyOrder(OrderDto order)
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;

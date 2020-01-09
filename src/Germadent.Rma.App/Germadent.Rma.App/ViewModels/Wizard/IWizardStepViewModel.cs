@@ -6,6 +6,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         string DisplayName { get; }
 
+        bool IsValid { get; }
+
         void Initialize(OrderDto order);
 
         /// <summary>

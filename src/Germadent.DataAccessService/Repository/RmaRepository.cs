@@ -31,10 +31,10 @@ namespace Germadent.DataAccessService.Repository
                 switch (order.BranchType)
                 {
                     case BranchType.Laboratory:
-                        return ExecuteForDL(order, connection);
+                        return AddWorkOrderDL(order, connection);
 
                     case BranchType.MillingCenter:
-                        return ExecuteForMC(order, connection);
+                        return AddWorkOrderMC(order, connection);
 
                     default:
                         throw new NotSupportedException("Неизвестный тип филиала");
@@ -42,7 +42,7 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        private static OrderDto ExecuteForDL(OrderDto order, SqlConnection connection)
+        private static OrderDto AddWorkOrderDL(OrderDto order, SqlConnection connection)
         {
             using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
             {
@@ -61,8 +61,8 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int){Direction = ParameterDirection.Output});
-                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10});
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
 
                 command.ExecuteNonQuery();
 
@@ -73,7 +73,7 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        private static OrderDto ExecuteForMC(OrderDto order, SqlConnection connection)
+        private static OrderDto AddWorkOrderMC(OrderDto order, SqlConnection connection)
         {
             using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
             {
@@ -95,8 +95,91 @@ namespace Germadent.DataAccessService.Repository
 
         public void UpdateOrder(OrderDto order)
         {
-            throw new NotImplementedException();
+            var cmdText = "";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    switch (order.BranchType)
+                    {
+                        case BranchType.Laboratory:
+                            UpdateWorkOrderDL(order, connection);
+                            break;
+
+                        case BranchType.MillingCenter:
+                            UpdateWorkOrderMC(order, connection);
+                            break;
+
+                        default:
+                            throw new NotSupportedException("Неизвестный тип филиала");
+                    }
+                }
+            }
         }
+
+        private static void UpdateWorkOrderMC(OrderDto order, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("UpdateWorkOrderMC", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
+                command.Parameters.Add(new SqlParameter("@status", SqlDbType.SmallInt)).Value = order.Status;
+                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
+                command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer;
+
+                // TODO: Разобраться с ебаными датами!!! Блджад!
+                command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
+                //command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = DBNull.Value;
+
+                command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
+                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
+                command.Parameters.Add(new SqlParameter("@closed", SqlDbType.DateTime)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@technicFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
+                command.Parameters.Add(new SqlParameter("@technicPhone", SqlDbType.NVarChar)).Value = order.ResponsiblePersonPhone.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo;
+                command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor;
+                command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
+                command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static void UpdateWorkOrderDL(OrderDto order, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("UpdateWorkOrderDL", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
+                command.Parameters.Add(new SqlParameter("@status", SqlDbType.SmallInt)).Value = order.Status;
+                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
+                command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer;
+
+                // TODO: Разобраться с ебаными датами!!! Блджад!
+                command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = DBNull.Value;
+
+                command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
+                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
+                command.Parameters.Add(new SqlParameter("@closed", SqlDbType.DateTime)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
+                command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
+                command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
+                command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
+
+                command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
 
         public MaterialDto[] GetMaterials()
         {

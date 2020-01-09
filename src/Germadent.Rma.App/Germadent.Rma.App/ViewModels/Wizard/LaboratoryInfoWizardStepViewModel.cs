@@ -4,7 +4,7 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class LaboratoryInfoWizardStepViewModel : ViewModelBase, IWizardStepViewModel
+    public class LaboratoryInfoWizardStepViewModel : WizardStepViewModelBase
     {
         private string _customer;
         private string _doctorFio;
@@ -23,7 +23,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "Общие данные"; }
         }
@@ -76,7 +76,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workCompleted, value); }
         }
 
-        public void Initialize(OrderDto order)
+        public override void Initialize(OrderDto order)
         {
             Customer = order.Customer;
             DoctorFio = order.ResponsiblePerson;
@@ -88,7 +88,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             WorkCompleted = order.Closed;
         }
 
-        public void AssemblyOrder(OrderDto order)
+        public override void AssemblyOrder(OrderDto order)
         {
             order.BranchType = BranchType.Laboratory;
             order.Customer = Customer;

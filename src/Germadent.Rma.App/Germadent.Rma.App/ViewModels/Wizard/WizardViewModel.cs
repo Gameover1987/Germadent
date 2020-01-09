@@ -65,7 +65,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanBackCommandHandler()
         {
-            return CurrentStep != Steps.First();
+            return CurrentStep != Steps.First() && CurrentStep.IsValid;
         }
 
         private void BackCommandHandler()
@@ -76,7 +76,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanNextCommandHandler()
         {
-            return Steps.Last() != CurrentStep;
+            return Steps.Last() != CurrentStep && CurrentStep.IsValid;
         }
 
         private void NextCommandHandler()
