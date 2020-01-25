@@ -3065,6 +3065,15 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[WorkOrderMC]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[BranchTypes].[BranchTypeID]" />
 				</Entry>
 				<Entry>
@@ -3078,6 +3087,12 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrderDL].[PatientFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DoctorFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[TechnicFullName]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[WorkOrder].[Created]" />
@@ -3098,9 +3113,6 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 					<References Name="[dbo].[GetWorkOrdersList].[@branchTypeID]" />
 				</Entry>
 				<Entry>
-					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
-				</Entry>
-				<Entry>
 					<References Name="[dbo].[GetWorkOrdersList].[@branchType]" />
 				</Entry>
 				<Entry>
@@ -3119,6 +3131,9 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 					<References Name="[dbo].[WorkOrderDL].[PatientFullName]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[GetWorkOrdersList].[@doctorFullName]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[GetWorkOrdersList].[@createDateFrom]" />
 				</Entry>
 				<Entry>
@@ -3129,6 +3144,9 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[GetWorkOrdersList].[@closeDateTo]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="Columns">
@@ -3185,6 +3203,9 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 							</Entry>
 						</Relationship>
 					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[DoctorFullName]" />
 				</Entry>
 				<Entry>
 					<Element Type="SqlComputedColumn" Name="[dbo].[GetWorkOrdersList].[Created]">
@@ -3244,6 +3265,10 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 		, wo.DocNumber	
 		, wo.CustomerName
 		, wdl.PatientFullName
+		, CASE 
+				WHEN b.BranchTypeID = 2 THEN wdl.DoctorFullName
+				WHEN b.BranchTypeID = 1 THEN wmc.TechnicFullName
+				END AS DoctorFullName
 		, wo.Created 
 		, wo.Status
 		, wo.FlagWorkAccept
@@ -3252,24 +3277,31 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
+		LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
-		AND wo.BranchTypeID LIKE '%'+ISNULL(@branchType, '')+'%'
+		AND b.BranchType LIKE '%'+ISNULL(@branchType, '')+'%'
 		AND wo.WorkOrderID = ISNULL(@workorderID, wo.WorkOrderID)
 		AND wo.DocNumber LIKE '%'+ISNULL(@docNumber, '')+'%'
 		AND wo.CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
-		AND (wdl.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' OR (PatientFullName IS NULL AND @patientFullName IS NULL))
-		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231')
-				OR wo.Closed BETWEEN ISNULL(@closeDateFrom, NULL) AND ISNULL(@closeDateTo, NULL))
+		AND (wdl.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' 
+				OR (PatientFullName IS NULL AND @patientFullName IS NULL))
+		AND (wdl.DoctorFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
+				OR wmc.TechnicFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
+				OR (wdl.DoctorFullName IS NULL AND @doctorFullName IS NULL) 
+				OR (wmc.TechnicFullName IS NULL AND @doctorFullName IS NULL))
+		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
+		AND	(wo.Closed BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
+				OR (Closed IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
 )]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
-							<Property Name="CreateOffset" Value="242" />
-							<Property Name="Length" Value="1665" />
+							<Property Name="CreateOffset" Value="236" />
+							<Property Name="Length" Value="2279" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
-							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 17.11.2019&#xD;&#xA;-- Description:&#x9;Выводит на экран список заказ-нарядов по заданным критериям отбора&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrdersList]&#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;@branchTypeID int = NULL&#xD;&#xA;&#x9;, @branchType nvarchar(30) = NULL&#xD;&#xA;&#x9;, @workorderID int = NULL&#xD;&#xA;&#x9;, @docNumber nvarchar(10) = NULL&#xD;&#xA;&#x9;, @customerName nvarchar(50) = NULL&#xD;&#xA;&#x9;, @patientFullName nvarchar(30) = NULL&#xD;&#xA;&#x9;, @createDateFrom datetime = NULL&#xD;&#xA;&#x9;, @createDateTo datetime = NULL&#xD;&#xA;&#x9;, @closeDateFrom datetime = NULL&#xD;&#xA;&#x9;, @closeDateTo datetime = NULL&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
+							<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Alexey Kolosenok&#xD;&#xA;-- Create date: 17.11.2019&#xD;&#xA;-- Description:&#x9;Возвращает список заказ-нарядов по заданным критериям отбора&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE FUNCTION [dbo].[GetWorkOrdersList]&#xD;&#xA;(&#x9;&#xD;&#xA;&#x9;@branchTypeID int = NULL&#xD;&#xA;&#x9;, @branchType nvarchar(30) = NULL&#xD;&#xA;&#x9;, @workorderID int = NULL&#xD;&#xA;&#x9;, @docNumber nvarchar(10) = NULL&#xD;&#xA;&#x9;, @customerName nvarchar(50) = NULL&#xD;&#xA;&#x9;, @patientFullName nvarchar(150) = NULL&#xD;&#xA;&#x9;, @doctorFullName nvarchar(150) = NULL&#xD;&#xA;&#x9;, @createDateFrom datetime = NULL&#xD;&#xA;&#x9;, @createDateTo datetime = NULL&#xD;&#xA;&#x9;, @closeDateFrom datetime = NULL&#xD;&#xA;&#x9;, @closeDateTo datetime = NULL&#xD;&#xA;)&#xD;&#xA;RETURNS TABLE &#xD;&#xA;AS&#xD;&#xA;RETURN" />
 						</Annotation>
 					</Element>
 				</Entry>
@@ -3376,7 +3408,26 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 						<Relationship Name="Type">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="30" />
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[GetWorkOrdersList].[@doctorFullName]">
+						<Property Name="DefaultExpressionScript">
+							<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[NULL]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="150" />
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
@@ -3452,6 +3503,656 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 									<Relationship Name="Type">
 										<Entry>
 											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[HistoryWorkOrder]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[HistoryDateTime]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[HistoryEditor]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[HistoryOperate]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="20" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[WorkOrderID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[BranchTypeID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[Status]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[DocNumber]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[CustomerID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[CustomerName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[ResponsiblePersonID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[PatientID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[Created]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[DateDelivery]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[WorkDescription]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[FlagWorkAccept]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[OfficeAdminID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[OfficeAdminName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrder].[Closed]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[HistoryWorkOrderDL]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[HistoryDateTime]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[HistoryEditor]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[HistoryOperate]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="20" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[WorkOrderDLID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[TransparenceID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[DoctorFullName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[PatientFullName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[PatientAge]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[tinyint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[FittingDate]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[date]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[DateOfCompletion]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[date]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderDL].[ColorAndFeatures]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[HistoryWorkOrderMC]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[HistoryDateTime]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[HistoryEditor]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[HistoryOperate]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="20" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[WorkOrderMCID]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[TechnicFullName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[TechnicPhone]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="20" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[AdditionalInfo]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="70" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[CarcassColor]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="30" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[ImplantSystem]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="70" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[IndividualAbutmentProcessing]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="80" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[HistoryWorkOrderMC].[Understaff]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 										</Entry>
 									</Relationship>
 								</Element>
@@ -6755,6 +7456,278 @@ FROM            dbo.WorkOrder AS wo INNER JOIN
 				<Property Name="HeaderContents" Value="CREATE VIEW dbo.WorkOrderDL_View&#xD;&#xA;AS" />
 			</Annotation>
 		</Element>
+		<Element Type="SqlDmlTrigger" Name="[dbo].[WorkOrderDLHistory]">
+			<Property Name="IsInsertTrigger" Value="True" />
+			<Property Name="IsUpdateTrigger" Value="True" />
+			<Property Name="IsDeleteTrigger" Value="True" />
+			<Property Name="SqlTriggerType" Value="2" />
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	IF EXISTS 
+	(	SELECT * FROM inserted i, deleted d WHERE
+			ISNULL(i.ColorAndFeatures, 'empty') = ISNULL(d.ColorAndFeatures, 'empty')
+		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
+		AND ISNULL(i.DoctorFullName, 'empty') = ISNULL(d.DoctorFullName, 'empty')
+		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')
+		AND ISNULL(i.PatientAge, 0) = ISNULL(d.PatientAge, 0)
+		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
+		AND ISNULL(i.TransparenceID, 0) = ISNULL(d.TransparenceID, 0)
+		AND i.WorkOrderDLID = d.WorkOrderDLID
+	) BEGIN
+		RETURN
+	END
+
+
+    DECLARE  @Update VARCHAR(10)
+    SET @Update = CASE WHEN EXISTS(SELECT * FROM inserted ) AND EXISTS(SELECT * FROM deleted ) THEN 'UPDATE ' ELSE '' END
+    IF EXISTS(SELECT * FROM deleted ) BEGIN
+        INSERT dbo.HistoryWorkOrderDL
+        SELECT GetDate(), SUSER_SNAME(), @Update + 'DELETE' , *
+        FROM deleted
+    END
+    IF EXISTS(SELECT * FROM inserted ) BEGIN
+        INSERT dbo.HistoryWorkOrderDL
+        SELECT  GetDate(), SUSER_SNAME(), @Update + 'INSERT' , *
+        FROM inserted
+    END
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[ColorAndFeatures]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DateOfCompletion]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DoctorFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[DoctorFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[FittingDate]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[PatientAge]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[PatientAge]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[PatientFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[PatientFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[TransparenceID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL].[WorkOrderDLID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[HistoryWorkOrderDL]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parent">
+				<Entry>
+					<References Name="[dbo].[WorkOrderDL]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Offset" Value="755" />
+				<Property Name="CreateOffset" Value="228" />
+				<Property Name="Length" Value="1542" />
+				<Property Name="StartLine" Value="25" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 12.01.2020&#xD;&#xA;-- Description:&#x9;История действий пользователей с заказ-нарядами ЗТЛ&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE TRIGGER [dbo].[WorkOrderDLHistory] &#xD;&#xA;   ON  [dbo].[WorkOrderDL] &#xD;&#xA;   AFTER INSERT,UPDATE,DELETE&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlDmlTrigger" Name="[dbo].[WorkOrderHistory]">
+			<Property Name="IsInsertTrigger" Value="True" />
+			<Property Name="IsUpdateTrigger" Value="True" />
+			<Property Name="IsDeleteTrigger" Value="True" />
+			<Property Name="SqlTriggerType" Value="2" />
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	IF EXISTS 
+	(	SELECT * FROM inserted i, deleted d WHERE
+		i.BranchTypeID = d.BranchTypeID
+		AND ISNULL(i.Closed, '99991231') = ISNULL(d.Closed, '99991231')
+		AND ISNULL(i.Created, '17530101') = ISNULL(d.Created, '17530101')
+		AND ISNULL(i.CustomerID, -19999) = ISNULL(d.CustomerID, -19999)
+		AND ISNULL(i.CustomerName, 'empty') = ISNULL(d.CustomerName, 'empty')
+		AND ISNULL(i.DateDelivery, '99991231') = ISNULL(d.DateDelivery, '99991231')
+		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
+		AND i.FlagWorkAccept = d.FlagWorkAccept
+		AND ISNULL(i.OfficeAdminID, -19999) = ISNULL(d.OfficeAdminID, -19999)
+		AND ISNULL(i.OfficeAdminName, 'empty') = ISNULL(d.OfficeAdminName, 'empty')
+		AND ISNULL(i.PatientID, -19999) = ISNULL(d.PatientID, -19999)
+		AND ISNULL(i.ResponsiblePersonID, -19999) = ISNULL(d.ResponsiblePersonID, -19999)
+		AND i.Status = d.Status
+		AND ISNULL(i.WorkDescription, 'empty') = ISNULL(d.WorkDescription, 'empty')
+		AND i.WorkOrderID = d.WorkOrderID
+	) BEGIN
+		RETURN
+	END
+
+    DECLARE  @Update VARCHAR(10)
+       SET @Update = CASE WHEN EXISTS(SELECT * FROM inserted ) AND EXISTS(SELECT * FROM deleted ) THEN 'UPDATE ' ELSE '' END
+       IF EXISTS(SELECT * FROM deleted) BEGIN
+          INSERT dbo.HistoryWorkOrder
+          SELECT GetDate(), SUSER_SNAME(), @Update + 'DELETE' , *
+          FROM deleted
+       END
+       IF EXISTS(SELECT * FROM inserted) BEGIN
+          INSERT dbo.HistoryWorkOrder
+          SELECT  GetDate(), SUSER_SNAME(), @Update + 'INSERT' , *
+          FROM inserted
+       END
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[BranchTypeID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Closed]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Created]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[CustomerName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DateDelivery]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[DocNumber]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[FlagWorkAccept]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[OfficeAdminName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[PatientID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[ResponsiblePersonID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[ResponsiblePersonID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Status]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[Status]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkDescription]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrder].[WorkOrderID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[HistoryWorkOrder]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parent">
+				<Entry>
+					<References Name="[dbo].[WorkOrder]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Offset" Value="1435" />
+				<Property Name="CreateOffset" Value="224" />
+				<Property Name="Length" Value="1937" />
+				<Property Name="StartLine" Value="50" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 12.01.2020&#xD;&#xA;-- Description:&#x9;История действий пользователей с заказ-нарядами&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE TRIGGER [dbo].[WorkOrderHistory] &#xD;&#xA;   ON  [dbo].[WorkOrder] &#xD;&#xA;   AFTER INSERT,UPDATE,DELETE&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
 		<Element Type="SqlTable" Name="[dbo].[WorkOrderMC]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
@@ -7143,6 +8116,119 @@ FROM      dbo.WorkOrder AS wo INNER JOIN
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE VIEW dbo.WorkOrderMC_SimpleView&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlDmlTrigger" Name="[dbo].[WorkOrderMCHistory]">
+			<Property Name="IsInsertTrigger" Value="True" />
+			<Property Name="IsUpdateTrigger" Value="True" />
+			<Property Name="IsDeleteTrigger" Value="True" />
+			<Property Name="SqlTriggerType" Value="2" />
+			<Property Name="BodyScript">
+				<Value QuotedIdentifiers="True" AnsiNulls="True"><![CDATA[ 
+BEGIN
+	
+	SET NOCOUNT ON;
+	
+	IF EXISTS 
+	(
+		SELECT * FROM inserted i, deleted d WHERE
+			ISNULL(i.AdditionalInfo, 'empty') = ISNULL(d.AdditionalInfo, 'empty')
+		AND ISNULL(i.CarcassColor, 'empty') = ISNULL(d.CarcassColor, 'empty')
+		AND ISNULL(i.ImplantSystem, 'empty') = ISNULL(d.ImplantSystem, 'empty')
+		AND ISNULL(i.IndividualAbutmentProcessing, 'empty') = ISNULL(d.IndividualAbutmentProcessing, 'empty')
+		AND ISNULL(i.TechnicFullName, 'empty') = ISNULL(d.TechnicFullName, 'empty')
+		AND ISNULL(i.TechnicPhone, 'empty') = ISNULL(d.TechnicPhone, 'empty')
+		AND ISNULL(i.Understaff, 'empty') = ISNULL(d.Understaff, 'empty')
+		AND i.WorkOrderMCID = d.WorkOrderMCID
+	) BEGIN
+		RETURN
+	END
+
+
+    DECLARE  @Update VARCHAR(10)
+    SET @Update = CASE WHEN EXISTS(SELECT * FROM inserted ) AND EXISTS(SELECT * FROM deleted ) THEN 'UPDATE ' ELSE '' END
+    IF EXISTS(SELECT * FROM deleted ) BEGIN
+        INSERT dbo.HistoryWorkOrderMC
+        SELECT GetDate(), SUSER_SNAME(), @Update + 'DELETE' , *
+        FROM deleted
+    END
+    IF EXISTS(SELECT * FROM inserted ) BEGIN
+        INSERT dbo.HistoryWorkOrderMC
+        SELECT  GetDate(), SUSER_SNAME(), @Update + 'INSERT' , *
+        FROM inserted
+    END
+
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[AdditionalInfo]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[CarcassColor]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[ImplantSystem]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[IndividualAbutmentProcessing]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[TechnicFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[TechnicFullName]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[TechnicPhone]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[TechnicPhone]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[Understaff]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[Understaff]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC].[WorkOrderMCID]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[HistoryWorkOrderMC]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parent">
+				<Entry>
+					<References Name="[dbo].[WorkOrderMC]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Offset" Value="716" />
+				<Property Name="CreateOffset" Value="227" />
+				<Property Name="Length" Value="1573" />
+				<Property Name="StartLine" Value="22" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;Алексей Колосенок&#xD;&#xA;-- Create date: 12.01.2020&#xD;&#xA;-- Description:&#x9;История действий пользователей с заказ-нарядами ФЦ&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE TRIGGER [dbo].[WorkOrderMCHistory] &#xD;&#xA;   ON  [dbo].[WorkOrderMC] &#xD;&#xA;   AFTER INSERT,UPDATE,DELETE&#xD;&#xA;AS" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlView" Name="[dbo].[WorkOrders_View]">

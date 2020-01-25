@@ -33,3 +33,8 @@ BEGIN
 	SELECT @countRowsDeleted = @@ROWCOUNT
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[DeleteWorkOrderMC] TO [gdl_user]
+    AS [dbo];
+

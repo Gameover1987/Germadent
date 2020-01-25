@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 17.11.2019
--- Description:	Выводит на экран список заказ-нарядов по заданным критериям отбора
+-- Description:	Возвращает список заказ-нарядов по заданным критериям отбора
 -- =============================================
 CREATE FUNCTION [dbo].[GetWorkOrdersList]
 (	
@@ -10,7 +10,8 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @workorderID int = NULL
 	, @docNumber nvarchar(10) = NULL
 	, @customerName nvarchar(50) = NULL
-	, @patientFullName nvarchar(30) = NULL
+	, @patientFullName nvarchar(150) = NULL
+	, @doctorFullName nvarchar(150) = NULL
 	, @createDateFrom datetime = NULL
 	, @createDateTo datetime = NULL
 	, @closeDateFrom datetime = NULL
@@ -26,6 +27,10 @@ RETURN
 		, wo.DocNumber	
 		, wo.CustomerName
 		, wdl.PatientFullName
+		, CASE 
+				WHEN b.BranchTypeID = 2 THEN wdl.DoctorFullName
+				WHEN b.BranchTypeID = 1 THEN wmc.TechnicFullName
+				END AS DoctorFullName
 		, wo.Created 
 		, wo.Status
 		, wo.FlagWorkAccept
@@ -34,14 +39,21 @@ RETURN
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
+		LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
-		AND wo.BranchTypeID LIKE '%'+ISNULL(@branchType, '')+'%'
+		AND b.BranchType LIKE '%'+ISNULL(@branchType, '')+'%'
 		AND wo.WorkOrderID = ISNULL(@workorderID, wo.WorkOrderID)
 		AND wo.DocNumber LIKE '%'+ISNULL(@docNumber, '')+'%'
 		AND wo.CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
-		AND (wdl.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' OR (PatientFullName IS NULL AND @patientFullName IS NULL))
-		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231')
-				OR wo.Closed BETWEEN ISNULL(@closeDateFrom, NULL) AND ISNULL(@closeDateTo, NULL))
+		AND (wdl.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' 
+				OR (PatientFullName IS NULL AND @patientFullName IS NULL))
+		AND (wdl.DoctorFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
+				OR wmc.TechnicFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
+				OR (wdl.DoctorFullName IS NULL AND @doctorFullName IS NULL) 
+				OR (wmc.TechnicFullName IS NULL AND @doctorFullName IS NULL))
+		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
+		AND	(wo.Closed BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
+				OR (Closed IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
 )

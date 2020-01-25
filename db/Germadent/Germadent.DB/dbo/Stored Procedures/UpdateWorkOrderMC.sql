@@ -59,3 +59,8 @@ BEGIN
 	WHERE WorkOrderMCID = @workOrderID
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdateWorkOrderMC] TO [gdl_user]
+    AS [dbo];
+

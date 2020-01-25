@@ -9,17 +9,19 @@ CREATE PROCEDURE [dbo].[AddNewCustomer]
 	@customerId int output
 	 
 AS
-BEGIN
-	
+BEGIN	
 	SET NOCOUNT ON;
 	
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	DECLARE @max_Id int
+	BEGIN
+		DECLARE @max_Id int
+		SELECT @max_Id = MAX(CustomerID)
+		FROM Customers
 
-	SELECT @max_Id = MAX(CustomerID)
-	FROM Customers
-	DBCC checkident (Customers, reseed, @max_Id)
-
+		EXEC IdentifierAlignment Customers, @max_Id
+	
+		REVERT
+	END
 	-- Собственно вставка:
 	
 	INSERT INTO Customers
@@ -30,3 +32,8 @@ BEGIN
 	SET @customerId = SCOPE_IDENTITY()
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddNewCustomer] TO [gdl_user]
+    AS [dbo];
+

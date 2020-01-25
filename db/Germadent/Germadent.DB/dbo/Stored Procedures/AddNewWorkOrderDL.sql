@@ -28,14 +28,26 @@ BEGIN
 	
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	DECLARE @max_Id int
-	SELECT @max_Id = MAX(WorkOrderID)
-	FROM WorkOrder
-	DBCC checkident (WorkOrder, reseed, @max_Id)
+	BEGIN
+		DECLARE @max_Id int
+		SELECT @max_Id = MAX(WorkOrderID)
+		FROM WorkOrder
+
+		EXEC IdentifierAlignment WorkOrder, @max_Id
+		REVERT		
+	END
 
 	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:	
 	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ЗТЛ')
 	
+	-- Получение id клиента. Если клиента ещё нет - создаём его в таблице
+	SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)
+	IF @customerID IS NULL EXEC AddNewCustomer @customerName, @customerID output
+
+	-- Получение id доктора
+	SET @responsiblePersonId = (SELECT ResponsiblePersonID FROM ResponsiblePersons WHERE ResponsiblePerson = @doctorFullName)
+	IF @responsiblePersonId IS NULL EXEC AddNewRespPerson @customerID, 'Доктор', @doctorFullName, NULL, @responsiblePersonId output
+
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
 		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID, OfficeAdminName)
@@ -50,3 +62,8 @@ BEGIN
 		(@workOrderID, @doctorFullName, @patientFullName, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddNewWorkOrderDL] TO [gdl_user]
+    AS [dbo];
+

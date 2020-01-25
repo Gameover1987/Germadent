@@ -7,4 +7,3 @@ C:\Users\Хозяин\source\repos\Germadent\db\Germadent\Germadent.DB\obj\Debug
 C:\Users\Хозяин\source\repos\Germadent\db\Germadent\Germadent.DB\obj\Debug\Germadent.DB.pdb
 C:\Users\Хозяин\source\repos\Germadent\db\Germadent\Germadent.DB\bin\Debug\Germadent.DB.dll
 C:\Users\Хозяин\source\repos\Germadent\db\Germadent\Germadent.DB\bin\Debug\Germadent.DB.pdb
-C:\Users\Хозяин\source\repos\Germadent\db\Germadent\Germadent.DB\obj\Debug\Germadent.DB.sqlprojAssemblyReference.cache

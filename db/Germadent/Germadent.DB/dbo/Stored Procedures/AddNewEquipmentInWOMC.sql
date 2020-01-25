@@ -17,3 +17,8 @@ BEGIN
 		WITH (workOrderMCId int, equipmentId int, quantity tinyint)
     
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddNewEquipmentInWOMC] TO [gdl_user]
+    AS [dbo];
+

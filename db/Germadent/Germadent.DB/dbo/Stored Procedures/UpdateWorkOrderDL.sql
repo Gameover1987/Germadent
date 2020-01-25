@@ -58,3 +58,8 @@ BEGIN
 	WHERE WorkOrderDLID = @workOrderID
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdateWorkOrderDL] TO [gdl_user]
+    AS [dbo];
+
