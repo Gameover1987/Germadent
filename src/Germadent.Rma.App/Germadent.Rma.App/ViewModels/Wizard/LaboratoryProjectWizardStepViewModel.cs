@@ -10,10 +10,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public interface IMouthProvider
     {
         ObservableCollection<TeethViewModel> Mouth { get; }
-
-        ObservableCollection<MaterialViewModel> Materials { get; }
-
-        ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; }
     }
 
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
@@ -55,14 +51,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         }
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-        public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
 
         public override void Initialize(OrderDto order)
         {
             FillTeethCollection(order);
-            FillMaterialCollection();
-            FillProstheticTypesCollection();
 
             WorkDescription = order.WorkDescription;
             ColorAndFeatures = order.ColorAndFeatures;
@@ -77,53 +69,44 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = Transparency;
 
-            order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            order.ToothCard = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
         private void FillTeethCollection(OrderDto order)
         {
+            var materials = _rmaOperations.GetMaterials();
+            var prosteticTypes = _rmaOperations.GetProstheticTypes();
+
             Mouth.Clear();
             for (int i = 21; i <= 28; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 31; i <= 38; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 11; i <= 18; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
-            if (order.Mouth != null)
+            foreach (var teethViewModel in Mouth)
             {
-                foreach (var teethFromOrder in order.Mouth)
-                {
-                    var teeth = Mouth.Single(x => x.Number == teethFromOrder.Number);
-                    teeth.IsChecked = true;
-                    teeth.HasBridge = teethFromOrder.HasBridge;
-                }
+                var toothDto = order.ToothCard.FirstOrDefault(x => x.ToothNumber == teethViewModel.Number);
+                if (toothDto == null)
+                    continue;
+
+                teethViewModel.Initialize(toothDto);
             }
-        }
 
-        private void FillMaterialCollection()
-        {
-            Materials.Clear();
-            _rmaOperations.GetMaterials().ForEach(x => Materials.Add(new MaterialViewModel(x)));
-        }
-
-        private void FillProstheticTypesCollection()
-        {
-            ProstheticTypes.Clear();
-            _rmaOperations.GetProstheticTypes().ForEach(x => ProstheticTypes.Add(new ProstheticsTypeViewModel(x)));
         }
     }
 }

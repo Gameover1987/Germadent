@@ -94,26 +94,26 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void FillTeethCollection()
         {
-            Mouth.Clear();
-            for (int i = 21; i <= 28; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //Mouth.Clear();
+            //for (int i = 21; i <= 28; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 31; i <= 38; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 31; i <= 38; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 41; i <= 48; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 41; i <= 48; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 11; i <= 18; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 11; i <= 18; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
         }
     }
 }

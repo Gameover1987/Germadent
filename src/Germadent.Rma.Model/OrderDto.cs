@@ -29,8 +29,6 @@ namespace Germadent.Rma.Model
 
         public DateTime? Closed { get; set; }
 
-        public Teeth[] Mouth { get; set; }
-
         public string ResponsiblePerson { get; set; }
 
         public string ResponsiblePersonPhone { get; set; }
@@ -60,5 +58,7 @@ namespace Germadent.Rma.Model
         public string Understaff { get; set; }
 
         public string OfficeAdminName { get; set; }
+
+        public ToothDto[] ToothCard { get; set; }
     }
 }

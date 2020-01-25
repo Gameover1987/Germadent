@@ -33,6 +33,17 @@ namespace Germadent.DataAccessService.Entities.Conversion
             };
         }
 
+        public ToothDto ConvertToTooth(ToothEntity entity)
+        {
+            return new ToothDto
+            {
+                ToothNumber = entity.ToothNumber,
+                MaterialName = entity.MaterialName,
+                ProstheticsName = entity.ProstheticsName,
+                HasBridge = entity.FlagBridge
+            };
+        }
+
         public OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity)
         {
             return new OrderLiteDto

@@ -20,20 +20,24 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListBox x:Name="_mouthListBox" 
+        <Canvas Background="White">
+            <Path x:Name="toothCardPath" Stroke="DarkGray" StrokeThickness="3" StrokeDashArray="1 1" />
+        </Canvas>
+        <ListBox x:Name="_mouthListBox"
+                 Style="{x:Null}"
+                 Background="Transparent"
                  ItemsSource="{Binding Mouth}"
                  SelectionMode="Extended">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas x:Name="_canvas" IsItemsHost="True"/>
+                    <Canvas IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:TeethViewModel}">
-                    <Grid Background="Transparent" 
-                          Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext}">
+                    <Grid Background="Transparent" >
                         <Grid.ContextMenu>
-                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                            <ContextMenu>
                                 <MenuItem Header="Материал"
                                           ItemsSource="{Binding Materials}">
                                     <MenuItem.ItemContainerStyle>
@@ -52,6 +56,8 @@
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                 </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Мост" IsCheckable="True" IsChecked="{Binding HasBridge}"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid.RowDefinitions>

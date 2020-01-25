@@ -6,6 +6,8 @@ namespace Germadent.DataAccessService.Entities.Conversion
     {
         OrderDto ConvertToOrder(OrderEntity entity);
 
+        ToothDto ConvertToTooth(ToothEntity entity);
+
         OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
         MaterialDto ConvertToMaterial(MaterialEntity entity);
