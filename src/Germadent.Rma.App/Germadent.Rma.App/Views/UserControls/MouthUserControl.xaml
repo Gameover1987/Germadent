@@ -9,6 +9,16 @@
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
+            <TextBlock Text="{Binding Item.Name}"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ProstheticsTypeViewModel}">
+            <TextBlock Text="{Binding Item.Name}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid>
         <ListBox x:Name="_mouthListBox" 
                  ItemsSource="{Binding Mouth}"
@@ -20,7 +30,30 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:TeethViewModel}">
-                    <Grid>
+                    <Grid Background="Transparent" 
+                          Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext}">
+                        <Grid.ContextMenu>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Материал"
+                                          ItemsSource="{Binding Materials}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="{x:Type MenuItem}">
+                                            <Setter Property="IsCheckable" Value="True"/>
+                                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
+                                <MenuItem Header="Тип протезирования"
+                                          ItemsSource="{Binding ProstheticTypes}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="{x:Type MenuItem}">
+                                            <Setter Property="IsCheckable" Value="True"/>
+                                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>

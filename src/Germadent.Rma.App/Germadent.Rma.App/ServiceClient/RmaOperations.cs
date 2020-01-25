@@ -58,6 +58,16 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
+        public ProstheticsTypeDto[] GetProstheticTypes()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticTypes";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var prostheticTypes = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ProstheticsTypeDto[]>();
+                return prostheticTypes;
+            }
+        }
+
         public OrderDto AddOrder(OrderDto order)
         {
             var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");

@@ -58,5 +58,14 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 IsObsolete = entity.FlagUnused
             };
         }
+
+        public ProstheticsTypeDto ConvertToProstheticType(ProstheticTypeEntity entity)
+        {
+            return new ProstheticsTypeDto
+            {
+                Id = entity.ProstheticsId,
+                Name = entity.ProstheticsName
+            };
+        }
     }
 }

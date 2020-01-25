@@ -213,6 +213,33 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
+        public ProstheticsTypeDto[] GetProstheticTypes()
+        {
+            var cmdText = "select * from GetTypesOfProsthetics()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var prostheticTypeEntities = new List<ProstheticTypeEntity>();
+                    while (reader.Read())
+                    {
+                        var prostheticTypeEntity = new ProstheticTypeEntity();
+                        prostheticTypeEntity.ProstheticsId = int.Parse(reader[nameof(prostheticTypeEntity.ProstheticsId)].ToString());
+                        prostheticTypeEntity.ProstheticsName = reader[nameof(prostheticTypeEntity.ProstheticsName)].ToString();
+
+                        prostheticTypeEntities.Add(prostheticTypeEntity);
+                    }
+                    reader.Close();
+
+                    return prostheticTypeEntities.Select(x => _converter.ConvertToProstheticType(x)).ToArray();
+                }
+            }
+        }
+
         public OrderDto GetOrderDetails(int id)
         {
             var cmdText = string.Format("select * from GetWorkOrderById({0})", id);

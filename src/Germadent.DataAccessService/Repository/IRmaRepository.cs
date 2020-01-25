@@ -35,5 +35,11 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <returns></returns>
         MaterialDto[] GetMaterials();
+
+        /// <summary>
+        /// Возвращает список типов протезирования
+        /// </summary>
+        /// <returns></returns>
+        ProstheticsTypeDto[] GetProstheticTypes();
     }
 }

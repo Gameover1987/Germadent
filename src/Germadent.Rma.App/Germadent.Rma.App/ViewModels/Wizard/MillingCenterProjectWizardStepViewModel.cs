@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
-using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -66,6 +65,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         }
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
+        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
 
         public override void Initialize(OrderDto order)
         {

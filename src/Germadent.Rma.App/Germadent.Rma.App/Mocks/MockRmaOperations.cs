@@ -40,6 +40,11 @@ namespace Germadent.Rma.App.Mocks
             return materials;
         }
 
+        public ProstheticsTypeDto[] GetProstheticTypes()
+        {
+            throw new NotImplementedException();
+        }
+
         public OrderDto AddOrder(OrderDto order)
         {
             throw new NotImplementedException();

@@ -99,6 +99,7 @@
     <Compile Include="ViewModels\IOrderViewModel.cs" />
     <Compile Include="ViewModels\OrderLightViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
+    <Compile Include="ViewModels\ProstheticsTypeViewModel.cs" />
     <Compile Include="ViewModels\TeethViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />

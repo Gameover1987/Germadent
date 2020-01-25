@@ -9,5 +9,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
         MaterialDto ConvertToMaterial(MaterialEntity entity);
+
+        ProstheticsTypeDto ConvertToProstheticType(ProstheticTypeEntity entity);
     }
 }
