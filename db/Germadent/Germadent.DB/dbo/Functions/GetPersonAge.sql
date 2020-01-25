@@ -25,3 +25,8 @@ BEGIN
 	RETURN @age
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetPersonAge] TO [gdl_user]
+    AS [dbo];
+

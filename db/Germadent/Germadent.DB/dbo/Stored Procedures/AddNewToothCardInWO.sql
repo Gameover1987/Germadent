@@ -17,3 +17,8 @@ BEGIN
 		WITH (workOrderID int, toothNumber int, materialID int, prostheticsID int, bridge int)		
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddNewToothCardInWO] TO [gdl_user]
+    AS [dbo];
+

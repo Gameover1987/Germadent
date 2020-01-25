@@ -123,6 +123,7 @@
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\Sequences\" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AdditionalEquipment.sql">
@@ -322,5 +323,15 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="Security\gdl_user.sql" />
+    <Build Include="Security\ofm.sql" />
+    <Build Include="Security\DbccLauncher.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Stored Procedures\IdentifierAlignment.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Security\DdlAdminPermissionsKey.sql" />
+    <Build Include="Security\Signatures.sql" />
   </ItemGroup>
 </Project>

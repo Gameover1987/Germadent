@@ -3,7 +3,7 @@
 -- Create date: 12.12.2019
 -- Description:	Создание нового ответственного лица (доктора или техника) для заказчика
 -- =============================================
-CREATE PROCEDURE AddNewRespPerson 
+CREATE PROCEDURE [dbo].[AddNewRespPerson] 
 	
 	@customerID int, 
 	@rp_Position nvarchar(30),
@@ -17,12 +17,15 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	DECLARE @max_Id int
+	BEGIN
+		DECLARE @max_Id int
 
-	SELECT @max_Id = MAX(ResponsiblePersonID)
-	FROM ResponsiblePersons
-	DBCC checkident (ResponsiblePersons, reseed, @max_Id)
+		SELECT @max_Id = MAX(ResponsiblePersonID)
+		FROM ResponsiblePersons
 
+		EXEC IdentifierAlignment ResponsiblePersons, @max_Id
+		REVERT
+	END
 	-- Собственно вставка:
 	
 	INSERT INTO ResponsiblePersons
@@ -33,3 +36,8 @@ BEGIN
 	SET @responsiblePersonId = SCOPE_IDENTITY()
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddNewRespPerson] TO [gdl_user]
+    AS [dbo];
+
