@@ -29,6 +29,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return "Проект"; }
         }
 
+        public override bool IsValid => !HasErrors;
+
         public string WorkDescription
         {
             get { return _workDescription; }

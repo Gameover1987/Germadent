@@ -88,7 +88,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanOkCommandHandler()
         {
-            return true;
+            return Steps.All(x => x.IsValid);
         }
 
         private void OKCommandHandler()

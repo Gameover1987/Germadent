@@ -21,6 +21,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _rmaOperations = rmaOperations;
         }
 
+        public override bool IsValid => !HasErrors;
+
         public override string DisplayName
         {
             get { return "Проект"; }

@@ -92,6 +92,10 @@
     <Compile Include="ViewModels\ErrorMessageViewModel.cs" />
     <Compile Include="ViewModels\IAboutViewModel.cs" />
     <Compile Include="ViewModels\IAuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\Validation\IValidationSupportableViewModel.cs" />
+    <Compile Include="ViewModels\Validation\PropertyValidation.cs" />
+    <Compile Include="ViewModels\Validation\ValidationRule.cs" />
+    <Compile Include="ViewModels\Validation\ValidationSupportableViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
