@@ -13,7 +13,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         /// <summary>
         /// Дополняет уже созданный заказ-наряд нужными данными
         /// </summary>
-        /// <param name=""></param>
         /// <returns></returns>
         void AssemblyOrder(OrderDto order);
     }

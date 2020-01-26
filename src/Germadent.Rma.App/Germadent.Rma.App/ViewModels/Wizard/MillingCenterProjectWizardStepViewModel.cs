@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
-using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -20,6 +19,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             _rmaOperations = rmaOperations;
         }
+
+        public override bool IsValid => !HasErrors;
 
         public override string DisplayName
         {
@@ -64,6 +65,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         }
 
         public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
+        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
 
         public override void Initialize(OrderDto order)
         {
@@ -91,26 +94,26 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void FillTeethCollection()
         {
-            Mouth.Clear();
-            for (int i = 21; i <= 28; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //Mouth.Clear();
+            //for (int i = 21; i <= 28; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 31; i <= 38; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 31; i <= 38; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 41; i <= 48; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 41; i <= 48; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
 
-            for (int i = 11; i <= 18; i++)
-            {
-                Mouth.Add(new TeethViewModel { Number = i });
-            }
+            //for (int i = 11; i <= 18; i++)
+            //{
+            //    Mouth.Add(new TeethViewModel { Number = i });
+            //}
         }
     }
 }

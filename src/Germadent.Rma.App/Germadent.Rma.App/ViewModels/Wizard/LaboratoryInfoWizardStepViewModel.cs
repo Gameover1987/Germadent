@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
@@ -20,7 +21,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public LaboratoryInfoWizardStepViewModel()
         {
-            
+            AddValidationFor(() => Customer)
+                .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
+            AddValidationFor(() => DoctorFio)
+                .When(() => DoctorFio.IsNullOrWhiteSpace(), () => "Укажите фамилию доктора");
+            AddValidationFor(() => PatientFio)
+                .When(() => PatientFio.IsNullOrWhiteSpace(), () => "Укажите фамилию пациента");
+            AddValidationFor(() => Age)
+                .When(() => Age < 0 || Age > 150, () => "Возраст должен быть в диапазоне от 0 до 150");
         }
 
         public override string DisplayName
@@ -28,10 +36,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return "Общие данные"; }
         }
 
+        public override bool IsValid
+        {
+            get { return !HasErrors; }
+        }
+
         public string Customer
         {
             get { return _customer; }
-            set { SetProperty(() => _customer, value); }
+            set
+            {
+                SetProperty(() => _customer, value); 
+            }
         }
 
         public string DoctorFio

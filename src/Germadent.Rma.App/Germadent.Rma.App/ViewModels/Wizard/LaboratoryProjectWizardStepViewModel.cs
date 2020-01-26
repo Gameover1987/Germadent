@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
@@ -13,7 +14,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
     {
-        private IRmaOperations _rmaOperations;
+        private readonly IRmaOperations _rmaOperations;
 
         private string _workDescription;
         private string _colorAndFeatures;
@@ -28,6 +29,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             get { return "Проект"; }
         }
+
+        public override bool IsValid => !HasErrors;
 
         public string WorkDescription
         {
@@ -66,41 +69,44 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = Transparency;
 
-            order.Mouth = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            order.ToothCard = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
         }
 
         private void FillTeethCollection(OrderDto order)
         {
+            var materials = _rmaOperations.GetMaterials();
+            var prosteticTypes = _rmaOperations.GetProstheticTypes();
+
             Mouth.Clear();
             for (int i = 21; i <= 28; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 31; i <= 38; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
             for (int i = 11; i <= 18; i++)
             {
-                Mouth.Add(new TeethViewModel { Number = i });
+                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
             }
 
-            if (order.Mouth != null)
+            foreach (var teethViewModel in Mouth)
             {
-                foreach (var teethFromOrder in order.Mouth)
-                {
-                    var teeth = Mouth.Single(x => x.Number == teethFromOrder.Number);
-                    teeth.IsChecked = true;
-                    teeth.HasBridge = teethFromOrder.HasBridge;
-                }
+                var toothDto = order.ToothCard.FirstOrDefault(x => x.ToothNumber == teethViewModel.Number);
+                if (toothDto == null)
+                    continue;
+
+                teethViewModel.Initialize(toothDto);
             }
+
         }
     }
 }

@@ -2,17 +2,17 @@
 {
     public class MaterialDto
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public bool IsObsolete { get; set; }
     }
 
-    public class Teeth
+    public class ProstheticsTypeDto
     {
-        public int Number { get; set; }
+        public int Id { get; set; }
 
-        public MaterialDto Material { get; set; }
-
-        public bool HasBridge { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             
         }
 
+        public override bool IsValid => !HasErrors;
+
         public override string DisplayName
         {
             get { return "Общие данные"; }

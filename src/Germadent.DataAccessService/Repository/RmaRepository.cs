@@ -213,7 +213,41 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
+        public ProstheticsTypeDto[] GetProstheticTypes()
+        {
+            var cmdText = "select * from GetTypesOfProsthetics()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var prostheticTypeEntities = new List<ProstheticTypeEntity>();
+                    while (reader.Read())
+                    {
+                        var prostheticTypeEntity = new ProstheticTypeEntity();
+                        prostheticTypeEntity.ProstheticsId = int.Parse(reader[nameof(prostheticTypeEntity.ProstheticsId)].ToString());
+                        prostheticTypeEntity.ProstheticsName = reader[nameof(prostheticTypeEntity.ProstheticsName)].ToString();
+
+                        prostheticTypeEntities.Add(prostheticTypeEntity);
+                    }
+                    reader.Close();
+
+                    return prostheticTypeEntities.Select(x => _converter.ConvertToProstheticType(x)).ToArray();
+                }
+            }
+        }
+
         public OrderDto GetOrderDetails(int id)
+        {
+            var orderDto = GetWorkOrderById(id);
+            orderDto.ToothCard = GetToothCard(id);
+            return orderDto;
+        }
+
+        private OrderDto GetWorkOrderById(int id)
         {
             var cmdText = string.Format("select * from GetWorkOrderById({0})", id);
 
@@ -270,9 +304,42 @@ namespace Germadent.DataAccessService.Repository
 
                         return _converter.ConvertToOrder(orderEntity);
                     }
+
                     reader.Close();
 
                     return null;
+                }
+            }
+        }
+
+        private ToothDto[] GetToothCard(int id)
+        {
+            var cmdText = string.Format("select * from GetToothCardByWOId({0})", id);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+
+                    var toothCollection = new List<ToothDto>();
+                    while (reader.Read())
+                    {
+                        var toothEntity = new ToothEntity();
+
+                        toothEntity.ToothNumber = reader[nameof(toothEntity.ToothNumber)].ToInt();
+                        toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
+                        toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
+                        toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
+
+                        toothCollection.Add(_converter.ConvertToTooth(toothEntity));
+                    }
+
+                    reader.Close();
+
+                    return toothCollection.ToArray();
                 }
             }
         }
@@ -310,6 +377,7 @@ namespace Germadent.DataAccessService.Repository
                     {
                         command.Parameters.Add(new SqlParameter(branchtypeid, SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
                     }
+
                     command.Parameters.Add(new SqlParameter(customername, SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter(patientfullname, SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter(doctorFullName, SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
