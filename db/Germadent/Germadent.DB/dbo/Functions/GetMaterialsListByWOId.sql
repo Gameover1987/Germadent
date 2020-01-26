@@ -1,9 +1,9 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 21.11.2019
--- Description:	Список материалов из заказ-наряда
+-- Description:	Возвращает список материалов из заказ-наряда
 -- =============================================
-CREATE FUNCTION [GetMaterialsListByWOId] 
+CREATE FUNCTION [dbo].[GetMaterialsListByWOId] 
 (	
 	@workOrderID int
 )
