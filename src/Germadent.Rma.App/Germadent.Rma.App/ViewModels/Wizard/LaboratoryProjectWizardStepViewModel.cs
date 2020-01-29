@@ -70,6 +70,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Transparency = Transparency;
 
             order.ToothCard = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
 
         private void FillTeethCollection(OrderDto order)

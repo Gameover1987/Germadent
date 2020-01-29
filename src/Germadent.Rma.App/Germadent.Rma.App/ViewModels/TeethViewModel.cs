@@ -20,6 +20,7 @@ namespace Germadent.Rma.App.ViewModels
         public bool HasBridge { get; set; }
 
         public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+
         public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
 
         public void Initialize(ToothDto toothDto)
@@ -38,9 +39,15 @@ namespace Germadent.Rma.App.ViewModels
 
         public ToothDto ToModel()
         {
+            var selectedMaterial = Materials.FirstOrDefault(x => x.IsChecked);
+            var selectedProstheticsType = ProstheticTypes.FirstOrDefault(x => x.IsChecked);
             return new ToothDto()
             {
                 ToothNumber = Number,
+                MaterialId = selectedMaterial?.Item.Id ?? 0,
+                MaterialName = selectedMaterial?.Item.Name,
+                ProstheticsId = selectedProstheticsType?.Item.Id ?? 0,
+                ProstheticsName = selectedProstheticsType?.Item.Name,
                 HasBridge = HasBridge
             };
         }

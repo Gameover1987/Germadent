@@ -50,6 +50,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public ToothDto[] AddOrUpdateToothCard(ToothDto[] toothCard)
+        {
+            throw new NotImplementedException();
+        }
+
         public OrderDto UpdateOrder(OrderDto order)
         {
             throw new NotImplementedException();

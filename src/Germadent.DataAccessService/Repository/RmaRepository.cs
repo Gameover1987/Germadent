@@ -8,6 +8,7 @@ using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.Rma.Model;
+using Newtonsoft.Json;
 
 namespace Germadent.DataAccessService.Repository
 {
@@ -26,20 +27,45 @@ namespace Germadent.DataAccessService.Repository
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
+                OrderDto outputOrder = null;
                 connection.Open();
 
                 switch (order.BranchType)
                 {
                     case BranchType.Laboratory:
-                        return AddWorkOrderDL(order, connection);
+                        outputOrder = AddWorkOrderDL(order, connection);
+                        break;
 
                     case BranchType.MillingCenter:
-                        return AddWorkOrderMC(order, connection);
+                        outputOrder = AddWorkOrderMC(order, connection);
+                        break;
 
                     default:
                         throw new NotSupportedException("Неизвестный тип филиала");
                 }
+
+                AddOrUpdateToothCard(order.ToothCard , connection);
+
+                return outputOrder;
             }
+        }
+
+        private ToothDto[] AddOrUpdateToothCard(ToothDto[] toothCard, SqlConnection connection)
+        {
+            var toothCardJson = toothCard.SerializeToJson(Formatting.Indented);
+
+            var cmdText = "AddOrUpdateToothCardInWO";
+
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = toothCardJson;
+
+                command.ExecuteNonQuery();
+
+                return toothCard;
+            }
+
         }
 
         private static OrderDto AddWorkOrderDL(OrderDto order, SqlConnection connection)
@@ -116,6 +142,8 @@ namespace Germadent.DataAccessService.Repository
                         default:
                             throw new NotSupportedException("Неизвестный тип филиала");
                     }
+
+                    AddOrUpdateToothCard(order.ToothCard, connection);
                 }
             }
         }
@@ -179,7 +207,6 @@ namespace Germadent.DataAccessService.Repository
                 command.ExecuteNonQuery();
             }
         }
-
 
         public MaterialDto[] GetMaterials()
         {

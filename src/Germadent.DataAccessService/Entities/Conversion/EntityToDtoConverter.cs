@@ -65,6 +65,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         {
             return new MaterialDto
             {
+                Id = entity.MaterialId,
                 Name = entity.MaterialName,
                 IsObsolete = entity.FlagUnused
             };
