@@ -33,7 +33,7 @@
         <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                  Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора"  />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО пациента"  />
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
                  Text="{Binding Patient, UpdateSourceTrigger=PropertyChanged}" />
 

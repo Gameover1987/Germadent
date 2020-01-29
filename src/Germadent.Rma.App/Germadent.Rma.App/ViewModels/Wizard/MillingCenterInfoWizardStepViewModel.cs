@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
@@ -14,7 +15,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public MillingCenterInfoWizardStepViewModel()
         {
-            
+            AddValidationFor(() => Customer)
+                .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
+            AddValidationFor(() => ResponsiblePerson)
+                .When(() => ResponsiblePerson.IsNullOrWhiteSpace(), () => "Укажите техника");
+            AddValidationFor(() => ResponsiblePersonPhone)
+                .When(() => ResponsiblePersonPhone.IsNullOrWhiteSpace(), () => "Укажите телефон техника");
         }
 
         public override bool IsValid => !HasErrors;
