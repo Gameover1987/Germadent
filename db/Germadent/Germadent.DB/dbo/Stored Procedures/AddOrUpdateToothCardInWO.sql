@@ -10,21 +10,24 @@ CREATE PROCEDURE [dbo].[AddOrUpdateToothCardInWO]
 AS
 BEGIN
 	
+	-- Достаём нужный id
 	DECLARE @workOrderId int
 
-	SET 	 @workOrderId = (SELECT DISTINCT  WorkOrderID
+	SET 	 @workOrderId = (SELECT DISTINCT WorkOrderID
 							FROM OPENJSON (@jsonString)
-								WITH (workOrderID int))
+								WITH (WorkOrderId int))
 
+	-- Чистим зубную карту от старого содержимого
 	DELETE
 	FROM ToothCard
 	WHERE WorkOrderID = @workOrderId
 
+	-- Наполняем новым содержимым, распарсив строку json
 	INSERT INTO ToothCard
 		(WorkOrderID, ToothNumber, MaterialID, ProstheticsID, FlagBridge)
-	SELECT WorkOrderID, ToothNumber, MaterialID, ProstheticsID, FlagBridge
+	SELECT WorkOrderID, ToothNumber, MaterialID, ProstheticsID, HasBridge
 	FROM OPENJSON (@jsonString)
-		WITH (workOrderID int, toothNumber int, materialID int, prostheticsID int, flagBridge bit)	
+		WITH (WorkOrderId int, ToothNumber int, MaterialId int, ProstheticsId int, HasBridge bit)	
 
 END
 GO
