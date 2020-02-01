@@ -24,10 +24,19 @@ BEGIN
 
 	-- Наполняем новым содержимым, распарсив строку json
 	INSERT INTO ToothCard
-		(WorkOrderID, ToothNumber, MaterialID, ProstheticsID, FlagBridge)
-	SELECT WorkOrderID, ToothNumber, MaterialID, ProstheticsID, HasBridge
+		(WorkOrderID, ToothNumber, ConditionID, ProstheticsID, MaterialID, FlagBridge)
+	SELECT WorkOrderID, ToothNumber, ConditionID, ProstheticsID, MaterialID, HasBridge
 	FROM OPENJSON (@jsonString)
-		WITH (WorkOrderId int, ToothNumber int, MaterialId int, ProstheticsId int, HasBridge bit)	
+		WITH (WorkOrderId int, ToothNumber int, ConditionId int, ProstheticsId int, MaterialId int, HasBridge bit)
+
+	-- Удаляем незначащие записи
+	DELETE
+	FROM ToothCard
+	WHERE WorkOrderID = @workOrderId
+	AND ToothNumber IS NULL 
+	AND ConditionID IS NULL
+	AND ProstheticsID IS NULL
+	AND MaterialID IS NULL	
 
 END
 GO

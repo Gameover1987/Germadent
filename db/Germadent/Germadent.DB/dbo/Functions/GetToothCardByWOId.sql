@@ -13,9 +13,10 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialName, p.ProstheticsName, tc.FlagBridge 
+	SELECT wo.WorkOrderID, tc.ToothNumber, c.ConditionName, p.ProstheticsName, m.MaterialName, tc.FlagBridge 
 	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
 		INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
 		INNER JOIN TypesOfProsthetics p ON tc.ProstheticsID = p.ProstheticsID
+		INNER JOIN ConditionsOfProsthetics c ON tc.ConditionID = c.ConditionID
 	WHERE wo.WorkOrderID = @WorkOrderID
 )

@@ -12,10 +12,13 @@
     [PatientID]           INT            NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
+    [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            NULL,
     [OfficeAdminID]       INT            NULL,
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL
 );
+
+
 

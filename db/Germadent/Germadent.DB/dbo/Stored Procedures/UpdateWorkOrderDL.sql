@@ -13,6 +13,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 --	, @responsiblePersonId int
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
+	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
@@ -37,6 +38,7 @@ BEGIN
 --		, ResponsiblePersonID = @responsiblePersonId
 --		, PatientID = @patientID
 		, DateDelivery = @dateDelivery
+		, ProstheticArticul = @prostheticArticul
 		, WorkDescription = @workDescription
 		, FlagWorkAccept = @flagWorkAccept
 --		, OfficeAdminID = @officeAdminID
