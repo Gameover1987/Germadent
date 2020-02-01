@@ -83,7 +83,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            //_windowManager.CreateMillingCenterOrder();
+            _windowManager.CreateMillingCenterOrder(new OrderDto(), WizardMode.Create);
         }
 
         private void FilterOrdersCommandHandler()
@@ -125,7 +125,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            //_printModule.Print(_rmaOperations.GetOrderDetails<LaboratoryOrder>(SelectedOrder.Model.WorkOrderId));
+            _printModule.Print(_rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId));
         }
 
         private bool CanOpenOrderCommandHandler()
