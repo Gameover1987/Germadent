@@ -1,10 +1,12 @@
 ﻿CREATE TABLE [dbo].[AdditionalEquipment] (
-    [WorkOrderMCID] INT     NOT NULL,
-    [EquipmentID]   INT     NOT NULL,
-    [Quantity]      TINYINT NOT NULL,
-    CONSTRAINT [FK_AdditionalEquipment_WorkOrderMC] FOREIGN KEY ([WorkOrderMCID]) REFERENCES [dbo].[WorkOrderMC] ([WorkOrderMCID]),
-    CONSTRAINT [IX_AdditionalEquipment] UNIQUE CLUSTERED ([WorkOrderMCID] ASC, [EquipmentID] ASC)
+    [WorkOrderID] INT     NOT NULL,
+    [EquipmentID] INT     NOT NULL,
+    [Quantity]    TINYINT NOT NULL,
+    CONSTRAINT [FK_AdditionalEquipment_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]),
+    CONSTRAINT [IX_AdditionalEquipment] UNIQUE CLUSTERED ([WorkOrderID] ASC, [EquipmentID] ASC)
 );
+
+
 
 
 

@@ -33,7 +33,6 @@ BEGIN
 	DELETE
 	FROM ToothCard
 	WHERE WorkOrderID = @workOrderId
-	AND ToothNumber IS NULL 
 	AND ConditionID IS NULL
 	AND ProstheticsID IS NULL
 	AND MaterialID IS NULL	
