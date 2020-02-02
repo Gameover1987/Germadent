@@ -38,3 +38,8 @@ BEGIN
 	AND (Quantity = 0 OR Quantity IS NULL)
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateAdditionalEquipment] TO [gdl_user]
+    AS [dbo];
+

@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.AdditionalEquipments_View
 AS
-SELECT   ae.WorkOrderMCID, ae.EquipmentID, e.EquipmentName, ae.Quantity
+SELECT   ae.WorkOrderID, ae.EquipmentID, e.EquipmentName, ae.Quantity
 FROM      dbo.AdditionalEquipment AS ae INNER JOIN
                 dbo.Equipments AS e ON ae.EquipmentID = e.EquipmentID
 GO
