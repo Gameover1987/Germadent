@@ -1,0 +1,3 @@
+﻿CREATE TABLE [dbo].[StlAndPhotos] AS FILETABLE FILESTREAM_ON [GermadentFileStream]
+WITH (FILETABLE_COLLATE_FILENAME = Cyrillic_General_CI_AS, FILETABLE_DIRECTORY = N'StlAndPhotos');
+
