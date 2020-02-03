@@ -62,7 +62,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ToothDto[] ToModel()
         {
-            return Teeth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            return Teeth.Where(x => x.IsChecked).Select(x => x.ToDto()).ToArray();
         }
     }
 }

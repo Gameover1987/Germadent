@@ -1,10 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System.Linq;
+using Germadent.Rma.Model;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Germadent.Rma.App.ViewModels;
 
 namespace Germadent.Rma.App.Test
@@ -12,11 +8,18 @@ namespace Germadent.Rma.App.Test
     [TestFixture]
     public class ToothViewModelTest
     {
-        [TestCase(true, "Zro", "Каркас")]
-        public void ShouldInitialize(bool hasBridge, string material, string prostheticType)
+        /// <summary>
+        /// Должен инициализироваться из DTO
+        /// </summary>
+        /// <param name="hasBridge"></param>
+        /// <param name="material"></param>
+        /// <param name="prostheticType"></param>
+        [TestCase(true, "ZrO", "Каркас")]
+        [TestCase(false, "E.MAX", "другая конструкция")]
+        public void ShouldInitializeFromDto(bool hasBridge, string material, string prostheticType)
         {
             // Given
-            var target = new ToothViewModel(GetMaterials(), GetProsthticTypes());
+            var target = CreateTarget();
 
             // When
             target.Initialize(new ToothDto
@@ -28,9 +31,73 @@ namespace Germadent.Rma.App.Test
 
             // Then
             Assert.AreEqual(hasBridge, target.HasBridge);
-            //Assert.AreEqual(material, target.);
-            //Assert.AreEqual(hasBridge, target.HasBridge);
+            Assert.AreEqual(material, target.SelectedMaterial.DisplayName);
+            Assert.AreEqual(prostheticType, target.SelectedProstheticsType.DisplayName);
+        }
 
+        [TestCase(10, 1, "ZrO", 1, "Каркас", true)]
+        public void ShouldGetDto(int toothNumber, int materialId, string materialName, string prosthtics, int prostheticsId, bool hasBridge)
+        {
+            // Given
+            var expectedDto = new ToothDto
+            {
+                HasBridge = hasBridge,
+                MaterialId = materialId,
+                MaterialName = materialName,
+                ProstheticsId = prostheticsId,
+                ProstheticsName = prosthtics,
+                ToothNumber = toothNumber
+            };
+            var target = CreateTarget();
+
+            // When
+            var actualDto = target.ToDto();
+
+            // Then
+            
+        }
+
+        /// <summary>
+        /// При выборе должен отмечаться только один материал, и зуб должен становиться отмеченным
+        /// </summary>
+        [Test]
+        public void ShouldCheckOnlyOneMaterial()
+        {
+            // Given
+            var target = CreateTarget();
+
+            // When
+            target.Materials.First().IsChecked = true;
+            target.Materials.Last().IsChecked = true;
+
+            // Then
+            Assert.AreEqual(target.SelectedMaterial, target.Materials.Last());
+            Assert.IsTrue(target.Materials.Where(x => x != target.SelectedMaterial).All(x => x.IsChecked == false));
+            Assert.IsTrue(target.IsChecked);
+        }
+
+        /// <summary>
+        /// При выборе должен отмечаться только один тип протезирования, и зуб должен становиться отмеченным
+        /// </summary>
+        [Test]
+        public void ShouldCheckOnlyOneProstheticsType()
+        {
+            // Given
+            var target = CreateTarget();
+
+            // When
+            target.ProstheticTypes.First().IsChecked = true;
+            target.ProstheticTypes.Last().IsChecked = true;
+
+            // Then
+            Assert.AreEqual(target.SelectedProstheticsType, target.ProstheticTypes.Last());
+            Assert.IsTrue(target.ProstheticTypes.Where(x => x != target.SelectedProstheticsType).All(x => x.IsChecked == false));
+            Assert.IsTrue(target.IsChecked);
+        }
+
+        private ToothViewModel CreateTarget()
+        {
+            return new ToothViewModel(GetMaterials(), GetProsthticTypes());
         }
 
         private static MaterialDto[] GetMaterials()
