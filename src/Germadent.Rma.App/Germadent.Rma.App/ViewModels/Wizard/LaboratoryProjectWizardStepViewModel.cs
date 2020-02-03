@@ -7,22 +7,15 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public interface IMouthProvider
+    public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase
     {
-        ObservableCollection<TeethViewModel> Mouth { get; }
-    }
-
-    public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
-    {
-        private readonly IRmaOperations _rmaOperations;
-
         private string _workDescription;
         private string _colorAndFeatures;
         private int _transparency;
 
-        public LaboratoryProjectWizardStepViewModel(IRmaOperations rmaOperations)
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard)
         {
-            _rmaOperations = rmaOperations;
+            ToothCard = toothCard;
         }
 
         public override string DisplayName
@@ -50,15 +43,15 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _transparency, value); }
         }
 
-        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
+        public IToothCardViewModel ToothCard { get; } 
 
         public override void Initialize(OrderDto order)
         {
-            FillTeethCollection(order);
+            _workDescription = order.WorkDescription;
+            _colorAndFeatures = order.ColorAndFeatures;
+            _transparency = order.Transparency;
 
-            WorkDescription = order.WorkDescription;
-            ColorAndFeatures = order.ColorAndFeatures;
-            Transparency = order.Transparency;
+            ToothCard.Initialize(order.ToothCard);
 
             OnPropertyChanged();
         }
@@ -69,45 +62,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = Transparency;
 
-            order.ToothCard = Mouth.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray();
+            order.ToothCard = ToothCard.ToModel();
             order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-        }
-
-        private void FillTeethCollection(OrderDto order)
-        {
-            var materials = _rmaOperations.GetMaterials();
-            var prosteticTypes = _rmaOperations.GetProstheticTypes();
-
-            Mouth.Clear();
-            for (int i = 21; i <= 28; i++)
-            {
-                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
-            }
-
-            for (int i = 31; i <= 38; i++)
-            {
-                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
-            }
-
-            for (int i = 41; i <= 48; i++)
-            {
-                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
-            }
-
-            for (int i = 11; i <= 18; i++)
-            {
-                Mouth.Add(new TeethViewModel(materials, prosteticTypes) { Number = i });
-            }
-
-            foreach (var teethViewModel in Mouth)
-            {
-                var toothDto = order.ToothCard.FirstOrDefault(x => x.ToothNumber == teethViewModel.Number);
-                if (toothDto == null)
-                    continue;
-
-                teethViewModel.Initialize(toothDto);
-            }
-
         }
     }
 }

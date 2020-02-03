@@ -26,7 +26,7 @@
         <ListBox x:Name="_mouthListBox"
                  Style="{x:Null}"
                  Background="Transparent"
-                 ItemsSource="{Binding Mouth}"
+                 ItemsSource="{Binding ToothCard}"
                  SelectionMode="Extended">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -34,7 +34,7 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:TeethViewModel}">
+                <DataTemplate DataType="{x:Type viewmodels:ToothViewModel}">
                     <Grid Background="Transparent" >
                         <Grid.ContextMenu>
                             <ContextMenu>

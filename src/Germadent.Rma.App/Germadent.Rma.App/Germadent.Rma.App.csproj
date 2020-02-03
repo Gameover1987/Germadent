@@ -100,7 +100,8 @@
     <Compile Include="ViewModels\OrderLightViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
     <Compile Include="ViewModels\ProstheticsTypeViewModel.cs" />
-    <Compile Include="ViewModels\TeethViewModel.cs" />
+    <Compile Include="ViewModels\ToothViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\IToothCardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="ViewModels\Wizard\MillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterProjectWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\ToothCardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardStepViewModelBase.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />

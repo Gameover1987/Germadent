@@ -6,7 +6,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesingMockMillingCenterProjectWizardStepViewModel : MillingCenterProjectWizardStepViewModel
     {
         public DesingMockMillingCenterProjectWizardStepViewModel() 
-            : base(new MockRmaOperations())
+            : base(new ToothCardViewModel(new MockRmaOperations()))
         {
         }
     }

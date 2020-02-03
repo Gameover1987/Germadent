@@ -14,7 +14,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new MillingCenterInfoWizardStepViewModel(),
-                new MillingCenterProjectWizardStepViewModel(new MockRmaOperations()), 
+                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(new MockRmaOperations())), 
             };
         }
     }

@@ -8,7 +8,33 @@ namespace Germadent.Rma.App.Mocks
     {
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            return new OrderLiteDto[0];
+            return new OrderLiteDto[]
+            {
+                new OrderLiteDto
+                {
+                    BranchType = BranchType.Laboratory,
+                    Closed = DateTime.Now,
+                    Created = DateTime.Now.AddDays(-1),
+                    CustomerName = "ООО Рога и копыта",
+                    DocNumber = "001-ЗТЛ",
+                    DoctorFullName = "Докторов Доктор Докторович",
+                    PatientFnp = "Пациентов Пациент Пациентович",
+                    TechnicFullName = "Техник Техникович Техников",
+                    WorkOrderId = 1
+                },
+                new OrderLiteDto
+                {
+                    BranchType = BranchType.MillingCenter,
+                    Closed = DateTime.Now,
+                    Created = DateTime.Now.AddDays(-1),
+                    CustomerName = "ООО Рога и копыта",
+                    DocNumber = "001-ФЦ",
+                    DoctorFullName = "Докторов Доктор Докторович",
+                    PatientFnp = "Пациентов Пациент Пациентович",
+                    TechnicFullName = "Техник Техникович Техников",
+                    WorkOrderId = 2
+                },
+            };
         }
 
         public OrderDto GetOrderDetails(int id)

@@ -5,9 +5,9 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class TeethViewModel
+    public class ToothViewModel
     {
-        public TeethViewModel(MaterialDto[] materials, ProstheticsTypeDto[] prostheticTypes)
+        public ToothViewModel(MaterialDto[] materials, ProstheticsTypeDto[] prostheticTypes)
         {
             materials.ForEach(x => Materials.Add(new MaterialViewModel(x)));
             prostheticTypes.ForEach(x => ProstheticTypes.Add(new ProstheticsTypeViewModel(x)));

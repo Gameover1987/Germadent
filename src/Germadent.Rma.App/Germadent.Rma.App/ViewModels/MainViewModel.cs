@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
+using Germadent.Common.Extensions;
+using Germadent.Common.Logging;
 using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;
@@ -18,14 +21,17 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IWindowManager _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
+        private readonly ILogger _logger;
         private OrderLiteViewModel _selectedOrder;
+        private bool _isBusy;
 
-        public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule)
+        public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule, ILogger logger)
         {
             _rmaOperations = rmaOperations;
             _windowManager = windowManager;
             _dialogAgent = dialogAgent;
             _printModule = printModule;
+            _logger = logger;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -35,8 +41,6 @@ namespace Germadent.Rma.App.ViewModels
             CloseOrderCommand = new DelegateCommand(x => CloseOrderCommandHandler(), x => CanCloseOrderCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
-
-            FillOrders();
         }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
@@ -54,6 +58,12 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(() => _isBusy, value); }
+        }
+
         public IDelegateCommand CreateLabOrderCommand { get; }
 
         public IDelegateCommand CreateMillingCenterOrderCommand { get; }
@@ -65,6 +75,10 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand PrintOrderCommand { get; }
 
         public IDelegateCommand OpenOrderCommand { get; }
+        public void Initialize()
+        {
+           FillOrders();
+        }
 
         private void CreateLabOrderCommandHandler()
         {
@@ -74,6 +88,7 @@ namespace Germadent.Rma.App.ViewModels
                 BranchType = BranchType.Laboratory,
                 Gender = Gender.Male
             }, WizardMode.Create);
+
             if (labOrder == null)
                 return;
 
@@ -95,13 +110,31 @@ namespace Germadent.Rma.App.ViewModels
             FillOrders(filter);
         }
 
-        private void FillOrders(OrdersFilter filter = null)
+        private async void FillOrders(OrdersFilter filter = null)
         {
-            Orders.Clear();
-            var orders = _rmaOperations.GetOrders(filter);
-            foreach (var order in orders)
+            IsBusy = true;
+            try
             {
-                Orders.Add(new OrderLiteViewModel(order));
+                Orders.Clear();
+                OrderLiteDto[] orders = null;
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    Thread.Sleep(1000);
+                    orders = _rmaOperations.GetOrders(filter);
+                });
+                
+                foreach (var order in orders)
+                {
+                    Orders.Add(new OrderLiteViewModel(order));
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

@@ -4,7 +4,7 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
+    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase
     {
         private readonly IRmaOperations _rmaOperations;
 
@@ -15,9 +15,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _understaff;
         private bool _workAccepted;
 
-        public MillingCenterProjectWizardStepViewModel(IRmaOperations rmaOperations)
+        public MillingCenterProjectWizardStepViewModel(IToothCardViewModel toothCard)
         {
-            _rmaOperations = rmaOperations;
+            ToothCard = toothCard;
         }
 
         public override bool IsValid => !HasErrors;
@@ -64,20 +64,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workAccepted, value); }
         }
 
-        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-        public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
+        public IToothCardViewModel ToothCard { get; } 
 
         public override void Initialize(OrderDto order)
         {
-            AdditionalMillingInfo = order.AdditionalInfo;
-            WorkDescription = order.WorkDescription;
-            CarcassColor = order.CarcassColor;
-            IndividualAbutmentProcessing = order.IndividualAbutmentProcessing;
-            Understaff = order.Understaff;
-            WorkAccepted = order.WorkAccepted;
+            _additionalMillingInfo = order.AdditionalInfo;
+            _workDescription = order.WorkDescription;
+            _carcassColor = order.CarcassColor;
+            _individualAbutmentProcessing = order.IndividualAbutmentProcessing;
+            _understaff = order.Understaff;
+            _workAccepted = order.WorkAccepted;
 
-            FillTeethCollection();
+            ToothCard.Initialize(order.ToothCard);
 
             OnPropertyChanged();
         }
@@ -90,30 +88,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
             order.Understaff = Understaff;
             order.WorkAccepted = WorkAccepted;
-        }
 
-        private void FillTeethCollection()
-        {
-            //Mouth.Clear();
-            //for (int i = 21; i <= 28; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
-
-            //for (int i = 31; i <= 38; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
-
-            //for (int i = 41; i <= 48; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
-
-            //for (int i = 11; i <= 18; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
+            order.ToothCard = ToothCard.ToModel();
         }
     }
 }

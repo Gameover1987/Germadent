@@ -9,6 +9,8 @@ namespace Germadent.Rma.App.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IMainViewModel _mainViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -18,6 +20,12 @@ namespace Germadent.Rma.App.Views
         {
             var mainViewModel = (IMainViewModel) DataContext;
             mainViewModel.OpenOrderCommand.TryExecute();
+        }
+
+        private void MainWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            _mainViewModel = (IMainViewModel) DataContext;
+            _mainViewModel.Initialize();
         }
     }
 }

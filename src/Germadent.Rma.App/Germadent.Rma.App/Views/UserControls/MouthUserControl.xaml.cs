@@ -28,15 +28,15 @@ namespace Germadent.Rma.App.Views.UserControls
             if (!IsLoaded)
                 return;
 
-            RenderMouth(DataContext as IMouthProvider);
+            RenderMouth(DataContext as IToothCardViewModel);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            RenderMouth(DataContext as IMouthProvider);
+            RenderMouth(DataContext as IToothCardViewModel);
         }
 
-        private void RenderMouth(IMouthProvider mouth)
+        private void RenderMouth(IToothCardViewModel mouth)
         {
             if (mouth == null)
                 return;
@@ -121,7 +121,7 @@ namespace Germadent.Rma.App.Views.UserControls
         {
             var listBoxItem = (ListBoxItem)_mouthListBox.ItemContainerGenerator.ContainerFromIndex(i);
 
-            var teethViewModel = (TeethViewModel)listBoxItem.DataContext;
+            var teethViewModel = (ToothViewModel)listBoxItem.DataContext;
 
             return new TeethPlacement
             {
@@ -159,7 +159,7 @@ namespace Germadent.Rma.App.Views.UserControls
         {
             public Point Position { get; set; }
 
-            public TeethViewModel Teeth { get; set; }
+            public ToothViewModel Teeth { get; set; }
 
             public ListBoxItem ListBoxItem { get; set; }
 

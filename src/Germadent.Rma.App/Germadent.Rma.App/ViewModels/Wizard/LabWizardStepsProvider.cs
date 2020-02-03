@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ServiceClient;
+﻿using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -21,7 +22,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(),
-                new LaboratoryProjectWizardStepViewModel(_rmaOperations),
+                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(new MockRmaOperations())),
             };
         }
     }

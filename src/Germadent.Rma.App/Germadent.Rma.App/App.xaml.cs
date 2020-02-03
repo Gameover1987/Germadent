@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Printing;
@@ -31,13 +32,10 @@ namespace Germadent.Rma.App
             _configuration = new RmaConfiguration();
             _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
 
-            if (_configuration.WorkMode == WorkMode.Server)
-                InitilizeBattle();
-            else
-                InitializeMock();
-
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+
+            FillContainer();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
@@ -45,9 +43,7 @@ namespace Germadent.Rma.App
             DelegateCommand.CommandException += CommandException;
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
-            var authorizationViewModel = new AuthorizationViewModel(
-                dialogAgent,
-                _container.Resolve<IRmaAuthorizer>());
+            var authorizationViewModel = new AuthorizationViewModel(dialogAgent,_container.Resolve<IRmaAuthorizer>());
             bool? authorized= true;
             if (_configuration.WorkMode == WorkMode.Mock)
             {
@@ -71,36 +67,52 @@ namespace Germadent.Rma.App
             }
         }
 
-        private void InitializeMock()
+        private void FillContainer()
         {
-            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+            if (_configuration.WorkMode == WorkMode.Server)
+            {
+                RegisterServiceComponents();
+            }
+            else
+            {
+                _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+            }
+            
+            RegisterViewModels();
+            RegisterCommonComponents();
+            RegisterPrintModule();
+        }
+
+        private void RegisterViewModels()
+        {
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
         }
 
-        private void InitilizeBattle()
+        private void RegisterCommonComponents()
+        {
+            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterServiceComponents()
         {
             _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterPrintModule()
+        {
             _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(
+                new ContainerControlledLifetimeManager());
         }
 
         private void CommandException(object sender, ExceptionEventArgs e)
