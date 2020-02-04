@@ -95,11 +95,13 @@
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\MaterialViewModel.cs" />
+    <Compile Include="ViewModels\ToothCard\MaterialViewModel.cs" />
     <Compile Include="ViewModels\IOrderViewModel.cs" />
     <Compile Include="ViewModels\OrderLightViewModel.cs" />
     <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
+    <Compile Include="ViewModels\ToothCard\ProstheticConditionViewModel.cs" />
     <Compile Include="ViewModels\ToothCard\ProstheticsTypeViewModel.cs" />
+    <Compile Include="ViewModels\ToothCard\ToothChangedEventArgs.cs" />
     <Compile Include="ViewModels\ToothCard\ToothViewModel.cs" />
     <Compile Include="ViewModels\ToothCard\IToothCardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />

@@ -69,6 +69,17 @@
                         </Grid.Style>
                         <Grid.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="Условия протезирования"
+                                          ItemsSource="{Binding ProstheticConditions}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="{x:Type MenuItem}">
+                                            <Setter Property="IsCheckable" Value="True"/>
+                                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+                                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectPtostheticsConditionCommand}"/>
+                                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
                                 <MenuItem Header="Тип протезирования"
                                           ItemsSource="{Binding ProstheticTypes}">
                                     <MenuItem.ItemContainerStyle>

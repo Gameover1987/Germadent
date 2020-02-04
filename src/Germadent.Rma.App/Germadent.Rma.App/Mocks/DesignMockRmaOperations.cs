@@ -91,6 +91,18 @@ namespace Germadent.Rma.App.Mocks
             return _orders.First(x => x.WorkOrderId == id);
         }
 
+        public ProstheticConditionDto[] GetProstheticConditions()
+        {
+            var ptostheticsConditions = new[]
+            {
+                new ProstheticConditionDto{Name = "111", Id = 1},
+                new ProstheticConditionDto{Name = "222", Id = 2},
+                new ProstheticConditionDto{Name = "333", Id = 3},
+            };
+
+            return ptostheticsConditions;
+        }
+
         public MaterialDto[] GetMaterials()
         {
             //Thread.Sleep(2000);

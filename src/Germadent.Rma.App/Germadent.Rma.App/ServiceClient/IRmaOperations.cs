@@ -22,16 +22,22 @@ namespace Germadent.Rma.App.ServiceClient
         OrderDto GetOrderDetails(int id);
 
         /// <summary>
-        /// Получить список материалов
+        /// Получить список условий протезирования
         /// </summary>
         /// <returns></returns>
-        MaterialDto[] GetMaterials();
+        ProstheticConditionDto[] GetProstheticConditions();
 
         /// <summary>
         /// Получить список типов протезирования
         /// </summary>
         /// <returns></returns>
         ProstheticsTypeDto[] GetProstheticTypes();
+
+        /// <summary>
+        /// Получить список материалов
+        /// </summary>
+        /// <returns></returns>
+        MaterialDto[] GetMaterials();
 
         /// <summary>
         /// Добавить заказнаряд

@@ -8,16 +8,6 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
 {
-    public class ToothChangedEventArgs
-    {
-        public ToothChangedEventArgs(bool affectsRenderToothCard)
-        {
-            AffectsRenderToothCard = affectsRenderToothCard;
-        }
-
-        public bool AffectsRenderToothCard { get; }
-    }
-
     public class ToothViewModel : ViewModelBase
     {
         private bool _hasBridge;
@@ -74,19 +64,26 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public ObservableCollection<ProstheticConditionViewModel> ProstheticConditions { get; } = new ObservableCollection<ProstheticConditionViewModel>();
 
-        public MaterialViewModel SelectedMaterial
+        public ProstheticConditionViewModel SelectedProstheticCondition
         {
-            get { return Materials.FirstOrDefault(x => x.IsChecked); }
+            get { return ProstheticConditions.FirstOrDefault(x => x.IsChecked); }
         }
 
         public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
 
-
         public ProstheticsTypeViewModel SelectedProstheticsType
         {
             get { return ProstheticTypes.FirstOrDefault(x => x.IsChecked); }
+        }
+
+        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+
+
+        public MaterialViewModel SelectedMaterial
+        {
+            get { return Materials.FirstOrDefault(x => x.IsChecked); }
         }
 
         public bool HasDescription

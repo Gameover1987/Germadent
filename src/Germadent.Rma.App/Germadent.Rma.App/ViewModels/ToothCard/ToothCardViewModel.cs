@@ -40,6 +40,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ObservableCollection<ProstheticsTypeViewModel> Prosthetics { get; }
 
+        public ICommand SelectPtostheticsConditionCommand { get; }
+
         public ICommand SelectPtostheticsTypeCommand { get; }
 
         public ICommand SelectMaterialCommand { get; }

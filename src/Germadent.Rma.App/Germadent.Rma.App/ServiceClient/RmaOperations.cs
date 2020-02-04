@@ -48,6 +48,11 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
+        public ProstheticConditionDto[] GetProstheticConditions()
+        {
+            throw new NotImplementedException();
+        }
+
         public MaterialDto[] GetMaterials()
         {
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/materials";
