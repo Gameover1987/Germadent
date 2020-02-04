@@ -119,7 +119,6 @@ namespace Germadent.Rma.App.ViewModels
                 OrderLiteDto[] orders = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    Thread.Sleep(1000);
                     orders = _rmaOperations.GetOrders(filter);
                 });
                 

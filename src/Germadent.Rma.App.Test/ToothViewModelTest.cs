@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using FluentAssertions;
 using Germadent.Rma.Model;
 using NUnit.Framework;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.ToothCard;
 
 namespace Germadent.Rma.App.Test
 {
@@ -36,7 +38,7 @@ namespace Germadent.Rma.App.Test
         }
 
         [TestCase(10, 1, "ZrO", 1, "Каркас", true)]
-        public void ShouldGetDto(int toothNumber, int materialId, string materialName, string prosthtics, int prostheticsId, bool hasBridge)
+        public void ShouldGetDto(int toothNumber, int materialId, string materialName, int prostheticsId, string prosthtics, bool hasBridge)
         {
             // Given
             var expectedDto = new ToothDto
@@ -49,12 +51,13 @@ namespace Germadent.Rma.App.Test
                 ToothNumber = toothNumber
             };
             var target = CreateTarget();
+            target.Initialize(expectedDto);
 
             // When
             var actualDto = target.ToDto();
 
             // Then
-            
+            actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         /// <summary>
@@ -93,6 +96,34 @@ namespace Germadent.Rma.App.Test
             Assert.AreEqual(target.SelectedProstheticsType, target.ProstheticTypes.Last());
             Assert.IsTrue(target.ProstheticTypes.Where(x => x != target.SelectedProstheticsType).All(x => x.IsChecked == false));
             Assert.IsTrue(target.IsChecked);
+        }
+
+        /// <summary>
+        /// Должен возвращать описание для зуба
+        /// </summary>
+        [TestCase("Каркас", "ZrO", true, "Каркас/ZrO/Мост")]
+        [TestCase("Каркас", null, true, "Каркас/Мост")]
+        [TestCase(null, "ZrO", true, "ZrO/Мост")]
+        [TestCase(null, null, true, "Мост")]
+        public void ShouldGetCorrectDescription(string prosthetics, string material, bool hasBridge, string expectedDescription)
+        {
+            // Given
+            var target = CreateTarget();
+            var selectedProsthetics = target.ProstheticTypes.FirstOrDefault(x => x.DisplayName == prosthetics);
+            if (selectedProsthetics != null)
+                selectedProsthetics.IsChecked = true;
+
+            var selectedMaterial = target.Materials.FirstOrDefault(x => x.DisplayName == material);
+            if (selectedMaterial != null)
+                selectedMaterial.IsChecked = true;
+
+            target.HasBridge = hasBridge;
+
+            // When
+            var actualDescription = target.Description;
+
+            // Then
+            Assert.AreEqual(expectedDescription, actualDescription);
         }
 
         private ToothViewModel CreateTarget()

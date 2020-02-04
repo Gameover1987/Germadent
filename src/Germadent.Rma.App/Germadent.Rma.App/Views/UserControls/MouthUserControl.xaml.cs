@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 
 namespace Germadent.Rma.App.Views.UserControls
@@ -14,6 +16,7 @@ namespace Germadent.Rma.App.Views.UserControls
     public partial class MouthUserControl : UserControl
     {
         private List<Bridge> _bridges = new List<Bridge>();
+        private IToothCardViewModel _toothCard;
 
         public MouthUserControl()
         {
@@ -21,6 +24,27 @@ namespace Germadent.Rma.App.Views.UserControls
 
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_toothCard != null)
+            {
+                _toothCard.RenderRequest -= ToothCardOnRenderRequest;
+            }
+
+            if (DataContext == null)
+                return;
+
+            _toothCard = ((IToothCardContainer)DataContext).ToothCard;
+            _toothCard.RenderRequest += ToothCardOnRenderRequest;
+
+        }
+
+        private void ToothCardOnRenderRequest(object sender, EventArgs e)
+        {
+            RenderMouth();
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -28,17 +52,17 @@ namespace Germadent.Rma.App.Views.UserControls
             if (!IsLoaded)
                 return;
 
-            RenderMouth(DataContext as IToothCardViewModel);
+            RenderMouth();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            RenderMouth(DataContext as IToothCardViewModel);
+            RenderMouth();
         }
 
-        private void RenderMouth(IToothCardViewModel mouth)
+        private void RenderMouth()
         {
-            if (mouth == null)
+            if (_toothCard == null)
                 return;
 
             var canvasWidth = _mouthListBox.ActualWidth;
@@ -169,6 +193,17 @@ namespace Germadent.Rma.App.Views.UserControls
             {
                 return Teeth.ToString() + " " + Position;
             }
+        }
+
+        private void _mouthListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_mouthListBox.SelectedItems == null || _mouthListBox.SelectedItems.Count == 0)
+            {
+                _toothCard.SelectedTeeth = null;
+                return;
+            }
+
+            _toothCard.SelectedTeeth = _mouthListBox.SelectedItems.Cast<ToothViewModel>().ToArray();
         }
     }
 }

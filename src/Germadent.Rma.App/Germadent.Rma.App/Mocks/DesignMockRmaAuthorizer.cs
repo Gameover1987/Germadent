@@ -4,7 +4,7 @@ using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.Mocks
 {
-    public class MockRmaAuthorizer : IRmaAuthorizer
+    public class DesignMockRmaAuthorizer : IRmaAuthorizer
     {
         public void Authorize(string user, string password)
         {

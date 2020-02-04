@@ -1,13 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase
+    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private readonly IRmaOperations _rmaOperations;
-
         private string _workDescription;
         private string _carcassColor;
         private string _additionalMillingInfo;
@@ -89,7 +88,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Understaff = Understaff;
             order.WorkAccepted = WorkAccepted;
 
-            order.ToothCard = ToothCard.ToModel();
+            order.ToothCard = ToothCard.ToDto();
         }
     }
 }

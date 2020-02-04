@@ -8,8 +8,10 @@ using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.Printing.TemplateProcessing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Unity;
@@ -75,8 +77,8 @@ namespace Germadent.Rma.App
             }
             else
             {
-                _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-                _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
             }
             
             RegisterViewModels();
@@ -103,7 +105,7 @@ namespace Germadent.Rma.App
 
         private void RegisterServiceComponents()
         {
-            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
         }
 

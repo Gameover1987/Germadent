@@ -1,5 +1,7 @@
-﻿using Germadent.Rma.App.Mocks;
+﻿using Germadent.Common.CopyAndPaste;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -22,7 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(),
-                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(new MockRmaOperations())),
+                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(new DesignMockRmaOperations(), new ClipboardHelper())),
             };
         }
     }

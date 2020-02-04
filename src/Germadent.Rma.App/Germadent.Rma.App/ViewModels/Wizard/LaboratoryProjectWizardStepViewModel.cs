@@ -2,12 +2,13 @@
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase
+    public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
         private string _workDescription;
         private string _colorAndFeatures;
@@ -62,7 +63,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = Transparency;
 
-            order.ToothCard = ToothCard.ToModel();
+            order.ToothCard = ToothCard.ToDto();
             order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
     }
