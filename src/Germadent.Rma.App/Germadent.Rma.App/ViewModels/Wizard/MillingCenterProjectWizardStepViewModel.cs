@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ToothCard = toothCard;
         }
 
-        public override bool IsValid => !HasErrors;
+        public override bool IsValid => !HasErrors && ToothCard.IsValid;
 
         public override string DisplayName
         {

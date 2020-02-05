@@ -61,8 +61,17 @@
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasDescription}" Value="True">
-                                        <Setter Property="ToolTip" Value="{Binding Description}"/>
+                                    <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                        <Setter Property="ToolTip">
+                                            <Setter.Value>
+                                                <StackPanel Orientation="Vertical" Background="Transparent" >
+                                                    <TextBlock Text="{Binding Description}"
+                                                               Visibility="{Binding HasDescription, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <TextBlock Text="{Binding ErrorDescription}" Foreground="Red"
+                                                               Visibility="{Binding IsValid, Converter={StaticResource BoolToInvisibilityConverter}}"/>
+                                                </StackPanel>
+                                            </Setter.Value>
+                                        </Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -85,7 +94,7 @@
                                     <MenuItem.ItemContainerStyle>
                                         <Style TargetType="{x:Type MenuItem}">
                                             <Setter Property="IsCheckable" Value="True"/>
-                                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+                                            <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectPtostheticsTypeCommand}"/>
                                             <Setter Property="CommandParameter" Value="{Binding}"/>
                                         </Style>

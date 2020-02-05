@@ -43,5 +43,10 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         /// Копировать описание работ в буфер обмена
         /// </summary>
         ICommand CopyDescriptionCommand { get; }
+
+        /// <summary>
+        /// Возвращает true если в зубнгой карте все указано правильно
+        /// </summary>
+        bool IsValid { get; }
     }
 }

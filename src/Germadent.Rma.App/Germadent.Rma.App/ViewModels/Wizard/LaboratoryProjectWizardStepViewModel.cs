@@ -25,7 +25,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return "Проект"; }
         }
 
-        public override bool IsValid => !HasErrors;
+        public override bool IsValid => !HasErrors && ToothCard.IsValid;
 
         public string WorkDescription
         {

@@ -99,6 +99,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         {
             get
             {
+                if (!IsChecked)
+                    return true;
+
                 return SelectedProstheticCondition != null && SelectedMaterial != null && SelectedProstheticsType != null;
             }
         }
@@ -122,6 +125,24 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                     descriptionBuilder.Append("Мост");
 
                 return descriptionBuilder.ToString().Trim(new[] { ' ', '/' });
+            }
+        }
+
+        public string ErrorDescription
+        {
+            get
+            {
+                var descriptionBuilder = new StringBuilder();
+                if (SelectedProstheticCondition == null)
+                    descriptionBuilder.AppendLine("Выберите условие протезирования");
+
+                if (SelectedProstheticsType == null)
+                    descriptionBuilder.AppendLine("Выьерите тип протезирования");
+
+                if (SelectedMaterial == null)
+                    descriptionBuilder.AppendLine("Выберите материал");
+
+                return descriptionBuilder.ToString();
             }
         }
 
@@ -172,8 +193,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         public void Clear()
         {
             HasBridge = false;
-            Materials.ForEach(x => x.ResetIsChecked());
-            ProstheticTypes.ForEach(x => x.ResetIsChecked());
+            ProstheticConditions.ForEach(x => x.ResetIsChanged());
+            Materials.ForEach(x => x.ResetIsChanged());
+            ProstheticTypes.ForEach(x => x.ResetIsChanged());
 
             IsChecked = false;
         }
@@ -191,7 +213,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void ProstheticConditionViewModelOnChecked(object sender, EventArgs e)
         {
             var prostheticConditionViewModels = ProstheticConditions.Where(x => x != sender);
-            prostheticConditionViewModels.ForEach(x => x.ResetIsChecked());
+            prostheticConditionViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedProstheticCondition);
             OnPropertyChanged(() => HasDescription);
@@ -202,7 +224,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void ProstheticsTypeViewModelOnChecked(object sender, EventArgs e)
         {
             var prostheticsTypeViewModels = ProstheticTypes.Where(x => x != sender);
-            prostheticsTypeViewModels.ForEach(x => x.ResetIsChecked());
+            prostheticsTypeViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedProstheticsType);
             OnPropertyChanged(() => HasDescription);
@@ -213,7 +235,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void MaterialViewModelOnChecked(object sender, EventArgs e)
         {
             var materialViewModels = Materials.Where(x => x != sender);
-            materialViewModels.ForEach(x => x.ResetIsChecked());
+            materialViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedMaterial);
             OnPropertyChanged(() => HasDescription);

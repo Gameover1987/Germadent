@@ -95,9 +95,8 @@ namespace Germadent.Rma.App.Mocks
         {
             var ptostheticsConditions = new[]
             {
-                new ProstheticConditionDto{Name = "111", Id = 1},
-                new ProstheticConditionDto{Name = "222", Id = 2},
-                new ProstheticConditionDto{Name = "333", Id = 3},
+                new ProstheticConditionDto{Name = "Культя", Id = 1},
+                new ProstheticConditionDto{Name = "Имплант", Id = 2},
             };
 
             return ptostheticsConditions;

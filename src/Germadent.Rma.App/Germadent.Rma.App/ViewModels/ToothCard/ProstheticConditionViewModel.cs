@@ -40,7 +40,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public event EventHandler<EventArgs> Checked;
 
-        public void ResetIsChecked()
+        public void ResetIsChanged()
         {
             _isChecked = false;
             OnPropertyChanged(() => IsChecked);

@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public event EventHandler<EventArgs> Checked;
 
-        public void ResetIsChecked()
+        public void ResetIsChanged()
         {
             _isChecked = false;
             OnPropertyChanged(() => IsChecked);

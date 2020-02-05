@@ -53,6 +53,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ICommand CopyDescriptionCommand { get; }
 
+        public bool IsValid
+        {
+            get { return Teeth.Where(x => x.IsChecked).All(x => x.IsValid); }
+        }
+
         public void Initialize(ToothDto[] toothCard)
         {
             var prostheticConditions = _rmaOperations.GetProstheticConditions();
@@ -134,6 +139,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 RenderRequest?.Invoke(this, EventArgs.Empty);
 
             OnPropertyChanged(() => Description);
+            OnPropertyChanged(() => IsValid);
         }
 
         private bool CanSelectProstheticConditionCommandHandler()
