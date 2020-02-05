@@ -18,6 +18,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         string Description { get; }
 
         /// <summary>
+        /// Зубы
+        /// </summary>
+        ObservableCollection<ToothViewModel> Teeth { get; }
+
+        /// <summary>
         /// Выбранные зубы
         /// </summary>
         ToothViewModel[] SelectedTeeth { get; set; }

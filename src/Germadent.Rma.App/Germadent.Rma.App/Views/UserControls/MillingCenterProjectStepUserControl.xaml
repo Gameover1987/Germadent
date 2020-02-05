@@ -49,8 +49,7 @@
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
 
         <CheckBox Grid.Row="4" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
-
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Дополнительные материалы"/>
+      
         <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
             <Button Content="Загрузить STL файл"
                     Command="{Binding FilesContainer.UploadStlFileCommand}"/>

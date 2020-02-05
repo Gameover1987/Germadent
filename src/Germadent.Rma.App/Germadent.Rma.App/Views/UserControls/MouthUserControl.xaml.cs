@@ -67,8 +67,8 @@ namespace Germadent.Rma.App.Views.UserControls
             if (_toothCard == null)
                 return;
 
-            var canvasWidth = _mouthListBox.ActualWidth;
-            var canvasHeight = _mouthListBox.ActualHeight - 40;
+            var canvasWidth = _mouthListBox.ActualWidth - 50;
+            var canvasHeight = _mouthListBox.ActualHeight - 50;
 
             var a = canvasWidth / 2.0;
             var b = canvasHeight / 2.0;

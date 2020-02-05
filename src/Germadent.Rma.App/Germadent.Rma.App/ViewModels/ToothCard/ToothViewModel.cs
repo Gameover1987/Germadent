@@ -177,8 +177,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 MaterialName = SelectedMaterial?.DisplayName,
                 ProstheticsId = SelectedProstheticsType?.Item.Id ?? 0,
                 ProstheticsName = SelectedProstheticsType?.DisplayName,
-                ConditionId = SelectedProstheticCondition.Item.Id,
-                ConditionName = SelectedProstheticCondition.DisplayName,
+                ConditionId = SelectedProstheticCondition?.Item.Id ?? 0,
+                ConditionName = SelectedProstheticCondition?.DisplayName,
                 HasBridge = HasBridge
             };
         }
