@@ -101,5 +101,10 @@ namespace Germadent.Rma.App.ServiceClient
                 return result.DeserializeFromJson<OrderDto>();
             }
         }
+
+        public void UploadStlFile(int id, byte[] stlFile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

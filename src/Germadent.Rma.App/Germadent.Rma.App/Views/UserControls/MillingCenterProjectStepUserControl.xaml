@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
-             xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
@@ -23,6 +22,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -48,8 +48,20 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Докомплектовать заказ" />
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
 
-        <CheckBox Grid.Row="4" Grid.Column="1"  Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
+        <CheckBox Grid.Row="4" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
 
-        <local:MouthUserControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Дополнительные материалы"/>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+            <Button Content="Загрузить STL файл"
+                    Command="{Binding FilesContainer.UploadStlFileCommand}"/>
+            <Button Content="Скачать STL файл" Margin="6,0,0,0"
+                    Command="{Binding FilesContainer.DownloadStlFileCommand}"/>
+
+            <Button Content="Загрузить фото" Margin="18,0,0,0"
+                    Command="{Binding FilesContainer.UploadPhotoCommand}"/>
+            <Button Content="Скачать фото" Margin="6,0,0,0"
+                    Command="{Binding FilesContainer.DownloadPhotoCommand}"/>
+        </StackPanel>
+        <local:MouthUserControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>
 </UserControl>

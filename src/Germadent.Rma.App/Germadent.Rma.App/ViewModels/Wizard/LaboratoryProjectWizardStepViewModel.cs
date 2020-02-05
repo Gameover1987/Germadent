@@ -15,8 +15,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private int _transparency;
         private string _prostheticArticul;
 
-        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard)
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer)
         {
+            FilesContainer = orderFilesContainer;
             ToothCard = toothCard;
         }
 
@@ -51,7 +52,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _transparency, value); }
         }
 
-        public IToothCardViewModel ToothCard { get; } 
+        public IToothCardViewModel ToothCard { get; }
+
+        public IOrderFilesContainerViewModel FilesContainer { get; }
 
         public override void Initialize(OrderDto order)
         {

@@ -7,6 +7,7 @@
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
         mc:Ignorable="d"
         Title="Настройки фильтра заказ-нарядов"
         ShowInTaskbar="False"
@@ -81,7 +82,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Materials}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
+                    <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
                         <Grid>
                             <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
                         </Grid>

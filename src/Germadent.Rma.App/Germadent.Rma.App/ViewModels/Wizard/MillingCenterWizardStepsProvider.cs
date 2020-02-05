@@ -13,10 +13,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class MillingCenterWizardStepsProvider : IMillingCenterWizardStepsProvider
     {
         private readonly IRmaOperations _rmaOperations;
+        private readonly IOrderFilesContainerViewModel _filesContainer;
 
-        public MillingCenterWizardStepsProvider(IRmaOperations rmaOperations)
+        public MillingCenterWizardStepsProvider(IRmaOperations rmaOperations, IOrderFilesContainerViewModel filesContainer)
         {
             _rmaOperations = rmaOperations;
+            _filesContainer = filesContainer;
         }
 
         public IWizardStepViewModel[] GetSteps()
@@ -24,7 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new MillingCenterInfoWizardStepViewModel(),
-                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper())), 
+                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper()), _filesContainer),
             };
         }
     }

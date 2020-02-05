@@ -52,5 +52,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="order"></param>
         /// <returns></returns>
         OrderDto UpdateOrder(OrderDto order);
+
     }
 }

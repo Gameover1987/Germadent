@@ -16,9 +16,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private bool _workAccepted;
         private string _prostheticArticul;
 
-        public MillingCenterProjectWizardStepViewModel(IToothCardViewModel toothCard)
+        public MillingCenterProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer)
         {
             ToothCard = toothCard;
+            FilesContainer = orderFilesContainer;
         }
 
         public override bool IsValid => !HasErrors && ToothCard.IsValid;
@@ -73,6 +74,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public IToothCardViewModel ToothCard { get; } 
 
+        public IOrderFilesContainerViewModel FilesContainer { get; }
+
         public override void Initialize(OrderDto order)
         {
             _additionalMillingInfo = order.AdditionalInfo;
@@ -84,6 +87,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _prostheticArticul = order.ProstheticArticul;
 
             ToothCard.Initialize(order.ToothCard);
+            FilesContainer.Initialize(order);
 
             OnPropertyChanged();
         }

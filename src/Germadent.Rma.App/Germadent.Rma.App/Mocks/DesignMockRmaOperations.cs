@@ -155,5 +155,10 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public void UploadStlFile(int id, byte[] stlFile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2,7 +2,7 @@
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rma.App.ViewModels
+namespace Germadent.Rma.App.ViewModels.ToothCard
 {
     public class MaterialViewModel : ViewModelBase
     {
