@@ -25,7 +25,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Canvas Grid.Row="0" Background="White">
-            <Path x:Name="toothCardPath" Stroke="DarkGray" StrokeThickness="3" StrokeDashArray="1 1" />
+            <Path x:Name="toothCardPath" Stroke="Black" StrokeThickness="2" />
         </Canvas>
         <ListBox Grid.Row="0" x:Name="_mouthListBox"
                  Style="{x:Null}"
@@ -61,13 +61,13 @@
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                    <DataTrigger Binding="{Binding IsChanged}" Value="True">
                                         <Setter Property="ToolTip">
                                             <Setter.Value>
                                                 <StackPanel Orientation="Vertical" Background="Transparent" >
-                                                    <TextBlock Text="{Binding Description}"
+                                                    <TextBlock Text="{Binding Description}" HorizontalAlignment="Stretch"
                                                                Visibility="{Binding HasDescription, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                    <TextBlock Text="{Binding ErrorDescription}" Foreground="Red"
+                                                    <TextBlock Text="{Binding ErrorDescription}" Foreground="Red" HorizontalAlignment="Stretch"
                                                                Visibility="{Binding IsValid, Converter={StaticResource BoolToInvisibilityConverter}}"/>
                                                 </StackPanel>
                                             </Setter.Value>
@@ -131,13 +131,16 @@
                                         <Style TargetType="{x:Type Ellipse}">
                                             <Setter Property="Fill" Value="White"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                                <DataTrigger Binding="{Binding IsChanged}" Value="True">
                                                     <Setter Property="Stroke" Value="Black"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsValid}" Value="False">
+                                                    <Setter Property="StrokeDashArray" Value="1 1"/>
                                                 </DataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}" Value="True"/>
-                                                        <Condition Binding="{Binding IsChecked}" Value="false"/>
+                                                        <Condition Binding="{Binding IsChanged}" Value="false"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Stroke" Value="Gray"/>
                                                     <Setter Property="Fill" Value="LightGray"/>
@@ -145,7 +148,7 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}" Value="True"/>
-                                                        <Condition Binding="{Binding IsChecked}" Value="True"/>
+                                                        <Condition Binding="{Binding IsChanged}" Value="True"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Stroke" Value="Black"/>
                                                     <Setter Property="Fill" Value="LightGray"/>

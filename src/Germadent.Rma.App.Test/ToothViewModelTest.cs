@@ -76,7 +76,7 @@ namespace Germadent.Rma.App.Test
             // Then
             Assert.AreEqual(target.SelectedMaterial, target.Materials.Last());
             Assert.IsTrue(target.Materials.Where(x => x != target.SelectedMaterial).All(x => x.IsChecked == false));
-            Assert.IsTrue(target.IsChecked);
+            Assert.IsTrue(target.IsChanged);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Germadent.Rma.App.Test
             // Then
             Assert.AreEqual(target.SelectedProstheticsType, target.ProstheticTypes.Last());
             Assert.IsTrue(target.ProstheticTypes.Where(x => x != target.SelectedProstheticsType).All(x => x.IsChecked == false));
-            Assert.IsTrue(target.IsChecked);
+            Assert.IsTrue(target.IsChanged);
         }
 
         /// <summary>

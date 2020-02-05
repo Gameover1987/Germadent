@@ -55,7 +55,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public bool IsValid
         {
-            get { return Teeth.Where(x => x.IsChecked).All(x => x.IsValid); }
+            get { return Teeth.Where(x => x.IsChanged).All(x => x.IsValid); }
         }
 
         public void Initialize(ToothDto[] toothCard)
@@ -103,7 +103,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ToothDto[] ToDto()
         {
-            return Teeth.Where(x => x.IsChecked).Select(x => x.ToDto()).ToArray();
+            return Teeth.Where(x => x.IsChanged).Select(x => x.ToDto()).ToArray();
         }
 
         public event EventHandler<EventArgs> RenderRequest;
@@ -114,7 +114,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             {
                 var builder = new StringBuilder();
 
-                foreach (var toothViewModel in Teeth.Where(x => x.IsChecked).OrderBy(x => x.Number))
+                foreach (var toothViewModel in Teeth.Where(x => x.IsChanged).OrderBy(x => x.Number))
                 {
                     builder.Append(string.Format("{0} - {1}, ", toothViewModel.Number, toothViewModel.Description));
                 }

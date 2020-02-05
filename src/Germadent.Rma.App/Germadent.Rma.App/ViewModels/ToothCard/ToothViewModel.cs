@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
     public class ToothViewModel : ViewModelBase
     {
         private bool _hasBridge;
-        private bool _isChecked;
+        private bool _isChanged;
 
         public ToothViewModel(ProstheticConditionDto[] prostheticConditions, ProstheticsTypeDto[] prostheticTypes, MaterialDto[] materials)
         {
@@ -37,13 +37,13 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public int Number { get; set; }
 
-        public bool IsChecked
+        public bool IsChanged
         {
-            get { return _isChecked; }
+            get { return _isChanged; }
             set
             {
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
+                _isChanged = value;
+                OnPropertyChanged(() => IsChanged);
 
                 ToothChanged?.Invoke(this, new ToothChangedEventArgs(false));
             }
@@ -58,11 +58,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                     return;
 
                 _hasBridge = value;
+                _isChanged = GetIsChecked();
                 OnPropertyChanged(() => HasBridge);
-                OnPropertyChanged(() => Description);
-
-                _isChecked = GetIsChecked();
-                OnPropertyChanged(() => IsChecked);
+                OnPropertyChanged(() => IsChanged);
 
                 ToothChanged?.Invoke(this, new ToothChangedEventArgs(true));
             }
@@ -99,7 +97,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         {
             get
             {
-                if (!IsChecked)
+                if (!IsChanged)
                     return true;
 
                 return SelectedProstheticCondition != null && SelectedMaterial != null && SelectedProstheticsType != null;
@@ -150,7 +148,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public void Initialize(ToothDto toothDto)
         {
-            IsChecked = true;
+            IsChanged = true;
             Number = toothDto.ToothNumber;
 
             var selectedProstheticCondition = ProstheticConditions.FirstOrDefault(x => x.DisplayName == toothDto.ConditionName);
@@ -187,7 +185,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public bool CanClear
         {
-            get { return HasBridge || SelectedMaterial != null || SelectedProstheticsType != null; }
+            get { return HasBridge || SelectedProstheticCondition != null || SelectedMaterial != null || SelectedProstheticsType != null; }
         }
 
         public void Clear()
@@ -197,12 +195,12 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             Materials.ForEach(x => x.ResetIsChanged());
             ProstheticTypes.ForEach(x => x.ResetIsChanged());
 
-            IsChecked = false;
+            IsChanged = false;
         }
 
         public override string ToString()
         {
-            return Description;
+            return string.Format("{0} - {1}", Number, Description); ;
         }
 
         private bool GetIsChecked()
@@ -216,9 +214,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             prostheticConditionViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedProstheticCondition);
-            OnPropertyChanged(() => HasDescription);
-            OnPropertyChanged(() => Description);
-            IsChecked = GetIsChecked();
+            IsChanged = GetIsChecked();
         }
 
         private void ProstheticsTypeViewModelOnChecked(object sender, EventArgs e)
@@ -227,9 +223,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             prostheticsTypeViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedProstheticsType);
-            OnPropertyChanged(() => HasDescription);
-            OnPropertyChanged(() => Description);
-            IsChecked = GetIsChecked();
+            IsChanged = GetIsChecked();
         }
 
         private void MaterialViewModelOnChecked(object sender, EventArgs e)
@@ -238,9 +232,16 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             materialViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedMaterial);
-            OnPropertyChanged(() => HasDescription);
-            OnPropertyChanged(() => Description);
-            IsChecked = GetIsChecked();
+            IsChanged = GetIsChecked();
+        }
+
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            base.OnPropertyChanged(nameof(IsValid));
+            base.OnPropertyChanged(nameof(ErrorDescription));
+            base.OnPropertyChanged(nameof(HasDescription));
+            base.OnPropertyChanged(nameof(Description));
         }
     }
 }

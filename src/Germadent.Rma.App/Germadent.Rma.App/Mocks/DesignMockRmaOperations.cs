@@ -81,7 +81,7 @@ namespace Germadent.Rma.App.Mocks
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             return _orders.Select(x => x.ToOrderLite()).ToArray();
         }
 

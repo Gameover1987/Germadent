@@ -15,6 +15,8 @@ namespace Germadent.Rma.App.Views.UserControls
     /// </summary>
     public partial class MouthUserControl : UserControl
     {
+        private static int[] StopNumbers = new int[] { 18, 48, 28, 38 };
+
         private List<Bridge> _bridges = new List<Bridge>();
         private IToothCardViewModel _toothCard;
 
@@ -97,6 +99,7 @@ namespace Germadent.Rma.App.Views.UserControls
             placement4.Reverse();
             placements.AddRange(placement4);
             placements.AddRange(placement1);
+            placement2.Reverse();
             placements.AddRange(placement2);
             placements.AddRange(placement3);
 
@@ -113,22 +116,21 @@ namespace Germadent.Rma.App.Views.UserControls
         {
             _bridges.Clear();
             Bridge newBridge = null;
-            for (int i = 0; i < placements.Count - 1; i++)
+            for (int i = 0; i < placements.Count; i++)
             {
                 var currentPlacement = placements[i];
                 if (currentPlacement.Teeth.HasBridge)
                 {
                     if (newBridge == null)
                         newBridge = new Bridge();
-                    newBridge.Teeths.Add(currentPlacement);
+                    newBridge.TeethPlacements.Add(currentPlacement);
+
+                    if (!_bridges.Contains(newBridge))
+                        _bridges.Add(newBridge);
                 }
                 else
                 {
-                    if (newBridge != null)
-                    {
-                        _bridges.Add(newBridge);
-                        newBridge = null;
-                    }
+                    newBridge = null;
                 }
             }
 
@@ -159,23 +161,31 @@ namespace Germadent.Rma.App.Views.UserControls
         {
             public Bridge()
             {
-                Teeths = new List<TeethPlacement>();
+                TeethPlacements = new List<TeethPlacement>();
             }
 
-            public List<TeethPlacement> Teeths { get; }
+            public List<TeethPlacement> TeethPlacements { get; }
 
             public Geometry Draw()
             {
                 var geometryGroup = new GeometryGroup();
 
-                for (int i = 0; i < Teeths.Count - 1; i++)
+                for (int i = 0; i < TeethPlacements.Count - 1; i++)
                 {
-                    var teeth = Teeths[i];
-                    var nextTeeth = Teeths[i + 1];
-                    geometryGroup.Children.Add(new LineGeometry(teeth.CorrectedPosition, nextTeeth.CorrectedPosition));
+                    var teethPlacement = TeethPlacements[i];
+                    var nextTeethPlacemet = TeethPlacements[i + 1];
+                    if (IsStopNumber(teethPlacement) && IsStopNumber(nextTeethPlacemet))
+                        continue;
+
+                    geometryGroup.Children.Add(new LineGeometry(teethPlacement.CorrectedPosition, nextTeethPlacemet.CorrectedPosition));
                 }
 
                 return geometryGroup;
+            }
+
+            private bool IsStopNumber(TeethPlacement teethPlacement)
+            {
+                return StopNumbers.Contains(teethPlacement.Teeth.Number);
             }
         }
 
