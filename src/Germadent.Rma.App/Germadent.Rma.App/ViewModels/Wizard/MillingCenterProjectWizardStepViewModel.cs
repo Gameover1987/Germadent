@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
@@ -13,6 +14,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _individualAbutmentProcessing;
         private string _understaff;
         private bool _workAccepted;
+        private string _prostheticArticul;
 
         public MillingCenterProjectWizardStepViewModel(IToothCardViewModel toothCard)
         {
@@ -63,6 +65,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workAccepted, value); }
         }
 
+        public string ProstheticArticul
+        {
+            get { return _prostheticArticul; }
+            set { SetProperty(() => _prostheticArticul, value); }
+        }
+
         public IToothCardViewModel ToothCard { get; } 
 
         public override void Initialize(OrderDto order)
@@ -73,6 +81,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _individualAbutmentProcessing = order.IndividualAbutmentProcessing;
             _understaff = order.Understaff;
             _workAccepted = order.WorkAccepted;
+            _prostheticArticul = order.ProstheticArticul;
 
             ToothCard.Initialize(order.ToothCard);
 
@@ -87,8 +96,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
             order.Understaff = Understaff;
             order.WorkAccepted = WorkAccepted;
+            order.ProstheticArticul = ProstheticArticul;
 
             order.ToothCard = ToothCard.ToDto();
+            order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
     }
 }

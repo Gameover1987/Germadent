@@ -13,6 +13,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _workDescription;
         private string _colorAndFeatures;
         private int _transparency;
+        private string _prostheticArticul;
 
         public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard)
         {
@@ -38,6 +39,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _colorAndFeatures, value); }
         }
 
+        public string ProstheticArticul
+        {
+            get { return _prostheticArticul; }
+            set { SetProperty(() => _prostheticArticul, value); }
+        }
+
         public int Transparency
         {
             get { return _transparency; }
@@ -51,6 +58,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _workDescription = order.WorkDescription;
             _colorAndFeatures = order.ColorAndFeatures;
             _transparency = order.Transparency;
+            _prostheticArticul = order.ProstheticArticul;
 
             ToothCard.Initialize(order.ToothCard);
 
@@ -62,6 +70,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = Transparency;
+            order.ProstheticArticul = ProstheticArticul;
 
             order.ToothCard = ToothCard.ToDto();
             order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);

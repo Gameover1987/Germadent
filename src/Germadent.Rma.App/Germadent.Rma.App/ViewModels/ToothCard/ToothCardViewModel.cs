@@ -27,6 +27,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             Materials = new ObservableCollection<MaterialViewModel>();
             Prosthetics = new ObservableCollection<ProstheticsTypeViewModel>();
 
+            SelectPtostheticsConditionCommand = new DelegateCommand(x => SelectProstheticConditionsCommandHandler(x), x => CanSelectProstheticConditionCommandHandler());
             SelectPtostheticsTypeCommand = new DelegateCommand(x => SelectProstheticsTypeCommandHandler(x), x => CanSelectTypeOfProstheticsCommandHandler());
             SelectMaterialCommand = new DelegateCommand(x => SelectMaterialCommandHandler(x), x => CanSelectMaterialCommandHandler());
             SelectBridgeCommand = new DelegateCommand(x => SelectBridgeCommandHandler(x), x => CanSelectBridgeCommandHandler());
@@ -54,6 +55,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public void Initialize(ToothDto[] toothCard)
         {
+            var prostheticConditions = _rmaOperations.GetProstheticConditions();
             var materials = _rmaOperations.GetMaterials();
             var prosteticTypes = _rmaOperations.GetProstheticTypes();
 
@@ -64,22 +66,22 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             Teeth.Clear();
             for (int i = 21; i <= 28; i++)
             {
-                Teeth.Add(new ToothViewModel(materials, prosteticTypes) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }
 
             for (int i = 31; i <= 38; i++)
             {
-                Teeth.Add(new ToothViewModel(materials, prosteticTypes) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Teeth.Add(new ToothViewModel(materials, prosteticTypes) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions,prosteticTypes, materials) { Number = i });
             }
 
             for (int i = 11; i <= 18; i++)
             {
-                Teeth.Add(new ToothViewModel(materials, prosteticTypes) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }
 
             foreach (var teethViewModel in Teeth)
@@ -132,6 +134,21 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 RenderRequest?.Invoke(this, EventArgs.Empty);
 
             OnPropertyChanged(() => Description);
+        }
+
+        private bool CanSelectProstheticConditionCommandHandler()
+        {
+            return SelectedTeeth != null;
+        }
+
+        private void SelectProstheticConditionsCommandHandler(object obj)
+        {
+            var prostheticConditionViewModel = (ProstheticConditionViewModel)obj;
+
+            foreach (var selectedTooth in SelectedTeeth)
+            {
+                selectedTooth.ProstheticConditions.First(x => x.DisplayName == prostheticConditionViewModel.DisplayName).IsChecked = true;
+            }
         }
 
         private bool CanSelectTypeOfProstheticsCommandHandler()

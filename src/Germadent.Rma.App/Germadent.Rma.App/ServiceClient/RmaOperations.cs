@@ -50,7 +50,12 @@ namespace Germadent.Rma.App.ServiceClient
 
         public ProstheticConditionDto[] GetProstheticConditions()
         {
-            throw new NotImplementedException();
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticConditions";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var prostheticConditions = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ProstheticConditionDto[]>();
+                return prostheticConditions;
+            }
         }
 
         public MaterialDto[] GetMaterials()

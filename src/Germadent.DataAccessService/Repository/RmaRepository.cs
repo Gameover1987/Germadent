@@ -65,7 +65,6 @@ namespace Germadent.DataAccessService.Repository
 
                 return toothCard;
             }
-
         }
 
         private static OrderDto AddWorkOrderDL(OrderDto order, SqlConnection connection)
@@ -89,6 +88,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
+                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
 
                 command.ExecuteNonQuery();
 
@@ -113,6 +113,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.DateTime)).Value = order.ColorAndFeatures;
+                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
 
                 order.WorkOrderId = command.ExecuteNonQuery();
                 return order;
@@ -148,6 +149,33 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
+        public ProstheticConditionDto[] GetProstheticConditions()
+        {
+            var cmdText = "select * from GetConditionsOfProsthetics()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var prostheticConditionEntities = new List<ProstheticConditionEntity>();
+                    while (reader.Read())
+                    {
+                        var prostheticConditionEntity = new ProstheticConditionEntity();
+                        prostheticConditionEntity.ConditionId = int.Parse(reader[nameof(prostheticConditionEntity.ConditionId)].ToString());
+                        prostheticConditionEntity.ConditionName = reader[nameof(prostheticConditionEntity.ConditionName)].ToString().Trim();
+
+                        prostheticConditionEntities.Add(prostheticConditionEntity);
+                    }
+                    reader.Close();
+
+                    return prostheticConditionEntities.Select(x => _converter.ConvertToProstheticCondition(x)).ToArray();
+                }
+            }
+        }
+
         private static void UpdateWorkOrderMC(OrderDto order, SqlConnection connection)
         {
             using (var command = new SqlCommand("UpdateWorkOrderMC", connection))
@@ -173,6 +201,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
+                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
 
                 command.ExecuteNonQuery();
             }
@@ -203,6 +232,7 @@ namespace Germadent.DataAccessService.Repository
 
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
+                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
 
                 command.ExecuteNonQuery();
             }
@@ -224,7 +254,7 @@ namespace Germadent.DataAccessService.Repository
                     {
                         var materialEntity = new MaterialEntity();
                         materialEntity.MaterialId = int.Parse(reader[nameof(materialEntity.MaterialId)].ToString());
-                        materialEntity.MaterialName = reader[nameof(materialEntity.MaterialName)].ToString();
+                        materialEntity.MaterialName = reader[nameof(materialEntity.MaterialName)].ToString().Trim();
 
                         if (bool.TryParse(reader[nameof(materialEntity.FlagUnused)].ToString(), out bool flagUnused))
                         {
@@ -256,7 +286,7 @@ namespace Germadent.DataAccessService.Repository
                     {
                         var prostheticTypeEntity = new ProstheticTypeEntity();
                         prostheticTypeEntity.ProstheticsId = int.Parse(reader[nameof(prostheticTypeEntity.ProstheticsId)].ToString());
-                        prostheticTypeEntity.ProstheticsName = reader[nameof(prostheticTypeEntity.ProstheticsName)].ToString();
+                        prostheticTypeEntity.ProstheticsName = reader[nameof(prostheticTypeEntity.ProstheticsName)].ToString().Trim();
 
                         prostheticTypeEntities.Add(prostheticTypeEntity);
                     }
@@ -307,10 +337,11 @@ namespace Germadent.DataAccessService.Repository
                             Status = reader["Status"].ToInt(),
                             DoctorFullName = reader["DoctorFullName"].ToString(),
                             TechnicFullName = reader["TechnicFullName"].ToString(),
-                            //ResponsiblePersonPhone = reader["RP_Phone"].ToString(),
+                            TechnicPhone = reader["TechnicPhone"].ToString(),
                             //PatientGender = reader["PatientGender"].ToBool(),
                             Age = reader["PatientAge"].ToInt(),
-                            Transparency = reader["TransparenceId"].ToInt()
+                            Transparency = reader["TransparenceId"].ToInt(),
+                            ProstheticArticul = reader["ProstheticArticul"].ToString()
                         };
 
                         if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))
@@ -358,6 +389,7 @@ namespace Germadent.DataAccessService.Repository
 
                         toothEntity.ToothNumber = reader[nameof(toothEntity.ToothNumber)].ToInt();
                         toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
+                        toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
                         toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
 

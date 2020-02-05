@@ -10,6 +10,8 @@ namespace Germadent.DataAccessService.Entities.Conversion
 
         OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
+        ProstheticConditionDto ConvertToProstheticCondition(ProstheticConditionEntity entity);
+
         MaterialDto ConvertToMaterial(MaterialEntity entity);
 
         ProstheticsTypeDto ConvertToProstheticType(ProstheticTypeEntity entity);

@@ -16,7 +16,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 WorkDescription = "Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем Но мы же крутые спецы, сделаем! Очень много разной интересной работы, делать ее родиму не переделать. Но мы же крутые спецы, сделаем!",
                 ColorAndFeatures = "Белоснежный",
                 ToothCard = CreateMockToothCard(),
-                Transparency = 2
+                Transparency = 2,
+                ProstheticArticul = "Какой то артикул"
             };
             Initialize(order);
         }

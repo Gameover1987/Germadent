@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -38,11 +39,15 @@
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Цвет/особенности" VerticalAlignment="Center"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
-                     Text="{Binding ColorAndFeatures, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding ColorAndFeatures, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Text="Прозрачность" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Артикул материала" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"
+                 Text="{Binding ProstheticArticul}"/>
 
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" Margin="6,0,0,0">
+        <TextBlock Text="Прозрачность" Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
+
+        <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="1" Margin="6,0,0,0">
             <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=1}" 
                          Content="Непрозрачные зубы" Margin="0,6,0,0" />
             <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=2}"  Margin="0,6,0,0" 
@@ -54,6 +59,6 @@
             <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=6}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
         </StackPanel>
 
-        <local:MouthUserControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
+        <local:MouthUserControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
     </Grid>
 </UserControl>

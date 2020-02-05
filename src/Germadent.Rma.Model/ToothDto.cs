@@ -12,13 +12,18 @@ namespace Germadent.Rma.Model
 
         public int ToothNumber { get; set; }
 
-        public int MaterialId { get; set; }
+        public int ConditionId { get; set; }
 
-        public string MaterialName { get; set; }
+        public string ConditionName { get; set; }
 
         public int ProstheticsId { get; set; }
 
         public string ProstheticsName { get; set; }
+
+        public int MaterialId { get; set; }
+
+        public string MaterialName { get; set; }
+
 
         public bool HasBridge { get; set; }
 

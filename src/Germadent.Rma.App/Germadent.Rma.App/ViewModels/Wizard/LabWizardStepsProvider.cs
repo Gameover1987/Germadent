@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(),
-                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(new DesignMockRmaOperations(), new ClipboardHelper())),
+                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper())),
             };
         }
     }

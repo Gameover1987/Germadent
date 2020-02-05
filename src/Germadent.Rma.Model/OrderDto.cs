@@ -60,5 +60,7 @@ namespace Germadent.Rma.Model
         public string OfficeAdminName { get; set; }
 
         public ToothDto[] ToothCard { get; set; }
+
+        public string ProstheticArticul { get; set; }
     }
 }

@@ -101,14 +101,18 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
-        [TestCase("Каркас", "ZrO", true, "Каркас/ZrO/Мост")]
-        [TestCase("Каркас", null, true, "Каркас/Мост")]
-        [TestCase(null, "ZrO", true, "ZrO/Мост")]
-        [TestCase(null, null, true, "Мост")]
-        public void ShouldGetCorrectDescription(string prosthetics, string material, bool hasBridge, string expectedDescription)
+        [TestCase("Культя", "Каркас", "ZrO", true, "Культя/Каркас/ZrO/Мост")]
+        [TestCase(null, "Каркас", "ZrO", true, "Каркас/ZrO/Мост")]
+        [TestCase(null, null, "ZrO", true, "ZrO/Мост")]
+        [TestCase(null, null, null, true, "Мост")]
+        public void ShouldGetCorrectDescription(string prostheticsCondition, string prosthetics, string material, bool hasBridge, string expectedDescription)
         {
             // Given
             var target = CreateTarget();
+            var selectedProstheticCondition = target.ProstheticConditions.FirstOrDefault(x => x.DisplayName == prostheticsCondition);
+            if (selectedProstheticCondition != null)
+                selectedProstheticCondition.IsChecked = true;
+
             var selectedProsthetics = target.ProstheticTypes.FirstOrDefault(x => x.DisplayName == prosthetics);
             if (selectedProsthetics != null)
                 selectedProsthetics.IsChecked = true;
@@ -128,7 +132,17 @@ namespace Germadent.Rma.App.Test
 
         private ToothViewModel CreateTarget()
         {
-            return new ToothViewModel(GetMaterials(), GetProsthticTypes());
+            return new ToothViewModel(GetProstheticConditions(), GetProsthticTypes(), GetMaterials());
+        }
+
+        private static ProstheticConditionDto[] GetProstheticConditions()
+        {
+            var conditions = new[]
+            {
+                new ProstheticConditionDto{Name = "Культя", Id = 1},
+                new ProstheticConditionDto{Name = "Имплант", Id = 2},
+            };
+            return conditions;
         }
 
         private static MaterialDto[] GetMaterials()
