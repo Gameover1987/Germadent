@@ -10,6 +10,7 @@
     [CustomerName]        NVARCHAR (100) NULL,
     [ResponsiblePersonID] INT            NULL,
     [PatientID]           INT            NULL,
+    [PatientFullName]     NVARCHAR (150) NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
@@ -19,6 +20,8 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL
 );
+
+
 
 
 

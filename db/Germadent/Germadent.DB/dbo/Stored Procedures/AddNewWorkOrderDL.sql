@@ -51,16 +51,16 @@ BEGIN
 
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, PatientFullName, ResponsiblePersonID, PatientID, Created, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(2, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, GETDATE(), @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(2, @docNumber, @customerID, @customerName, @patientFullName, @responsiblePersonId, @patientID, GETDATE(), @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
-		(WorkOrderDLID, DoctorFullName, PatientFullName, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
+		(WorkOrderDLID, DoctorFullName, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
 	VALUES
-		(@workOrderID, @doctorFullName, @patientFullName, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+		(@workOrderID, @doctorFullName, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
 
 END
 GO

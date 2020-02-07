@@ -35,6 +35,7 @@ BEGIN
 		, DocNumber = @docNumber
 --		, CustomerID = @customerID
 	 	, CustomerName = @customerName
+		, PatientFullName = @patientFullName
 --		, ResponsiblePersonID = @responsiblePersonId
 --		, PatientID = @patientID
 		, DateDelivery = @dateDelivery
@@ -51,7 +52,7 @@ BEGIN
 	UPDATE WorkOrderDL
 	SET TransparenceID = @transparenceID
 		, DoctorFullName = @doctorFullName
-		, PatientFullName = @patientFullName
+		
 		, PatientAge = @patientAge
 		, FittingDate = @fittingDate
 		, DateOfCompletion = @dateOfCompletion
