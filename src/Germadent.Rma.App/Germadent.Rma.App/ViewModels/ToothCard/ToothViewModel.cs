@@ -159,7 +159,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             if (selectedProstheticsType != null)
                 selectedProstheticsType.IsChecked = true;
 
-            var selectedMaterial = Materials.FirstOrDefault(x => x.Item.Name == toothDto.MaterialName);
+            var selectedMaterial = Materials.FirstOrDefault(x => x.Item.MaterialName == toothDto.MaterialName);
             if (selectedMaterial != null)
                 selectedMaterial.IsChecked = true;
 

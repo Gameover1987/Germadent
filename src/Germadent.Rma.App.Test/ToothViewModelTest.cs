@@ -149,21 +149,21 @@ namespace Germadent.Rma.App.Test
         {
             var materials = new[]
             {
-                new MaterialDto {Name = "ZrO"},
-                new MaterialDto {Name = "PMMA mono"},
-                new MaterialDto {Name = "PMMA multi"},
-                new MaterialDto {Name = "WAX"},
-                new MaterialDto {Name = "MIK"},
-                new MaterialDto {Name = "CAD-Temp mono"},
-                new MaterialDto {Name = "CAD-Temp multi"},
-                new MaterialDto {Name = "Enamik mono"},
-                new MaterialDto {Name = "Enamik multi"},
-                new MaterialDto {Name = "SUPRINITY"},
-                new MaterialDto {Name = "Mark II"},
-                new MaterialDto {Name = "WAX"},
-                new MaterialDto {Name = "TriLuxe forte"},
-                new MaterialDto {Name = "Ti"},
-                new MaterialDto {Name = "E.MAX"},
+                new MaterialDto {MaterialName = "ZrO"},
+                new MaterialDto {MaterialName = "PMMA mono"},
+                new MaterialDto {MaterialName = "PMMA multi"},
+                new MaterialDto {MaterialName = "WAX"},
+                new MaterialDto {MaterialName = "MIK"},
+                new MaterialDto {MaterialName = "CAD-Temp mono"},
+                new MaterialDto {MaterialName = "CAD-Temp multi"},
+                new MaterialDto {MaterialName = "Enamik mono"},
+                new MaterialDto {MaterialName = "Enamik multi"},
+                new MaterialDto {MaterialName = "SUPRINITY"},
+                new MaterialDto {MaterialName = "Mark II"},
+                new MaterialDto {MaterialName = "WAX"},
+                new MaterialDto {MaterialName = "TriLuxe forte"},
+                new MaterialDto {MaterialName = "Ti"},
+                new MaterialDto {MaterialName = "E.MAX"},
             };
 
             for (int i = 0; i < materials.Length; i++)

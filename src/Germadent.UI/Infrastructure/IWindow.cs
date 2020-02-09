@@ -42,5 +42,8 @@ namespace Germadent.UI.Infrastructure
 		/// Закрыть окно
 		/// </summary>
 		void Close();
+
+
+		bool? DialogResult { get; set; }
 	}
 }

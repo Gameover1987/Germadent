@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
@@ -14,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             _item = material;
         }
 
-        public string DisplayName => _item.Name;
+        public string DisplayName => _item.MaterialName;
 
         public bool IsChecked
         {

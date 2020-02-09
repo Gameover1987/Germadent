@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
              xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
+             xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
@@ -33,15 +34,18 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Заказчик" Margin="0,0,0,3"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Заказчик *" Margin="0,0,0,3"
+                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                  Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора *" 
+                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
                      Text="{Binding DoctorFio, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО пациента" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО пациента *" 
+                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
                      Text="{Binding PatientFio, UpdateSourceTrigger=PropertyChanged}" />
 

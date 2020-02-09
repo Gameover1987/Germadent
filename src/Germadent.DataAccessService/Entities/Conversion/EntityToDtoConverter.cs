@@ -30,7 +30,8 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 WorkDescription = entity.WorkDescription,
                 WorkAccepted = entity.FlagWorkAccept,
                 Understaff = entity.Understaff,
-                ProstheticArticul = entity.ProstheticArticul
+                ProstheticArticul = entity.ProstheticArticul,
+                MaterialsStr = entity.MaterialsEnum
             };
 
             if (orderDto.BranchType == BranchType.Laboratory)
@@ -89,7 +90,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
             return new MaterialDto
             {
                 Id = entity.MaterialId,
-                Name = entity.MaterialName,
+                MaterialName = entity.MaterialName,
                 IsObsolete = entity.FlagUnused
             };
         }

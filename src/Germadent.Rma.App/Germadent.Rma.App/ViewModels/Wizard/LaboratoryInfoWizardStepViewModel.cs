@@ -38,7 +38,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override bool IsValid
         {
-            get { return !HasErrors; }
+            get { return !HasErrors && !IsEmpty(); }
         }
 
         public string Customer
@@ -115,6 +115,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Created = Created;
             order.FittingDate = FittingDate;
             order.Closed = WorkCompleted;
+        }
+
+        private bool IsEmpty()
+        {
+            return Customer.IsNullOrWhiteSpace() ||
+                   PatientFio.IsNullOrWhiteSpace() ||
+                   DoctorFio.IsNullOrWhiteSpace();
         }
     }
 }

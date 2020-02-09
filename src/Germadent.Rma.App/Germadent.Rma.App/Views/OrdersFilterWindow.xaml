@@ -84,7 +84,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
                         <Grid>
-                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.MaterialName}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

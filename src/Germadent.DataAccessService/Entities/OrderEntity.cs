@@ -76,5 +76,10 @@ namespace Germadent.DataAccessService.Entities
         /// Артикул материалов
         /// </summary>
         public string ProstheticArticul { get; set; }
+
+        /// <summary>
+        /// Перечень материалов
+        /// </summary>
+        public string MaterialsEnum { get; set; }
     }
 }
