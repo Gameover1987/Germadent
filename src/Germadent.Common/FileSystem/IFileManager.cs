@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 
 namespace Germadent.Common.FileSystem
 {
@@ -7,6 +8,8 @@ namespace Germadent.Common.FileSystem
         byte[] ReadAllBytes(string filePath);
 
         void Save(byte[] data, string filePath);
+
+        void OpenFile(string fileName);
     }
 
     public class FileManager : IFileManager
@@ -20,6 +23,11 @@ namespace Germadent.Common.FileSystem
         public void Save(byte[] data, string filePath)
         {
             File.WriteAllBytes(filePath, data);
+        }
+
+        public void OpenFile(string fileName)
+        {
+            Process.Start(fileName);
         }
     }
 }

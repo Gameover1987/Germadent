@@ -9,8 +9,11 @@ namespace Germadent.Rma.Model
     {
         public OrderDto()
         {
+            Created = DateTime.Now;
+            Gender = Gender.Male;
             OfficeAdminName = "Мега админ";
             ToothCard = new ToothDto[0];
+            Transparency = 1;
         }
 
         public int WorkOrderId { get; set; }
@@ -66,5 +69,7 @@ namespace Germadent.Rma.Model
         public byte[] StlFile { get; set; }
 
         public byte[] PhotoFile { get; set; }
+
+        public string MaterialsStr { get; set; }
     }
 }

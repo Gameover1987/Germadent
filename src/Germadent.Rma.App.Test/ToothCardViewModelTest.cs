@@ -42,7 +42,7 @@ namespace Germadent.Rma.App.Test
                 .Setup(x => x.GetMaterials())
                 .Returns(new[]
                 {
-                    new MaterialDto {Name = "ZrO", Id = 1},
+                    new MaterialDto {MaterialName = "ZrO", Id = 1},
                 });
 
             rmaOperationsMock

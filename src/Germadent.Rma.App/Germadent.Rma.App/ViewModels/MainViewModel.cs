@@ -77,28 +77,27 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand OpenOrderCommand { get; }
         public void Initialize()
         {
-           FillOrders();
+            FillOrders();
         }
 
         private void CreateLabOrderCommandHandler()
         {
-            var labOrder = _windowManager.CreateLabOrder(new OrderDto()
-            {
-                Created = DateTime.Now,
-                BranchType = BranchType.Laboratory,
-                Gender = Gender.Male
-            }, WizardMode.Create);
+            var labOrder = _windowManager.CreateLabOrder(new OrderDto { BranchType = BranchType.Laboratory }, WizardMode.Create);
 
             if (labOrder == null)
                 return;
 
-            var orderDto = _rmaOperations.AddOrder(labOrder);
-            Orders.Add(new OrderLiteViewModel(orderDto.ToOrderLite()));
+            Orders.Add(new OrderLiteViewModel(labOrder.ToOrderLite()));
         }
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            _windowManager.CreateMillingCenterOrder(new OrderDto(), WizardMode.Create);
+            var millingCenterOrder = _windowManager.CreateMillingCenterOrder(new OrderDto { BranchType = BranchType.MillingCenter}, WizardMode.Create);
+
+            if (millingCenterOrder == null)
+                return;
+            
+            Orders.Add(new OrderLiteViewModel(millingCenterOrder.ToOrderLite()));
         }
 
         private void FilterOrdersCommandHandler()
@@ -121,7 +120,7 @@ namespace Germadent.Rma.App.ViewModels
                 {
                     orders = _rmaOperations.GetOrders(filter);
                 });
-                
+
                 foreach (var order in orders)
                 {
                     Orders.Add(new OrderLiteViewModel(order));

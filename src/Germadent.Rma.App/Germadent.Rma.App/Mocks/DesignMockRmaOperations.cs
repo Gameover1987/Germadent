@@ -107,21 +107,21 @@ namespace Germadent.Rma.App.Mocks
             //Thread.Sleep(2000);
             var materials = new[]
             {
-                new MaterialDto {Name = "ZrO", Id = 1},
-                new MaterialDto {Name = "PMMA mono", Id = 2},
-                new MaterialDto {Name = "PMMA multi", Id = 3},
-                new MaterialDto {Name = "WAX", Id = 4},
-                new MaterialDto {Name = "MIK", Id = 5},
-                new MaterialDto {Name = "CAD-Temp mono", Id = 6},
-                new MaterialDto {Name = "CAD-Temp multi", Id = 7},
-                new MaterialDto {Name = "Enamik mono", Id = 8},
-                new MaterialDto {Name = "Enamik multi", Id = 9},
-                new MaterialDto {Name = "SUPRINITY", Id = 10},
-                new MaterialDto {Name = "Mark II", Id = 11},
-                new MaterialDto {Name = "WAX", Id = 12},
-                new MaterialDto {Name = "TriLuxe forte", Id = 13},
-                new MaterialDto {Name = "Ti", Id = 14},
-                new MaterialDto {Name = "E.MAX", Id = 15},
+                new MaterialDto {MaterialName = "ZrO", Id = 1},
+                new MaterialDto {MaterialName = "PMMA mono", Id = 2},
+                new MaterialDto {MaterialName = "PMMA multi", Id = 3},
+                new MaterialDto {MaterialName = "WAX", Id = 4},
+                new MaterialDto {MaterialName = "MIK", Id = 5},
+                new MaterialDto {MaterialName = "CAD-Temp mono", Id = 6},
+                new MaterialDto {MaterialName = "CAD-Temp multi", Id = 7},
+                new MaterialDto {MaterialName = "Enamik mono", Id = 8},
+                new MaterialDto {MaterialName = "Enamik multi", Id = 9},
+                new MaterialDto {MaterialName = "SUPRINITY", Id = 10},
+                new MaterialDto {MaterialName = "Mark II", Id = 11},
+                new MaterialDto {MaterialName = "WAX", Id = 12},
+                new MaterialDto {MaterialName = "TriLuxe forte", Id = 13},
+                new MaterialDto {MaterialName = "Ti", Id = 14},
+                new MaterialDto {MaterialName = "E.MAX", Id = 15},
             };
 
             return materials;

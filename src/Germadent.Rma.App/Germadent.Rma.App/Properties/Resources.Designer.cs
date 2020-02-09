@@ -68,5 +68,14 @@ namespace Germadent.Rma.App.Properties {
                 return ResourceManager.GetString("AppTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле обязательно к заполнению.
+        /// </summary>
+        public static string Tooltip_RequredField {
+            get {
+                return ResourceManager.GetString("Tooltip_RequredField", resourceCulture);
+            }
+        }
     }
 }

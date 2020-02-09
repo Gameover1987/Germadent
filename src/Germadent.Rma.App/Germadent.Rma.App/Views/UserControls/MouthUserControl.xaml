@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
-            <TextBlock Text="{Binding Item.Name}"/>
+            <TextBlock Text="{Binding Item.MaterialName}"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type toothCard:ProstheticsTypeViewModel}">
@@ -86,6 +86,7 @@
                                             <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
                                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectPtostheticsConditionCommand}"/>
                                             <Setter Property="CommandParameter" Value="{Binding}"/>
+                                            <Setter Property="Header" Value="{Binding DisplayName}"/>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                 </MenuItem>

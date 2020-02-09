@@ -9,21 +9,23 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         private string _customer;
         private string _patient;
-        private string _responsiblePerson;
-        private string _responsiblePersonPhone;
+        private string _technicFullName;
+        private string _technicPhone;
         private DateTime _created;
 
         public MillingCenterInfoWizardStepViewModel()
         {
             AddValidationFor(() => Customer)
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
-            AddValidationFor(() => ResponsiblePerson)
-                .When(() => ResponsiblePerson.IsNullOrWhiteSpace(), () => "Укажите техника");
-            AddValidationFor(() => ResponsiblePersonPhone)
-                .When(() => ResponsiblePersonPhone.IsNullOrWhiteSpace(), () => "Укажите телефон техника");
+            AddValidationFor(() => Patient)
+                .When(() => Patient.IsNullOrWhiteSpace(), () => "Укажите пациента");
+            AddValidationFor(() => TechnicFullName)
+                .When(() => TechnicFullName.IsNullOrWhiteSpace(), () => "Укажите техника");
+            AddValidationFor(() => TechnicPhone)
+                .When(() => TechnicPhone.IsNullOrWhiteSpace(), () => "Укажите телефон техника");
         }
 
-        public override bool IsValid => !HasErrors;
+        public override bool IsValid => !HasErrors && !IsEmpty();
 
         public override string DisplayName
         {
@@ -42,16 +44,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _patient, value); }
         }
 
-        public string ResponsiblePerson
+        public string TechnicFullName
         {
-            get { return _responsiblePerson; }
-            set { SetProperty(() => _responsiblePerson, value); }
+            get { return _technicFullName; }
+            set { SetProperty(() => _technicFullName, value); }
         }
 
-        public string ResponsiblePersonPhone
+        public string TechnicPhone
         {
-            get { return _responsiblePersonPhone; }
-            set { SetProperty(() => _responsiblePersonPhone, value); }
+            get { return _technicPhone; }
+            set { SetProperty(() => _technicPhone, value); }
         }
 
         public DateTime Created
@@ -62,20 +64,28 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override void Initialize(OrderDto order)
         {
-            Customer = order.Customer;
-            Patient = order.Patient;
-            ResponsiblePerson = order.ResponsiblePerson;
-            ResponsiblePersonPhone = order.ResponsiblePersonPhone;
-            Created = order.Created;
+            _customer = order.Customer;
+            _patient = order.Patient;
+            _technicFullName = order.ResponsiblePerson;
+            _technicPhone = order.ResponsiblePersonPhone;
+            _created = order.Created;
         }
 
         public override void AssemblyOrder(OrderDto order)
         {
             order.Customer = Customer;
             order.Patient = Patient;
-            order.ResponsiblePerson = ResponsiblePerson;
-            order.ResponsiblePersonPhone = ResponsiblePersonPhone;
+            order.ResponsiblePerson = TechnicFullName;
+            order.ResponsiblePersonPhone = TechnicPhone;
             order.Created = Created;
+        }
+
+        private bool IsEmpty()
+        {
+            return Customer.IsNullOrWhiteSpace() ||
+                   Patient.IsNullOrWhiteSpace() ||
+                   TechnicFullName.IsNullOrWhiteSpace() ||
+                   TechnicPhone.IsNullOrWhiteSpace();
         }
     }
 }

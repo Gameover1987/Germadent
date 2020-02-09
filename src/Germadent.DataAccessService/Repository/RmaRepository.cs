@@ -44,6 +44,7 @@ namespace Germadent.DataAccessService.Repository
                         throw new NotSupportedException("Неизвестный тип филиала");
                 }
 
+                order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard , connection);
 
                 return outputOrder;
@@ -101,21 +102,33 @@ namespace Germadent.DataAccessService.Repository
 
         private static OrderDto AddWorkOrderMC(OrderDto order, SqlConnection connection)
         {
-            using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
+            using (var command = new SqlCommand("AddNewWorkOrderMC", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.GetOrderDocNumber();
-                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.NVarChar)).Value = order.Customer;
-                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
-                command.Parameters.Add(new SqlParameter("@patientID", SqlDbType.NVarChar)).Value = order.Patient;
-                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
-                command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
-                command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
-                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
-                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.DateTime)).Value = order.ColorAndFeatures;
+                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer;
+                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@technicFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
+                command.Parameters.Add(new SqlParameter("@technicPhone", SqlDbType.NVarChar)).Value = order.ResponsiblePersonPhone;
+                command.Parameters.Add(new SqlParameter("@patientID", SqlDbType.NVarChar)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
+                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = "Мега администратор";
+                command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo;
+                command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor;
+                command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem;
+                command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
+                command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
 
-                order.WorkOrderId = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+
+                order.WorkOrderId = command.Parameters["@workOrderId"].Value.ToInt();
+                order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
+
                 return order;
             }
         }
@@ -341,7 +354,8 @@ namespace Germadent.DataAccessService.Repository
                             //PatientGender = reader["PatientGender"].ToBool(),
                             Age = reader["PatientAge"].ToInt(),
                             Transparency = reader["TransparenceId"].ToInt(),
-                            ProstheticArticul = reader["ProstheticArticul"].ToString()
+                            ProstheticArticul = reader["ProstheticArticul"].ToString(),
+                            MaterialsEnum = reader["MaterialsEnum"].ToString(),
                         };
 
                         if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))
@@ -419,8 +433,11 @@ namespace Germadent.DataAccessService.Repository
             var doctorFullName = "@doctorFullName";
             var createDateFrom = "@createDateFrom";
             var createDateTo = "@createDateTo";
-            var cmdText =
-                $"select * from GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, default, default, default)";
+            var materialSet = "@materialSet";
+            var cmdText = $"SELECT * FROM GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, {createDateTo}, default, default)" +
+                          $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect({materialSet}))";
+
+            var materialsJson = filter.Materials.SerializeToJson(Formatting.Indented);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -442,6 +459,7 @@ namespace Germadent.DataAccessService.Repository
                     command.Parameters.Add(new SqlParameter(doctorFullName, SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter(createDateFrom, SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter(createDateTo, SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter(materialSet, SqlDbType.NVarChar)).Value = materialsJson;
 
                     return GetOrderLiteCollectionFromReader(command);
                 }
@@ -465,30 +483,29 @@ namespace Germadent.DataAccessService.Repository
 
         private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command)
         {
-            var reader = command.ExecuteReader();
-
-            var orderLiteEntities = new List<OrderLiteEntity>();
-            while (reader.Read())
+            using (var reader = command.ExecuteReader())
             {
-                var orderLite = new OrderLiteEntity();
-                orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
-                orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
-                orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
-                orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
-                orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
-                orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
+                var orderLiteEntities = new List<OrderLiteEntity>();
+                while (reader.Read())
+                {
+                    var orderLite = new OrderLiteEntity();
+                    orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
+                    orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
+                    orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
+                    orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
+                    orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
+                    orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
 
-                var closed = reader[nameof(orderLite.Closed)];
-                if (closed != DBNull.Value)
-                    orderLite.Closed = DateTime.Parse(closed.ToString());
+                    var closed = reader[nameof(orderLite.Closed)];
+                    if (closed != DBNull.Value)
+                        orderLite.Closed = DateTime.Parse(closed.ToString());
 
-                orderLiteEntities.Add(orderLite);
+                    orderLiteEntities.Add(orderLite);
+                }
+
+                var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
+                return orders;
             }
-
-            reader.Close();
-
-            var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
-            return orders;
         }
     }
 }

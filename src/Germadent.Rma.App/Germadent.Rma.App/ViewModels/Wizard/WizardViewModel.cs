@@ -13,11 +13,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IWizardViewModel
     {
-        WizardMode WizardMode { get; }
-
-        void Initialize(WizardMode wizardMode, OrderDto order);
-
-        OrderDto GetOrder();
+        bool PrintAfterSave { get; set; }
     }
 
     public class WizardViewModel : ViewModelBase, IWizardViewModel
@@ -42,9 +38,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             BackCommand = new DelegateCommand(x => BackCommandHandler(), x => CanBackCommandHandler());
             NextCommand = new DelegateCommand(x => NextCommandHandler(), x => CanNextCommandHandler());
 
-            PrintCommand = new DelegateCommand(x => PrintCommandHandler());
+            PrintCommand = new DelegateCommand(x => PrintCommandHandler(), x => CanPrintCommandHandler());
             SaveCommand = new DelegateCommand(x => SaveCommandHandler(), x => CanSaveCommandHandler());
-            SaveAndPrintCommand = new DelegateCommand(x => PrintAndSaveCommandHandler(x), x => CanPrintAndSaveCommandHandler());
+            SaveAndPrintCommand = new DelegateCommand(x => SaveAndPrintCommandHandler(x), x => CanSaveAndPrintCommandHandler());
         }
 
         public string Title { get; protected set; }
@@ -66,6 +62,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         }
 
         public ICommand BackCommand { get; }
+
         public ICommand NextCommand { get; }
 
         public ICommand PrintCommand { get; }
@@ -73,6 +70,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public ICommand SaveAndPrintCommand { get; }
 
         public ICommand SaveCommand { get; }
+
+        public bool PrintAfterSave { get; set; }
 
         private bool CanBackCommandHandler()
         {
@@ -97,17 +96,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             CurrentStep = Steps[currenIndex + 1];
         }
 
-        private bool CanPrintAndSaveCommandHandler()
+        private bool CanSaveAndPrintCommandHandler()
         {
             return Steps.All(x => x.IsValid);
         }
 
-        private void PrintAndSaveCommandHandler(object obj)
+        private void SaveAndPrintCommandHandler(object obj)
         {
-            _printModule.Print(GetOrder());
+            PrintAfterSave = true;
 
             var window = (IWindow)obj;
-            window.Close();
+            window.DialogResult = true;
         }
 
         private bool CanSaveCommandHandler()
@@ -120,13 +119,20 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         }
 
+        private bool CanPrintCommandHandler()
+        {
+            return WizardMode == WizardMode.View;
+        }
+
         private void PrintCommandHandler()
         {
-            _printModule.Print(GetOrder());
+            _printModule.Print(_order);
         }
 
         public void Initialize(WizardMode wizardMode, OrderDto order)
         {
+            PrintAfterSave = false;
+
             var branchName = _branchType == BranchType.Laboratory ? "ЗТЛ" : "ФЦ";
 
             if (wizardMode == WizardMode.Create)
@@ -165,5 +171,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             return order;
         }
+
+      
     }
 }

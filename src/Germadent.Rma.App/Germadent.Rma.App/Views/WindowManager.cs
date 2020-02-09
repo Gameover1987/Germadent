@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;
@@ -9,6 +10,7 @@ namespace Germadent.Rma.App.Views
     public class WindowManager : IWindowManager
     {
         private readonly IShowDialogAgent _dialogAgent;
+        private readonly IRmaOperations _rmaOperations;
         private readonly ILabWizardStepsProvider _labWizardProvider;
         private readonly IMillingCenterWizardStepsProvider _millingCenterWizardStepsProvider;
 
@@ -16,12 +18,14 @@ namespace Germadent.Rma.App.Views
         private readonly IPrintModule _printModule;
 
         public WindowManager(IShowDialogAgent dialogAgent,
+            IRmaOperations rmaOperations,
             ILabWizardStepsProvider labWizardStepsProvider,
             IMillingCenterWizardStepsProvider millingCenterWizardStepsProvider,
             IOrdersFilterViewModel ordersFilterViewModel,
             IPrintModule printModule)
         {
             _dialogAgent = dialogAgent;
+            _rmaOperations = rmaOperations;
             _labWizardProvider = labWizardStepsProvider;
             _millingCenterWizardStepsProvider = millingCenterWizardStepsProvider;
 
@@ -35,7 +39,13 @@ namespace Germadent.Rma.App.Views
             labWizard.Initialize(mode, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
-                return labWizard.GetOrder();
+                var changedOrder = labWizard.GetOrder();
+                changedOrder = _rmaOperations.AddOrder(changedOrder);
+
+                if (labWizard.PrintAfterSave)
+                    _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));
+
+                return changedOrder;
             }
 
             return null;
@@ -47,7 +57,13 @@ namespace Germadent.Rma.App.Views
             millingCenterWizard.Initialize(mode, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) == true)
             {
-                return millingCenterWizard.GetOrder();
+                var changedOrder = millingCenterWizard.GetOrder();
+                changedOrder = _rmaOperations.AddOrder(changedOrder);
+
+                if (millingCenterWizard.PrintAfterSave)
+                    _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));
+
+                return changedOrder;
             }
 
             return null;
