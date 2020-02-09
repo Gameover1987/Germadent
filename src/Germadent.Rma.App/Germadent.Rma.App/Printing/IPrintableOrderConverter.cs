@@ -35,7 +35,9 @@ namespace Germadent.Rma.App.Printing
                 PatientGender = GetGenderName(order.Gender),
                 TechnicPhone = order.ResponsiblePersonPhone,
                 TransparenceName = GetTransparenceName(order.Transparency),
-                WorkOrderID = order.WorkOrderId
+                WorkOrderID = order.WorkOrderId,
+                ProstheticArticul = order.ProstheticArticul,
+                MaterialsStr = order.MaterialsStr
             };
         }
 

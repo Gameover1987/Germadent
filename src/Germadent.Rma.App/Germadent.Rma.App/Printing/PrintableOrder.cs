@@ -30,5 +30,7 @@ namespace Germadent.Rma.App.Printing
         public DateTime? FittingDate { get; set; }
         public string ColorAndFeatures { get; set; }
         public string TransparenceName { get; set; }
-    }
+        public string ProstheticArticul { get; set; }
+        public string MaterialsStr { get; set; }
+}
 }
