@@ -434,10 +434,20 @@ namespace Germadent.DataAccessService.Repository
             var createDateFrom = "@createDateFrom";
             var createDateTo = "@createDateTo";
             var materialSet = "@materialSet";
-            var cmdText = $"SELECT * FROM GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, {createDateTo}, default, default)" +
-                          $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect({materialSet}))";
+            var cmdText1 = $"SELECT * FROM GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, {createDateTo}, default, default)";
+            var cmdText2 = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect({materialSet}))";
+            string cmdText;
 
             var materialsJson = filter.Materials.SerializeToJson(Formatting.Indented);
+
+            if (materialsJson == "[]")
+            {
+                cmdText = cmdText1;
+            }
+            else
+            {
+                cmdText = cmdText1 + cmdText2;
+            }
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
