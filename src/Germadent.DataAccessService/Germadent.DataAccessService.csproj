@@ -83,6 +83,7 @@
     <Compile Include="Entities\ProstheticConditionEntity.cs" />
     <Compile Include="Entities\ProstheticTypeEntity.cs" />
     <Compile Include="Entities\ToothEntity.cs" />
+    <Compile Include="Entities\TransparencesEntity.cs" />
     <Compile Include="Infrastructure\NancyService.cs" />
     <Compile Include="Infrastructure\NancyServiceConfiguration.cs" />
     <Compile Include="Infrastructure\NancyServiceConfiguratorExtensions.cs" />
