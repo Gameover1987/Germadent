@@ -15,5 +15,6 @@ namespace Germadent.DataAccessService.Entities.Conversion
         MaterialDto ConvertToMaterial(MaterialEntity entity);
 
         ProstheticsTypeDto ConvertToProstheticType(ProstheticTypeEntity entity);
+        TransparencesDto ConvertToTransparences(TransparencesEntity entity);
     }
 }

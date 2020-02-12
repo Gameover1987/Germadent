@@ -44,6 +44,7 @@
     <Compile Include="OrdersFilter.cs" />
     <Compile Include="ToothCardDto.cs" />
     <Compile Include="ToothDto.cs" />
+    <Compile Include="TransparencesDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj">

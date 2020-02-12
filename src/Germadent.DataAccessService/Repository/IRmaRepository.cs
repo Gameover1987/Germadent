@@ -47,5 +47,11 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <returns></returns>
         MaterialDto[] GetMaterials();
+
+        /// <summary>
+        /// Возвращает список прозрачностей
+        /// </summary>
+        /// <returns></returns>
+        TransparencesDto[] GetTransparences();
     }
 }

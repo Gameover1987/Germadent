@@ -71,7 +71,7 @@ namespace Germadent.Rma.App.Printing
             }
         }
 
-        private string GetTransparenceName(int transparenceName)
+        private string GetTransparenceName(int transparenceId)
         {
             return "";
         }

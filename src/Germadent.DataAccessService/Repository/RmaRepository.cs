@@ -517,5 +517,28 @@ namespace Germadent.DataAccessService.Repository
                 return orders;
             }
         }
+        public TransparencesDto[] GetTransparences()
+        {
+            var cmdText = "select * from GetTransparencesList()";
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var commamd = new SqlCommand(cmdText, connection))
+                {
+                    var reader = commamd.ExecuteReader();
+                    var transparencesEntities = new List<TransparencesEntity>();
+                    while(reader.Read())
+                    {
+                        var transparenceEntity = new TransparencesEntity();
+                        transparenceEntity.TransparenceId = int.Parse(reader[nameof(transparenceEntity.TransparenceId)].ToString());
+                        transparenceEntity.TransparenceName = reader[nameof(transparenceEntity.TransparenceName)].ToString();
+
+                        transparencesEntities.Add(transparenceEntity);
+                    }
+                    var transparences = transparencesEntities.Select(x => _converter.ConvertToTransparences(x)).ToArray();
+                    return transparences;
+                }
+            }
+        }
     }
 }

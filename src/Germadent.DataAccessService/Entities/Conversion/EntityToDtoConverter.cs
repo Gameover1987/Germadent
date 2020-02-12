@@ -103,5 +103,13 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Name = entity.ProstheticsName
             };
         }
+        public TransparencesDto ConvertToTransparences(TransparencesEntity entity)
+        {
+            return new TransparencesDto
+            {
+                Id = entity.TransparenceId,
+                Name = entity.TransparenceName
+            };
+        }
     }
 }
