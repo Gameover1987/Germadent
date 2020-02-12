@@ -45,7 +45,7 @@ namespace Germadent.DataAccessService.Repository
                 }
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-                AddOrUpdateToothCard(order.ToothCard , connection);
+                AddOrUpdateToothCard(order.ToothCard, connection);
 
                 return outputOrder;
             }
@@ -427,27 +427,7 @@ namespace Germadent.DataAccessService.Repository
 
         private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
         {
-            var branchtypeid = "@branchTypeId";
-            var customername = "@customerName";
-            var patientfullname = "@patientFullName";
-            var doctorFullName = "@doctorFullName";
-            var createDateFrom = "@createDateFrom";
-            var createDateTo = "@createDateTo";
-            var materialSet = "@materialSet";
-            var cmdText1 = $"SELECT * FROM GetWorkOrdersList({branchtypeid}, default, default, default, {customername}, {patientfullname}, {doctorFullName}, {createDateFrom}, {createDateTo}, default, default)";
-            var cmdText2 = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect({materialSet}))";
-            string cmdText;
-
-            var materialsJson = filter.Materials.SerializeToJson(Formatting.Indented);
-
-            if (materialsJson == "[]")
-            {
-                cmdText = cmdText1;
-            }
-            else
-            {
-                cmdText = cmdText1 + cmdText2;
-            }
+            var cmdText = GetFilterCommandText(filter);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -457,23 +437,36 @@ namespace Germadent.DataAccessService.Repository
                 {
                     if (filter.Laboratory && filter.MillingCenter)
                     {
-                        command.Parameters.Add(new SqlParameter(branchtypeid, SqlDbType.Int)).Value = DBNull.Value;
+                        command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = DBNull.Value;
                     }
                     else
                     {
-                        command.Parameters.Add(new SqlParameter(branchtypeid, SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
+                        command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
                     }
 
-                    command.Parameters.Add(new SqlParameter(customername, SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter(patientfullname, SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter(doctorFullName, SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter(createDateFrom, SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter(createDateTo, SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter(materialSet, SqlDbType.NVarChar)).Value = materialsJson;
+                    command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@createDateFrom", SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
 
                     return GetOrderLiteCollectionFromReader(command);
                 }
             }
+        }
+
+        private string GetFilterCommandText(OrdersFilter filter)
+        {
+            var cmdText1 = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, createDateTo, default, default)";
+            var cmdText2 = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
+
+            if (filter.Materials.Length == 0)
+            {
+                return cmdText1;
+            }
+
+            return cmdText1 + cmdText2;
         }
 
         private OrderLiteDto[] GetOrdersByEmptyFilter()
@@ -527,7 +520,7 @@ namespace Germadent.DataAccessService.Repository
                 {
                     var reader = commamd.ExecuteReader();
                     var transparencesEntities = new List<TransparencesEntity>();
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         var transparenceEntity = new TransparencesEntity();
                         transparenceEntity.TransparenceId = int.Parse(reader[nameof(transparenceEntity.TransparenceId)].ToString());
