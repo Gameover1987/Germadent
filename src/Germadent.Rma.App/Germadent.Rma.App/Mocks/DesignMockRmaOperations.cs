@@ -160,5 +160,10 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public TransparencesDto[] GetTransparences()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

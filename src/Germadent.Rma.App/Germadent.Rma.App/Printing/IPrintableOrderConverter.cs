@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Printing
@@ -10,6 +12,12 @@ namespace Germadent.Rma.App.Printing
 
     public class PrintableOrderConverter : IPrintableOrderConverter
     {
+        private readonly IRmaOperations _rmaOperations;
+
+        public PrintableOrderConverter(IRmaOperations rmaOperations)
+        {
+            _rmaOperations = rmaOperations;
+        }
         public PrintableOrder ConvertFrom(OrderDto order)
         {
             return new PrintableOrder
@@ -73,7 +81,8 @@ namespace Germadent.Rma.App.Printing
 
         private string GetTransparenceName(int transparenceId)
         {
-            return "";
+            var transparences = _rmaOperations.GetTransparences();
+            return transparences.First(x => x.Id == transparenceId).Name;
         }
     }
 }

@@ -106,5 +106,15 @@ namespace Germadent.Rma.App.ServiceClient
         {
             throw new NotImplementedException();
         }
+
+        public TransparencesDto[] GetTransparences()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/transparences";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var transparences = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<TransparencesDto[]>();
+                return transparences;
+            }
+        }
     }
 }

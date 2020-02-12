@@ -53,5 +53,10 @@ namespace Germadent.Rma.App.ServiceClient
         /// <returns></returns>
         OrderDto UpdateOrder(OrderDto order);
 
+        /// <summary>
+        /// Получить список прозрачностей
+        /// </summary>
+        /// <returns></returns>
+        TransparencesDto[] GetTransparences();
     }
 }
