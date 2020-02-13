@@ -174,7 +174,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Описание работ" VerticalAlignment="Center" Margin="0,5,0,0"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,6,0,0" Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,6,0,0" Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" MaxLines="2" Height="35"/>
             <Button Grid.Row="0" Grid.Column="2" Content="Копировать" Margin="6,6,0,0"
                     Command="{Binding CopyDescriptionCommand}"/>
         </Grid>
