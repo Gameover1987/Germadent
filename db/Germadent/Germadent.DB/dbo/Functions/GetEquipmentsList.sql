@@ -1,9 +1,9 @@
 ﻿-- =============================================
 -- Author:		Алексей Колосенок
 -- Create date: 23.11.2019
--- Description:	Справочник способов протезирования
+-- Description:	Возвращает список оснастки
 -- =============================================
-CREATE FUNCTION [GetEquipmentsList] 
+CREATE FUNCTION [dbo].[GetEquipmentsList] 
 (	
 	
 )

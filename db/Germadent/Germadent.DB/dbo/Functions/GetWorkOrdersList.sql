@@ -16,7 +16,6 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @createDateTo datetime = NULL
 	, @closeDateFrom datetime = NULL
 	, @closeDateTo datetime = NULL
-	, @materialSet nvarchar(MAX) = NULL
 )
 RETURNS TABLE 
 AS
@@ -37,7 +36,6 @@ RETURN
 		, wo.FlagWorkAccept
 		, wo.Closed
 		, wo.WorkDescription
-		, dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID

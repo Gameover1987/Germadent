@@ -1,9 +1,9 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 23.11.2019
--- Description:	Справочник прозрачностей зубов
+-- Description:	Возвращает список прозрачностей зубов
 -- =============================================
-CREATE FUNCTION [GetTransparencesList] 
+CREATE FUNCTION [dbo].[GetTransparencesList] 
 (	
 	
 )
