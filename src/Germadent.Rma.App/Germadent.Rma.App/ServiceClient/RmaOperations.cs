@@ -116,5 +116,14 @@ namespace Germadent.Rma.App.ServiceClient
                 return transparences;
             }
         }
+        public EquipmentDto[] GetEquipment()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/equipment";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var equipment = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<EquipmentDto[]>();
+                return equipment;
+            }
+        }
     }
 }
