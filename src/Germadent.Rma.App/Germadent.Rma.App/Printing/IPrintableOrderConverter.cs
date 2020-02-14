@@ -42,7 +42,7 @@ namespace Germadent.Rma.App.Printing
                 PatientFullName = order.Patient,
                 PatientGender = GetGenderName(order.Gender),
                 TechnicPhone = order.ResponsiblePersonPhone,
-                TransparenceName = GetTransparenceName(order.Transparency),
+                TransparenceName = order.BranchType == BranchType.Laboratory ? GetTransparenceName(order.Transparency) : null,
                 WorkOrderID = order.WorkOrderId,
                 ProstheticArticul = order.ProstheticArticul,
                 MaterialsStr = order.MaterialsStr

@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
-             xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
-             xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="600"
@@ -42,22 +41,20 @@
                  Text="{Binding ColorAndFeatures, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Артикул материала" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="300" HorizontalAlignment="Left"
                  Text="{Binding ProstheticArticul}"/>
 
         <TextBlock Text="Прозрачность" Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <ComboBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" HorizontalAlignment="Left" Width="300"
+                  ItemsSource="{Binding Transparences}"
+                  SelectedItem="{Binding SelectedTransparency}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:TransparencesDto}">
+                    <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
 
-        <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="1" Margin="6,0,0,0">
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=1}" 
-                         Content="Непрозрачные зубы" Margin="0,6,0,0" />
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=2}"  Margin="0,6,0,0" 
-                         Content="Зубы со слабо выраженной прозрачностью"/>
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=3}" Content="Зубы с сильно выраженной прозрачностью"
-                          Margin="0,6,0,0" />
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=4}" Content="Мамелоны" Margin="0,6,0,0" />
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=5}" Content="Вторичный дентин" Margin="0,6,0,0" />
-            <RadioButton IsChecked="{Binding Transparency, Converter={StaticResource IntToBoolConverter}, ConverterParameter=6}" Content="Окрашенные фиссуры" Margin="0,6,0,0" />
-        </StackPanel>
+        </ComboBox>
 
         <local:MouthUserControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
     </Grid>

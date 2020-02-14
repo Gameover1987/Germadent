@@ -10,21 +10,22 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
+        private readonly IRmaOperations _rmaOperations;
         private string _workDescription;
         private string _colorAndFeatures;
         private int _transparency;
         private string _prostheticArticul;
 
-        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer)
+        private TransparencesDto _selectedTransparency;
+
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaOperations rmaOperations)
         {
+            _rmaOperations = rmaOperations;
             FilesContainer = orderFilesContainer;
             ToothCard = toothCard;
         }
 
-        public override string DisplayName
-        {
-            get { return "Проект"; }
-        }
+        public override string DisplayName => "Проект";
 
         public override bool IsValid => !HasErrors && ToothCard.IsValid;
 
@@ -46,10 +47,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _prostheticArticul, value); }
         }
 
-        public int Transparency
+        public ObservableCollection<TransparencesDto> Transparences { get; } = new ObservableCollection<TransparencesDto>();
+
+        public TransparencesDto SelectedTransparency
         {
-            get { return _transparency; }
-            set { SetProperty(() => _transparency, value); }
+            get { return _selectedTransparency; }
+            set
+            {
+                if (_selectedTransparency == value)
+                    return;
+                _selectedTransparency = value;
+                OnPropertyChanged(() => SelectedTransparency);
+            }
         }
 
         public IToothCardViewModel ToothCard { get; }
@@ -63,6 +72,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _transparency = order.Transparency;
             _prostheticArticul = order.ProstheticArticul;
 
+            Transparences.Clear();
+            var transparences = _rmaOperations.GetTransparences();
+            transparences.ForEach(x => Transparences.Add(x));
+
+            SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);
+
             ToothCard.Initialize(order.ToothCard);
 
             OnPropertyChanged();
@@ -72,7 +87,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             order.WorkDescription = WorkDescription;
             order.ColorAndFeatures = ColorAndFeatures;
-            order.Transparency = Transparency;
+            order.Transparency = SelectedTransparency.Id;
             order.ProstheticArticul = ProstheticArticul;
 
             order.ToothCard = ToothCard.ToDto();
