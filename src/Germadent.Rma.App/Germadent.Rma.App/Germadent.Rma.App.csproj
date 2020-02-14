@@ -112,6 +112,7 @@
     <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LaboratoryProjectWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LabWizardStepsProvider.cs" />
+    <Compile Include="ViewModels\Wizard\MillingCenterAdditionalEquipmentViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterProjectWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\MillingCenterWizardStepsProvider.cs" />
@@ -137,6 +138,9 @@
     </Compile>
     <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
       <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\MillingCenterAdditionalEquipment.xaml.cs">
+      <DependentUpon>MillingCenterAdditionalEquipment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml.cs">
       <DependentUpon>MillingCenterInfoStepUserControl.xaml</DependentUpon>
@@ -177,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserControls\LabProjectStepUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\MillingCenterAdditionalEquipment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

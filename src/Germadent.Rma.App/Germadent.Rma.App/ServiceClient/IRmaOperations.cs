@@ -58,5 +58,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         TransparencesDto[] GetTransparences();
+
+        /// <summary>
+        /// Получить список оснасток
+        /// </summary>
+        /// <returns></returns>
+        EquipmentDto[] GetEquipments();
     }
 }

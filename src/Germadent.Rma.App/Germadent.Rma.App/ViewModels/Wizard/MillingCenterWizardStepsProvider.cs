@@ -27,6 +27,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             {
                 new MillingCenterInfoWizardStepViewModel(),
                 new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper()), _filesContainer),
+                new MillingCenterAdditionalEquipmentViewModel(_rmaOperations), 
             };
         }
     }

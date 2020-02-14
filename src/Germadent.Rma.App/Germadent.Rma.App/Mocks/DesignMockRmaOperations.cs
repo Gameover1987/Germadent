@@ -171,5 +171,10 @@ namespace Germadent.Rma.App.Mocks
                 new TransparencesDto {Id = 0, Name = "Зубы со слабоо выраженной прозрачностью "},
             };
         }
+
+        public EquipmentDto[] GetEquipments()
+        {
+            return new EquipmentDto[0];
+        }
     }
 }
