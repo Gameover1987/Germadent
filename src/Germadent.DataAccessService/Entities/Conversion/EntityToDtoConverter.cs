@@ -111,5 +111,24 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Name = entity.TransparenceName
             };
         }
+
+        public EquipmentDto ConvertToEquipment(EquipmentEntity entity)
+        {
+            return new EquipmentDto
+            {
+                Id = entity.EquipmentId,
+                Name = entity.EquipmentName
+            };
+        }
+
+        public AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity)
+        {
+            return new AdditionalEquipmentDto
+            {
+                WorkOrderId = entity.WorkOrderId,
+                EquipmentId = entity.EquipmentId,
+                Quantity = entity.Quantity
+            };
+        }
     }
 }

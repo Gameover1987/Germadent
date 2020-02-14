@@ -459,15 +459,15 @@ namespace Germadent.DataAccessService.Repository
 
         private string GetFilterCommandText(OrdersFilter filter)
         {
-            var cmdText1 = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, createDateTo, default, default)";
-            var cmdText2 = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
+            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, createDateTo, default, default)";
+            var cmdTextAdditional = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
 
             if (filter.Materials.Length == 0)
             {
-                return cmdText1;
+                return cmdTextDefault;
             }
 
-            return cmdText1 + cmdText2;
+            return cmdTextDefault + cmdTextAdditional;
         }
 
         private OrderLiteDto[] GetOrdersByEmptyFilter()
@@ -531,6 +531,29 @@ namespace Germadent.DataAccessService.Repository
                     }
                     var transparences = transparencesEntities.Select(x => _converter.ConvertToTransparences(x)).ToArray();
                     return transparences;
+                }
+            }
+        }
+        public EquipmentDto[] GetEquipment()
+        {
+            var cmdText = "select * from GetEquipmentsList()";
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var commamd = new SqlCommand(cmdText, connection))
+                {
+                    var reader = commamd.ExecuteReader();
+                    var equipmentEntities = new List<EquipmentEntity>();
+                    while (reader.Read())
+                    {
+                        var equipmentEntity = new EquipmentEntity();
+                        equipmentEntity.EquipmentId = int.Parse(reader[nameof(equipmentEntity.EquipmentId)].ToString());
+                        equipmentEntity.EquipmentName = reader[nameof(equipmentEntity.EquipmentName)].ToString();
+
+                        equipmentEntities.Add(equipmentEntity);
+                    }
+                    var equipment = equipmentEntities.Select(x => _converter.ConvertToEquipment(x)).ToArray();
+                    return equipment;
                 }
             }
         }
