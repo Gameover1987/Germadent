@@ -1,26 +1,28 @@
 ﻿using System.Collections.ObjectModel;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IMouthProvider
+    public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private readonly IRmaOperations _rmaOperations;
-
         private string _workDescription;
         private string _carcassColor;
         private string _additionalMillingInfo;
         private string _individualAbutmentProcessing;
         private string _understaff;
         private bool _workAccepted;
+        private string _prostheticArticul;
 
-        public MillingCenterProjectWizardStepViewModel(IRmaOperations rmaOperations)
+        public MillingCenterProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer)
         {
-            _rmaOperations = rmaOperations;
+            ToothCard = toothCard;
+            FilesContainer = orderFilesContainer;
         }
 
-        public override bool IsValid => !HasErrors;
+        public override bool IsValid => !HasErrors && ToothCard.IsValid;
 
         public override string DisplayName
         {
@@ -64,20 +66,28 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _workAccepted, value); }
         }
 
-        public ObservableCollection<TeethViewModel> Mouth { get; } = new ObservableCollection<TeethViewModel>();
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
-        public ObservableCollection<ProstheticsTypeViewModel> ProstheticTypes { get; } = new ObservableCollection<ProstheticsTypeViewModel>();
+        public string ProstheticArticul
+        {
+            get { return _prostheticArticul; }
+            set { SetProperty(() => _prostheticArticul, value); }
+        }
+
+        public IToothCardViewModel ToothCard { get; } 
+
+        public IOrderFilesContainerViewModel FilesContainer { get; }
 
         public override void Initialize(OrderDto order)
         {
-            AdditionalMillingInfo = order.AdditionalInfo;
-            WorkDescription = order.WorkDescription;
-            CarcassColor = order.CarcassColor;
-            IndividualAbutmentProcessing = order.IndividualAbutmentProcessing;
-            Understaff = order.Understaff;
-            WorkAccepted = order.WorkAccepted;
+            _additionalMillingInfo = order.AdditionalInfo;
+            _workDescription = order.WorkDescription;
+            _carcassColor = order.CarcassColor;
+            _individualAbutmentProcessing = order.IndividualAbutmentProcessing;
+            _understaff = order.Understaff;
+            _workAccepted = order.WorkAccepted;
+            _prostheticArticul = order.ProstheticArticul;
 
-            FillTeethCollection();
+            ToothCard.Initialize(order.ToothCard);
+            FilesContainer.Initialize(order);
 
             OnPropertyChanged();
         }
@@ -90,30 +100,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
             order.Understaff = Understaff;
             order.WorkAccepted = WorkAccepted;
-        }
+            order.ProstheticArticul = ProstheticArticul;
 
-        private void FillTeethCollection()
-        {
-            //Mouth.Clear();
-            //for (int i = 21; i <= 28; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
+            order.ToothCard = ToothCard.ToDto();
+            order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
 
-            //for (int i = 31; i <= 38; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
-
-            //for (int i = 41; i <= 48; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
-
-            //for (int i = 11; i <= 18; i++)
-            //{
-            //    Mouth.Add(new TeethViewModel { Number = i });
-            //}
+            FilesContainer.AssemblyOrder(order);
         }
     }
 }

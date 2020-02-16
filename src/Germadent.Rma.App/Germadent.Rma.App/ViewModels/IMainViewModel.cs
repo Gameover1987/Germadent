@@ -5,5 +5,7 @@ namespace Germadent.Rma.App.ViewModels
     public interface IMainViewModel
     {
         IDelegateCommand OpenOrderCommand { get; }
+
+        void Initialize();
     }
 }

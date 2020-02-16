@@ -120,4 +120,7 @@
   <data name="AppTitle" xml:space="preserve">
     <value>Рабочее место администратора</value>
   </data>
+  <data name="Tooltip_RequredField" xml:space="preserve">
+    <value>Поле обязательно к заполнению</value>
+  </data>
 </root>

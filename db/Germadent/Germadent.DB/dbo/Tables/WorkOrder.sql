@@ -7,8 +7,10 @@
     [CustomerName]        NVARCHAR (100) NULL,
     [ResponsiblePersonID] INT            NULL,
     [PatientID]           INT            NULL,
+    [PatientFullName]     NVARCHAR (150) NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
+    [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            CONSTRAINT [DF_WorkOrder_WorkAccept] DEFAULT ((0)) NOT NULL,
     [OfficeAdminID]       INT            NULL,
@@ -17,6 +19,10 @@
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
     CONSTRAINT [FK_WorkOrder_Branches] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]) ON UPDATE CASCADE
 );
+
+
+
+
 
 
 
@@ -69,10 +75,12 @@ BEGIN
 		AND ISNULL(i.CustomerName, 'empty') = ISNULL(d.CustomerName, 'empty')
 		AND ISNULL(i.DateDelivery, '99991231') = ISNULL(d.DateDelivery, '99991231')
 		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
+		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND i.FlagWorkAccept = d.FlagWorkAccept
 		AND ISNULL(i.OfficeAdminID, -19999) = ISNULL(d.OfficeAdminID, -19999)
 		AND ISNULL(i.OfficeAdminName, 'empty') = ISNULL(d.OfficeAdminName, 'empty')
 		AND ISNULL(i.PatientID, -19999) = ISNULL(d.PatientID, -19999)
+		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
 		AND ISNULL(i.ResponsiblePersonID, -19999) = ISNULL(d.ResponsiblePersonID, -19999)
 		AND i.Status = d.Status
 		AND ISNULL(i.WorkDescription, 'empty') = ISNULL(d.WorkDescription, 'empty')

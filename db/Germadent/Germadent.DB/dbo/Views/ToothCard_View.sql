@@ -1,11 +1,12 @@
 ﻿CREATE VIEW dbo.ToothCard_View
 AS
-SELECT   tc.WorkOrderID, tc.ToothNumber, tc.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName
-FROM      dbo.ToothCard AS tc INNER JOIN
-                dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
-                dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID
-WHERE   (m.FlagUnused IS NULL) OR
-                (m.FlagUnused <> 1)
+SELECT        tc.WorkOrderID, tc.ToothNumber, tc.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName, wo.DocNumber
+FROM            dbo.ToothCard AS tc INNER JOIN
+                         dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
+                         dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID INNER JOIN
+                         dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID
+WHERE        (m.FlagUnused IS NULL) OR
+                         (m.FlagUnused <> 1)
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
 
@@ -16,7 +17,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[33] 4[32] 2[16] 3) )"
+         Configuration = "(H (1[43] 4[23] 2[16] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -84,10 +85,10 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "tc"
             Begin Extent = 
-               Top = 51
-               Left = 78
-               Bottom = 192
-               Right = 259
+               Top = 10
+               Left = 46
+               Bottom = 151
+               Right = 227
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -112,6 +113,16 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
+         Begin Table = "wo"
+            Begin Extent = 
+               Top = 6
+               Left = 540
+               Bottom = 136
+               Right = 739
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
       End
    End
    Begin SQLPane = 
@@ -122,7 +133,7 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 2338
+         Column = 2340
          Alias = 900
          Table = 1170
          Output = 720
@@ -139,4 +150,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 

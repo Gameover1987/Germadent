@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Germadent.Rma.Model
 {
@@ -10,7 +9,12 @@ namespace Germadent.Rma.Model
     {
         public OrderDto()
         {
+            Created = DateTime.Now;
+            Gender = Gender.Male;
             OfficeAdminName = "Мега админ";
+            ToothCard = new ToothDto[0];
+            Transparency = 1;
+            AdditionalEquipment = new AdditionalEquipmentDto[0];
         }
 
         public int WorkOrderId { get; set; }
@@ -60,5 +64,15 @@ namespace Germadent.Rma.Model
         public string OfficeAdminName { get; set; }
 
         public ToothDto[] ToothCard { get; set; }
+
+        public string ProstheticArticul { get; set; }
+
+        public string DataFileName { get; set; }
+
+        public byte[] DataFile { get; set; }
+
+        public string MaterialsStr { get; set; }
+
+        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Germadent.Rma.App.ServiceClient;
+﻿using Germadent.Common.CopyAndPaste;
+using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -10,10 +13,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class LabWizardStepsProvider : ILabWizardStepsProvider
     {
         private readonly IRmaOperations _rmaOperations;
+        private readonly IOrderFilesContainerViewModel _filesContainer;
 
-        public LabWizardStepsProvider(IRmaOperations rmaOperations)
+        public LabWizardStepsProvider(IRmaOperations rmaOperations, IOrderFilesContainerViewModel filesContainer)
         {
             _rmaOperations = rmaOperations;
+            _filesContainer = filesContainer;
         }
 
         public IWizardStepViewModel[] GetSteps()
@@ -21,7 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(),
-                new LaboratoryProjectWizardStepViewModel(_rmaOperations),
+                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper()), _filesContainer, _rmaOperations),
             };
         }
     }

@@ -11,7 +11,7 @@ AS
 BEGIN
 	
 	INSERT INTO AdditionalEquipment
-		(WorkOrderMCID, EquipmentID, Quantity)
+		(WorkOrderID, EquipmentID, Quantity)
 	SELECT WorkOrderMCID, EquipmentID, Quantity
 	FROM OPENJSON (@jsonString)
 		WITH (workOrderMCId int, equipmentId int, quantity tinyint)

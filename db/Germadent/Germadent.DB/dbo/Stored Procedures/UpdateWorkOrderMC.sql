@@ -11,8 +11,10 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderMC]
 	, @customerName nvarchar(100)
 --	, @responsiblePersonId int
 --	, @patientID int
+	, @patientFullName nvarchar(150)
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
+	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
@@ -38,7 +40,9 @@ BEGIN
 	 	, CustomerName = @customerName
 	--	, ResponsiblePersonID = @responsiblePersonId
 	--	, PatientID = @patientID
+		, PatientFullName = @patientFullName
 		, DateDelivery = @dateDelivery
+		, ProstheticArticul = @prostheticArticul
 		, WorkDescription = @workDescription
 		, FlagWorkAccept = @flagWorkAccept
 	--	, OfficeAdminID = @officeAdminID

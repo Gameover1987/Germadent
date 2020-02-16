@@ -56,3 +56,5 @@ src/.vs/
 src/.idea/.idea.Germadent/.idea/
 src/.idea/
 src/Germadent.sln.DotSettings
+src/Germadent.Rma.App.Test/obj/
+src/Germadent.Rma.App.Test/bin/

@@ -8,8 +8,8 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             Customer = "Customer";
             Patient = "PatientInfo";
-            ResponsiblePerson = "DoctorFullName";
-            ResponsiblePersonPhone = "ResponsiblePersonPhone";
+            TechnicFullName = "DoctorFullName";
+            TechnicPhone = "TechnicPhone";
         }
     }
 }

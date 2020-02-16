@@ -6,6 +6,8 @@
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
         mc:Ignorable="d"
         Title="Настройки фильтра заказ-нарядов"
         ShowInTaskbar="False"
@@ -16,7 +18,8 @@
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designMock:DesignMockOrdersFilterViewModel, IsDesignTimeCreatable=True}"
-        helpers:WindowCloseHelper.CloseKey="Escape">
+        helpers:WindowCloseHelper.CloseKey="Escape"
+        DataContextChanged="OrdersFilterWindow_OnDataContextChanged">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -24,7 +27,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" 
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolToInvisibilityConverter}}">
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -78,9 +82,9 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Materials}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:MaterialViewModel}">
+                    <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
                         <Grid>
-                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.MaterialName}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -92,8 +96,12 @@
             <Path Width="14" Height="14" Stretch="Fill" Data="{StaticResource InfoButtonGeometry}" Fill="Gray"/>
             <TextBlock Grid.Row="1" Text="{Binding LastError}" Margin="3,0,0,0"/>
         </StackPanel>
-        
+
         <Separator Grid.Row="2" Margin="-12,12,-12,12"/>
+
+        <controls:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, Delay=200, IsAsync=True}"/>
+
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Content="OK" Width="100" helpers:WindowCloseHelper.DialogResult="True"

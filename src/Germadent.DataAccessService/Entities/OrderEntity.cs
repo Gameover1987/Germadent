@@ -45,7 +45,7 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// Телефон ответственного лица
         /// </summary>
-        public string ResponsiblePersonPhone { get; set; }
+        public string TechnicPhone { get; set; }
 
         /// <summary>
         /// Пациент
@@ -71,5 +71,15 @@ namespace Germadent.DataAccessService.Entities
         /// Дата закрытия заказа
         /// </summary>
         public DateTime? Closed { get; set; }
+
+        /// <summary>
+        /// Артикул материалов
+        /// </summary>
+        public string ProstheticArticul { get; set; }
+
+        /// <summary>
+        /// Перечень материалов
+        /// </summary>
+        public string MaterialsEnum { get; set; }
     }
 }

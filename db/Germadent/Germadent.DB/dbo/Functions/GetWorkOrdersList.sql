@@ -21,12 +21,12 @@ RETURNS TABLE
 AS
 RETURN 
 (	
-	SELECT  b.BranchTypeID
+		SELECT  b.BranchTypeID
 		, b.BranchType
 		, wo.WorkOrderID
 		, wo.DocNumber	
 		, wo.CustomerName
-		, wdl.PatientFullName
+		, wo.PatientFullName
 		, CASE 
 				WHEN b.BranchTypeID = 2 THEN wdl.DoctorFullName
 				WHEN b.BranchTypeID = 1 THEN wmc.TechnicFullName
@@ -47,7 +47,7 @@ RETURN
 		AND wo.WorkOrderID = ISNULL(@workorderID, wo.WorkOrderID)
 		AND wo.DocNumber LIKE '%'+ISNULL(@docNumber, '')+'%'
 		AND wo.CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
-		AND (wdl.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' 
+		AND (wo.PatientFullName LIKE '%'+ISNULL(@patientFullName, '')+'%' 
 				OR (PatientFullName IS NULL AND @patientFullName IS NULL))
 		AND (wdl.DoctorFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
 				OR wmc.TechnicFullName LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
@@ -56,4 +56,5 @@ RETURN
 		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
 		AND	(wo.Closed BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
 				OR (Closed IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
+		
 )

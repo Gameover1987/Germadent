@@ -539,7 +539,7 @@ namespace Germadent.Rma.App.Printing.TemplateProcessing
         
         private static XElement MetaLevelUp(XElement meta)
         {
-            //return XElementFactory.Make(meta.Name,
+            //return XElementFactory.Make(meta.MaterialName,
             //        meta.Attributes(),
             //        XElementFactory.Make(W.P,
             //                para.Attributes(),

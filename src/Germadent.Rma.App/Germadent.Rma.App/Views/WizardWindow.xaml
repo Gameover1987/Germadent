@@ -37,6 +37,10 @@
             <DataTemplate DataType="{x:Type wizard:MillingCenterProjectWizardStepViewModel}">
                 <usercontrols:MillingCenterProjectStepUserControl/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentViewModel}">
+                <usercontrols:MillingCenterAdditionalEquipmentUserControl/>
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="12">
@@ -60,8 +64,13 @@
                     Command="{Binding BackCommand}"/>
             <Button Width="100" Content="Далее" Margin="6,0,0,0"
                     Command="{Binding NextCommand}"/>
-            <Button Width="100" Content="OK" Margin="32,0,0,0" helpers:WindowCloseHelper.DialogResult="True"
-                    Command="{Binding OKCommand}"/>
+            <Button Width="100" Content="Распечатать" Margin="48,0,0,0"
+                    Command="{Binding PrintCommand}"/>
+            <Button Width="100" Content="Сохранить" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="True"
+                    Command="{Binding SaveCommand}"/>
+            <Button Content="Сохранить и распечатать" Margin="6,0,0,0" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    Command="{Binding SaveAndPrintCommand}"/>
             <Button Width="100" Content="Отмена" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"/>
         </StackPanel>
     </Grid>

@@ -6,7 +6,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockOrdersFilterViewModel : OrdersFilterViewModel
     {
-        public DesignMockOrdersFilterViewModel() : base(new MockRmaOperations())
+        public DesignMockOrdersFilterViewModel() : base(new DesignMockRmaOperations(), new MockLogger())
         {
             MillingCenter = true;
             Laboratory = true;

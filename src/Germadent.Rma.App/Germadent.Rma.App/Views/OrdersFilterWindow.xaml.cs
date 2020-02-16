@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Germadent.Rma.App.ViewModels;
 
 namespace Germadent.Rma.App.Views
 {
@@ -10,6 +11,12 @@ namespace Germadent.Rma.App.Views
         public OrdersFilterWindow()
         {
             InitializeComponent();
+        }
+
+        private void OrdersFilterWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var filter = (IOrdersFilterViewModel) DataContext;
+            filter.Initialize();
         }
     }
 }

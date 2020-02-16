@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
-             xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
+             d:DesignHeight="600"
              d:DataContext="{d:DesignInstance Type=designMock:DesingMockMillingCenterProjectWizardStepViewModel, IsDesignTimeCreatable=False}">
     <Grid>
         <Grid.Resources>
@@ -29,30 +29,35 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Доп. информация" />
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AdditionalMillingInfo}" Margin="6,6,0,0" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Доп. информация" />
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AdditionalMillingInfo}" Margin="6,6,0,0" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="2" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding IndividualAbutmentProcessing, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Докомплектовать заказ" />
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
-
-        <CheckBox Grid.Row="5" Grid.Column="1"  Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="0,6,0,0"/>
-
-        <local:MouthUserControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" Height="300" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Докомплектовать заказ" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Артикул материала" />
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ProstheticArticul}" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"/>
+        <CheckBox Grid.Row="5" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
+      
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+            <Button Content="Загрузить файл"
+                    Command="{Binding FilesContainer.UploadFileCommand}"/>
+            <Button Content="Скачать файл" Margin="6,0,0,0"
+                    Command="{Binding FilesContainer.DownloadFileCommand}"/>            
+        </StackPanel>
+        <local:MouthUserControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>
 </UserControl>

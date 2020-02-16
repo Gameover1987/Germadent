@@ -1,8 +1,7 @@
 ﻿CREATE TABLE [dbo].[WorkOrderDL] (
     [WorkOrderDLID]    INT            NOT NULL,
-    [TransparenceID]   INT            NULL,
     [DoctorFullName]   NVARCHAR (150) NULL,
-    [PatientFullName]  NVARCHAR (150) NULL,
+    [TransparenceID]   INT            NULL,
     [PatientAge]       TINYINT        NULL,
     [FittingDate]      DATE           NULL,
     [DateOfCompletion] DATE           NULL,
@@ -11,6 +10,8 @@
     CONSTRAINT [FK_WorkOrderDL_Transparences] FOREIGN KEY ([TransparenceID]) REFERENCES [dbo].[Transparences] ([TransparenceID]),
     CONSTRAINT [FK_WorkOrderDL_WorkOrder] FOREIGN KEY ([WorkOrderDLID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
+
+
 
 
 
@@ -42,7 +43,6 @@ BEGIN
 		AND ISNULL(i.DoctorFullName, 'empty') = ISNULL(d.DoctorFullName, 'empty')
 		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')
 		AND ISNULL(i.PatientAge, 0) = ISNULL(d.PatientAge, 0)
-		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
 		AND ISNULL(i.TransparenceID, 0) = ISNULL(d.TransparenceID, 0)
 		AND i.WorkOrderDLID = d.WorkOrderDLID
 	) BEGIN

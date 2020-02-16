@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Germadent.Rma.App.ViewModels.ToothCard;
 
 namespace Germadent.Rma.App.ViewModels
 {
@@ -6,7 +7,7 @@ namespace Germadent.Rma.App.ViewModels
     {
         void Initialize(bool isReadOnly);
 
-        ObservableCollection<TeethViewModel> Mouth { get; }
+        ObservableCollection<ToothViewModel> Mouth { get; }
 
         bool IsReadOnly { get; }
     }

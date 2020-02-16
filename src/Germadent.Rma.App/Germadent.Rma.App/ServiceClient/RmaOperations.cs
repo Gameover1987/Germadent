@@ -48,6 +48,16 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
+        public ProstheticConditionDto[] GetProstheticConditions()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticConditions";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var prostheticConditions = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ProstheticConditionDto[]>();
+                return prostheticConditions;
+            }
+        }
+
         public MaterialDto[] GetMaterials()
         {
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/materials";
@@ -89,6 +99,31 @@ namespace Germadent.Rma.App.ServiceClient
             {
                 var result = response.Content.ReadAsStringAsync().Result;
                 return result.DeserializeFromJson<OrderDto>();
+            }
+        }
+
+        public void UploadStlFile(int id, byte[] stlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TransparencesDto[] GetTransparences()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/transparences";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var transparences = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<TransparencesDto[]>();
+                return transparences;
+            }
+        }
+
+        public EquipmentDto[] GetEquipments()
+        {
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/equipments";
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var equipments = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<EquipmentDto[]>();
+                return equipments;
             }
         }
     }

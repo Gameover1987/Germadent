@@ -11,6 +11,8 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	@technicFullName nvarchar(150) = NULL,
 	@technicPhone varchar(15) = NULL,
 	@patientID int = NULL,
+	@patientFullName nvarchar(150) = NULL,
+	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
 	@officeAdminID int = NULL,
 	@officeAdminName nvarchar(50) = NULL,
@@ -35,8 +37,8 @@ BEGIN
 		REVERT		
 	END
 
-	-- Генерируем номер документа по принципу сквозной нумерации для обоих филиалов:
-	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceDocumentNumber) AS nvarchar(6)), '-ФЦ')
+	-- Генерируем номер документа для каждого филиалов свой:
+	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-ФЦ')
 
 	-- Получение id клиента. Если клиента ещё нет - создаём его в таблице
 	SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)
@@ -45,9 +47,9 @@ BEGIN
 
 	-- Собственно вставка:	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, Created, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, GETDATE(), @workDescription, @officeAdminID, @officeAdminName)
+		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 

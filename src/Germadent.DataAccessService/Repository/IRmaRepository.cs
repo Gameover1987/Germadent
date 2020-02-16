@@ -31,15 +31,33 @@ namespace Germadent.DataAccessService.Repository
         void UpdateOrder(OrderDto order);
 
         /// <summary>
-        /// Возвращает список материалов
+        /// Возвращает список условий протезирования
         /// </summary>
         /// <returns></returns>
-        MaterialDto[] GetMaterials();
+        ProstheticConditionDto[] GetProstheticConditions();
 
         /// <summary>
         /// Возвращает список типов протезирования
         /// </summary>
         /// <returns></returns>
         ProstheticsTypeDto[] GetProstheticTypes();
+
+        /// <summary>
+        /// Возвращает список материалов
+        /// </summary>
+        /// <returns></returns>
+        MaterialDto[] GetMaterials();
+
+        /// <summary>
+        /// Возвращает список прозрачностей
+        /// </summary>
+        /// <returns></returns>
+        TransparencesDto[] GetTransparences();
+
+        /// <summary>
+        /// Возвращает список оснасток
+        /// </summary>
+        /// <returns></returns>
+        EquipmentDto[] GetEquipment();
     }
 }

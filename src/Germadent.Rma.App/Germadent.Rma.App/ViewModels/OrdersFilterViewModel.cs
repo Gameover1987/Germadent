@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
+using Germadent.Common.Extensions;
+using Germadent.Common.Logging;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -12,11 +16,14 @@ namespace Germadent.Rma.App.ViewModels
     public interface IOrdersFilterViewModel
     {
         OrdersFilter GetFilter();
+
+        void Initialize();
     }
 
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {
         private readonly IRmaOperations _rmaOperations;
+        private readonly ILogger _logger;
 
         private bool _millingCenter;
         private bool _laboratory;
@@ -28,10 +35,12 @@ namespace Germadent.Rma.App.ViewModels
 
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
+        private bool _isBusy;
 
-        public OrdersFilterViewModel(IRmaOperations rmaOperations)
+        public OrdersFilterViewModel(IRmaOperations rmaOperations, ILogger logger)
         {
             _rmaOperations = rmaOperations;
+            _logger = logger;
 
             _millingCenter = true;
             _laboratory = true;
@@ -39,12 +48,6 @@ namespace Germadent.Rma.App.ViewModels
             var now = DateTime.Now.Date;
             _periodBegin = now.AddDays(-30);
             _periodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-            var materials = _rmaOperations.GetMaterials();
-            foreach (var material in materials)
-            {
-                Materials.Add(new MaterialViewModel(material));
-            }
 
             OKCommand = new DelegateCommand(x => { }, x => CanOkCommandHandler());
         }
@@ -119,6 +122,12 @@ namespace Germadent.Rma.App.ViewModels
 
         public ObservableCollection<string> ValidationErrors { get; } = new ObservableCollection<string>();
 
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(() => _isBusy, value); }
+        }
+
         public bool IsValid
         {
             get { return ValidationErrors.Count == 0; }
@@ -182,6 +191,35 @@ namespace Germadent.Rma.App.ViewModels
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray()
             };
             return filter;
+        }
+
+        public async void Initialize()
+        {
+            try
+            {
+                IsBusy = true;
+                Materials.Clear();
+
+                MaterialDto[] materials = null;
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    materials = _rmaOperations.GetMaterials();
+                });
+
+                foreach (var material in materials)
+                {
+                    Materials.Add(new MaterialViewModel(material));
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            
         }
     }
 }

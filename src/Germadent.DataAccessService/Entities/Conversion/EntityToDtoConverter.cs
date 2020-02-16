@@ -6,12 +6,12 @@ namespace Germadent.DataAccessService.Entities.Conversion
     {
         public OrderDto ConvertToOrder(OrderEntity entity)
         {
-            return new OrderDto
+            var orderDto = new OrderDto
             {
                 WorkOrderId = entity.WorkOrderId,
-                Status =  entity.Status,
+                Status = entity.Status,
                 AdditionalInfo = entity.AdditionalInfo,
-                BranchType = (BranchType)entity.BranchTypeId,
+                BranchType = (BranchType) entity.BranchTypeId,
                 CarcassColor = entity.CarcassColor,
                 Customer = entity.CustomerName,
                 ColorAndFeatures = entity.ColorAndFeatures,
@@ -24,13 +24,27 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Patient = entity.Patient,
                 Age = entity.Age,
                 ResponsiblePerson = entity.DoctorFullName,
-                ResponsiblePersonPhone = entity.ResponsiblePersonPhone,
+                ResponsiblePersonPhone = entity.TechnicPhone,
                 Gender = entity.PatientGender == true ? Gender.Male : Gender.Female,
                 Transparency = entity.Transparency,
                 WorkDescription = entity.WorkDescription,
                 WorkAccepted = entity.FlagWorkAccept,
-                Understaff = entity.Understaff
+                Understaff = entity.Understaff,
+                ProstheticArticul = entity.ProstheticArticul,
+                MaterialsStr = entity.MaterialsEnum
             };
+
+            if (orderDto.BranchType == BranchType.Laboratory)
+            {
+                orderDto.ResponsiblePerson = entity.DoctorFullName;
+            }
+            else if (orderDto.BranchType == BranchType.MillingCenter)
+            {
+                orderDto.ResponsiblePerson = entity.TechnicFullName;
+                orderDto.ResponsiblePersonPhone = entity.TechnicPhone;
+            }
+
+            return orderDto;
         }
 
         public ToothDto ConvertToTooth(ToothEntity entity)
@@ -38,8 +52,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
             return new ToothDto
             {
                 ToothNumber = entity.ToothNumber,
-                MaterialName = entity.MaterialName,
-                ProstheticsName = entity.ProstheticsName,
+                ConditionName = entity.ConditionName.Trim(),
+                MaterialName = entity.MaterialName.Trim(),
+                ProstheticsName = entity.ProstheticsName.Trim(),
                 HasBridge = entity.FlagBridge
             };
         }
@@ -61,12 +76,21 @@ namespace Germadent.DataAccessService.Entities.Conversion
             };
         }
 
+        public ProstheticConditionDto ConvertToProstheticCondition(ProstheticConditionEntity entity)
+        {
+            return new ProstheticConditionDto
+            {
+                Id = entity.ConditionId,
+                Name = entity.ConditionName
+            };
+        }
+
         public MaterialDto ConvertToMaterial(MaterialEntity entity)
         {
             return new MaterialDto
             {
                 Id = entity.MaterialId,
-                Name = entity.MaterialName,
+                MaterialName = entity.MaterialName,
                 IsObsolete = entity.FlagUnused
             };
         }
@@ -77,6 +101,33 @@ namespace Germadent.DataAccessService.Entities.Conversion
             {
                 Id = entity.ProstheticsId,
                 Name = entity.ProstheticsName
+            };
+        }
+        public TransparencesDto ConvertToTransparences(TransparencesEntity entity)
+        {
+            return new TransparencesDto
+            {
+                Id = entity.TransparenceId,
+                Name = entity.TransparenceName
+            };
+        }
+
+        public EquipmentDto ConvertToEquipment(EquipmentEntity entity)
+        {
+            return new EquipmentDto
+            {
+                Id = entity.EquipmentId,
+                Name = entity.EquipmentName
+            };
+        }
+
+        public AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity)
+        {
+            return new AdditionalEquipmentDto
+            {
+                WorkOrderId = entity.WorkOrderId,
+                EquipmentId = entity.EquipmentId,
+                Quantity = entity.Quantity
             };
         }
     }

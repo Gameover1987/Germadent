@@ -1,9 +1,9 @@
 ﻿CREATE VIEW dbo.WorkOrderDL_View
 AS
-SELECT        wo.WorkOrderID, wo.BranchTypeID, wo.DocNumber, wo.CustomerID, wo.CustomerName, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.WorkDescription, wo.OfficeAdminID, wo.OfficeAdminName, 
-                         wdl.DoctorFullName, wdl.PatientFullName, wdl.PatientAge, wdl.TransparenceID, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, wo.Status, wo.DateDelivery, wo.FlagWorkAccept, wo.Closed
-FROM            dbo.WorkOrder AS wo INNER JOIN
-                         dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
+SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.DocNumber, wo.CustomerID, wo.CustomerName, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.WorkDescription, wo.OfficeAdminID, wo.OfficeAdminName, wo.PatientFullName, 
+                wdl.PatientAge, wdl.TransparenceID, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, wo.Status, wo.DateDelivery, wo.FlagWorkAccept, wo.Closed, wo.ProstheticArticul
+FROM      dbo.WorkOrder AS wo INNER JOIN
+                dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderDL_View';
 
@@ -14,7 +14,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+         Configuration = "(H (1[41] 4[16] 2[37] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -84,11 +84,11 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 40
-               Bottom = 355
+               Bottom = 371
                Right = 253
             End
             DisplayFlags = 280
-            TopColumn = 0
+            TopColumn = 2
          End
          Begin Table = "wdl"
             Begin Extent = 
@@ -110,16 +110,16 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Column = 2723
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -127,4 +127,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrderDL_View';
+
+
 

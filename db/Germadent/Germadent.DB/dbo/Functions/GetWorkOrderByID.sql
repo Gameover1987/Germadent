@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 21.11.2019
--- Description:	Получение заказ-наряда по ID. Если не указан конкретный id - выводим весь список
+-- Description:	Возвращает заказ-наряд по ID. Если не указан конкретный id - выводим весь список
 -- =============================================
 CREATE FUNCTION [dbo].[GetWorkOrderById] 
 (	
@@ -20,9 +20,10 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 			rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, 
 		*/
 			wo.CustomerName,
-			
+			ISNULL(wo.PatientFullName, '') AS PatientFullName,
 			ISNULL(wo.Created, '') AS Created,
 			wo.Status,
+			ISNULL(wo.ProstheticArticul, '') AS ProstheticArticul,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,
 			wo.FlagWorkAccept,
 			ISNULL(wo.OfficeAdminName, '') AS OfficeAdminName,
@@ -35,14 +36,14 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
 			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
 			ISNULL(wmc.Understaff, '') AS Understaff,
-			ISNULL(wdl.DoctorFullName, '') AS DoctorFullName,
-			ISNULL(wdl.PatientFullName, '') AS PatientFullName,
+			ISNULL(wdl.DoctorFullName, '') AS DoctorFullName,			
 			ISNULL(wdl.PatientAge, 0) AS PatientAge,
 			wdl.DateOfCompletion,
 			wdl.FittingDate,
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
-			ISNULL(wdl.TransparenceID, 0) AS TransparenceID
+			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 	--		ISNULL(tr.TransparenceName, '') AS TransparenceName
+			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM	 WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID

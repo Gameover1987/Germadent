@@ -1,31 +1,32 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IWizardViewModel
     {
-        WizardMode WizardMode { get; }
-
-        void Initialize(WizardMode wizardMode, OrderDto order);
-
-        OrderDto GetOrder();
+        bool PrintAfterSave { get; set; }
     }
 
     public class WizardViewModel : ViewModelBase, IWizardViewModel
     {
+        private readonly IPrintModule _printModule;
         private IWizardStepViewModel _currentStep;
         private BranchType _branchType;
 
         private OrderDto _order;
 
-        public WizardViewModel(IWizardStepsProvider stepsProvider)
+        public WizardViewModel(IWizardStepsProvider stepsProvider, IPrintModule printModule)
         {
+            _printModule = printModule;
             if (stepsProvider is ILabWizardStepsProvider)
                 _branchType = BranchType.Laboratory;
             else
@@ -37,7 +38,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             BackCommand = new DelegateCommand(x => BackCommandHandler(), x => CanBackCommandHandler());
             NextCommand = new DelegateCommand(x => NextCommandHandler(), x => CanNextCommandHandler());
 
-            OKCommand = new DelegateCommand(x => OKCommandHandler(), x => CanOkCommandHandler());
+            PrintCommand = new DelegateCommand(x => PrintCommandHandler(), x => CanPrintCommandHandler());
+            SaveCommand = new DelegateCommand(x => SaveCommandHandler(), x => CanSaveCommandHandler());
+            SaveAndPrintCommand = new DelegateCommand(x => SaveAndPrintCommandHandler(x), x => CanSaveAndPrintCommandHandler());
         }
 
         public string Title { get; protected set; }
@@ -59,9 +62,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         }
 
         public ICommand BackCommand { get; }
+
         public ICommand NextCommand { get; }
 
-        public ICommand OKCommand { get; }
+        public ICommand PrintCommand { get; }
+
+        public ICommand SaveAndPrintCommand { get; }
+
+        public ICommand SaveCommand { get; }
+
+        public bool PrintAfterSave { get; set; }
 
         private bool CanBackCommandHandler()
         {
@@ -86,23 +96,48 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             CurrentStep = Steps[currenIndex + 1];
         }
 
-        private bool CanOkCommandHandler()
+        private bool CanSaveAndPrintCommandHandler()
         {
             return Steps.All(x => x.IsValid);
         }
 
-        private void OKCommandHandler()
+        private void SaveAndPrintCommandHandler(object obj)
+        {
+            PrintAfterSave = true;
+
+            var window = (IWindow)obj;
+            window.DialogResult = true;
+        }
+
+        private bool CanSaveCommandHandler()
+        {
+            return Steps.All(x => x.IsValid);
+        }
+
+        private void SaveCommandHandler()
         {
 
         }
 
+        private bool CanPrintCommandHandler()
+        {
+            return WizardMode == WizardMode.View;
+        }
+
+        private void PrintCommandHandler()
+        {
+            _printModule.Print(_order);
+        }
+
         public void Initialize(WizardMode wizardMode, OrderDto order)
         {
+            PrintAfterSave = false;
+
             var branchName = _branchType == BranchType.Laboratory ? "ЗТЛ" : "ФЦ";
 
             if (wizardMode == WizardMode.Create)
             {
-                Title = "Создание заказ наряда "+ branchName;
+                Title = "Создание заказ наряда " + branchName;
             }
             else if (wizardMode == WizardMode.Edit)
             {
@@ -136,5 +171,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             return order;
         }
+
+      
     }
 }

@@ -3,6 +3,7 @@ using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.DataAccessService.Repository;
 using Microsoft.Practices.Unity;
+using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Unity;
 
 namespace Germadent.DataAccessService
@@ -18,6 +19,14 @@ namespace Germadent.DataAccessService
             _container.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
+        }
+
+        protected override void ApplicationStartup(IUnityContainer container, IPipelines pipelines)
+        {
+            Nancy.Json.JsonSettings.MaxJsonLength = int.MaxValue;
+            Nancy.Json.JsonSettings.MaxRecursions = 100;
+            Nancy.Json.JsonSettings.RetainCasing = false;
+            base.ApplicationStartup(container, pipelines);          
         }
 
         protected override IUnityContainer GetApplicationContainer()

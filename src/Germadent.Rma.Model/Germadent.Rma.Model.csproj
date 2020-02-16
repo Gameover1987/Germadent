@@ -36,7 +36,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AdditionalEquipmentDto.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="EquipmentDto.cs" />
     <Compile Include="MaterialDto.cs" />
     <Compile Include="OrderDto.cs" />
     <Compile Include="OrderDtoExtenisons.cs" />
@@ -44,6 +46,7 @@
     <Compile Include="OrdersFilter.cs" />
     <Compile Include="ToothCardDto.cs" />
     <Compile Include="ToothDto.cs" />
+    <Compile Include="TransparencesDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj">

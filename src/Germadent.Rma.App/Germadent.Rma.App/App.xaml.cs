@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Windows;
 using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Printing;
 using Germadent.Rma.App.Printing.TemplateProcessing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Unity;
@@ -31,13 +34,10 @@ namespace Germadent.Rma.App
             _configuration = new RmaConfiguration();
             _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
 
-            if (_configuration.WorkMode == WorkMode.Server)
-                InitilizeBattle();
-            else
-                InitializeMock();
-
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+
+            FillContainer();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
@@ -45,9 +45,7 @@ namespace Germadent.Rma.App
             DelegateCommand.CommandException += CommandException;
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
-            var authorizationViewModel = new AuthorizationViewModel(
-                dialogAgent,
-                _container.Resolve<IRmaAuthorizer>());
+            var authorizationViewModel = new AuthorizationViewModel(dialogAgent,_container.Resolve<IRmaAuthorizer>());
             bool? authorized= true;
             if (_configuration.WorkMode == WorkMode.Mock)
             {
@@ -71,36 +69,53 @@ namespace Germadent.Rma.App
             }
         }
 
-        private void InitializeMock()
+        private void FillContainer()
         {
-            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaOperations, MockRmaOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
+            if (_configuration.WorkMode == WorkMode.Server)
+            {
+                RegisterServiceComponents();
+            }
+            else
+            {
+                _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
+            }
+            
+            RegisterViewModels();
+            RegisterCommonComponents();
+            RegisterPrintModule();
         }
 
-        private void InitilizeBattle()
+        private void RegisterViewModels()
         {
-            _container.RegisterType<IRmaAuthorizer, MockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrderFilesContainerViewModel, OrderFilesContainerViewModel>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterCommonComponents()
+        {
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterServiceComponents()
+        {
+            _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterPrintModule()
+        {
+            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(
+                new ContainerControlledLifetimeManager());
         }
 
         private void CommandException(object sender, ExceptionEventArgs e)

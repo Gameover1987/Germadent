@@ -124,6 +124,8 @@
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\Sequences\" />
     <Folder Include="Security\" />
+    <Folder Include="dbo\FileTables\" />
+    <Folder Include="Storage\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AdditionalEquipment.sql">
@@ -306,7 +308,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Sequences\SequenceDocumentNumber.sql" />
     <Build Include="dbo\Tables\HistoryWorkOrderMC.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -320,7 +321,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="Security\gdl_user.sql" />
-    <Build Include="Security\ofm.sql" />
     <Build Include="Security\DbccLauncher.sql" />
     <Build Include="Security\RoleMemberships.sql" />
     <Build Include="dbo\Stored Procedures\IdentifierAlignment.sql">
@@ -334,6 +334,48 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Stored Procedures\AddOrUpdateToothCardInWO.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Sequences\SequenceNumberDL.sql" />
+    <Build Include="dbo\Sequences\SequenceNumberMC.sql" />
+    <Build Include="dbo\Tables\ConditionsOfProsthetics.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateAdditionalEquipment.sql" />
+    <Build Include="Security\ofm.sql" />
+    <Build Include="dbo\Tables\FileStreams.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\FileTables\StlAndPhotos.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Storage\GermadentFileStream.sql" />
+    <Build Include="dbo\Tables\QualitAttributesSet.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\QualitativeItems.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\QualitativeAttributes.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\GetMaterialsEnumByWOId.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\GetFileTableFullPath.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\GetConditionsOfProsthetics.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\GetWorkOrderIdForMaterialSelect.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

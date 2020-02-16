@@ -72,7 +72,9 @@
   <ItemGroup>
     <Compile Include="Configuration\IServiceConfiguration.cs" />
     <Compile Include="Configuration\ServiceConfiguration.cs" />
+    <Compile Include="Entities\AdditionalEquipmentEntity.cs" />
     <Compile Include="Entities\Conversion\EntityToDtoConverter.cs" />
+    <Compile Include="Entities\EquipmentEntity.cs" />
     <Compile Include="Entities\MaterialEntity.cs" />
     <Compile Include="Entities\OrderEntity.cs" />
     <Compile Include="Entities\OrderEntity.Laboratory.cs" />
@@ -80,8 +82,10 @@
     <Compile Include="Entities\OrderLiteEntity.cs" />
     <Compile Include="Entities\Conversion\IEntityToDtoConverter.cs" />
     <Compile Include="DataAccessServiceBootstrapper.cs" />
+    <Compile Include="Entities\ProstheticConditionEntity.cs" />
     <Compile Include="Entities\ProstheticTypeEntity.cs" />
     <Compile Include="Entities\ToothEntity.cs" />
+    <Compile Include="Entities\TransparencesEntity.cs" />
     <Compile Include="Infrastructure\NancyService.cs" />
     <Compile Include="Infrastructure\NancyServiceConfiguration.cs" />
     <Compile Include="Infrastructure\NancyServiceConfiguratorExtensions.cs" />
