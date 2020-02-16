@@ -14,6 +14,7 @@ namespace Germadent.Rma.Model
             OfficeAdminName = "Мега админ";
             ToothCard = new ToothDto[0];
             Transparency = 1;
+            AdditionalEquipment = new AdditionalEquipmentDto[0];
         }
 
         public int WorkOrderId { get; set; }
@@ -66,10 +67,12 @@ namespace Germadent.Rma.Model
 
         public string ProstheticArticul { get; set; }
 
-        public byte[] StlFile { get; set; }
+        public string DataFileName { get; set; }
 
-        public byte[] PhotoFile { get; set; }
+        public byte[] DataFile { get; set; }
 
         public string MaterialsStr { get; set; }
+
+        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
     }
 }

@@ -180,8 +180,7 @@ namespace Germadent.Rma.App.ViewModels
 
             if (changedOrderDto == null)
                 return;
-
-            _rmaOperations.UpdateOrder(changedOrderDto);
+            
             orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
     }

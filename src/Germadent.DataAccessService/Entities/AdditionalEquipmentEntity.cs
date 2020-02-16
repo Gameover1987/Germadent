@@ -9,10 +9,12 @@
         /// Id заказ-наряда
         /// </summary>
         public int WorkOrderId { get; set; }
+
         /// <summary>
         /// Идентификатор оснастки
         /// </summary>
         public int EquipmentId { get; set; }
+
         /// <summary>
         /// Количество оснастки
         /// </summary>

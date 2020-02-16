@@ -119,16 +119,11 @@ namespace Germadent.Rma.App.ServiceClient
 
         public EquipmentDto[] GetEquipments()
         {
-            return new EquipmentDto[0];
-        }
-
-        public EquipmentDto[] GetEquipment()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/equipment";
+            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/equipments";
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var equipment = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<EquipmentDto[]>();
-                return equipment;
+                var equipments = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<EquipmentDto[]>();
+                return equipments;
             }
         }
     }

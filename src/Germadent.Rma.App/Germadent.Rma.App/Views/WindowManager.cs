@@ -40,7 +40,14 @@ namespace Germadent.Rma.App.Views
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
                 var changedOrder = labWizard.GetOrder();
-                changedOrder = _rmaOperations.AddOrder(changedOrder);
+                if (mode == WizardMode.Create)
+                {
+                    changedOrder = _rmaOperations.AddOrder(changedOrder);
+                }
+                else
+                {
+                    changedOrder = _rmaOperations.UpdateOrder(changedOrder);
+                }
 
                 if (labWizard.PrintAfterSave)
                     _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));
@@ -58,7 +65,14 @@ namespace Germadent.Rma.App.Views
             if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) == true)
             {
                 var changedOrder = millingCenterWizard.GetOrder();
-                changedOrder = _rmaOperations.AddOrder(changedOrder);
+                if (mode == WizardMode.Create)
+                {
+                    changedOrder = _rmaOperations.AddOrder(changedOrder);
+                }
+                else
+                {
+                    changedOrder = _rmaOperations.UpdateOrder(changedOrder);
+                }
 
                 if (millingCenterWizard.PrintAfterSave)
                     _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));

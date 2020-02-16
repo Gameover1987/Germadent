@@ -53,5 +53,11 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <returns></returns>
         TransparencesDto[] GetTransparences();
+
+        /// <summary>
+        /// Возвращает список оснасток
+        /// </summary>
+        /// <returns></returns>
+        EquipmentDto[] GetEquipment();
     }
 }

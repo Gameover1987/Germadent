@@ -79,6 +79,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);
 
             ToothCard.Initialize(order.ToothCard);
+            FilesContainer.Initialize(order);
 
             OnPropertyChanged();
         }
@@ -92,6 +93,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             order.ToothCard = ToothCard.ToDto();
             order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
+
+            FilesContainer.AssemblyOrder(order);
         }
     }
 }

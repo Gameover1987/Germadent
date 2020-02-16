@@ -107,6 +107,7 @@
     <Compile Include="ViewModels\ToothCard\ToothViewModel.cs" />
     <Compile Include="ViewModels\ToothCard\IToothCardViewModel.cs" />
     <Compile Include="Mocks\DesignMockOrderFilesContainerViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\AdditionalEquipmentViewModel.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryWizardStepsProvider.cs" />
     <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockMillingCenterAdditionalEquipmentViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
@@ -139,8 +141,8 @@
     <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
       <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\MillingCenterAdditionalEquipment.xaml.cs">
-      <DependentUpon>MillingCenterAdditionalEquipment.xaml</DependentUpon>
+    <Compile Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml.cs">
+      <DependentUpon>MillingCenterAdditionalEquipmentUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml.cs">
       <DependentUpon>MillingCenterInfoStepUserControl.xaml</DependentUpon>
@@ -184,7 +186,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\MillingCenterAdditionalEquipment.xaml">
+    <Page Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

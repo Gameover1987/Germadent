@@ -174,7 +174,7 @@ namespace Germadent.Rma.App.Mocks
 
         public EquipmentDto[] GetEquipments()
         {
-            return new EquipmentDto[0];
+            return GetMaterials().Select(x => new EquipmentDto { Id = x.Id, Name = x.MaterialName }).ToArray();
         }
     }
 }

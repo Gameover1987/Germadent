@@ -37,6 +37,10 @@
             <DataTemplate DataType="{x:Type wizard:MillingCenterProjectWizardStepViewModel}">
                 <usercontrols:MillingCenterProjectStepUserControl/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentViewModel}">
+                <usercontrols:MillingCenterAdditionalEquipmentUserControl/>
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="12">

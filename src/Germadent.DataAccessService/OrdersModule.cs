@@ -28,6 +28,7 @@ namespace Germadent.DataAccessService
             Get["/prostheticTypes"] = x => GetProstheticTypes();
             Get["/materials"] = x => GetMaterials();
             Get["/transparences"] = x => GetTranparences();
+            Get["/equipments"] = x => GetEquipments();
         }
 
         private object GetOrderById(dynamic arg)
@@ -86,6 +87,11 @@ namespace Germadent.DataAccessService
         private object GetTranparences()
         {
             return ExecuteWithLogging(() => { return Response.AsJson(_rmaRepository.GetTransparences()); });
+        }
+
+        private object GetEquipments()
+        {
+            return ExecuteWithLogging(() => { return Response.AsJson(_rmaRepository.GetEquipment()); });
         }
 
         private object ExecuteWithLogging(Func<object> func)

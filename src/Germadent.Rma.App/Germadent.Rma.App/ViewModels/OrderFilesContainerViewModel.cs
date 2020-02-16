@@ -1,6 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.IO;
+using System.Windows.Input;
 using Germadent.Common.FileSystem;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
@@ -12,49 +12,56 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IFileManager _fileManager;
 
-        private OrderDto _orderDto;
+        private string _fileName;
+        private byte[] _dataFile;
 
         public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager)
         {
             _dialogAgent = dialogAgent;
             _fileManager = fileManager;
 
-            UploadStlFileCommand = new DelegateCommand(x => UploadStlFileCommandHandler());
-            DownloadStlFileCommand = new DelegateCommand(x => DownloadStlFileCommandHandler(), x => CanDownloadStlFileCommandHandler());
+            UploadFileCommand = new DelegateCommand(x => UploadDataFileCommandHandler());
+            DownloadFileCommand = new DelegateCommand(x => DownloadDataFileCommandHandler(), x => CanDownloadDataFileCommandHandler());
         }
 
-        public ICommand UploadStlFileCommand { get; }
-        public ICommand DownloadStlFileCommand { get; }
-        public ICommand UploadPhotoCommand { get; }
-        public ICommand DownloadPhotoCommand { get; }
+        public ICommand UploadFileCommand { get; }
+        public ICommand DownloadFileCommand { get; }
 
         public void Initialize(OrderDto orderDto)
         {
-            _orderDto = orderDto;
+            _fileName = orderDto.DataFileName;
+            _dataFile = orderDto.DataFile;
         }
 
-        private void UploadStlFileCommandHandler()
+        private void UploadDataFileCommandHandler()
         {
-            var filter = "STL файлы (*.stl)|*.stl|Все файлы (*.*)|*.*";
+            var filter = "Все файлы (*.*)|*.*";
 
             if (_dialogAgent.ShowOpenFileDialog(filter, out var fileName) == false)
                 return;
 
-            _orderDto.StlFile = _fileManager.ReadAllBytes(fileName);
+            _fileName = Path.GetFileName(fileName);
+            _dataFile= _fileManager.ReadAllBytes(fileName);
         }
 
-        private bool CanDownloadStlFileCommandHandler()
+        private bool CanDownloadDataFileCommandHandler()
         {
-            return _orderDto.StlFile != null;
+            return _dataFile != null;
         }
 
-        private void DownloadStlFileCommandHandler()
+        private void DownloadDataFileCommandHandler()
         {
-            var filter = "STL файлы (*.stl)|*.stl|Все файлы (*.*)|*.*";
+            var filter = "Все файлы (*.*)|*.*";
             if (_dialogAgent.ShowSaveFileDialog(filter, null, out var fileName) == false)
                 return;
 
-            _fileManager.Save(_orderDto.StlFile, fileName);
+            _fileManager.Save(_dataFile, fileName);
+        }
+
+        public void AssemblyOrder(OrderDto order)
+        {
+            //order.DataFileName = order.DataFileName;
+            //order.DataFile = _dataFile;
         }
     }
 }

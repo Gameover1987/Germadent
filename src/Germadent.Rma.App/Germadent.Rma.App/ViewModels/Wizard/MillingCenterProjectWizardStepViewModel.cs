@@ -104,6 +104,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
             order.ToothCard = ToothCard.ToDto();
             order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
+
+            FilesContainer.AssemblyOrder(order);
         }
     }
 }

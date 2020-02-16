@@ -18,9 +18,9 @@ namespace Germadent.Rma.App.Views.UserControls
     /// <summary>
     /// Interaction logic for MillingCenterAdditionalEquipment.xaml
     /// </summary>
-    public partial class MillingCenterAdditionalEquipment : UserControl
+    public partial class MillingCenterAdditionalEquipmentUserControl : UserControl
     {
-        public MillingCenterAdditionalEquipment()
+        public MillingCenterAdditionalEquipmentUserControl()
         {
             InitializeComponent();
         }

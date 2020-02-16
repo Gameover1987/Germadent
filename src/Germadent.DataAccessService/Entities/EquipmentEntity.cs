@@ -9,6 +9,7 @@
         /// Идентификатор
         /// </summary>
         public int EquipmentId { get; set; }
+
         /// <summary>
         /// Название
         /// </summary>

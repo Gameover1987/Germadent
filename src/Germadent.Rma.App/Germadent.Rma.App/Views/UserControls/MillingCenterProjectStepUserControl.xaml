@@ -53,15 +53,10 @@
         <CheckBox Grid.Row="5" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
       
         <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
-            <Button Content="Загрузить STL файл"
-                    Command="{Binding FilesContainer.UploadStlFileCommand}"/>
-            <Button Content="Скачать STL файл" Margin="6,0,0,0"
-                    Command="{Binding FilesContainer.DownloadStlFileCommand}"/>
-
-            <Button Content="Загрузить фото" Margin="18,0,0,0"
-                    Command="{Binding FilesContainer.UploadPhotoCommand}"/>
-            <Button Content="Скачать фото" Margin="6,0,0,0"
-                    Command="{Binding FilesContainer.DownloadPhotoCommand}"/>
+            <Button Content="Загрузить файл"
+                    Command="{Binding FilesContainer.UploadFileCommand}"/>
+            <Button Content="Скачать файл" Margin="6,0,0,0"
+                    Command="{Binding FilesContainer.DownloadFileCommand}"/>            
         </StackPanel>
         <local:MouthUserControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>

@@ -10,14 +10,12 @@ namespace Germadent.Rma.App.ViewModels
 {
     public interface IOrderFilesContainerViewModel
     {
-        ICommand UploadStlFileCommand { get; }
+        ICommand UploadFileCommand { get; }
 
-        ICommand DownloadStlFileCommand { get; }
-
-        ICommand UploadPhotoCommand { get; }
-
-        ICommand DownloadPhotoCommand { get; }
+        ICommand DownloadFileCommand { get; }
 
         void Initialize(OrderDto orderDto);
+
+        void AssemblyOrder(OrderDto orderDto);
     }
 }

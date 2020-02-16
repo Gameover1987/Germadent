@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -53,9 +54,15 @@
                     <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
-
         </ComboBox>
 
-        <local:MouthUserControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+            <Button Content="Загрузить файл"
+                    Command="{Binding FilesContainer.UploadFileCommand}"/>
+            <Button Content="Скачать файл" Margin="6,0,0,0"
+                    Command="{Binding FilesContainer.DownloadFileCommand}"/>
+        </StackPanel>
+
+        <local:MouthUserControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />
     </Grid>
 </UserControl>

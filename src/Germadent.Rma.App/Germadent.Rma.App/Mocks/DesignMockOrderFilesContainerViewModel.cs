@@ -6,10 +6,13 @@ namespace Germadent.Rma.App.Mocks
 {
     public class DesignMockOrderFilesContainerViewModel : IOrderFilesContainerViewModel
     {
-        public ICommand UploadStlFileCommand { get; }
-        public ICommand DownloadStlFileCommand { get; }
-        public ICommand UploadPhotoCommand { get; }
-        public ICommand DownloadPhotoCommand { get; }
+        public ICommand UploadFileCommand { get; }
+        public ICommand DownloadFileCommand { get; }
+
+        public void AssemblyOrder(OrderDto orderDto)
+        {
+            
+        }
 
         public void Initialize(OrderDto orderDto)
         {
