@@ -101,14 +101,27 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
+            var client = new RestClient();
+            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/updateOrder", Method.POST);
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/updateOrder";
-            using (var response = _client.PutAsync(apiUrl, content).Result)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<OrderDto>();
-            }
+            restRequest.RequestFormat = DataFormat.Json;
+
+            restRequest.AddJsonBody(order);
+
+            if (order.DataFileName != null)
+                restRequest.AddFile("OrderData", _fileManager.ReadAllBytes(order.DataFileName), "OrderData");
+
+            var response = client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<OrderDto>();
+
+            //var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
+
+            //var apiUrl = _configuration.DataServiceUrl + "/api/Rma/updateOrder";
+            //using (var response = _client.PutAsync(apiUrl, content).Result)
+            //{
+            //    var result = response.Content.ReadAsStringAsync().Result;
+            //    return result.DeserializeFromJson<OrderDto>();
+            //}
         }
 
         public TransparencesDto[] GetTransparences()

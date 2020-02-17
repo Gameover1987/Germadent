@@ -26,7 +26,7 @@ namespace Germadent.DataAccessService
             Get["/orders/{id}"] = x => GetOrderById(x);
             Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
             Post["/addOrder"] = x => AddOrder();
-            Put["/updateOrder"] = x => UpdateOrder();
+            Post["/updateOrder"] = x => UpdateOrder();
 
             Get["/prostheticConditions"] = x => GetProstheticConditions();
             Get["/prostheticTypes"] = x => GetProstheticTypes();

@@ -14,6 +14,7 @@ namespace Germadent.DataAccessService.Infrastructure
         private NancyServiceConfiguration NancyServiceConfiguration { get; set; }
 
         private static readonly LogWriter Logger = HostLogger.Get(typeof(NancyService));
+
         private UrlReservationsHelper _urlReservationsHelper;
 
         public void Configure(NancyServiceConfiguration nancyServiceConfiguration)

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities;
 using Germadent.DataAccessService.Entities.Conversion;
@@ -16,11 +18,13 @@ namespace Germadent.DataAccessService.Repository
     {
         private readonly IEntityToDtoConverter _converter;
         private readonly IServiceConfiguration _configuration;
+        private readonly IFileManager _fileManager;
 
-        public RmaRepository(IEntityToDtoConverter converter, IServiceConfiguration configuration)
+        public RmaRepository(IEntityToDtoConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
         {
             _converter = converter;
             _configuration = configuration;
+            _fileManager = fileManager;
         }
 
         public OrderDto AddOrder(OrderDto order)
@@ -127,7 +131,7 @@ namespace Germadent.DataAccessService.Repository
                 command.ExecuteNonQuery();
 
                 order.WorkOrderId = command.Parameters["@workOrderId"].Value.ToInt();
-                order.DocNumber = command.Parameters["@docNumber"].Value.ToString();                
+                order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
             }
 
             order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
@@ -161,7 +165,41 @@ namespace Germadent.DataAccessService.Repository
                     }
 
                     AddOrUpdateToothCard(order.ToothCard, connection);
+                    SaveOrderDataFile(order, connection);
                 }
+            }
+        }
+
+        private void SaveOrderDataFile(OrderDto order, SqlConnection connection)
+        {
+            var storageDirectory = GetFileTableFullPath(connection);
+            var fileName = Path.GetFileName(order.DataFileName);
+            var resultFileName = Path.Combine(storageDirectory, fileName);
+            var fileInfo = _fileManager.Save(order.DataFile, resultFileName);
+            LinkFileToWorkOrder(order.WorkOrderId, resultFileName, fileInfo.CreationTime, connection);
+        }
+
+        private void LinkFileToWorkOrder(int workOrderId, string fileName, DateTime creationTime, SqlConnection connection)
+        {
+            var cmdText = "AddLinkWO_FileStream";
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@fileName", SqlDbType.NVarChar)).Value = fileName;
+                command.Parameters.Add(new SqlParameter("@creationTime", SqlDbType.DateTimeOffset)).Value = creationTime;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private string GetFileTableFullPath(SqlConnection connection)
+        {
+            var cmdText = "select dbo.GetFileTableFullPath()";
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                var commandResult = command.ExecuteScalar();
+                return commandResult.ToString();
             }
         }
 
@@ -202,10 +240,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
                 command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
-
-                
-                command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;               
-
+                command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
@@ -394,7 +429,7 @@ namespace Germadent.DataAccessService.Repository
                         order = _converter.ConvertToOrder(orderEntity);
                     }
 
-                    reader.Close();                    
+                    reader.Close();
                 }
 
                 order.AdditionalEquipment = GetAdditionalEquipmentByWorkOrder(order, connection);
@@ -406,8 +441,8 @@ namespace Germadent.DataAccessService.Repository
         {
             var cmdText = "select * from GetAdditionalEquipment(@workOrderId)";
 
-            using(var command = new SqlCommand(cmdText, connection))
-            {               
+            using (var command = new SqlCommand(cmdText, connection))
+            {
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
                 using (var reader = command.ExecuteReader())
                 {

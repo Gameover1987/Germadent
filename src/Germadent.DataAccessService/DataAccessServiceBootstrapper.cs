@@ -1,4 +1,5 @@
-﻿using Germadent.Common.Logging;
+﻿using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
 using Germadent.DataAccessService.Configuration;
 using Germadent.DataAccessService.Entities.Conversion;
 using Germadent.DataAccessService.Repository;
@@ -17,6 +18,7 @@ namespace Germadent.DataAccessService
             _container.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
         }

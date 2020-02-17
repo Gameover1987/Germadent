@@ -7,7 +7,7 @@ namespace Germadent.Common.FileSystem
     {
         byte[] ReadAllBytes(string filePath);
 
-        void Save(byte[] data, string filePath);
+        FileInfo Save(byte[] data, string filePath);
 
         void OpenFile(string fileName);
     }
@@ -20,9 +20,11 @@ namespace Germadent.Common.FileSystem
             return bytes;
         }
 
-        public void Save(byte[] data, string filePath)
+        public FileInfo Save(byte[] data, string filePath)
         {
             File.WriteAllBytes(filePath, data);
+
+            return new FileInfo(filePath);
         }
 
         public void OpenFile(string fileName)

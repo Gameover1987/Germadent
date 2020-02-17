@@ -76,15 +76,10 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand PrintOrderCommand { get; }
 
         public IDelegateCommand OpenOrderCommand { get; }
+
         public void Initialize()
-        {
-            _rmaOperations.AddOrder(new OrderDto()
-            {
-                Age = 22,
-                Patient = "Preved!",
-                DataFileName = @"C:\Users\nekrasov\Downloads\Turn It Up.mp3",
-            });
-            //FillOrders();
+        {           
+            FillOrders();
         }
 
         private void CreateLabOrderCommandHandler()
