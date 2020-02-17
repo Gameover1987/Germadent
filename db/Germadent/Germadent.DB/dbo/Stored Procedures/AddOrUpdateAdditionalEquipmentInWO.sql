@@ -1,9 +1,9 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 01.02.2020
--- Description:	Добавление и изменение запчастей от заказчика
+-- Description:	Добавление и изменение оснастки от заказчика
 -- =============================================
-CREATE PROCEDURE [dbo].[AddOrUpdateAdditionalEquipment] 
+CREATE PROCEDURE [dbo].[AddOrUpdateAdditionalEquipmentInWO] 
 	
 	@jsonEquipments varchar(MAX)
 
@@ -40,6 +40,6 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddOrUpdateAdditionalEquipment] TO [gdl_user]
+    ON OBJECT::[dbo].[AddOrUpdateAdditionalEquipmentInWO] TO [gdl_user]
     AS [dbo];
 

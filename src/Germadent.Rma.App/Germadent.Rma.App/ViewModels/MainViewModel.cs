@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -77,7 +78,13 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand OpenOrderCommand { get; }
         public void Initialize()
         {
-            FillOrders();
+            _rmaOperations.AddOrder(new OrderDto()
+            {
+                Age = 22,
+                Patient = "Preved!",
+                DataFileName = @"C:\Users\nekrasov\Downloads\Turn It Up.mp3",
+            });
+            //FillOrders();
         }
 
         private void CreateLabOrderCommandHandler()

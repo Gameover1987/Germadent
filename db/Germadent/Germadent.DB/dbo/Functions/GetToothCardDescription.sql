@@ -13,8 +13,8 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT CONCAT(tc.ToothNumber, ' - ', c.ConditionName, ' / ', p.ProstheticsName, ' / ', m.MaterialName,
-		CASE WHEN tc.FlagBridge = 1 THEN ' / Мост' ELSE '' END) AS ToothCardDescription
+	SELECT tc.ToothNumber AS 'Зуб', c.ConditionName AS 'Усл. прот.', p.ProstheticsName AS 'Тип прот.', m.MaterialName AS 'Материал',
+		CASE WHEN tc.FlagBridge = 1 THEN 'Мост' ELSE '-' END AS Мост
 	FROM ToothCard tc 
 	INNER JOIN ConditionsOfProsthetics c ON tc.ConditionID = c.ConditionID
 	INNER JOIN TypesOfProsthetics p ON tc.ProstheticsID = p.ProstheticsID

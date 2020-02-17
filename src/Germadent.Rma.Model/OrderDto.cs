@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Germadent.Rma.Model
 {
@@ -69,6 +70,10 @@ namespace Germadent.Rma.Model
 
         public string DataFileName { get; set; }
 
+        /// <summary>
+        /// Файл данных. Свойство выставляется на сервере приложений из HttpRequest
+        /// </summary>
+        [JsonIgnore]
         public byte[] DataFile { get; set; }
 
         public string MaterialsStr { get; set; }

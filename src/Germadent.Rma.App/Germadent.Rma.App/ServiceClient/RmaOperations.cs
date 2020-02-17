@@ -1,21 +1,26 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
+using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
 {
     public class RmaOperations : IRmaOperations
     {
         private readonly IConfiguration _configuration;
+        private readonly IFileManager _fileManager;
         private readonly HttpClient _client;
 
-        public RmaOperations(IConfiguration configuration)
+        public RmaOperations(IConfiguration configuration, IFileManager fileManager)
         {
             _configuration = configuration;
+            _fileManager = fileManager;
 
             _client = new HttpClient();
             _client.BaseAddress = new Uri(_configuration.DataServiceUrl);
@@ -80,14 +85,18 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
+            var client = new RestClient();
+            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/addOrder", Method.POST);
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/addOrder";
-            using (var response = _client.PostAsync(apiUrl, content).Result)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                return result.DeserializeFromJson<OrderDto>();
-            }
+            restRequest.RequestFormat = DataFormat.Json;
+
+            restRequest.AddJsonBody(order);
+
+            if (order.DataFileName != null)
+                restRequest.AddFile("OrderData", _fileManager.ReadAllBytes(order.DataFileName), "OrderData");
+
+            var response = client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<OrderDto>();
         }
 
         public OrderDto UpdateOrder(OrderDto order)
@@ -100,11 +109,6 @@ namespace Germadent.Rma.App.ServiceClient
                 var result = response.Content.ReadAsStringAsync().Result;
                 return result.DeserializeFromJson<OrderDto>();
             }
-        }
-
-        public void UploadStlFile(int id, byte[] stlFile)
-        {
-            throw new NotImplementedException();
         }
 
         public TransparencesDto[] GetTransparences()

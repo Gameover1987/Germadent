@@ -40,8 +40,8 @@ namespace Germadent.Rma.App.ViewModels
             if (_dialogAgent.ShowOpenFileDialog(filter, out var fileName) == false)
                 return;
 
-            _fileName = Path.GetFileName(fileName);
-            _dataFile= _fileManager.ReadAllBytes(fileName);
+            _fileName = fileName;
+            _dataFile = _fileManager.ReadAllBytes(fileName);
         }
 
         private bool CanDownloadDataFileCommandHandler()
@@ -60,8 +60,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public void AssemblyOrder(OrderDto order)
         {
-            //order.DataFileName = order.DataFileName;
-            //order.DataFile = _dataFile;
+            order.DataFileName = _fileName;
+            order.DataFile = _dataFile;
         }
     }
 }
