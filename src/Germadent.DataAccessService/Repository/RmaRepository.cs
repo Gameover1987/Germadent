@@ -176,7 +176,7 @@ namespace Germadent.DataAccessService.Repository
             var fileName = Path.GetFileName(order.DataFileName);
             var resultFileName = Path.Combine(storageDirectory, fileName);
             var fileInfo = _fileManager.Save(order.DataFile, resultFileName);
-            LinkFileToWorkOrder(order.WorkOrderId, resultFileName, fileInfo.CreationTime, connection);
+            LinkFileToWorkOrder(order.WorkOrderId, fileName, fileInfo.CreationTime, connection);
         }
 
         private void LinkFileToWorkOrder(int workOrderId, string fileName, DateTime creationTime, SqlConnection connection)
