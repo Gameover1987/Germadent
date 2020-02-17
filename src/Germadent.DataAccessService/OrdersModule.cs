@@ -1,4 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.DataAccessService.Repository;
 using Germadent.Rma.Model;
@@ -54,7 +58,8 @@ namespace Germadent.DataAccessService
         {
             return ExecuteWithLogging(() =>
             {
-                var order = this.Bind<OrderDto>();
+                var order = GetFromRequestBody();
+                order.DataFile = GetFileFromRequest();
                 _rmaRepository.AddOrder(order);
                 return Response.AsJson(order);
             });
@@ -64,9 +69,10 @@ namespace Germadent.DataAccessService
         {
             return ExecuteWithLogging(() =>
             {
-                var labOrder = this.Bind<OrderDto>();
-                _rmaRepository.UpdateOrder(labOrder);
-                return Response.AsJson(labOrder);
+                var order = GetFromRequestBody();
+                order.DataFile = GetFileFromRequest();
+                _rmaRepository.UpdateOrder(order);
+                return Response.AsJson(order);
             });
         }
 
@@ -92,6 +98,38 @@ namespace Germadent.DataAccessService
         private object GetEquipments()
         {
             return ExecuteWithLogging(() => { return Response.AsJson(_rmaRepository.GetEquipment()); });
+        }
+
+        private OrderDto GetFromRequestBody()
+        {
+            var contentTypeRegex = new Regex("^multipart/form-data;\\s*boundary=(.*)$", RegexOptions.IgnoreCase);
+            System.IO.Stream bodyStream = null;
+
+            if (contentTypeRegex.IsMatch(this.Request.Headers.ContentType))
+            {
+                var boundary = contentTypeRegex.Match(this.Request.Headers.ContentType).Groups[1].Value;
+                var multipart = new HttpMultipart(this.Request.Body, boundary);
+                bodyStream = multipart.GetBoundaries().First(b => b.ContentType.Equals("application/json")).Value;
+            }
+            else
+            {
+                // Regular model binding goes here.
+                bodyStream = Request.Body;
+            }
+
+            var jsonBody = new System.IO.StreamReader(bodyStream).ReadToEnd();
+            bodyStream.Close();
+
+            var order = jsonBody.DeserializeFromJson<OrderDto>();
+            return order;
+        }
+
+        private byte[] GetFileFromRequest()
+        {
+            if (!Request.Files.Any())
+                return null;
+            
+            return Request.Files.First().Value.ToBytes();
         }
 
         private object ExecuteWithLogging(Func<object> func)

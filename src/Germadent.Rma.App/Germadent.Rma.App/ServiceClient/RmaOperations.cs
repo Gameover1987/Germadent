@@ -34,7 +34,7 @@ namespace Germadent.Rma.App.ServiceClient
                 ordersFilter = new OrdersFilter();
 
             var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
-            
+
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/getOrdersByFilter";
             using (var response = _client.PostAsync(apiUrl, content).Result)
             {
@@ -86,30 +86,17 @@ namespace Germadent.Rma.App.ServiceClient
         public OrderDto AddOrder(OrderDto order)
         {
             var client = new RestClient();
-            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl+"/api/Rma/addOrder", Method.POST);
+            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/addOrder", Method.POST);
 
-            restRequest.AlwaysMultipartFormData = true;
             restRequest.RequestFormat = DataFormat.Json;
 
-            // I just add File To Request
-            restRequest.AddFile("OrderData", _fileManager.ReadAllBytes(order.DataFileName), "OrderData");
+            restRequest.AddJsonBody(order);
 
-            // Then Add Json Object
-            restRequest.AddBody(order);
+            if (order.DataFileName != null)
+                restRequest.AddFile("OrderData", _fileManager.ReadAllBytes(order.DataFileName), "OrderData");
 
-            client.Execute(restRequest, Method.POST);
-
-            return order;
-
-
-            //var content = new StringContent(order.SerializeToJson(), Encoding.UTF8, "application/json");
-
-            //var apiUrl = _configuration.DataServiceUrl + "/api/Rma/addOrder";
-            //using (var response = _client.PostAsync(apiUrl, content).Result)
-            //{
-            //    var result = response.Content.ReadAsStringAsync().Result;
-            //    return result.DeserializeFromJson<OrderDto>();
-            //}
+            var response = client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<OrderDto>();
         }
 
         public OrderDto UpdateOrder(OrderDto order)

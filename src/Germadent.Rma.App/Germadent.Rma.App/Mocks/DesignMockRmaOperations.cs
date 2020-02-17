@@ -166,9 +166,9 @@ namespace Germadent.Rma.App.Mocks
             return new TransparencesDto[]
             {
                 new TransparencesDto {Id = 0, Name = "Мамелоны"},
-                new TransparencesDto {Id = 0, Name = "Вторичный дентин"},
-                new TransparencesDto {Id = 0, Name = "Зубы с сильно выраженной прозрачностью "},
-                new TransparencesDto {Id = 0, Name = "Зубы со слабоо выраженной прозрачностью "},
+                new TransparencesDto {Id = 1, Name = "Вторичный дентин"},
+                new TransparencesDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью "},
+                new TransparencesDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью "},
             };
         }
 
