@@ -69,11 +69,7 @@ namespace Germadent.Rma.Model
         public string ProstheticArticul { get; set; }
 
         public string DataFileName { get; set; }
-
-        /// <summary>
-        /// Файл данных. Свойство выставляется на сервере приложений из HttpRequest
-        /// </summary>
-        [JsonIgnore]
+      
         public byte[] DataFile { get; set; }
 
         public string MaterialsStr { get; set; }

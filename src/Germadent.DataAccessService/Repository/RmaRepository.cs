@@ -20,11 +20,15 @@ namespace Germadent.DataAccessService.Repository
         private readonly IServiceConfiguration _configuration;
         private readonly IFileManager _fileManager;
 
+        private readonly string _storageDirectory;
+
         public RmaRepository(IEntityToDtoConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
         {
             _converter = converter;
             _configuration = configuration;
             _fileManager = fileManager;
+
+            _storageDirectory = GetFileTableFullPath();
         }
 
         public OrderDto AddOrder(OrderDto order)
@@ -50,6 +54,7 @@ namespace Germadent.DataAccessService.Repository
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard, connection);
+                SaveOrderDataFile(order, connection);
 
                 return outputOrder;
             }
@@ -172,9 +177,11 @@ namespace Germadent.DataAccessService.Repository
 
         private void SaveOrderDataFile(OrderDto order, SqlConnection connection)
         {
-            var storageDirectory = GetFileTableFullPath(connection);
+            if (order.DataFile == null)
+                return;
+            
             var fileName = Path.GetFileName(order.DataFileName);
-            var resultFileName = Path.Combine(storageDirectory, fileName);
+            var resultFileName = Path.Combine(_storageDirectory, fileName);
             var fileInfo = _fileManager.Save(order.DataFile, resultFileName);
             LinkFileToWorkOrder(order.WorkOrderId, fileName, fileInfo.CreationTime, connection);
         }
@@ -193,13 +200,18 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        private string GetFileTableFullPath(SqlConnection connection)
+        private string GetFileTableFullPath()
         {
-            var cmdText = "select dbo.GetFileTableFullPath()";
-            using (var command = new SqlCommand(cmdText, connection))
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
-                var commandResult = command.ExecuteScalar();
-                return commandResult.ToString();
+                connection.Open();
+
+                var cmdText = "select dbo.GetFileTableFullPath()";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var commandResult = command.ExecuteScalar();
+                    return commandResult.ToString();
+                }
             }
         }
 
@@ -364,6 +376,7 @@ namespace Germadent.DataAccessService.Repository
         {
             var orderDto = GetWorkOrderById(id);
             orderDto.ToothCard = GetToothCard(id);
+            SetOrderDataFile(orderDto);
             return orderDto;
         }
 
@@ -490,6 +503,34 @@ namespace Germadent.DataAccessService.Repository
                     reader.Close();
 
                     return toothCollection.ToArray();
+                }
+            }
+        }
+
+        private void SetOrderDataFile(OrderDto order)
+        {
+            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", order.WorkOrderId);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var dataFileAttributes = new DataFileAttributes();
+                    while (reader.Read())
+                    {
+                        dataFileAttributes.FileName = reader["name"].ToString();
+                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
+                    }
+
+                    if (dataFileAttributes.FileName == null)
+                        return;
+
+                    var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
+                    order.DataFile =  _fileManager.ReadAllBytes(fullPathToDataFile);
+                    order.DataFileName = dataFileAttributes.FileName;
                 }
             }
         }

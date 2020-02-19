@@ -52,7 +52,7 @@ namespace Germadent.Rma.App.ViewModels
         private void DownloadDataFileCommandHandler()
         {
             var filter = "Все файлы (*.*)|*.*";
-            if (_dialogAgent.ShowSaveFileDialog(filter, null, out var fileName) == false)
+            if (_dialogAgent.ShowSaveFileDialog(filter, _fileName, out var fileName) == false)
                 return;
 
             _fileManager.Save(_dataFile, fileName);

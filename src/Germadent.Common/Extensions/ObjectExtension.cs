@@ -19,6 +19,11 @@ namespace Germadent.Common.Extensions
             return bool.Parse(obj.ToString());
         }
 
+        public static Guid ToGuid(this object obj)
+        {
+            return Guid.Parse(obj.ToString());
+        }
+
         public static object GetValueOrDbNull(this object obj)
         {
             if (obj == null)
