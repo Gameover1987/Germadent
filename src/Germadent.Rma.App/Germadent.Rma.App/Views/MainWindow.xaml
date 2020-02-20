@@ -75,9 +75,30 @@
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}"
                   SelectionChanged="OrdersGrid_OnSelectionChanged">
+            <DataGrid.InputBindings>
+                <KeyBinding Command="{Binding OpenOrderCommand}"
+                            Key="Enter"/>
+                <KeyBinding Command="{Binding PrintOrderCommand}"
+                            Key="P" Modifiers="Control"/>
+                <KeyBinding Command="{Binding PrintOrderCommand}"
+                            Key="C" Modifiers="Control+Shift"/>
+            </DataGrid.InputBindings>
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Открыть" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
+                                          InputGestureText="Enter"/>
+                                <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
+                                          InputGestureText="Ctrl+P"/>
+                                <Separator/>
+                                <MenuItem Header="Закрыть" Command="{Binding CloseOrderCommand}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>

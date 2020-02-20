@@ -195,11 +195,21 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private void SelectBridgeCommandHandler(object obj)
         {
-            var toothViewModel = (ToothViewModel)obj;
-
-            foreach (var selectedTooth in SelectedTeeth)
+            var toothViewModel = obj as ToothViewModel;
+            if (toothViewModel != null)
             {
-                selectedTooth.HasBridge = toothViewModel.HasBridge;
+                foreach (var selectedTooth in SelectedTeeth)
+                {
+                    selectedTooth.HasBridge = toothViewModel.HasBridge;
+                }
+            }
+            else
+            {
+                var hasBridge = SelectedTeeth.First().HasBridge;
+                foreach (var selectedTooth in SelectedTeeth)
+                {
+                    selectedTooth.HasBridge = !hasBridge;
+                }
             }
         }
 

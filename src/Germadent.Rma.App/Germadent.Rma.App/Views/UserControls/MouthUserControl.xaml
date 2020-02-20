@@ -32,6 +32,10 @@
                  ItemsSource="{Binding Teeth}"
                  SelectionMode="Extended"
                  SelectionChanged="_mouthListBox_OnSelectionChanged">
+            <ListBox.InputBindings>
+                <KeyBinding Command="{Binding SelectBridgeCommand}"
+                            Key="Space"/>
+            </ListBox.InputBindings>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas IsItemsHost="True"/>
@@ -113,7 +117,8 @@
                                 </MenuItem>
                                 <MenuItem Header="Мост" IsCheckable="True" IsChecked="{Binding HasBridge}"
                                           Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectBridgeCommand}"
-                                          CommandParameter="{Binding}"/>
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Пробел"/>
                                 <Separator/>
                                 <MenuItem Header="Очистить" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.ClearCommand}"/>
                             </ContextMenu>
