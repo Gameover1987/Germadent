@@ -22,6 +22,13 @@ namespace Germadent.Rma.App.ServiceClient
         OrderDto GetOrderDetails(int id);
 
         /// <summary>
+        /// Возвращает файл по заказ наряду
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        FileDto GetDataFileByWorkOrderId(int id);
+
+        /// <summary>
         /// Получить список условий протезирования
         /// </summary>
         /// <returns></returns>

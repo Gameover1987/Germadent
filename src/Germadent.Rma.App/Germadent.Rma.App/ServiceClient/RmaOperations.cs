@@ -53,6 +53,16 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
+        public FileDto GetDataFileByWorkOrderId(int id)
+        {
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/files/{0}", id);
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var fileDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<FileDto>();
+                return fileDto;
+            }
+        }
+
         public ProstheticConditionDto[] GetProstheticConditions()
         {
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticConditions";

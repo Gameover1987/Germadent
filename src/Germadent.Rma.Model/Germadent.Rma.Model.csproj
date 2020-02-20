@@ -39,11 +39,13 @@
     <Compile Include="AdditionalEquipmentDto.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EquipmentDto.cs" />
+    <Compile Include="FileDto.cs" />
     <Compile Include="MaterialDto.cs" />
     <Compile Include="OrderDto.cs" />
     <Compile Include="OrderDtoExtenisons.cs" />
     <Compile Include="OrderLiteDto.cs" />
     <Compile Include="OrdersFilter.cs" />
+    <Compile Include="OrderDescriptionBuilder.cs" />
     <Compile Include="ToothCardDto.cs" />
     <Compile Include="ToothDto.cs" />
     <Compile Include="TransparencesDto.cs" />

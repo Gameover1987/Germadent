@@ -254,7 +254,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
-                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
                 command.Parameters.Add(new SqlParameter("@closed", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@technicFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
@@ -298,7 +298,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
-                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
                 command.Parameters.Add(new SqlParameter("@closed", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson;
@@ -376,8 +376,65 @@ namespace Germadent.DataAccessService.Repository
         {
             var orderDto = GetWorkOrderById(id);
             orderDto.ToothCard = GetToothCard(id);
-            SetOrderDataFile(orderDto);
+            FillHasDataFile(orderDto);
             return orderDto;
+        }
+
+        private void FillHasDataFile(OrderDto order)
+        {
+            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", order.WorkOrderId);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var dataFileAttributes = new DataFileAttributes();
+                    while (reader.Read())
+                    {
+                        dataFileAttributes.FileName = reader["name"].ToString();
+                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
+                    }
+
+                    if (dataFileAttributes.FileName == null)
+                        return;
+
+                    order.DataFileName = dataFileAttributes.FileName;
+                }
+            }
+        }
+
+        public FileDto GetFileByWorkOrder(int id)
+        {
+            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", id);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var dataFileAttributes = new DataFileAttributes();
+                    while (reader.Read())
+                    {
+                        dataFileAttributes.FileName = reader["name"].ToString();
+                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
+                    }
+
+                    if (dataFileAttributes.FileName == null)
+                        return null;
+
+                    var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
+                    return new FileDto
+                    {
+                        FileName = dataFileAttributes.FileName,
+                        Data = _fileManager.ReadAllBytes(fullPathToDataFile)
+                    };
+                }
+            }
         }
 
         private OrderDto GetWorkOrderById(int id)
@@ -416,7 +473,6 @@ namespace Germadent.DataAccessService.Repository
                             DoctorFullName = reader["DoctorFullName"].ToString(),
                             TechnicFullName = reader["TechnicFullName"].ToString(),
                             TechnicPhone = reader["TechnicPhone"].ToString(),
-                            //PatientGender = reader["PatientGender"].ToBool(),
                             Age = reader["PatientAge"].ToInt(),
                             Transparency = reader["TransparenceId"].ToInt(),
                             ProstheticArticul = reader["ProstheticArticul"].ToString(),
@@ -504,34 +560,6 @@ namespace Germadent.DataAccessService.Repository
                     reader.Close();
 
                     return toothCollection.ToArray();
-                }
-            }
-        }
-
-        private void SetOrderDataFile(OrderDto order)
-        {
-            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", order.WorkOrderId);
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var dataFileAttributes = new DataFileAttributes();
-                    while (reader.Read())
-                    {
-                        dataFileAttributes.FileName = reader["name"].ToString();
-                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
-                    }
-
-                    if (dataFileAttributes.FileName == null)
-                        return;
-
-                    var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
-                    order.DataFile =  _fileManager.ReadAllBytes(fullPathToDataFile);
-                    order.DataFileName = dataFileAttributes.FileName;
                 }
             }
         }

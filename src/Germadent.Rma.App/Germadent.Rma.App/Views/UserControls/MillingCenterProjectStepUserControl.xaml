@@ -38,7 +38,7 @@
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
-                 Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding ImplantSystem, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="2" VerticalAlignment="Top" Margin="0,6,0,0"/>
 

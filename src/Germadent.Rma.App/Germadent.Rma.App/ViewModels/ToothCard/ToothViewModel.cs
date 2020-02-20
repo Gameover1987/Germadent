@@ -108,21 +108,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         {
             get
             {
-                var descriptionBuilder = new StringBuilder();
-
-                if (SelectedProstheticCondition != null)
-                    descriptionBuilder.Append(string.Format("{0}/", SelectedProstheticCondition.DisplayName));
-
-                if (SelectedProstheticsType != null)
-                    descriptionBuilder.Append(string.Format("{0}/", SelectedProstheticsType.DisplayName));
-
-                if (SelectedMaterial != null)
-                    descriptionBuilder.Append(string.Format("{0}/", SelectedMaterial.DisplayName));
-
-                if (HasBridge)
-                    descriptionBuilder.Append("Мост");
-
-                return descriptionBuilder.ToString().Trim(new[] { ' ', '/' });
+                var dto = ToDto();
+                return OrderDescriptionBuilder.GetToothCardDescription(dto);
             }
         }
 

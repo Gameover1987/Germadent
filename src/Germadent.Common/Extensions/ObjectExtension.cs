@@ -24,6 +24,14 @@ namespace Germadent.Common.Extensions
             return Guid.Parse(obj.ToString());
         }
 
+        public static string ToYesNo(this bool boolValue)
+        {
+            if (boolValue)
+                return "Да";
+
+            return "Нет";
+        }
+
         public static object GetValueOrDbNull(this object obj)
         {
             if (obj == null)

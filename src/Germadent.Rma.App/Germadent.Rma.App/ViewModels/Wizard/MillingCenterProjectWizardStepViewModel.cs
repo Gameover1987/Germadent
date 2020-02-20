@@ -8,7 +8,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private string _workDescription;
+        private string _implantSystem;
         private string _carcassColor;
         private string _additionalMillingInfo;
         private string _individualAbutmentProcessing;
@@ -35,10 +35,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _additionalMillingInfo, value); }
         }
 
-        public string WorkDescription
+        public string ImplantSystem
         {
-            get { return _workDescription; }
-            set { SetProperty(() => _workDescription, value); }
+            get { return _implantSystem; }
+            set { SetProperty(() => _implantSystem, value); }
         }
 
         public string CarcassColor
@@ -79,7 +79,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             _additionalMillingInfo = order.AdditionalInfo;
-            _workDescription = order.WorkDescription;
+            _implantSystem = order.ImplantSystem;
             _carcassColor = order.CarcassColor;
             _individualAbutmentProcessing = order.IndividualAbutmentProcessing;
             _understaff = order.Understaff;
@@ -95,7 +95,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void AssemblyOrder(OrderDto order)
         {
             order.AdditionalInfo = AdditionalMillingInfo;
-            order.WorkDescription = WorkDescription;
+            order.ImplantSystem = ImplantSystem;
             order.CarcassColor = CarcassColor;
             order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
             order.Understaff = Understaff;

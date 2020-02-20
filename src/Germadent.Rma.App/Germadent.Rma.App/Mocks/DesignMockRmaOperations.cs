@@ -91,6 +91,11 @@ namespace Germadent.Rma.App.Mocks
             return _orders.First(x => x.WorkOrderId == id);
         }
 
+        public FileDto GetDataFileByWorkOrderId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProstheticConditionDto[] GetProstheticConditions()
         {
             var ptostheticsConditions = new[]

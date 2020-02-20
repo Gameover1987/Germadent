@@ -12,6 +12,13 @@ namespace Germadent.DataAccessService.Repository
         OrderDto GetOrderDetails(int id);
 
         /// <summary>
+        /// Возвращает файл по заказ наряду
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        FileDto GetFileByWorkOrder(int id);
+
+        /// <summary>
         /// Возвращает список заказ нарядов по фильтру
         /// </summary>
         /// <param name="filter"></param>

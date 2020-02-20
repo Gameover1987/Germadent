@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 
@@ -35,8 +37,7 @@ namespace Germadent.Rma.App.Printing
                 CustomerName = order.Customer,
                 Understaff = order.Understaff,
                 ImplantSystem = order.ImplantSystem,
-                WorkDescription = order.WorkDescription,
-                FlagWorkAccept = order.WorkAccepted,
+                FlagWorkAccept = order.WorkAccepted.ToYesNo(),
                 OfficeAdmin = order.OfficeAdminName,
                 PatientAge = order.Age,
                 PatientFullName = order.Patient,
@@ -45,8 +46,18 @@ namespace Germadent.Rma.App.Printing
                 TransparenceName = order.BranchType == BranchType.Laboratory ? GetTransparenceName(order.Transparency) : null,
                 WorkOrderID = order.WorkOrderId,
                 ProstheticArticul = order.ProstheticArticul,
-                MaterialsStr = order.MaterialsStr
+                MaterialsStr = order.MaterialsStr,
+                WorkDescription = GetToothCardDescription(order),
+                AdditionalEquipment = OrderDescriptionBuilder.GetAdditionalEquipmentDescription(order)
             };
+        }
+
+        private string GetToothCardDescription(OrderDto order)
+        {
+            var description = order.ToothCard.Select(x => OrderDescriptionBuilder.GetToothCardDescription(x)).ToArray();
+            var builder = new StringBuilder();
+            description.ForEach(x => builder.Append(x + Environment.NewLine));
+            return builder.ToString();
         }
 
         private string GetBranchTypeName(BranchType branchType)

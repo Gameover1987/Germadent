@@ -117,7 +117,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
                 foreach (var toothViewModel in Teeth.Where(x => x.IsChanged).OrderBy(x => x.Number))
                 {
-                    builder.Append(string.Format("{0} - {1}, ", toothViewModel.Number, toothViewModel.Description));
+                    builder.Append(string.Format("{0}, ", toothViewModel.Description));
                 }
 
                 return builder.ToString().Trim(new[] { ' ', ',' });

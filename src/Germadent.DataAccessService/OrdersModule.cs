@@ -24,6 +24,7 @@ namespace Germadent.DataAccessService
             ModulePath = "api/Rma";
 
             Get["/orders/{id}"] = x => GetOrderById(x);
+            Get["/files/{id}"] = x => GetFileByWorkOrderId(x);
             Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
             Post["/addOrder"] = x => AddOrder();
             Post["/updateOrder"] = x => UpdateOrder();
@@ -41,6 +42,15 @@ namespace Germadent.DataAccessService
             {
                 var id = (int)int.Parse(arg.id.ToString());
                 return Response.AsJson(_rmaRepository.GetOrderDetails(id));
+            });
+        }
+
+        private object GetFileByWorkOrderId(dynamic arg)
+        {
+            return ExecuteWithLogging(() =>
+            {
+                var id = (int)int.Parse(arg.id.ToString());
+                return Response.AsJson(_rmaRepository.GetFileByWorkOrder(id));
             });
         }
 
