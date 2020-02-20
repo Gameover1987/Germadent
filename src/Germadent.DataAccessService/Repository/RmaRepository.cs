@@ -465,6 +465,7 @@ namespace Germadent.DataAccessService.Repository
                         var entity = new AdditionalEquipmentEntity();
                         entity.EquipmentId = reader[nameof(entity.EquipmentId)].ToInt();
                         entity.WorkOrderId = reader[nameof(entity.WorkOrderId)].ToInt();
+                        entity.EquipmentName = reader[nameof(entity.EquipmentName)].ToString();
                         entity.Quantity = reader[nameof(entity.Quantity)].ToInt();
                         additionalEquipmentEntities.Add(entity);
                     }

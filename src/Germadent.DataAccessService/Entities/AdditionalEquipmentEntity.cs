@@ -16,6 +16,11 @@
         public int EquipmentId { get; set; }
 
         /// <summary>
+        /// Наименование оснастки
+        /// </summary>
+        public string EquipmentName { get; set; }
+
+        /// <summary>
         /// Количество оснастки
         /// </summary>
         public int Quantity { get; set; }
