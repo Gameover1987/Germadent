@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.UI.WebControls;
 using System.Windows;
+using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Printing;
@@ -25,6 +28,9 @@ namespace Germadent.Rma.App.ViewModels
         private readonly ILogger _logger;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
+        private string _searchString;
+
+        private ICollectionView _collectionView;
 
         public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule, ILogger logger)
         {
@@ -42,6 +48,18 @@ namespace Germadent.Rma.App.ViewModels
             CloseOrderCommand = new DelegateCommand(x => CloseOrderCommandHandler(), x => CanCloseOrderCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
+
+            _collectionView = CollectionViewSource.GetDefaultView(Orders);
+            _collectionView.Filter = Filter;
+        }
+
+        private bool Filter(object obj)
+        {
+            if (SearchString.IsNullOrWhiteSpace())
+                return true;
+
+            var order = (OrderLiteViewModel) obj;
+            return order.MatchBySearchString(SearchString);
         }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
@@ -76,6 +94,25 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand PrintOrderCommand { get; }
 
         public IDelegateCommand OpenOrderCommand { get; }
+
+        public string SearchString
+        {
+            get { return _searchString; }
+            set
+            {
+                if (_searchString == value)
+                    return;
+                _searchString = value;
+                OnPropertyChanged(() => SearchString);
+
+                RefreshView();
+            }
+        }
+
+        private void RefreshView()
+        {
+            _collectionView.Refresh();
+        }
 
         public void Initialize()
         {           

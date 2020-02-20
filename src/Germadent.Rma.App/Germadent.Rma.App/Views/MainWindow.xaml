@@ -16,7 +16,8 @@
         WindowStartupLocation="CenterScreen"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
-        DataContextChanged="MainWindow_OnDataContextChanged">
+        DataContextChanged="MainWindow_OnDataContextChanged"
+        FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
@@ -30,12 +31,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="150"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
-            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0"
+                                     LabelText="Поиск заказнарядов" 
+                                     SearchEventTimeDelay="00:00:3"
+                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
                     Command="{Binding CreateLabOrderCommand}"/>
             <Button Content="Фрезерный центр" Margin="0,6,0,0"
