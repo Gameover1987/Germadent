@@ -27,6 +27,7 @@ namespace Germadent.Rma.App.Printing
                 AdditionalInfo = order.AdditionalInfo,
                 BranchType = GetBranchTypeName(order.BranchType),
                 FittingDate = order.FittingDate,
+                DateOfCompletion = order.DateOfCompletion,
                 DocNumber = order.DocNumber,
                 CarcassColor = order.CarcassColor,
                 Closed = order.Closed,
@@ -46,8 +47,9 @@ namespace Germadent.Rma.App.Printing
                 TransparenceName = order.BranchType == BranchType.Laboratory ? GetTransparenceName(order.Transparency) : null,
                 WorkOrderID = order.WorkOrderId,
                 ProstheticArticul = order.ProstheticArticul,
+                WorkDescription = order.WorkDescription,
                 MaterialsStr = order.MaterialsStr,
-                WorkDescription = GetToothCardDescription(order),
+                ToothCardDescription = GetToothCardDescription(order),
                 AdditionalEquipment = OrderDescriptionBuilder.GetAdditionalEquipmentDescription(order)
             };
         }

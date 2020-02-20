@@ -17,7 +17,7 @@ namespace Germadent.Rma.App.Printing
         public string ResponsiblePerson { get; set; }
         public string TechnicPhone { get; set; }
         public DateTime Created { get; set; }
-        public string WorkDescription { get; set; }
+        public string ToothCardDescription { get; set; }
         public string FlagWorkAccept { get; set; }
         public DateTime? Closed { get; set; }
         public string OfficeAdmin { get; set; }
@@ -33,5 +33,6 @@ namespace Germadent.Rma.App.Printing
         public string ProstheticArticul { get; set; }
         public string MaterialsStr { get; set; }
         public string AdditionalEquipment { get; set; }
+        public string WorkDescription { get; set; }
     }
 }

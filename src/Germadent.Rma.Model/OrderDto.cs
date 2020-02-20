@@ -76,5 +76,6 @@ namespace Germadent.Rma.Model
         public string MaterialsStr { get; set; }
 
         public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
+        public DateTime? DateOfCompletion { get; set; }
     }
 }

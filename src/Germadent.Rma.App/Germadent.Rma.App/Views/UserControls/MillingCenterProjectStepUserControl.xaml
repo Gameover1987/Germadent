@@ -42,7 +42,7 @@
 
         <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="2" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="2" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding IndividualAbutmentProcessing, UpdateSourceTrigger=PropertyChanged}" />
 
