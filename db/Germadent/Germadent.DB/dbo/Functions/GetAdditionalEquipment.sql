@@ -11,7 +11,9 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT *
-	FROM AdditionalEquipment
+	SELECT a.WorkOrderID, a.EquipmentID, e.EquipmentName, a.Quantity
+	FROM AdditionalEquipment a 
+		INNER JOIN Equipments e ON a.EquipmentID = e.EquipmentID
+
 	WHERE WorkOrderID = @workOrderId
 )

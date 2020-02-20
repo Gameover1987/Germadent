@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[FileStreams] (
+﻿CREATE TABLE [dbo].[LinksFileStreams] (
     [WorkOrderID] INT              NOT NULL,
     [stream_id]   UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [FK_FileStreams_StlAndPhotos] FOREIGN KEY ([stream_id]) REFERENCES [dbo].[StlAndPhotos] ([stream_id]),
