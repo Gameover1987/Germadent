@@ -126,7 +126,9 @@ namespace Germadent.Rma.App.ViewModels
             if (labOrder == null)
                 return;
 
-            Orders.Add(new OrderLiteViewModel(labOrder.ToOrderLite()));
+            var orderLiteViewModel = new OrderLiteViewModel(labOrder.ToOrderLite());
+            Orders.Add(orderLiteViewModel);
+            SelectedOrder = orderLiteViewModel;
         }
 
         private void CreateMillingCenterOrderCommandHandler()
@@ -135,8 +137,10 @@ namespace Germadent.Rma.App.ViewModels
 
             if (millingCenterOrder == null)
                 return;
-            
-            Orders.Add(new OrderLiteViewModel(millingCenterOrder.ToOrderLite()));
+
+            var orderLiteViewModel = new OrderLiteViewModel(millingCenterOrder.ToOrderLite());
+            Orders.Add(orderLiteViewModel);
+            SelectedOrder = orderLiteViewModel;
         }
 
         private void FilterOrdersCommandHandler()

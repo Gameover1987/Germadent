@@ -42,7 +42,7 @@
                                      SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
-            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"/>
+            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
                     Command="{Binding CreateLabOrderCommand}"/>
             <Button Content="Фрезерный центр" Margin="0,6,0,0"
@@ -59,7 +59,7 @@
                     Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
 
-        <DataGrid Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
+        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   EnableColumnVirtualization="True"
@@ -73,7 +73,8 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"	
                   AlternationCount="2"
                   ItemsSource="{Binding Orders}"
-                  SelectedItem="{Binding SelectedOrder}">
+                  SelectedItem="{Binding SelectedOrder}"
+                  SelectionChanged="OrdersGrid_OnSelectionChanged">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>

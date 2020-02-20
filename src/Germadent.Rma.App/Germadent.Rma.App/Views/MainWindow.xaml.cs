@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Germadent.Rma.App.ViewModels;
 
@@ -26,6 +27,11 @@ namespace Germadent.Rma.App.Views
         {
             _mainViewModel = (IMainViewModel) DataContext;
             _mainViewModel.Initialize();
+        }
+
+        private void OrdersGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OrdersGrid.ScrollIntoView(_mainViewModel.SelectedOrder);
         }
     }
 }

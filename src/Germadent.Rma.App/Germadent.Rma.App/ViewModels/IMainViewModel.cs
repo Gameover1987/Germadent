@@ -6,6 +6,8 @@ namespace Germadent.Rma.App.ViewModels
     {
         IDelegateCommand OpenOrderCommand { get; }
 
+        OrderLiteViewModel SelectedOrder { get; }
+
         void Initialize();
     }
 }
