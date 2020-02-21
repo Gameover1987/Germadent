@@ -14,6 +14,7 @@ using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
+using Germadent.UI.Windows;
 using Unity;
 using Unity.Lifetime;
 
@@ -46,14 +47,14 @@ namespace Germadent.Rma.App
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
             var authorizationViewModel = new AuthorizationViewModel(dialogAgent,_container.Resolve<IRmaAuthorizer>());
-            bool? authorized= true;
+            bool? authorized;
             if (_configuration.WorkMode == WorkMode.Mock)
             {
                 authorized = true;
             }
             else
             {
-                //authorized= dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+                authorized= dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
             }
             
             if (authorized == true)

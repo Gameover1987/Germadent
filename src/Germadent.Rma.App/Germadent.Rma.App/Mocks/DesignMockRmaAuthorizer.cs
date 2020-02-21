@@ -8,7 +8,7 @@ namespace Germadent.Rma.App.Mocks
     {
         public void Authorize(string user, string password)
         {
-            if (!user.IsNullOrWhiteSpace())
+            if (user == "Admin" && password == "Admin")
                 return;
 
             throw new UserMessageException("Пользователь не авторизован");

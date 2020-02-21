@@ -51,11 +51,11 @@
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
             <Button Content="Настроить фильтр" Margin="0,6,0,0"
                     Command="{Binding FilterOrdersCommand}"/>
-            <Button Content="Открыть" Margin="0,6,0,0"
+            <Button Content="Редактировать З-Н" Margin="0,6,0,0"
                     Command="{Binding OpenOrderCommand}"/>
-            <Button Content="Закрыть" Margin="0,6,0,0"
+            <Button Content="Закрыть З-Н" Margin="0,6,0,0"
                     Command="{Binding CloseOrderCommand}"/>
-            <Button Content="Распечатать" Margin="0,6,0,0"
+            <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
 
