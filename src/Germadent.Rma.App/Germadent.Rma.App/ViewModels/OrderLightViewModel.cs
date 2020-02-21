@@ -28,22 +28,23 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool MatchBySearchString(string searchString)
         {
-            if (Model.DocNumber != null && Model.DocNumber.Contains(searchString))
+            searchString = searchString.ToLower();
+            if (Model.DocNumber != null && Model.DocNumber.ToLower().Contains(searchString))
                 return true;
 
-            if (Model.CustomerName != null && Model.CustomerName.Contains(searchString))
+            if (Model.CustomerName != null && Model.CustomerName.ToLower().Contains(searchString))
                 return true;
 
-            if (Model.DoctorFullName != null && Model.DoctorFullName.Contains(searchString))
+            if (Model.DoctorFullName != null && Model.DoctorFullName.ToLower().Contains(searchString))
                 return true;
 
-            if (Model.PatientFnp != null && Model.PatientFnp.Contains(searchString))
+            if (Model.PatientFnp != null && Model.PatientFnp.ToLower().Contains(searchString))
                 return true;
 
-            if (Model.TechnicFullName != null && Model.TechnicFullName.Contains(searchString))
+            if (Model.TechnicFullName != null && Model.TechnicFullName.ToLower().Contains(searchString))
                 return true;
 
-            if (Model.Created.ToString(new CultureInfo("Ru-ru")).Contains(searchString))
+            if (Model.Created.ToString(new CultureInfo("Ru-ru")).ToLower().Contains(searchString))
                 return true;
 
             return false;

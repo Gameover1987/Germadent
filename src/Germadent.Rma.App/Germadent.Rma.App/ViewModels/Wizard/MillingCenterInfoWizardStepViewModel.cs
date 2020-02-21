@@ -19,10 +19,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
             AddValidationFor(() => Patient)
                 .When(() => Patient.IsNullOrWhiteSpace(), () => "Укажите пациента");
-            AddValidationFor(() => TechnicFullName)
-                .When(() => TechnicFullName.IsNullOrWhiteSpace(), () => "Укажите техника");
-            AddValidationFor(() => TechnicPhone)
-                .When(() => TechnicPhone.IsNullOrWhiteSpace(), () => "Укажите телефон техника");
         }
 
         public override bool IsValid => !HasErrors && !IsEmpty();
@@ -83,9 +79,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private bool IsEmpty()
         {
             return Customer.IsNullOrWhiteSpace() ||
-                   Patient.IsNullOrWhiteSpace() ||
-                   TechnicFullName.IsNullOrWhiteSpace() ||
-                   TechnicPhone.IsNullOrWhiteSpace();
+                   Patient.IsNullOrWhiteSpace();
         }
     }
 }

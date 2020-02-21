@@ -24,7 +24,7 @@ namespace Germadent.Rma.Model
             if (tooth.HasBridge)
                 descriptionBuilder.Append("Мост");
 
-            return string.Format("{0} - {1}", tooth.ToothNumber, descriptionBuilder.ToString().Trim(new[] { ' ', '/' }));
+            return string.Format("{0} - {1}", tooth.ToothNumber, descriptionBuilder.ToString().Trim(' ', '/'));
         }
 
         public static string GetAdditionalEquipmentDescription(OrderDto order)

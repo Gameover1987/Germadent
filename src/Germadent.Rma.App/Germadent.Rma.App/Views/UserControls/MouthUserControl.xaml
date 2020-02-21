@@ -177,9 +177,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Описание работ" VerticalAlignment="Center" Margin="0,5,0,0"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,6,0,0" Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
-            <Button Grid.Row="0" Grid.Column="2" Content="Копировать" Margin="6,6,0,0"
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Описание работ" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,6,0,0" Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" MaxLines="5" MinLines="5" 
+                     VerticalScrollBarVisibility="Auto"
+                     VerticalContentAlignment="Top"/>
+            <Button Grid.Row="0" Grid.Column="2" Content="Копировать" Margin="6,6,0,0" VerticalAlignment="Top"
                     Command="{Binding CopyDescriptionCommand}"/>
         </Grid>
     </Grid>

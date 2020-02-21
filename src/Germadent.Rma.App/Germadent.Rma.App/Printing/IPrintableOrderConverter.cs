@@ -20,6 +20,7 @@ namespace Germadent.Rma.App.Printing
         {
             _rmaOperations = rmaOperations;
         }
+
         public PrintableOrder ConvertFrom(OrderDto order)
         {
             return new PrintableOrder
@@ -56,10 +57,15 @@ namespace Germadent.Rma.App.Printing
 
         private string GetToothCardDescription(OrderDto order)
         {
-            var description = order.ToothCard.Select(x => OrderDescriptionBuilder.GetToothCardDescription(x)).ToArray();
+            var descriptions = order.ToothCard.Select(OrderDescriptionBuilder.GetToothCardDescription).ToArray();
             var builder = new StringBuilder();
-            description.ForEach(x => builder.Append(x + Environment.NewLine));
-            return builder.ToString();
+            foreach (var description in descriptions)
+            {
+                builder.AppendLine(description);
+            }
+
+            var result = builder.ToString();
+            return result;
         }
 
         private string GetBranchTypeName(BranchType branchType)

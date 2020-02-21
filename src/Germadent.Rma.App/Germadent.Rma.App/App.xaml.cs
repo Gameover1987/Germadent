@@ -46,17 +46,17 @@ namespace Germadent.Rma.App
             DelegateCommand.CommandException += CommandException;
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
-            var authorizationViewModel = new AuthorizationViewModel(dialogAgent,_container.Resolve<IRmaAuthorizer>());
-            bool? authorized;
+            var authorizationViewModel = new AuthorizationViewModel(dialogAgent, _container.Resolve<IRmaAuthorizer>());
+            bool? authorized = true;
             if (_configuration.WorkMode == WorkMode.Mock)
             {
                 authorized = true;
             }
             else
             {
-                authorized= dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+                //authorized = dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
             }
-            
+
             if (authorized == true)
             {
                 MainWindow = new MainWindow();
@@ -81,7 +81,7 @@ namespace Germadent.Rma.App
                 _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
                 _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
             }
-            
+
             RegisterViewModels();
             RegisterCommonComponents();
             RegisterPrintModule();
