@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Germadent.Common.Extensions;
-using Germadent.Rma.App.ServiceClient;
+﻿using Germadent.Common.Extensions;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 

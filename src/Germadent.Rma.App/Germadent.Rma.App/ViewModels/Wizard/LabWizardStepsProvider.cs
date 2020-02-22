@@ -1,5 +1,4 @@
 ﻿using Germadent.Common.CopyAndPaste;
-using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
 

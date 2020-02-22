@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Germadent.Rma.Model;
-using Germadent.UI.ViewModels;
+﻿using Germadent.Rma.Model;
 using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Wizard

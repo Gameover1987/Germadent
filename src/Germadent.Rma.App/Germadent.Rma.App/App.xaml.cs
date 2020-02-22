@@ -11,10 +11,8 @@ using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
-using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
-using Germadent.UI.Windows;
 using Unity;
 using Unity.Lifetime;
 

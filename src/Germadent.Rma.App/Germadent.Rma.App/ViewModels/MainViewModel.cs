@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Data;
 using Germadent.Common.Extensions;

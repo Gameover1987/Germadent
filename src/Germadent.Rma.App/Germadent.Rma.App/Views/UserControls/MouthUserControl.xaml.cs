@@ -4,9 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.App.ViewModels.Wizard;
 
 namespace Germadent.Rma.App.Views.UserControls
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
