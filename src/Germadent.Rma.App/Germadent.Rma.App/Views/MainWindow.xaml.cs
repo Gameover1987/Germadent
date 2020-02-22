@@ -31,6 +31,9 @@ namespace Germadent.Rma.App.Views
 
         private void OrdersGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_mainViewModel.SelectedOrder == null)
+                return;
+            
             OrdersGrid.ScrollIntoView(_mainViewModel.SelectedOrder);
         }
     }

@@ -40,13 +40,13 @@
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
                  Text="{Binding Patient, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО техника *" VerticalAlignment="Center"
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
                    HorizontalAlignment="Right" Margin="0,6,0,0" />
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
                  Text="{Binding TechnicFullName, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Номер тел. техника *" VerticalAlignment="Center"
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Номер тел. техника" VerticalAlignment="Center"
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
                    HorizontalAlignment="Right" Margin="0,6,0,0" />
         <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"

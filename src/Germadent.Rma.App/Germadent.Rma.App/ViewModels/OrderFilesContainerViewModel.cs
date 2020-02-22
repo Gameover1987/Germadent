@@ -56,10 +56,16 @@ namespace Germadent.Rma.App.ViewModels
             var fileDto = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId);
 
             var filter = "Все файлы (*.*)|*.*";
-            if (_dialogAgent.ShowSaveFileDialog(filter, fileDto.FileName, out var fileName) == false)
+            if (_dialogAgent.ShowSaveFileDialog(filter, GetFileNameByWorkOrder(_order), out var fileName) == false)
                 return;
 
             _fileManager.Save(fileDto.Data, fileName);
+        }
+
+        private string GetFileNameByWorkOrder(OrderDto order)
+        {
+            var fileExtension = Path.GetExtension(order.DataFileName);
+            return string.Format("{0}-{1}{2}", order.DocNumber, order.Patient, fileExtension);
         }
 
         public void AssemblyOrder(OrderDto order)
