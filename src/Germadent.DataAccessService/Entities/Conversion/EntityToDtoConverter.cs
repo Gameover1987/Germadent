@@ -25,7 +25,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Age = entity.Age,
                 ResponsiblePerson = entity.DoctorFullName,
                 ResponsiblePersonPhone = entity.TechnicPhone,
-                Gender = entity.PatientGender == true ? Gender.Male : Gender.Female,
+                Gender = entity.PatientGender ? Gender.Male : Gender.Female,
                 Transparency = entity.Transparency,
                 WorkDescription = entity.WorkDescription,
                 WorkAccepted = entity.FlagWorkAccept,

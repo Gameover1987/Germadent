@@ -21,6 +21,7 @@
         <ResourceDictionary>
             <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
                 <Setter Property="Margin" Value="3,3,3,3"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -66,11 +67,12 @@
                   CanUserDeleteRows="False"
                   CanUserAddRows="False"
                   CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
+                  CanUserResizeColumns="True"
                   CanUserResizeRows="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"	
                   AlternationCount="2"
+                  IsReadOnly="True"
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}"
                   SelectionChanged="OrdersGrid_OnSelectionChanged">
@@ -101,19 +103,19 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto" 
                                     Binding="{Binding Model.DocNumber}"/>
-                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
                                     Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
-                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"  Width="Auto"
                                     Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
-                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
                                     Binding="{Binding Model.CustomerName}"/>
-                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
                                     Binding="{Binding Model.PatientFnp}"/>
-                <DataGridTextColumn Header="Доктор" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Доктор" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
                                     Binding="{Binding Model.DoctorFullName}"/>
-                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}"
+                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
