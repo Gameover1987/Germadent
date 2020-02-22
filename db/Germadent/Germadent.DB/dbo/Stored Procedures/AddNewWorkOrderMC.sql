@@ -38,7 +38,7 @@ BEGIN
 	END
 
 	-- Генерируем номер документа для каждого филиалов свой:
-	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-ФЦ')
+	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-MC', '~', YEAR(GETDATE())-2000)
 
 	-- Получение id клиента. Если клиента ещё нет - создаём его в таблице
 	SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)

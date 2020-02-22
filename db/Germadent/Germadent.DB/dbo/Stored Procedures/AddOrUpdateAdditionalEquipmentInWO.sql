@@ -19,6 +19,12 @@ BEGIN
 							FROM OPENJSON (@jsonEquipments)
 								WITH (WorkOrderId int))
 
+	-- Если заказ-наряд закрыт - никаких дальнейших действий
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 2)
+		BEGIN
+			RETURN
+		END
+
 	-- Чистим набор от старого содержимого
 	DELETE
 	FROM AdditionalEquipment

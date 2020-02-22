@@ -17,6 +17,12 @@ BEGIN
 							FROM OPENJSON (@jsonString)
 								WITH (WorkOrderId int))
 
+	-- Если заказ-наряд закрыт - никаких дальнейших действий
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 2)
+		BEGIN
+			RETURN
+		END
+
 	-- Чистим зубную карту от старого содержимого
 	DELETE
 	FROM ToothCard
