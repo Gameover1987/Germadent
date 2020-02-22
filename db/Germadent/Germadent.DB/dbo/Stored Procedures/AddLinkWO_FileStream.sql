@@ -16,6 +16,12 @@ BEGIN
 
 	DECLARE @streamId uniqueidentifier
 
+	-- Если заказ-наряд закрыт - никаких дальнейших действий
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 2)
+		BEGIN
+			RETURN
+		END
+
 	-- Получение id файлового потока по имени файла и времени его создания
 	SET @streamId = (SELECT stream_id FROM StlAndPhotos	WHERE name = @fileName	AND creation_time = @creationTime)
 

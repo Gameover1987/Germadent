@@ -33,6 +33,11 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 2)
+		BEGIN
+			RETURN
+		END
+
 	UPDATE WorkOrder
 	SET Status = @status
 		, DocNumber = @docNumber
