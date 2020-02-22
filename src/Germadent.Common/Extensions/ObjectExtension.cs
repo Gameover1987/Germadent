@@ -16,7 +16,12 @@ namespace Germadent.Common.Extensions
 
         public static bool ToBool(this object obj)
         {
-            return bool.Parse(obj.ToString());
+            if (bool.TryParse(obj.ToString(), out var boolValue))
+            {
+                return boolValue;
+            }
+
+            return false;
         }
 
         public static Guid ToGuid(this object obj)

@@ -1,4 +1,6 @@
-﻿namespace Germadent.Rma.Model
+﻿using System.ComponentModel;
+
+namespace Germadent.Rma.Model
 {
     public enum Gender
     {
@@ -13,7 +15,10 @@
 
     public enum BranchType
     {
+        [Description("Фрезерный центр")]
         MillingCenter = 1,
+
+        [Description("Лаборатория")]
         Laboratory = 2
     }
 }

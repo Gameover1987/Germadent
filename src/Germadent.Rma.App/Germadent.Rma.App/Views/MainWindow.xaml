@@ -91,7 +91,7 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
-                                <MenuItem Header="Открыть" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
+                                <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
                                           InputGestureText="Ctrl+P"/>

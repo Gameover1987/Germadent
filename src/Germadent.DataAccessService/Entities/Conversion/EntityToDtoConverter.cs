@@ -31,7 +31,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 WorkAccepted = entity.FlagWorkAccept,
                 Understaff = entity.Understaff,
                 ProstheticArticul = entity.ProstheticArticul,
-                MaterialsStr = entity.MaterialsEnum
+                MaterialsStr = entity.MaterialsEnum,
+                DateComment = entity.DateComment,
+                DateOfCompletion = entity.DateOfCompletion
             };
 
             if (orderDto.BranchType == BranchType.Laboratory)

@@ -16,7 +16,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
 
         private DateTime? _fittingDate;
-        private DateTime? _workCompleted;
+        private DateTime? _dateOfCompletion;
+
+        private string _dateComment;
 
         public LaboratoryInfoWizardStepViewModel()
         {
@@ -85,10 +87,22 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _fittingDate, value); }
         }
 
-        public DateTime? WorkCompleted
+        public DateTime? DateOfCompletion
         {
-            get { return _workCompleted; }
-            set { SetProperty(() => _workCompleted, value); }
+            get { return _dateOfCompletion; }
+            set { SetProperty(() => _dateOfCompletion, value); }
+        }
+
+        public string DateComment
+        {
+            get { return _dateComment; }
+            set
+            {
+                if (_dateComment == value)
+                    return;
+                _dateComment = value;
+                OnPropertyChanged(() => DateComment);
+            }
         }
 
         public override void Initialize(OrderDto order)
@@ -100,7 +114,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             PatientFio = order.Patient;
             Created = order.Created;
             FittingDate = order.FittingDate;
-            WorkCompleted = order.Closed;
+            DateOfCompletion = order.DateOfCompletion;
+            DateComment = order.DateComment;
         }
 
         public override void AssemblyOrder(OrderDto order)
@@ -113,7 +128,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Patient = PatientFio;
             order.Created = Created;
             order.FittingDate = FittingDate;
-            order.Closed = WorkCompleted;
+            order.DateOfCompletion = DateOfCompletion;
+            order.DateComment = DateComment;
         }
 
         private bool IsEmpty()

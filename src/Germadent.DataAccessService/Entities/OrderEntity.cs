@@ -81,5 +81,10 @@ namespace Germadent.DataAccessService.Entities
         /// Перечень материалов
         /// </summary>
         public string MaterialsEnum { get; set; }
+
+        /// <summary>
+        /// Комментарий к датам
+        /// </summary>
+        public string DateComment { get; set; }
     }
 }

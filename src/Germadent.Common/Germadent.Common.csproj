@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="CopyAndPaste\IClipboardHelper.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />

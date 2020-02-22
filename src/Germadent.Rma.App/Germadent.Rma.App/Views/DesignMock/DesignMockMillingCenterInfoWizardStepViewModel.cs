@@ -10,6 +10,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             Patient = "PatientInfo";
             TechnicFullName = "DoctorFullName";
             TechnicPhone = "TechnicPhone";
+            DateComment = "Какой то комментарий к срокам";
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 
             Created = DateTime.Now;
             FittingDate = DateTime.Now;
-            WorkCompleted = DateTime.Now;
+            DateOfCompletion = DateTime.Now;
         }
     }
 }

@@ -32,6 +32,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Заказчик *" Margin="0,0,0,3"
@@ -60,17 +61,19 @@
                          Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
-        <TextBlock Grid.Row="4" Text="Дата и время поступления"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Дата и время поступления"/>
         <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
                         SelectedDate="{Binding Created}" SelectedDateFormat="Short" />
 
-        
-
-        <TextBlock Grid.Row="5" Text="Дата примерки"/>
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Дата примерки"/>
         <DatePicker Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
                         SelectedDate="{Binding FittingDate}" SelectedDateFormat="Short" />
-        <TextBlock Grid.Row="6" Text="Дата сдачи"/>
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Дата сдачи"/>
         <DatePicker Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
-                        SelectedDate="{Binding WorkCompleted}" SelectedDateFormat="Short" />
+                        SelectedDate="{Binding DateOfCompletion}" SelectedDateFormat="Short" />
+
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="Комментарий"/>
+        <TextBox Grid.Column="1" Grid.Row="7" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
+
     </Grid>
 </UserControl>

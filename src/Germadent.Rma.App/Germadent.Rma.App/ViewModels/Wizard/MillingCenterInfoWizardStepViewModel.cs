@@ -11,6 +11,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _technicFullName;
         private string _technicPhone;
         private DateTime _created;
+        private string _dateComment;
 
         public MillingCenterInfoWizardStepViewModel()
         {
@@ -57,6 +58,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _created, value); }
         }
 
+        public string DateComment
+        {
+            get { return _dateComment; }
+            set
+            {
+                if (_dateComment == value)
+                    return;
+                _dateComment = value;
+                OnPropertyChanged(() => DateComment);
+            }
+        }
+
         public override void Initialize(OrderDto order)
         {
             _customer = order.Customer;
@@ -64,6 +77,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _technicFullName = order.ResponsiblePerson;
             _technicPhone = order.ResponsiblePersonPhone;
             _created = order.Created;
+            _dateComment = order.DateComment;
         }
 
         public override void AssemblyOrder(OrderDto order)
@@ -73,6 +87,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ResponsiblePerson = TechnicFullName;
             order.ResponsiblePersonPhone = TechnicPhone;
             order.Created = Created;
+            order.DateComment = DateComment;
         }
 
         private bool IsEmpty()

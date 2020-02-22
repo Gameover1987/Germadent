@@ -95,7 +95,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = "Мега администратор";
                 command.Parameters.Add(new SqlParameter("@transparenceId", SqlDbType.Int)).Value = order.Transparency;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
-                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.Closed;
+                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
@@ -266,6 +266,7 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
+                command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
 
                 command.ExecuteNonQuery();
             }
@@ -310,6 +311,8 @@ namespace Germadent.DataAccessService.Repository
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
+                command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
+                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = order.DateOfCompletion.GetValueOrDbNull();
 
                 command.ExecuteNonQuery();
             }
@@ -480,6 +483,7 @@ namespace Germadent.DataAccessService.Repository
                             Transparency = reader["TransparenceId"].ToInt(),
                             ProstheticArticul = reader["ProstheticArticul"].ToString(),
                             MaterialsEnum = reader["MaterialsEnum"].ToString(),
+                            DateComment = reader["DateComment"].ToString(),
                         };
 
                         if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))
@@ -487,15 +491,14 @@ namespace Germadent.DataAccessService.Repository
                             orderEntity.Closed = closed;
                         }
 
-                        orderEntity.Created = DateTime.Parse(reader[nameof(orderEntity.Created)].ToString());
-                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var dateDelivery))
-                        {
-                            orderEntity.DateDelivery = dateDelivery;
-                        }
-
-                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var fittingDate))
+                        if (DateTime.TryParse(reader[nameof(orderEntity.FittingDate)].ToString(), out var fittingDate))
                         {
                             orderEntity.FittingDate = fittingDate;
+                        }
+
+                        if (DateTime.TryParse(reader[nameof(orderEntity.DateOfCompletion)].ToString(), out var dateOfCompletion))
+                        {
+                            orderEntity.DateOfCompletion = dateOfCompletion;
                         }
 
                         order = _converter.ConvertToOrder(orderEntity);

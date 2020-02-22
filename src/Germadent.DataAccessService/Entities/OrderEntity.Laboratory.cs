@@ -7,7 +7,7 @@ namespace Germadent.DataAccessService.Entities
         /// <summary>
         /// Дата сдачи (для лаборатории)
         /// </summary>
-        public DateTime? DateDelivery { get; set; }
+        public DateTime? DateOfCompletion { get; set; }
 
         /// <summary>
         /// Дата примерки (для лаборатории)
