@@ -29,6 +29,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -36,28 +37,30 @@
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AdditionalMillingInfo}" Margin="6,6,0,0" />
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="3" TextWrapping="Wrap"
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" MaxLines="2" MinLines="2" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding ImplantSystem, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="2" VerticalAlignment="Top" Margin="0,6,0,0"/>
 
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="52" MaxLines="2" TextWrapping="Wrap"
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" MaxLines="2" MinLines="2" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding IndividualAbutmentProcessing, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Докомплектовать заказ" />
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Артикул материала" />
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ProstheticArticul}" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"/>
-        <CheckBox Grid.Row="5" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Цвет каркаса"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Margin="6,6,0,0" Text="{Binding CarcassColor, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Докомплектовать заказ" />
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Артикул материала" />
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding ProstheticArticul}" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"/>
+        <CheckBox Grid.Row="6" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
       
-        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
             <Button Content="Загрузить файл"
                     Command="{Binding FilesContainer.UploadFileCommand}"/>
             <Button Content="Скачать файл" Margin="6,0,0,0"
                     Command="{Binding FilesContainer.DownloadFileCommand}"/>            
         </StackPanel>
-        <local:MouthUserControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
+        <local:MouthUserControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>
 </UserControl>

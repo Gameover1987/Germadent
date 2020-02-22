@@ -46,7 +46,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return _carcassColor; }
             set { SetProperty(() => _carcassColor, value); }
         }
-
        
         public string IndividualAbutmentProcessing
         {
