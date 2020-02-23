@@ -34,5 +34,6 @@ namespace Germadent.Rma.App.Printing
         public string MaterialsStr { get; set; }
         public string AdditionalEquipment { get; set; }
         public string WorkDescription { get; set; }
+        public string DateComment { get; internal set; }
     }
 }
