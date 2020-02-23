@@ -12,6 +12,7 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	@technicPhone varchar(15) = NULL,
 	@patientID int = NULL,
 	@patientFullName nvarchar(150) = NULL,
+	@dateComment  nvarchar(50) = NULL,
 	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
 	@officeAdminID int = NULL,
@@ -47,9 +48,9 @@ BEGIN
 
 	-- Собственно вставка:	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 

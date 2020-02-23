@@ -14,11 +14,11 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderMC]
 	, @patientFullName nvarchar(150)
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
+	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
-	, @closed datetime
 	, @technicFullName nvarchar(150)
 	, @technicPhone varchar(20)
 	, @additionalInfo nvarchar(70)
@@ -47,12 +47,12 @@ BEGIN
 	--	, PatientID = @patientID
 		, PatientFullName = @patientFullName
 		, DateDelivery = @dateDelivery
+		, DateComment = @dateComment
 		, ProstheticArticul = @prostheticArticul
 		, WorkDescription = @workDescription
 		, FlagWorkAccept = @flagWorkAccept
 	--	, OfficeAdminID = @officeAdminID
 		, OfficeAdminName = @officeAdminName
-		, Closed = @closed
 	
 	WHERE WorkOrderID = @workOrderID
 

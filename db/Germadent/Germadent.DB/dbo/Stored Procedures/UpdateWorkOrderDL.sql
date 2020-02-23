@@ -13,14 +13,15 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 --	, @responsiblePersonId int
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
+	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
-	, @closed datetime
 	, @doctorFullName nvarchar(150)
 --	, @patientID int
 	, @patientFullName nvarchar(150)
+	, @patientGender bit
 	, @patientAge tinyint
 	, @transparenceID int
 	, @fittingDate datetime
@@ -44,12 +45,12 @@ BEGIN
 --		, ResponsiblePersonID = @responsiblePersonId
 --		, PatientID = @patientID
 		, DateDelivery = @dateDelivery
+		, DateComment = @dateComment
 		, ProstheticArticul = @prostheticArticul
 		, WorkDescription = @workDescription
 		, FlagWorkAccept = @flagWorkAccept
 --		, OfficeAdminID = @officeAdminID
 		, OfficeAdminName = @officeAdminName
-		, Closed = @closed
 	
 	WHERE WorkOrderID = @workOrderID
 
@@ -57,7 +58,7 @@ BEGIN
 	UPDATE WorkOrderDL
 	SET TransparenceID = @transparenceID
 		, DoctorFullName = @doctorFullName
-		
+		, PatientGender = @patientGender
 		, PatientAge = @patientAge
 		, FittingDate = @fittingDate
 		, DateOfCompletion = @dateOfCompletion

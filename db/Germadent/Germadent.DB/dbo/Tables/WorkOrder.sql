@@ -10,6 +10,7 @@
     [PatientFullName]     NVARCHAR (150) NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
+    [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            CONSTRAINT [DF_WorkOrder_WorkAccept] DEFAULT ((0)) NOT NULL,
@@ -19,6 +20,8 @@
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
     CONSTRAINT [FK_WorkOrder_Branches] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]) ON UPDATE CASCADE
 );
+
+
 
 
 

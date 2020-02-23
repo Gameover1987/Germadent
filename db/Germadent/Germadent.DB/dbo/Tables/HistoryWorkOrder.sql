@@ -13,6 +13,7 @@
     [PatientFullName]     NVARCHAR (150) NULL,
     [Created]             DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
+    [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            NULL,
@@ -20,6 +21,8 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL
 );
+
+
 
 
 
