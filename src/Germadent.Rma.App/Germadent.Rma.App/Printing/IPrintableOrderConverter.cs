@@ -29,6 +29,7 @@ namespace Germadent.Rma.App.Printing
                 BranchType = GetBranchTypeName(order.BranchType),
                 FittingDate = order.FittingDate,
                 DateOfCompletion = order.DateOfCompletion,
+                DateComment = order.DateComment,
                 DocNumber = order.DocNumber,
                 CarcassColor = order.CarcassColor,
                 Closed = order.Closed,
