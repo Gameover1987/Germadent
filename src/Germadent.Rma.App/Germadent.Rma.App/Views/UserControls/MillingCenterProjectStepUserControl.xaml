@@ -41,7 +41,7 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding ImplantSystem, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,6,0,0"/>
+        <TextBlock Grid.Column="0" Text="Обработка инд. абатмента" Grid.Row="3" VerticalAlignment="Top" Margin="0,7,0,0"/>
 
         <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" MaxLines="2" MinLines="2" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
