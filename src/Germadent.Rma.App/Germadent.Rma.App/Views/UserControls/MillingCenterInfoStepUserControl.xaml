@@ -57,7 +57,7 @@
         <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
                     SelectedDate="{Binding Created}" SelectedDateFormat="Short" />
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Комментарий"/>
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Комментарий по времени"/>
         <TextBox Grid.Column="1" Grid.Row="5" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>
