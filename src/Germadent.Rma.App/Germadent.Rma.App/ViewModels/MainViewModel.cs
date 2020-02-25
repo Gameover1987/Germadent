@@ -168,6 +168,7 @@ namespace Germadent.Rma.App.ViewModels
             }
             catch (Exception e)
             {
+                _dialogAgent.ShowErrorMessageDialog(e.Message, e.StackTrace);
                 _logger.Error(e);
             }
             finally
