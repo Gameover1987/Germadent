@@ -37,7 +37,7 @@
 
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0"
-                                     LabelText="Поиск заказнарядов" 
+                                     LabelText="Поиск заказ-нарядов" 
                                      SearchEventTimeDelay="00:00:3"
                                      SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -54,7 +54,7 @@
             <Button Content="Редактировать З-Н" Margin="0,6,0,0"
                     Command="{Binding OpenOrderCommand}"/>
             <Button Content="Закрыть З-Н" Margin="0,6,0,0"
-                    Command="{Binding CloseOrderCommand}"/>
+                    Command="{Binding CloseOrderCommand}" Visibility="Hidden"/>
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
