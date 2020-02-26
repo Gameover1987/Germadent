@@ -12,7 +12,7 @@ namespace Germadent.Rma.Model
         {
             Created = DateTime.Now;
             Gender = Gender.Male;
-            OfficeAdminName = "Мега админ";
+            OfficeAdminName = " ";
             ToothCard = new ToothDto[0];
             Transparency = 7; // Не определено
             AdditionalEquipment = new AdditionalEquipmentDto[0];
