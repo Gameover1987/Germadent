@@ -12,6 +12,7 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrderMC]
 	@technicPhone varchar(15) = NULL,
 	@patientID int = NULL,
 	@patientFullName nvarchar(150) = NULL,
+	@dateDelivery datetime = NULL,
 	@dateComment  nvarchar(50) = NULL,
 	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
@@ -31,7 +32,7 @@ BEGIN
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	BEGIN
 		DECLARE @max_Id int
-		SELECT @max_Id = MAX(WorkOrderID)
+		SELECT @max_Id = ISNULL(MAX(WorkOrderID), 0)
 		FROM WorkOrder
 
 		EXEC IdentifierAlignment WorkOrder, @max_Id
@@ -42,15 +43,15 @@ BEGIN
 	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-MC', '~', YEAR(GETDATE())-2000)
 
 	-- Получение id клиента. Если клиента ещё нет - создаём его в таблице
-	SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)
-	IF @customerID IS NULL EXEC AddNewCustomer @customerName, @customerID output
+	--SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)
+	--IF @customerID IS NULL EXEC AddNewCustomer @customerName, @customerID output
 
 
 	-- Собственно вставка:	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 

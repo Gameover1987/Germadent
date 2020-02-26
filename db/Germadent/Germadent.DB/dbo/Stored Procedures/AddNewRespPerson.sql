@@ -20,7 +20,7 @@ BEGIN
 	BEGIN
 		DECLARE @max_Id int
 
-		SELECT @max_Id = MAX(ResponsiblePersonID)
+		SELECT @max_Id = ISNULL(MAX(ResponsiblePersonID), 0)
 		FROM ResponsiblePersons
 
 		EXEC IdentifierAlignment ResponsiblePersons, @max_Id

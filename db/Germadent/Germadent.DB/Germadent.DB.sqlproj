@@ -398,5 +398,7 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Stored Procedures\AddNewPatient.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteWorkOrder.sql" />
   </ItemGroup>
 </Project>

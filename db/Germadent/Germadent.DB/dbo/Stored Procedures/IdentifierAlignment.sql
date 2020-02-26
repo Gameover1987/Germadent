@@ -16,3 +16,8 @@ BEGIN
 	DBCC checkident (@tableName, reseed, @max_Id)
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[IdentifierAlignment] TO [DbccLauncher]
+    AS [dbo];
+

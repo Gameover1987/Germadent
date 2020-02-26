@@ -15,7 +15,7 @@ BEGIN
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	BEGIN
 		DECLARE @max_Id int
-		SELECT @max_Id = MAX(CustomerID)
+		SELECT @max_Id = ISNULL(MAX(CustomerID), 0)
 		FROM Customers
 
 		EXEC IdentifierAlignment Customers, @max_Id

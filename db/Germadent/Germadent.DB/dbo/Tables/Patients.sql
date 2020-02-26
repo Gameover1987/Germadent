@@ -1,12 +1,14 @@
 ﻿CREATE TABLE [dbo].[Patients] (
     [PatientID]  INT           IDENTITY (1, 1) NOT NULL,
-    [FamilyName] NVARCHAR (25) NOT NULL,
-    [Name]       NVARCHAR (20) NULL,
-    [Patronymic] NVARCHAR (20) NULL,
+    [FamilyName] NVARCHAR (35) NOT NULL,
+    [Name]       NVARCHAR (30) NULL,
+    [Patronymic] NVARCHAR (30) NULL,
     [Gender]     BIT           NULL,
     [Birthday]   DATE          NULL,
     CONSTRAINT [PK_Patients] PRIMARY KEY CLUSTERED ([PatientID] ASC)
 );
+
+
 
 
 
