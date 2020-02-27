@@ -648,6 +648,8 @@ namespace Germadent.DataAccessService.Repository
                     orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
                     orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
                     orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
+                    orderLite.DoctorFullName = reader[nameof(orderLite.DoctorFullName)].ToString();
+                    orderLite.TechnicFullName = reader[nameof(orderLite.TechnicFullName)].ToString();
                     orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
                     orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
 
