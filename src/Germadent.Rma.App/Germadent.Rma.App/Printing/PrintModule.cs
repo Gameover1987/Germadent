@@ -38,7 +38,7 @@ namespace Germadent.Rma.App.Printing
             if (_dialogAgent.ShowSaveFileDialog(fileFilter, GetOrderDocumentName(order), out fileName) == true)
             {
                 _fileManager.Save(wordDocument, fileName);
-                _fileManager.OpenFile(fileName);
+                _fileManager.OpenFileByOS(fileName);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model;
+﻿using System.IO;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
@@ -26,7 +27,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileDto GetDataFileByWorkOrderId(int id);
+        IFileResponse GetDataFileByWorkOrderId(int id);
 
         /// <summary>
         /// Получить список условий протезирования

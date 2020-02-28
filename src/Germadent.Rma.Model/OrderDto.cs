@@ -71,9 +71,6 @@ namespace Germadent.Rma.Model
         public string ProstheticArticul { get; set; }
 
         public string DataFileName { get; set; }
-      
-        [JsonIgnore]
-        public byte[] DataFile { get; set; }
 
         public string MaterialsStr { get; set; }
 

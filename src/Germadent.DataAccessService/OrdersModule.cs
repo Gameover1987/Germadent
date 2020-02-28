@@ -50,7 +50,17 @@ namespace Germadent.DataAccessService
             return ExecuteWithLogging(() =>
             {
                 var id = (int)int.Parse(arg.id.ToString());
-                return Response.AsJson(_rmaRepository.GetFileByWorkOrder(id));
+
+                var file = _rmaRepository.GetFileByWorkOrder(id);
+
+                var response = new Response();
+                response.ContentType = "text/plain";
+                response.Contents = stream =>
+                {
+                    file.CopyTo(stream);
+                    file.Dispose();
+                };
+                return response;
             });
         }
 
@@ -69,8 +79,8 @@ namespace Germadent.DataAccessService
             return ExecuteWithLogging(() =>
             {
                 var order = GetFromRequestBody();
-                order.DataFile = GetFileFromRequest();
-                _rmaRepository.AddOrder(order);
+                var stream = GetFileFromRequest();
+                _rmaRepository.AddOrder(order, stream);
                 return Response.AsJson(order);
             });
         }
@@ -80,8 +90,8 @@ namespace Germadent.DataAccessService
             return ExecuteWithLogging(() =>
             {
                 var order = GetFromRequestBody();
-                order.DataFile = GetFileFromRequest();
-                _rmaRepository.UpdateOrder(order);
+                var stream = GetFileFromRequest();
+                _rmaRepository.UpdateOrder(order, stream);
                 return Response.AsJson(order);
             });
         }
@@ -134,12 +144,12 @@ namespace Germadent.DataAccessService
             return order;
         }
 
-        private byte[] GetFileFromRequest()
+        private Stream GetFileFromRequest()
         {
             if (!Request.Files.Any())
                 return null;
-            
-            return Request.Files.First().Value.ToBytes();
+
+            return Request.Files.First().Value;
         }
 
         private object ExecuteWithLogging(Func<object> func)

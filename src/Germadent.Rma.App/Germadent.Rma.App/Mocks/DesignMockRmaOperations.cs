@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
@@ -90,7 +91,7 @@ namespace Germadent.Rma.App.Mocks
             return _orders.First(x => x.WorkOrderId == id);
         }
 
-        public FileDto GetDataFileByWorkOrderId(int id)
+        public IFileResponse GetDataFileByWorkOrderId(int id)
         {
             throw new NotImplementedException();
         }

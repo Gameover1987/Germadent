@@ -7,9 +7,13 @@ namespace Germadent.Common.FileSystem
     {
         byte[] ReadAllBytes(string filePath);
 
+        Stream OpenFile(string path);
+
         FileInfo Save(byte[] data, string filePath);
 
-        void OpenFile(string fileName);
+        FileInfo Save(Stream stream, string filePath);
+
+        void OpenFileByOS(string fileName);
     }
 
     public class FileManager : IFileManager
@@ -20,6 +24,11 @@ namespace Germadent.Common.FileSystem
             return bytes;
         }
 
+        public Stream OpenFile(string path)
+        {
+            return File.OpenRead(path);
+        }
+
         public FileInfo Save(byte[] data, string filePath)
         {
             File.WriteAllBytes(filePath, data);
@@ -27,7 +36,17 @@ namespace Germadent.Common.FileSystem
             return new FileInfo(filePath);
         }
 
-        public void OpenFile(string fileName)
+        public FileInfo Save(Stream stream, string filePath)
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                stream.CopyTo(fileStream);
+            }
+
+            return new FileInfo(filePath);
+        }
+
+        public void OpenFileByOS(string fileName)
         {
             Process.Start(fileName);
         }

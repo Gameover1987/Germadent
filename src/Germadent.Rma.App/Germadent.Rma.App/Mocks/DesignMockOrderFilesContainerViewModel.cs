@@ -8,6 +8,10 @@ namespace Germadent.Rma.App.Mocks
     {
         public ICommand UploadFileCommand { get; }
         public ICommand DownloadFileCommand { get; }
+        public bool IsBusy
+        {
+            get { return true; }
+        }
 
         public void AssemblyOrder(OrderDto orderDto)
         {

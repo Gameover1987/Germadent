@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -55,11 +56,13 @@
         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding ProstheticArticul}" Margin="6,6,0,0" Width="260" HorizontalAlignment="Left"/>
         <CheckBox Grid.Row="6" Grid.Column="1" Content="Согласование работы" IsChecked="{Binding WorkAccepted}" Margin="6,6,0,0"/>
       
-        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0"
+                    DataContext="{Binding FilesContainer}">
             <Button Content="Загрузить файл"
-                    Command="{Binding FilesContainer.UploadFileCommand}"/>
+                    Command="{Binding UploadFileCommand}"/>
             <Button Content="Скачать файл" Margin="6,0,0,0"
-                    Command="{Binding FilesContainer.DownloadFileCommand}"/>            
+                    Command="{Binding DownloadFileCommand}"/>
+            <controls:BusyIndicator Width="23" Height="23" IsBusy="{Binding IsBusy}" Fill="#2D2D2D" Margin="6,0,0,0"/>
         </StackPanel>
         <local:MouthUserControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>

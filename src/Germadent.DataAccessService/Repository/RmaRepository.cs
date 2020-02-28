@@ -31,7 +31,7 @@ namespace Germadent.DataAccessService.Repository
             _storageDirectory = GetFileTableFullPath();
         }
 
-        public OrderDto AddOrder(OrderDto order)
+        public OrderDto AddOrder(OrderDto order, Stream stream)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -54,7 +54,7 @@ namespace Germadent.DataAccessService.Repository
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard, connection);
-                SaveOrderDataFile(order, connection);
+                SaveOrderDataFile(order, connection, stream);
 
                 return outputOrder;
             }
@@ -148,7 +148,7 @@ namespace Germadent.DataAccessService.Repository
             return order;
         }
 
-        public void UpdateOrder(OrderDto order)
+        public void UpdateOrder(OrderDto order, Stream stream)
         {
             var cmdText = "";
 
@@ -173,19 +173,19 @@ namespace Germadent.DataAccessService.Repository
                     }
 
                     AddOrUpdateToothCard(order.ToothCard, connection);
-                    SaveOrderDataFile(order, connection);
+                    SaveOrderDataFile(order, connection, stream);
                 }
             }
         }
 
-        private void SaveOrderDataFile(OrderDto order, SqlConnection connection)
+        private void SaveOrderDataFile(OrderDto order, SqlConnection connection, Stream stream)
         {
-            if (order.DataFile == null)
+            if (stream == null)
                 return;
-            
+
             var fileName = Path.GetFileName(order.DataFileName);
             var resultFileName = Path.Combine(_storageDirectory, fileName);
-            var fileInfo = _fileManager.Save(order.DataFile, resultFileName);
+            var fileInfo = _fileManager.Save(stream, resultFileName);
             LinkFileToWorkOrder(order.WorkOrderId, fileName, fileInfo.CreationTime, connection);
         }
 
@@ -410,7 +410,7 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        public FileDto GetFileByWorkOrder(int id)
+        public Stream GetFileByWorkOrder(int id)
         {
             var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", id);
 
@@ -432,11 +432,7 @@ namespace Germadent.DataAccessService.Repository
                         return null;
 
                     var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
-                    return new FileDto
-                    {
-                        FileName = dataFileAttributes.FileName,
-                        Data = _fileManager.ReadAllBytes(fullPathToDataFile)
-                    };
+                    return _fileManager.OpenFile(fullPathToDataFile);
                 }
             }
         }

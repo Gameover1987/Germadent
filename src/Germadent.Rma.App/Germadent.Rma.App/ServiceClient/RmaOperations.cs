@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -53,14 +54,12 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public FileDto GetDataFileByWorkOrderId(int id)
+        public IFileResponse GetDataFileByWorkOrderId(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/files/{0}", id);
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var fileDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<FileDto>();
-                return fileDto;
-            }
+            var response = _client.GetAsync(apiUrl).Result;
+
+            return new FileResponse(response);
         }
 
         public ProstheticConditionDto[] GetProstheticConditions()
@@ -96,7 +95,7 @@ namespace Germadent.Rma.App.ServiceClient
         public OrderDto AddOrder(OrderDto order)
         {
             var client = new RestClient();
-            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/addOrder", Method.POST);
+            var restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/addOrder", Method.POST);
 
             restRequest.RequestFormat = DataFormat.Json;
 

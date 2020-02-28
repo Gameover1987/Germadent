@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="600"
@@ -56,11 +57,14 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0">
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="6,6,0,0"
+                    DataContext="{Binding FilesContainer}">
             <Button Content="Загрузить файл"
-                    Command="{Binding FilesContainer.UploadFileCommand}"/>
+                    Command="{Binding UploadFileCommand}"/>
             <Button Content="Скачать файл" Margin="6,0,0,0"
-                    Command="{Binding FilesContainer.DownloadFileCommand}"/>
+                    Command="{Binding DownloadFileCommand}"/>
+
+            <controls:BusyIndicator Width="23" Height="23" IsBusy="{Binding IsBusy}" Fill="#2D2D2D" Margin="6,0,0,0"/>
         </StackPanel>
 
         <local:MouthUserControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" />

@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model;
+﻿using System.IO;
+using Germadent.Rma.Model;
 
 namespace Germadent.DataAccessService.Repository
 {
@@ -16,7 +17,7 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileDto GetFileByWorkOrder(int id);
+        Stream GetFileByWorkOrder(int id);
 
         /// <summary>
         /// Возвращает список заказ нарядов по фильтру
@@ -29,13 +30,15 @@ namespace Germadent.DataAccessService.Repository
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        OrderDto AddOrder(OrderDto order);
+        /// <param name="stream"></param>
+        OrderDto AddOrder(OrderDto order, Stream stream);
 
         /// <summary>
         /// Обновляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        void UpdateOrder(OrderDto order);
+        /// <param name="stream"></param>
+        void UpdateOrder(OrderDto order, Stream stream);
 
         /// <summary>
         /// Возвращает список условий протезирования

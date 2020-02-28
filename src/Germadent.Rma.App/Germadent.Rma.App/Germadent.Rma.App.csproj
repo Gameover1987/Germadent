@@ -95,6 +95,7 @@
     <Compile Include="Printing\TemplateProcessing\XElementFactory.cs" />
     <Compile Include="Printing\IPrintModule.cs" />
     <Compile Include="Printing\PrintModule.cs" />
+    <Compile Include="ServiceClient\IFileResponse.cs" />
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />

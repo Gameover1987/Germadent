@@ -1,14 +1,16 @@
 ﻿using System.IO;
 using System.Windows.Input;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
+using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class OrderFilesContainerViewModel : IOrderFilesContainerViewModel
+    public class OrderFilesContainerViewModel : ViewModelBase, IOrderFilesContainerViewModel
     {
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IFileManager _fileManager;
@@ -16,6 +18,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private OrderDto _order;
         private string _fileName;
+        private bool _isBusy;
 
         public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IRmaOperations rmaOperations)
         {
@@ -30,6 +33,18 @@ namespace Germadent.Rma.App.ViewModels
         public ICommand UploadFileCommand { get; }
 
         public ICommand DownloadFileCommand { get; }
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            private set
+            {
+                if (_isBusy == value)
+                    return;
+                _isBusy = value;
+                OnPropertyChanged(() => IsBusy);
+            }
+        }
 
         public void Initialize(OrderDto orderDto)
         {
@@ -51,15 +66,31 @@ namespace Germadent.Rma.App.ViewModels
             return _order.DataFileName != null;
         }
 
-        private void DownloadDataFileCommandHandler()
+        private async void DownloadDataFileCommandHandler()
         {
-            var fileDto = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId);
-
             var filter = "Все файлы (*.*)|*.*";
             if (_dialogAgent.ShowSaveFileDialog(filter, GetFileNameByWorkOrder(_order), out var fileName) == false)
                 return;
 
-            _fileManager.Save(fileDto.Data, fileName);
+            IsBusy = true;
+
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    using (var data = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId))
+                    {
+                        using (var fileStream = data.GetFileStream())
+                        {
+                            _fileManager.Save(fileStream, fileName);
+                        }
+                    }
+                });
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private string GetFileNameByWorkOrder(OrderDto order)

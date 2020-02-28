@@ -9,6 +9,8 @@ namespace Germadent.Rma.App.ViewModels
 
         ICommand DownloadFileCommand { get; }
 
+        bool IsBusy { get; }
+
         void Initialize(OrderDto orderDto);
 
         void AssemblyOrder(OrderDto orderDto);
