@@ -48,6 +48,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public void Initialize(OrderDto orderDto)
         {
+            _fileName = null;
             _order = orderDto;
         }
 
