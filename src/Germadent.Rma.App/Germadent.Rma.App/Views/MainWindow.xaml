@@ -11,7 +11,7 @@
         MinWidth="1024"
         Width="1024"
         MinHeight="600"
-        Height="600"
+        Height="800"
         WindowStartupLocation="CenterScreen"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
@@ -113,7 +113,7 @@
                                     Binding="{Binding Model.CustomerName}"/>
                 <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
                                     Binding="{Binding Model.PatientFnp}"/>
-                <DataGridTextColumn Header="Доктор" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
                                     Binding="{Binding Model.DoctorFullName}"/>
                 <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>

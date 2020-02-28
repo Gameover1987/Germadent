@@ -7,7 +7,7 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
-             d:DesignHeight="600"
+             d:DesignHeight="800"
              d:DataContext="{d:DesignInstance Type=designMock:DesingMockMillingCenterProjectWizardStepViewModel, IsDesignTimeCreatable=False}">
     <Grid>
         <Grid.Resources>
@@ -35,7 +35,8 @@
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Доп. информация" />
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AdditionalMillingInfo}" Margin="6,6,0,0" />
-
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Цвет каркаса"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="6,6,0,0" Text="{Binding CarcassColor, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Система имплантов и размер" VerticalAlignment="Top" Margin="0,7,0,0"/>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" MaxLines="2" MinLines="2" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
@@ -47,8 +48,7 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
                  Text="{Binding IndividualAbutmentProcessing, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Цвет каркаса"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Margin="6,6,0,0" Text="{Binding CarcassColor, UpdateSourceTrigger=PropertyChanged}"/>
+
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Докомплектовать заказ" />
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Understaff}" Margin="6,6,0,0" />
         <TextBlock Grid.Row="5" Grid.Column="0" Text="Артикул материала" />
