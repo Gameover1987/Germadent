@@ -186,8 +186,8 @@ namespace Germadent.Rma.App.ViewModels
         {
             if (_dialogAgent.ShowMessageDialog("После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
-            _rmaOperations.CloseOrder(SelectedOrder.Model.WorkOrderId);
-            //SelectedOrder.Model.Closed = DateTime.Now;
+            var order = _rmaOperations.CloseOrder(SelectedOrder.Model.WorkOrderId);
+            SelectedOrder.Update(order.ToOrderLite());
         }
 
         private bool CanPrintOrderCommandHandler()

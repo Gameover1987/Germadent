@@ -126,12 +126,19 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            var client = new RestClient();
-            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id));
-            restRequest.RequestFormat = DataFormat.Json;
-            //restRequest.AddBody(order.SerializeToJson());
-            var response = client.Execute(restRequest, Method.POST);
-            return response.Content.DeserializeFromJson<OrderDto>();
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id);
+            using (var response = _client.GetAsync(apiUrl).Result)
+            {
+                var aaa = response.Content.ReadAsStringAsync().Result;
+                return null;
+            }
+
+            //var client = new RestClient();
+            //IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id));
+            //restRequest.RequestFormat = DataFormat.Json;
+            ////restRequest.AddBody(order.SerializeToJson());
+            //var response = client.Execute(restRequest, Method.POST);
+            //return response.Content.DeserializeFromJson<OrderDto>();
         }
 
         public TransparencesDto[] GetTransparences()

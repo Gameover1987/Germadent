@@ -188,6 +188,8 @@ namespace Germadent.DataAccessService.Repository
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+
+                    command.ExecuteNonQuery();
                 }
             }
         }
