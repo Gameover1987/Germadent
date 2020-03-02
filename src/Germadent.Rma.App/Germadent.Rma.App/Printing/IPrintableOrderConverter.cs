@@ -62,7 +62,7 @@ namespace Germadent.Rma.App.Printing
             var builder = new StringBuilder();
             foreach (var description in descriptions)
             {
-                builder.AppendLine(description);
+                builder.AppendLine(description + ";    ");
             }
 
             var result = builder.ToString();

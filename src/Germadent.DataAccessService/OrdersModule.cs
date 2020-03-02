@@ -28,6 +28,7 @@ namespace Germadent.DataAccessService
             Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
             Post["/addOrder"] = x => AddOrder();
             Post["/updateOrder"] = x => UpdateOrder();
+            Post["/closeOrder"] = x => CloseOrder(x);
 
             Get["/prostheticConditions"] = x => GetProstheticConditions();
             Get["/prostheticTypes"] = x => GetProstheticTypes();
@@ -92,6 +93,16 @@ namespace Germadent.DataAccessService
                 var order = GetFromRequestBody();
                 var stream = GetFileFromRequest();
                 _rmaRepository.UpdateOrder(order, stream);
+                return Response.AsJson(order);
+            });
+        }
+        private object CloseOrder(dynamic arg)
+        {
+            return ExecuteWithLogging(() =>
+            {
+                var id = (int)int.Parse(arg.id.ToString());
+                var order = GetFromRequestBody();
+                _rmaRepository.CloseOrder(id);
                 return Response.AsJson(order);
             });
         }

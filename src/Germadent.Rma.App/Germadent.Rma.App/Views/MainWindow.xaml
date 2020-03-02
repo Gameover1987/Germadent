@@ -11,7 +11,7 @@
         MinWidth="1024"
         Width="1024"
         MinHeight="600"
-        Height="800"
+        Height="900"
         WindowStartupLocation="CenterScreen"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
@@ -54,7 +54,7 @@
             <Button Content="Редактировать З-Н" Margin="0,6,0,0"
                     Command="{Binding OpenOrderCommand}"/>
             <Button Content="Закрыть З-Н" Margin="0,6,0,0"
-                    Command="{Binding CloseOrderCommand}" Visibility="Hidden"/>
+                    Command="{Binding CloseOrderCommand}"/>
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
         </StackPanel>

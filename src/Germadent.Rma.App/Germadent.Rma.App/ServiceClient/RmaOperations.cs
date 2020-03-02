@@ -124,6 +124,16 @@ namespace Germadent.Rma.App.ServiceClient
             return response.Content.DeserializeFromJson<OrderDto>();
         }
 
+        public OrderDto CloseOrder(int id)
+        {
+            var client = new RestClient();
+            IRestRequest restRequest = new RestRequest(_configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id));
+            restRequest.RequestFormat = DataFormat.Json;
+            //restRequest.AddBody(order.SerializeToJson());
+            var response = client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<OrderDto>();
+        }
+
         public TransparencesDto[] GetTransparences()
         {
             var apiUrl = _configuration.DataServiceUrl + "/api/Rma/transparences";

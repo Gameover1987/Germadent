@@ -6,7 +6,7 @@ namespace Germadent.DataAccessService.Repository
     public interface IRmaRepository
     {
         /// <summary>
-        /// Возвращает заказ наряд по ижентификатору
+        /// Возвращает заказ наряд по идентификатору
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -39,6 +39,12 @@ namespace Germadent.DataAccessService.Repository
         /// <param name="order"></param>
         /// <param name="stream"></param>
         void UpdateOrder(OrderDto order, Stream stream);
+
+        /// <summary>
+        /// Закрывает заказ-наряд по id
+        /// </summary>
+        /// <param name="id"></param>
+        void CloseOrder(int id);
 
         /// <summary>
         /// Возвращает список условий протезирования

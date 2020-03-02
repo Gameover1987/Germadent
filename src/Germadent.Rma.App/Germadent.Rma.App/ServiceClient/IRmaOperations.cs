@@ -16,7 +16,7 @@ namespace Germadent.Rma.App.ServiceClient
         OrderLiteDto[] GetOrders(OrdersFilter filter = null);
 
         /// <summary>
-        /// Поулчить детали по выбранному заказнаряду
+        /// Получить детали по выбранному заказнаряду
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -55,11 +55,18 @@ namespace Germadent.Rma.App.ServiceClient
         OrderDto AddOrder(OrderDto order);
 
         /// <summary>
-        /// Обновить заказнаряд
+        /// Обновить заказ-наряд
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
         OrderDto UpdateOrder(OrderDto order);
+
+        /// <summary>
+        /// Закрыть заказ-наряд
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        OrderDto CloseOrder(int id);
 
         /// <summary>
         /// Получить список прозрачностей
