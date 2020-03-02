@@ -153,5 +153,6 @@ namespace Germadent.Rma.App.ServiceClient
                 return equipments;
             }
         }
+
     }
 }
