@@ -31,7 +31,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 AS
 BEGIN
 	
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 2)
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
 		BEGIN
 			RETURN
 		END

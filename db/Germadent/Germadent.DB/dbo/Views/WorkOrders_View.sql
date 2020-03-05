@@ -1,12 +1,11 @@
 ﻿CREATE VIEW dbo.WorkOrders_View
 AS
-SELECT        wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.CustomerName, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, 
-                         wo.FlagWorkAccept, wo.OfficeAdminID, wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, wdl.DoctorFullName, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, 
-                         wdl.DateOfCompletion, wdl.ColorAndFeatures, wmc.WorkOrderMCID, wmc.TechnicFullName, wmc.TechnicPhone, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, 
-                         wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wdl.PatientGender
-FROM            dbo.WorkOrder AS wo LEFT OUTER JOIN
-                         dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
-                         dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
+SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.CustomerName, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, 
+                wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, wdl.DoctorFullName, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, wmc.WorkOrderMCID, 
+                wmc.TechnicFullName, wmc.TechnicPhone, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wdl.PatientGender
+FROM      dbo.WorkOrder AS wo LEFT OUTER JOIN
+                dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
+                dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
 
@@ -79,7 +78,7 @@ Begin DesignProperties =
    End
    Begin DiagramPane = 
       Begin Origin = 
-         Top = -314
+         Top = 0
          Left = 0
       End
       Begin Tables = 
@@ -87,7 +86,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 38
-               Bottom = 328
+               Bottom = 427
                Right = 237
             End
             DisplayFlags = 280
@@ -97,7 +96,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 0
                Left = 301
-               Bottom = 203
+               Bottom = 226
                Right = 490
             End
             DisplayFlags = 280
@@ -105,10 +104,10 @@ Begin DesignProperties =
          End
          Begin Table = "wmc"
             Begin Extent = 
-               Top = 222
-               Left = 297
-               Bottom = 426
-               Right = 538
+               Top = 269
+               Left = 289
+               Bottom = 497
+               Right = 530
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -124,15 +123,15 @@ Begin DesignProperties =
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -144,4 +143,12 @@ End
 
 
 
+
+
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[WorkOrders_View] TO [gdl_user]
+    AS [dbo];
 

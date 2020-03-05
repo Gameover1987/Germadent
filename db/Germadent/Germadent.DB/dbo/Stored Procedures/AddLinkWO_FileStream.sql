@@ -17,7 +17,7 @@ BEGIN
 	DECLARE @streamId uniqueidentifier
 
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 2)
+	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
 		BEGIN
 			RETURN
 		END

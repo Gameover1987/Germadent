@@ -10,3 +10,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ResponsiblePersons]
+    ON [dbo].[ResponsiblePersons]([CustomerID] ASC);
+

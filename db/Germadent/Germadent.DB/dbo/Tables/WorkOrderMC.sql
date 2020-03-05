@@ -8,8 +8,10 @@
     [IndividualAbutmentProcessing] NVARCHAR (80)  NULL,
     [Understaff]                   NVARCHAR (100) NULL,
     CONSTRAINT [PK_WorkOrderMC] PRIMARY KEY CLUSTERED ([WorkOrderMCID] ASC),
-    CONSTRAINT [FK_WorkOrderMC_WorkOrder] FOREIGN KEY ([WorkOrderMCID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
+    CONSTRAINT [FK_WorkOrderMC_WorkOrder] FOREIGN KEY ([WorkOrderMCID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
 
 
 

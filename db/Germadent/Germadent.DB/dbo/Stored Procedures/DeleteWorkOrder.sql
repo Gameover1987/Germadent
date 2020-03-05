@@ -17,30 +17,6 @@ BEGIN
 
 	IF @woStatus = 0
 			BEGIN
-				DELETE
-				FROM AdditionalEquipment
-				WHERE WorkOrderID = @workOrderId
-
-				DELETE
-				FROM LinksFileStreams
-				WHERE WorkOrderID = @workOrderId
-				
-				DELETE
-				FROM ToothCard
-				WHERE WorkOrderID = @workOrderId
-
-				DELETE
-				FROM QualitAttributesSet
-				WHERE WorkOrderID = @workOrderId
-				
-				DELETE
-				FROM WorkOrderDL
-				WHERE WorkOrderDLID = @workOrderId
-
-				DELETE
-				FROM WorkOrderMC
-				WHERE WorkOrderMCID = @workOrderId
-
 				DELETE 
 				FROM WorkOrder
 				WHERE WorkOrderID = @workOrderId
@@ -50,6 +26,10 @@ BEGIN
 				SET Status = -1
 				WHERE WorkOrderID = @workOrderId
 	
+	--UPDATE StlAndPhotos
+	--SET file_stream = CONVERT(varbinary(max), '0')
+	--WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
+
 	DELETE
 	FROM StlAndPhotos 
 	WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
