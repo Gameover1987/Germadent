@@ -129,8 +129,8 @@ namespace Germadent.Rma.App.ServiceClient
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id);
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var aaa = response.Content.ReadAsStringAsync().Result;
-                return null;
+                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
+                return order;
             }
 
             //var client = new RestClient();
