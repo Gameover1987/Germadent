@@ -52,17 +52,25 @@
     <Compile Include="Commands\ExceptionEventArgs.cs" />
     <Compile Include="Commands\IDelegateCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Controls\BusyIndicator.xaml.cs">
+      <DependentUpon>BusyIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SearchComboBox.xaml.cs">
+      <DependentUpon>SearchComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToInvisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringConverterBase.cs" />
     <Compile Include="Converters\EnumToBoolConverter.cs" />
     <Compile Include="Converters\EnumToInvisibilityConverter.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
+    <Compile Include="Converters\IntToBoolConverter.cs" />
     <Compile Include="Helpers\EventManagerEx.cs" />
     <Compile Include="Helpers\FocusProperties.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\TextBoxProperties.cs" />
     <Compile Include="Helpers\UiSearchHelper.cs" />
+    <Compile Include="Helpers\WindowCloseHelper.cs" />
     <Compile Include="Helpers\WindowProperties.cs" />
     <Compile Include="Infrastructure\IDispatcher.cs" />
     <Compile Include="Infrastructure\IShowDialogAgent.cs" />
@@ -90,6 +98,10 @@
     <Compile Include="ViewModels\ErrorMessageViewModel.cs" />
     <Compile Include="ViewModels\IAboutViewModel.cs" />
     <Compile Include="ViewModels\IAuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\Validation\IValidationSupportableViewModel.cs" />
+    <Compile Include="ViewModels\Validation\PropertyValidation.cs" />
+    <Compile Include="ViewModels\Validation\ValidationRule.cs" />
+    <Compile Include="ViewModels\Validation\ValidationSupportableViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
@@ -118,6 +130,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\BusyIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SearchComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Theme\ButtonDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -137,6 +157,10 @@
     <Page Include="Theme\DatePickerDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\ISBorderDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Theme\ListBoxDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>

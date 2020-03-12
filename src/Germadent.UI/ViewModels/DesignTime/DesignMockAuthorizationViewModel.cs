@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Media.Imaging;
-
-namespace Germadent.UI.ViewModels.DesignTime
+﻿namespace Germadent.UI.ViewModels.DesignTime
 {
 	internal class DesignMockAuthorizationViewModel : AuthorizationViewModelBase
 	{

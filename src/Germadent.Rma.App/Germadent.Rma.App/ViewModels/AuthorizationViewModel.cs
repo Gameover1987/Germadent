@@ -2,20 +2,21 @@
 using Germadent.UI.ViewModels;
 using System;
 using System.Windows.Media.Imaging;
-using Germadent.Rma.App.Model;
 using Germadent.Common;
 using Germadent.Rma.App.Properties;
+using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.ViewModels
 {
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaAuthorizer _authorizer;
 
-        public AuthorizationViewModel(IShowDialogAgent agent, IRmaOperations rmaOperations)
+        public AuthorizationViewModel(IShowDialogAgent agent, IRmaAuthorizer authorizer)
             : base(agent)
         {
-            _rmaOperations = rmaOperations;
+            _authorizer = authorizer;
+            
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
         }
@@ -38,7 +39,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             try
             {
-                _rmaOperations.Authorize(UserName, Password);
+                _authorizer.Authorize(UserName, Password);
             }
             catch (Exception e)
             {

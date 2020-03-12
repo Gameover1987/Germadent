@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -45,7 +43,7 @@ using System.Windows;
 //
 //      Major Version
 //      Minor Version
-//      Build Number
+//      Build DocNumber
 //      Revision
 //
 // You can specify all the values or you can default the Build and Revision Numbers

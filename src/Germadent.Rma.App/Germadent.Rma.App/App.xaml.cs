@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Windows;
-using Germadent.Rma.App.Model;
+using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
+using Germadent.Rma.App.Configuration;
+using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.Printing.TemplateProcessing;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.ToothCard;
+using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
+using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
-using Germadent.UI.Windows;
 using Unity;
 using Unity.Lifetime;
 
@@ -16,27 +24,37 @@ namespace Germadent.Rma.App
     public partial class App : Application
     {
         private readonly IUnityContainer _container;
+        private readonly IConfiguration _configuration;
 
         public App()
         {
             _container = new UnityContainer();
 
+            _configuration = new RmaConfiguration();
+            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
+
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
-
-            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
-
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+
+            FillContainer();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            DelegateCommand.CommandException += CommandException;
+
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
-            var authorizationViewModel = new AuthorizationViewModel(
-                dialogAgent,                
-                _container.Resolve<IRmaOperations>());
-            var authorized = dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+            var authorizationViewModel = new AuthorizationViewModel(dialogAgent, _container.Resolve<IRmaAuthorizer>());
+            bool? authorized = true;
+            if (_configuration.WorkMode == WorkMode.Mock)
+            {
+                authorized = true;
+            }
+            else
+            {
+                //authorized = dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
+            }
+
             if (authorized == true)
             {
                 MainWindow = new MainWindow();
@@ -48,6 +66,61 @@ namespace Germadent.Rma.App
             {
                 Current.Shutdown(0);
             }
+        }
+
+        private void FillContainer()
+        {
+            if (_configuration.WorkMode == WorkMode.Server)
+            {
+                RegisterServiceComponents();
+            }
+            else
+            {
+                _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
+            }
+
+            RegisterViewModels();
+            RegisterCommonComponents();
+            RegisterPrintModule();
+        }
+
+        private void RegisterViewModels()
+        {
+            _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrderFilesContainerViewModel, OrderFilesContainerViewModel>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterCommonComponents()
+        {
+            _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterServiceComponents()
+        {
+            _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterPrintModule()
+        {
+            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(
+                new ContainerControlledLifetimeManager());
+        }
+
+        private void CommandException(object sender, ExceptionEventArgs e)
+        {
+            var dialogAgent = _container.Resolve<IShowDialogAgent>();
+            dialogAgent.ShowErrorMessageDialog(e.Exception.Message, e.Exception.StackTrace);
         }
 
         private void MainWindowOnClosed(object sender, EventArgs e)

@@ -191,7 +191,7 @@ namespace Germadent.UI.ViewModels
             return result;
         }
 
-        private void OnPropertyChangedImpl(string propertyName)
+        protected void OnPropertyChangedImpl(string propertyName)
         {
             if (Thread.CurrentThread.ManagedThreadId == _mainThreadId)
                 RaisePropertyChangedEvent(propertyName);

@@ -3,40 +3,129 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Germadent.Rma.App"
         xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+        xmlns:designmock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.AppTitle}" 
-        MinWidth="800"
-        Width="800"
+        MinWidth="1024"
+        Width="1024"
         MinHeight="600"
-        Height="600"
+        Height="900"
         WindowStartupLocation="CenterScreen"
-        Background="{x:Static SystemColors.ControlBrush}">
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
+        DataContextChanged="MainWindow_OnDataContextChanged"
+        FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="3,3,3,3"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Vertical">
-            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10"/>
-            <Button Content="Ферезерный центр" Margin="0,6,0,0"/>
-            <Button Content="Лаборатория" Margin="0,6,0,0"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0"
+                                     LabelText="Поиск заказ-нарядов" 
+                                     SearchEventTimeDelay="00:00:3"
+                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Text="Работа с данными" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
-            <Button Content="Фильтр" Margin="0,6,0,0"/>
-            <Button Content="Экспорт" Margin="0,6,0,0"/>
+
+            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
+            <Button Content="Лаборатория" Margin="0,6,0,0"
+                    Command="{Binding CreateLabOrderCommand}"/>
+            <Button Content="Фрезерный центр" Margin="0,6,0,0"
+                    Command="{Binding CreateMillingCenterOrderCommand}"/>
+
+            <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
+            <Button Content="Настроить фильтр" Margin="0,6,0,0"
+                    Command="{Binding FilterOrdersCommand}"/>
+            <Button Content="Редактировать З-Н" Margin="0,6,0,0"
+                    Command="{Binding OpenOrderCommand}"/>
+            <Button Content="Закрыть З-Н" Margin="0,6,0,0"
+                    Command="{Binding CloseOrderCommand}"/>
+            <Button Content="Распечатать З-Н" Margin="0,6,0,0"
+                    Command="{Binding PrintOrderCommand}"/>
         </StackPanel>
 
-        <DataGrid Grid.Column="1" Margin="6,0,0,0">
+        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"	
+                  AlternationCount="2"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Orders}"
+                  SelectedItem="{Binding SelectedOrder}"
+                  SelectionChanged="OrdersGrid_OnSelectionChanged">
+            <DataGrid.InputBindings>
+                <KeyBinding Command="{Binding OpenOrderCommand}"
+                            Key="Enter"/>
+                <KeyBinding Command="{Binding PrintOrderCommand}"
+                            Key="P" Modifiers="Control"/>
+                <KeyBinding Command="{Binding PrintOrderCommand}"
+                            Key="C" Modifiers="Control+Shift"/>
+            </DataGrid.InputBindings>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
+                                          InputGestureText="Enter"/>
+                                <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
+                                          InputGestureText="Ctrl+P"/>
+                                <Separator/>
+                                <MenuItem Header="Закрыть" Command="{Binding CloseOrderCommand}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" MinWidth="100"/>
-                <DataGridTextColumn Header="Сотрудник" Width="*"/>
-                <DataGridTextColumn Header="Заказчик" Width="*"/>
-                <DataGridTextColumn Header="Пациент" Width="*"/>
-                <DataGridTextColumn Header="Материал" Width="*"/>
+                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto" 
+                                    Binding="{Binding Model.DocNumber}"/>
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
+                                    Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
+                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"  Width="Auto"
+                                    Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                                    Binding="{Binding Model.CustomerName}"/>
+                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                                    Binding="{Binding Model.PatientFnp}"/>
+                <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                                    Binding="{Binding Model.DoctorFullName}"/>
+                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
+                                    Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <controls:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,3,0,0">
+            <TextBlock Text="Записей:"/>
+            <TextBlock Text="{Binding Orders.Count}" Margin="3,0,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>

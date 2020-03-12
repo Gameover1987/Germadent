@@ -1,0 +1,113 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.OrdersFilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
+        mc:Ignorable="d"
+        Title="Настройки фильтра заказ-нарядов"
+        ShowInTaskbar="False"
+        MinHeight="500"
+        Height="500"
+        MinWidth="500"
+        Width="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockOrdersFilterViewModel, IsDesignTimeCreatable=True}"
+        helpers:WindowCloseHelper.CloseKey="Escape"
+        DataContextChanged="OrdersFilterWindow_OnDataContextChanged">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" 
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolToInvisibilityConverter}}">
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Margin" Value="0,6,0,0"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Подразделение" VerticalAlignment="Top" Margin="0"/>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="6,0,0,0">
+                <CheckBox Content="Фрезерный центр" IsChecked="{Binding MillingCenter}"/>
+                <CheckBox Content="Лаборатория" IsChecked="{Binding Laboratory}" Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Период" Margin="0,6,0,0"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Orientation="Horizontal">
+                <DatePicker Margin="0,0,0,0" Width="100"
+                            SelectedDate="{Binding PeriodBegin}"/>
+                <TextBlock Text="—" Margin="3,0,0,0"/>
+                <DatePicker Margin="3,0,0,0" Width="100"
+                            SelectedDate="{Binding PeriodEnd}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="2" Text="Заказчик"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Customer}"/>
+
+            <TextBlock Grid.Row="3" Text="Сотрудник"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Employee}"/>
+
+            <TextBlock Grid.Row="4" Text="Пациент"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Patient}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding Materials}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
+                        <Grid>
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.MaterialName}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,0"
+                    Visibility="{Binding IsValid, Converter={StaticResource BoolToInvisibilityConverter}, ConverterParameter='Hidden'}">
+            <Path Width="14" Height="14" Stretch="Fill" Data="{StaticResource InfoButtonGeometry}" Fill="Gray"/>
+            <TextBlock Grid.Row="1" Text="{Binding LastError}" Margin="3,0,0,0"/>
+        </StackPanel>
+
+        <Separator Grid.Row="2" Margin="-12,12,-12,12"/>
+
+        <controls:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, Delay=200, IsAsync=True}"/>
+
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Content="OK" Width="100" helpers:WindowCloseHelper.DialogResult="True"
+                    Command="{Binding OKCommand}"
+                    IsDefault="True"/>
+            <Button Content="Отмена" Width="100" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"
+                    IsCancel="False"/>
+        </StackPanel>
+    </Grid>
+</Window>

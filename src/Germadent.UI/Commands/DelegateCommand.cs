@@ -28,7 +28,7 @@ namespace Germadent.UI.Commands
         {
             if (exceptionAction == null) throw new ArgumentNullException(nameof(exceptionAction));
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
+            _canExecute = canExecute;
             _exceptionAction = exceptionAction ?? DefaultExceptionHandler;
         }
 
