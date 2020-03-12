@@ -48,3 +48,13 @@ src/Germadent.UI/obj/
 src/Germadent.Common/obj/
 src/packages/
 >>>>>>> 54c7390ededdec3c52f8c2e46d499fb4aedd95f7
+src/.idea/
+src/Germadent.DataAccessService/bin/
+src/Germadent.Rma.App.Test/bin/
+src/Germadent.Rma.Model.Test/bin/
+src/Germadent.Rma.Model/bin/
+src/Germadent.Rma.Model.Test/obj/
+src/Germadent.Rma.App.Test/obj/
+src/Germadent.DataAccessService/obj/
+src/Germadent.Rma.Model/obj/
+src/.vs/Germadent/v16/
