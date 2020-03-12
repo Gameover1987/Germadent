@@ -34,6 +34,13 @@
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource StlnListBoxStyle}"/>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
             <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource StlnDatePickerStyle}"/>
+            <Style TargetType="{x:Type TextBlock}">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.6"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
            
         </ResourceDictionary>
     </Application.Resources>

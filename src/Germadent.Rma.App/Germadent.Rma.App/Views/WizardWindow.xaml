@@ -9,6 +9,7 @@
         xmlns:usercontrols="clr-namespace:Germadent.Rma.App.Views.UserControls"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
+        xmlns:views="clr-namespace:Germadent.Rma.App.Views"
         mc:Ignorable="d"
         Title="{Binding Title}"
         ShowInTaskbar="False"
@@ -55,7 +56,17 @@
             <TextBlock Text="{Binding CurrentStep.DisplayName}" Margin="6,12,12,12" FontSize="14"/>
         </Border>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentStep}" Background="Red" Margin="0,12,0,12"/>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentStep}" Background="Red" Margin="0,12,0,12">
+            <ContentControl.Style>
+                <Style TargetType="{x:Type ContentControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WizardMode}" Value="{x:Static views:WizardMode.View}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
         <Separator Grid.Row="2" Margin="-12,12,-12,12"/>
 

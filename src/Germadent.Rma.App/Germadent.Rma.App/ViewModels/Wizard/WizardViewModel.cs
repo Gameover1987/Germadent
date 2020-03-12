@@ -70,6 +70,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ICommand SaveCommand { get; }
 
+        public bool IsReadOnly
+        {
+            get { return WizardMode == WizardMode.View; }
+        }
+
         public bool PrintAfterSave { get; set; }
 
         private bool CanBackCommandHandler()
@@ -97,6 +102,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanSaveAndPrintCommandHandler()
         {
+            if (IsReadOnly)
+                return false;
+
             return Steps.All(x => x.IsValid);
         }
 
@@ -110,6 +118,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanSaveCommandHandler()
         {
+            if (IsReadOnly)
+                return false;
+
             return Steps.All(x => x.IsValid);
         }
 
@@ -141,6 +152,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             else if (wizardMode == WizardMode.Edit)
             {
                 Title = $"Редактирование данных заказ наряда №'{order.DocNumber}' для {branchName}";
+            }
+            else if (wizardMode == WizardMode.View)
+            {
+                Title = $"Просмотр данных заказ наряда №'{order.DocNumber}' для {branchName}";
             }
 
             _order = order;

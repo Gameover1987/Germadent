@@ -210,13 +210,14 @@ namespace Germadent.Rma.App.ViewModels
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
             var orderDto = _rmaOperations.GetOrderDetails(orderLiteViewModel.Model.WorkOrderId);
+            var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
             if (orderDto.BranchType == BranchType.Laboratory)
             {
-                changedOrderDto = _windowManager.CreateLabOrder(orderDto, WizardMode.Edit);
+                changedOrderDto = _windowManager.CreateLabOrder(orderDto, wizardMode);
             }
             else if (orderDto.BranchType == BranchType.MillingCenter)
             {
-                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto, WizardMode.Edit);
+                changedOrderDto = _windowManager.CreateMillingCenterOrder(orderDto, wizardMode);
             }
 
             if (changedOrderDto == null)
