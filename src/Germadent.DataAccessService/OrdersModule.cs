@@ -101,8 +101,7 @@ namespace Germadent.DataAccessService
             return ExecuteWithLogging(() =>
             {
                 var id = (int)int.Parse(arg.id.ToString());
-                var order = GetFromRequestBody();
-                _rmaRepository.CloseOrder(id);
+                var order =_rmaRepository.CloseOrder(id);
                 return Response.AsJson(order);
             });
         }

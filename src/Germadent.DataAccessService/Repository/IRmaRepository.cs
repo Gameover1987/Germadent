@@ -44,7 +44,7 @@ namespace Germadent.DataAccessService.Repository
         /// Закрывает заказ-наряд по id
         /// </summary>
         /// <param name="id"></param>
-        void CloseOrder(int id);
+        OrderDto CloseOrder(int id);
 
         /// <summary>
         /// Возвращает список условий протезирования
