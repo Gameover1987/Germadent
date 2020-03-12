@@ -181,5 +181,10 @@ namespace Germadent.Rma.App.Mocks
         {
             return GetMaterials().Select(x => new EquipmentDto { Id = x.Id, Name = x.MaterialName }).ToArray();
         }
+
+        public OrderDto CloseOrder(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -178,6 +178,24 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
+        public OrderDto CloseOrder(int id)
+        {
+            var cmdText = "CloseWorkOrder";
+            using(var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = id;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            var orderDto = GetWorkOrderById(id);
+            return orderDto;
+        }
+
         private void SaveOrderDataFile(OrderDto order, SqlConnection connection, Stream stream)
         {
             if (stream == null)
