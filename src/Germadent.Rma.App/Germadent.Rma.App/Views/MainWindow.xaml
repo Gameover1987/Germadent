@@ -95,6 +95,7 @@
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
                                           InputGestureText="Ctrl+P"/>
+                                <MenuItem Header="Копировать в Excel" Command="{Binding CopyOrderToClipboardCommand}"/>
                                 <Separator/>
                                 <MenuItem Header="Закрыть" Command="{Binding CloseOrderCommand}"/>
                             </ContextMenu>

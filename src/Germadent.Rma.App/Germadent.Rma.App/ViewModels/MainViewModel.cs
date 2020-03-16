@@ -45,6 +45,7 @@ namespace Germadent.Rma.App.ViewModels
             CloseOrderCommand = new DelegateCommand(x => CloseOrderCommandHandler(), x => CanCloseOrderCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
+            CopyOrderToClipboardCommand = new DelegateCommand(x => CopyOrderToClipboardCommandHandler());
 
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
@@ -91,6 +92,8 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand PrintOrderCommand { get; }
 
         public IDelegateCommand OpenOrderCommand { get; }
+
+        public IDelegateCommand CopyOrderToClipboardCommand { get; }
 
         public string SearchString
         {
@@ -224,6 +227,12 @@ namespace Germadent.Rma.App.ViewModels
                 return;
             
             orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
+        }
+
+        private void CopyOrderToClipboardCommandHandler()
+        {
+            var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
+            Clipboard.SetText(string.Concat(orderDto.Created, "\t", orderDto.DocNumber, "\t", orderDto.Customer, "\t", "\t", orderDto.Patient,"\t", "\t", orderDto.MaterialsStr, "\t", orderDto.ColorAndFeatures, "\t", "\t", "\t", "\t", "\t", orderDto.ProstheticArticul));
         }
     }
 }
