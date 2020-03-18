@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json.Linq;
 
-namespace Germadent.Rma.App.Printing.TemplateProcessing
+namespace Germadent.Rma.App.Reporting.TemplateProcessing
 {
     public class WordJsonAssembler : IWordAssembler
     {

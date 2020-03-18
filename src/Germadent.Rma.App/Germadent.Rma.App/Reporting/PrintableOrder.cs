@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Germadent.Rma.App.Printing
+namespace Germadent.Rma.App.Reporting
 {
     /// <summary>
     /// Подготовленные данные для печати заказ-нарядов

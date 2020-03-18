@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Germadent.Rma.App.Printing.TemplateProcessing
+namespace Germadent.Rma.App.Reporting.TemplateProcessing
 {
     public static class WordXmlPartAssembler
     {

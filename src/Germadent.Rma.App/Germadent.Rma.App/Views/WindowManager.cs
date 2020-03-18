@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.App.Printing;
+﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;

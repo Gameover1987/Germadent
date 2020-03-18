@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DesignTimeViewModelsTest.cs" />
+    <Compile Include="MainViewModelTest.cs" />
     <Compile Include="PrintableOrderConverterTest.cs" />
     <Compile Include="ToothCardViewModelTest.cs" />
     <Compile Include="ToothViewModelTest.cs" />

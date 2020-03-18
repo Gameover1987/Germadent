@@ -2,11 +2,11 @@
 using System.IO;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
-using Germadent.Rma.App.Printing.TemplateProcessing;
+using Germadent.Rma.App.Reporting.TemplateProcessing;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
-namespace Germadent.Rma.App.Printing
+namespace Germadent.Rma.App.Reporting
 {
     public class PrintModule : IPrintModule
     {

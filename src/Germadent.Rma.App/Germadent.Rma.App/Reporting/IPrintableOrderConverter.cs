@@ -5,7 +5,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 
-namespace Germadent.Rma.App.Printing
+namespace Germadent.Rma.App.Reporting
 {
     public interface IPrintableOrderConverter
     {

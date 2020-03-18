@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Germadent.Rma.App.Printing.TemplateProcessing
+namespace Germadent.Rma.App.Reporting.TemplateProcessing
 {
 	public static class Wrd
 	{

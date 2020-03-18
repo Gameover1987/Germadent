@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
@@ -23,19 +23,26 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
+        private readonly IClipboardWorks _clipboard;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
 
         private ICollectionView _collectionView;
 
-        public MainViewModel(IRmaOperations rmaOperations, IWindowManager windowManager, IShowDialogAgent dialogAgent, IPrintModule printModule, ILogger logger)
+        public MainViewModel(IRmaOperations rmaOperations,
+            IWindowManager windowManager,
+            IShowDialogAgent dialogAgent,
+            IPrintModule printModule,
+            ILogger logger,
+            IClipboardWorks clipboard)
         {
             _rmaOperations = rmaOperations;
             _windowManager = windowManager;
             _dialogAgent = dialogAgent;
             _printModule = printModule;
             _logger = logger;
+            _clipboard = clipboard;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -232,7 +239,8 @@ namespace Germadent.Rma.App.ViewModels
         private void CopyOrderToClipboardCommandHandler()
         {
             var orderId = SelectedOrder.Model.WorkOrderId;
-            Clipboard.SetText(_rmaOperations.CopyToClipboard(orderId));
+            var data = _rmaOperations.CopyToClipboard(orderId);
+            _clipboard.CopyToClipboard(data);
         }
     }
 }

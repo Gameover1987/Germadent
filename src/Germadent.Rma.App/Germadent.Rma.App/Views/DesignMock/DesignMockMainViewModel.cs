@@ -1,7 +1,7 @@
 ﻿using System;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Printing;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.Model;
 
@@ -10,7 +10,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockRmaOperations(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockPrintModule(), new MockLogger())
+            : base(new DesignMockRmaOperations(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockPrintModule(), new MockLogger(), new ClipboardWorks())
         {
         }
     }
