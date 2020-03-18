@@ -39,6 +39,7 @@
     <Compile Include="AdditionalEquipmentDto.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EquipmentDto.cs" />
+    <Compile Include="ExcelDto.cs" />
     <Compile Include="FileDto.cs" />
     <Compile Include="MaterialDto.cs" />
     <Compile Include="OrderDto.cs" />

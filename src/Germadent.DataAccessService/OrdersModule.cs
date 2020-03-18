@@ -35,6 +35,7 @@ namespace Germadent.DataAccessService
             Get["/materials"] = x => GetMaterials();
             Get["/transparences"] = x => GetTranparences();
             Get["/equipments"] = x => GetEquipments();
+            Get["/excel/{id}"] = x => GetExcel(x);
         }
 
         private object GetOrderById(dynamic arg)
@@ -103,6 +104,15 @@ namespace Germadent.DataAccessService
                 var id = (int)int.Parse(arg.id.ToString());
                 var order =_rmaRepository.CloseOrder(id);
                 return Response.AsJson(order);
+            });
+        }
+
+        private object GetExcel(dynamic arg)
+        {
+            return ExecuteWithLogging(() =>
+            {
+                var id = (int)int.Parse(arg.id.ToString());
+                return Response.AsJson(_rmaRepository.GetExcelDto(id));
             });
         }
 

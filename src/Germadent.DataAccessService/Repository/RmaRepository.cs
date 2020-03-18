@@ -723,5 +723,36 @@ namespace Germadent.DataAccessService.Repository
                 }
             }
         }
+        public ExcelDto GetExcelDto (int id)
+        {
+            var orderDto = GetWorkOrderById(id);
+
+            var toothCard = GetToothCard(id);
+
+            var prosthetics = from p in toothCard
+                              select p.ProstheticsName;
+            var uniqList = prosthetics.Distinct().ToArray();
+
+            var additionalEquipment = orderDto.AdditionalEquipment;
+            var equipments = (from ae in additionalEquipment
+                              select ae.EquipmentName).ToArray();
+
+            var entity = new ExcelEntity
+            {
+                Created = orderDto.Created,
+                DocNumber = orderDto.DocNumber,
+                Customer = orderDto.Customer,
+                EquipmentSubstring = string.Join("; ", equipments),
+                Patient = orderDto.Patient,
+                ProstheticSubstring = string.Join("; ", uniqList),
+                MaterialsStr = orderDto.MaterialsStr,
+                ColorAndFeatures = orderDto.ColorAndFeatures,
+                Quantity = prosthetics.Count(),
+                ProstheticArticul = orderDto.ProstheticArticul
+            };
+            var excelDto = _converter.ConvertToExcel(entity);
+            
+            return excelDto;
+        }
     }
 }

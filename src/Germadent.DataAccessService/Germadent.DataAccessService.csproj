@@ -77,6 +77,7 @@
     <Compile Include="Entities\Conversion\EntityToDtoConverter.cs" />
     <Compile Include="Entities\DataFileAttributes.cs" />
     <Compile Include="Entities\EquipmentEntity.cs" />
+    <Compile Include="Entities\ExcelEntity.cs" />
     <Compile Include="Entities\MaterialEntity.cs" />
     <Compile Include="Entities\OrderEntity.cs" />
     <Compile Include="Entities\OrderEntity.Laboratory.cs" />

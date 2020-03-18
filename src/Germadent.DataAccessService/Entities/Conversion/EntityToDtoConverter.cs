@@ -133,5 +133,22 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Quantity = entity.Quantity
             };
         }
+
+        public ExcelDto ConvertToExcel(ExcelEntity entity)
+        {
+            return new ExcelDto
+            {
+                Created = entity.Created,
+                DocNumber = entity.DocNumber,
+                Customer = entity.Customer,
+                EquipmentSubstring = entity.EquipmentSubstring,
+                Patient = entity.Patient,
+                ProstheticSubstring = entity.ProstheticSubstring,
+                MaterialsStr = entity.MaterialsStr,
+                ColorAndFeatures = entity.ColorAndFeatures,
+                Quantity = entity.Quantity,
+                ProstheticArticul = entity.ProstheticArticul
+            };
+        }
     }
 }

@@ -186,5 +186,15 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public string CopyToClipboard(OrderDto orderDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string CopyToClipboard(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

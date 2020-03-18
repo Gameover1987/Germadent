@@ -79,5 +79,12 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         EquipmentDto[] GetEquipments();
+
+        /// <summary>
+        /// Скопировать данные заказ-наряда в буфер обмена
+        /// </summary>
+        /// <param name="orderDto"></param>
+        /// <returns></returns>
+        string CopyToClipboard(int id);
     }
 }

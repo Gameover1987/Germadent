@@ -21,5 +21,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         EquipmentDto ConvertToEquipment(EquipmentEntity entity);
 
         AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity);
+
+        ExcelDto ConvertToExcel(ExcelEntity entity);
     }
 }

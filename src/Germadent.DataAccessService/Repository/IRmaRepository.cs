@@ -75,5 +75,12 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <returns></returns>
         EquipmentDto[] GetEquipment();
+
+        /// <summary>
+        /// Возвращает список свойств для вставки в Excel
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ExcelDto GetExcelDto(int id);
     }
 }

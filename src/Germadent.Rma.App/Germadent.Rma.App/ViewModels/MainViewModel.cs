@@ -231,8 +231,8 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CopyOrderToClipboardCommandHandler()
         {
-            var orderDto = _rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId);
-            Clipboard.SetText(string.Concat(orderDto.Created, "\t", orderDto.DocNumber, "\t", orderDto.Customer, "\t", "\t", orderDto.Patient,"\t", "\t", orderDto.MaterialsStr, "\t", orderDto.ColorAndFeatures, "\t", "\t", "\t", "\t", "\t", orderDto.ProstheticArticul));
+            var orderId = SelectedOrder.Model.WorkOrderId;
+            Clipboard.SetText(_rmaOperations.CopyToClipboard(orderId));
         }
     }
 }
