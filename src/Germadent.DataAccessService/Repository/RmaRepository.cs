@@ -735,7 +735,8 @@ namespace Germadent.DataAccessService.Repository
 
             var additionalEquipment = orderDto.AdditionalEquipment;
             var equipments = (from ae in additionalEquipment
-                              select ae.EquipmentName).ToArray();
+                                    where ae.EquipmentName == "STL" || ae.EquipmentName == "Слепок" || ae.EquipmentName == "Модель"
+                                    select ae.EquipmentName).ToArray();
 
             var entity = new ExcelEntity
             {

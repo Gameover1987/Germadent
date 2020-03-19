@@ -115,6 +115,7 @@ namespace Germadent.Rma.App
             _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(
                 new ContainerControlledLifetimeManager());
+            _container.RegisterType<IClipboardWorks, ClipboardWorks>(new ContainerControlledLifetimeManager());
         }
 
         private void CommandException(object sender, ExceptionEventArgs e)
