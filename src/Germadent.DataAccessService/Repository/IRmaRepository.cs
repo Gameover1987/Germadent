@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Germadent.Rma.Model;
 
 namespace Germadent.DataAccessService.Repository
@@ -81,6 +82,6 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ExcelDto GetExcelDto(int id);
+        List<ReportListDto> GetReportListDto(int id);
     }
 }

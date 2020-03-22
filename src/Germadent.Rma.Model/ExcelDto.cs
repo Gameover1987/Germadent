@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Germadent.Rma.Model
 {
-    public class ExcelDto
+    public class ReportListDto
     {
         public DateTime Created { get; set; }
         public string DocNumber { get; set; }

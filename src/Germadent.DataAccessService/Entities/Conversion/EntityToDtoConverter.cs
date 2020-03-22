@@ -134,9 +134,9 @@ namespace Germadent.DataAccessService.Entities.Conversion
             };
         }
 
-        public ExcelDto ConvertToExcel(ExcelEntity entity)
+        public ReportListDto ConvertToExcel(ExcelEntity entity)
         {
-            return new ExcelDto
+            return new ReportListDto
             {
                 Created = entity.Created,
                 DocNumber = entity.DocNumber,

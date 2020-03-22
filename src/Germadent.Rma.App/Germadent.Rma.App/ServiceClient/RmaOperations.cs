@@ -161,7 +161,7 @@ namespace Germadent.Rma.App.ServiceClient
             
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ExcelDto>();
+                var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto>();
                 var excelStringToClipboard = string.Concat(excelDto.Created, "\t", excelDto.DocNumber, "\t", excelDto.Customer, "\t", excelDto.EquipmentSubstring, "\t", excelDto.Patient, "\t", excelDto.ProstheticSubstring, "\t", excelDto.MaterialsStr, "\t", excelDto.ColorAndFeatures, "\t", excelDto.Quantity, "\t", "\t", "\t", "\t", excelDto.ProstheticArticul);
                 return excelStringToClipboard;
             }

@@ -112,7 +112,7 @@ namespace Germadent.DataAccessService
             return ExecuteWithLogging(() =>
             {
                 var id = (int)int.Parse(arg.id.ToString());
-                return Response.AsJson(_rmaRepository.GetExcelDto(id));
+                return Response.AsJson(_rmaRepository.GetReportListDto(id));
             });
         }
 
