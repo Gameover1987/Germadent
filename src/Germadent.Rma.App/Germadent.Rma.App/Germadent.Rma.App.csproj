@@ -86,6 +86,7 @@
     <Compile Include="Converters\BranchTypeToStringConverter.cs" />
     <Compile Include="Reporting\ClipboardWorks.cs" />
     <Compile Include="Reporting\IPrintableOrderConverter.cs" />
+    <Compile Include="Reporting\IReporter.cs" />
     <Compile Include="Reporting\PrintableOrder.cs" />
     <Compile Include="Reporting\TemplateProcessing\IWordAssembler.cs" />
     <Compile Include="Reporting\TemplateProcessing\MetaNames.cs" />

@@ -82,6 +82,6 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        List<ReportListDto> GetReportListDto(int id);
+        ReportListDto[] GetWorkReport(int id);
     }
 }

@@ -10,7 +10,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockRmaOperations(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockPrintModule(), new MockLogger(), new ClipboardWorks())
+            : base(new DesignMockRmaOperations(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockPrintModule(), new MockLogger(), new ClipboardReporter(new ClipboardWorks()))
         {
         }
     }

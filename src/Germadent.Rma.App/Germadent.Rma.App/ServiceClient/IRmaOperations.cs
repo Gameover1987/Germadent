@@ -83,8 +83,8 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Скопировать данные заказ-наряда в буфер обмена
         /// </summary>
-        /// <param name="orderDto"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        string CopyToClipboard(int id);
+        ReportListDto[] GetWorkReport(int id);
     }
 }

@@ -155,15 +155,14 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public string CopyToClipboard(int id)
+        public ReportListDto[] GetWorkReport(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/excel/{0}", id);
             
             using (var response = _client.GetAsync(apiUrl).Result)
             {
-                var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto>();
-                var excelStringToClipboard = string.Concat(excelDto.Created, "\t", excelDto.DocNumber, "\t", excelDto.Customer, "\t", excelDto.EquipmentSubstring, "\t", excelDto.Patient, "\t", excelDto.ProstheticSubstring, "\t", excelDto.MaterialsStr, "\t", excelDto.ColorAndFeatures, "\t", excelDto.Quantity, "\t", "\t", "\t", "\t", excelDto.ProstheticArticul);
-                return excelStringToClipboard;
+                var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto[]>();
+                return excelDto;
             }
         }
     }

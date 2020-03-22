@@ -23,7 +23,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
-        private readonly IClipboardWorks _clipboard;
+        private readonly IReporter _reporter;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -35,14 +35,15 @@ namespace Germadent.Rma.App.ViewModels
             IShowDialogAgent dialogAgent,
             IPrintModule printModule,
             ILogger logger,
-            IClipboardWorks clipboard)
+            IReporter reporter)
         {
             _rmaOperations = rmaOperations;
             _windowManager = windowManager;
             _dialogAgent = dialogAgent;
             _printModule = printModule;
             _logger = logger;
-            _clipboard = clipboard;
+            _reporter = reporter;
+
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -239,8 +240,8 @@ namespace Germadent.Rma.App.ViewModels
         private void CopyOrderToClipboardCommandHandler()
         {
             var orderId = SelectedOrder.Model.WorkOrderId;
-            var data = _rmaOperations.CopyToClipboard(orderId);
-            _clipboard.CopyToClipboard(data);
+            var reports = _rmaOperations.GetWorkReport(orderId);
+            _reporter.CreateReport(reports);
         }
     }
 }

@@ -192,7 +192,12 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public string CopyToClipboard(int id)
+        public string GetWorkReport(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        ReportListDto[] IRmaOperations.GetWorkReport(int id)
         {
             throw new NotImplementedException();
         }

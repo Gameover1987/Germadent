@@ -101,6 +101,7 @@ namespace Germadent.Rma.App
         {
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IReporter, ClipboardReporter>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterServiceComponents()

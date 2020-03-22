@@ -35,7 +35,7 @@ namespace Germadent.DataAccessService.Repository
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
-                OrderDto outputOrder = null;
+                OrderDto outputOrder;
                 connection.Open();
 
                 switch (order.BranchType)
@@ -723,42 +723,49 @@ namespace Germadent.DataAccessService.Repository
                 }
             }
         }
-        public List<ReportListDto> GetReportListDto(int id)
+
+        public ReportListDto[] GetWorkReport(int id)
         {
             var orderDto = GetWorkOrderById(id);
 
             var toothCard = GetToothCard(id);
+         
+            var prosteticsCollection = toothCard
+                .GroupBy(x => x.ProstheticsName)
+                .Select(x => new {quantity = x.Count(), pName = x.Key})
+                .ToArray();
 
-            var prosthetics = (from p in toothCard
-                              group p by p.ProstheticsName into g
-                              select new { quantity = g.Count(), pName= g.Key }).ToList();
+            var equipmentNames = new[]
+            {
+                "STL", "Слепок", "Модель"
+            };
+         
+            var equipments = orderDto.AdditionalEquipment
+                .Where(x => equipmentNames.Contains(x.EquipmentName))
+                .Select(x => x.EquipmentName)
+                .ToArray();
 
-            var equipments = (from ae in orderDto.AdditionalEquipment
-                              where ae.EquipmentName == "STL" || ae.EquipmentName == "Слепок" || ae.EquipmentName == "Модель"
-                                    select ae.EquipmentName).ToArray();
-
-            List<ReportListDto> ReportListDto = new List<ReportListDto>();
-            foreach (var pr in prosthetics)
+            var reports = new List<ReportListDto>();
+            foreach (var prosthetics in prosteticsCollection)
             {
                 var entity = new ExcelEntity
                 {
-                
                     Created = orderDto.Created,
                     DocNumber = orderDto.DocNumber,
                     Customer = orderDto.Customer,
                     EquipmentSubstring = string.Join("; ", equipments),
                     Patient = orderDto.Patient,
-                    ProstheticSubstring = pr.pName,
+                    ProstheticSubstring = prosthetics.pName,
                     MaterialsStr = orderDto.MaterialsStr,
                     ColorAndFeatures = orderDto.ColorAndFeatures,
-                    Quantity = pr.quantity,
+                    Quantity = prosthetics.quantity,
                     ProstheticArticul = orderDto.ProstheticArticul
                 };
                 var reportDto = _converter.ConvertToExcel(entity);
-                ReportListDto.Add(reportDto);
+                reports.Add(reportDto);
             }            
 
-            return ReportListDto;
+            return reports.ToArray();
   
         }
     }
