@@ -8,3 +8,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Customers]
+    ON [dbo].[Customers]([CustomerName] ASC);
+
