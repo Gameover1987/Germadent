@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="Germadent.Rma.App.Views.UserControls.LabInfoStepUserControl"
+﻿<UserControl x:Class="Germadent.Rma.App.Views.Wizard.LabInfoStepUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Germadent.Rma.App.Views.UserControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
              xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
@@ -18,6 +17,8 @@
                 <Setter Property="HorizontalAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="0,6,0,0"/>
             </Style>
+
+            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource InfoTextBorderStyle}"/>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="210" />
@@ -35,18 +36,21 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Заказчик *" Margin="0,0,0,3"
-                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
+        <Border Grid.Row="0" Grid.Column="0"  >
+            <TextBlock Text="Заказчик" Margin="0,0,0,1"/>
+        </Border>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                  Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО доктора *" 
-                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
+        <Border Grid.Row="1" Grid.Column="0" Margin="0,6,0,0">
+            <TextBlock Text="ФИО доктора" Margin="0,0,0,1"/>
+        </Border>
         <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"
                      Text="{Binding DoctorFio, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО пациента *" 
-                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"/>
+        <Border Grid.Row="2" Grid.Column="0" Margin="0,6,0,0">
+            <TextBlock Text="ФИО пациента" Margin="0,0,0,1"/>
+        </Border>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
                      Text="{Binding PatientFio, UpdateSourceTrigger=PropertyChanged}" />
 

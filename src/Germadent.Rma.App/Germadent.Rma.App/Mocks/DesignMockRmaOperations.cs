@@ -197,6 +197,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public CustomerDto[] GetCustomers()
+        {
+            throw new NotImplementedException();
+        }
+
         ReportListDto[] IRmaOperations.GetWorkReport(int id)
         {
             throw new NotImplementedException();

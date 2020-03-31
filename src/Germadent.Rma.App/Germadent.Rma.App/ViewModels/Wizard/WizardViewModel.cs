@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;

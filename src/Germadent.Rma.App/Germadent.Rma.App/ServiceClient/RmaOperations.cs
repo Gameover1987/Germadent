@@ -165,5 +165,13 @@ namespace Germadent.Rma.App.ServiceClient
                 return excelDto;
             }
         }
+
+        public CustomerDto[] GetCustomers()
+        {
+            return new CustomerDto[]
+            {
+
+            }
+        }
     }
 }

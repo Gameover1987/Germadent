@@ -86,5 +86,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="id"></param>
         /// <returns></returns>
         ReportListDto[] GetWorkReport(int id);
+
+        /// <summary>
+        /// Возвращает список заказчиков
+        /// </summary>
+        /// <returns></returns>
+        CustomerDto[] GetCustomers();
     }
 }

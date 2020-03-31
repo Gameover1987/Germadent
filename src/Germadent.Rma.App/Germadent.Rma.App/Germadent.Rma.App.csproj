@@ -101,6 +101,9 @@
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />
+    <Compile Include="ViewModels\CustomerCatalogViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\ICustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\IOrderFilesContainerViewModel.cs" />
     <Compile Include="ViewModels\OrderFilesContainerViewModel.cs" />
@@ -127,6 +130,9 @@
     <Compile Include="ViewModels\ToothCard\ToothCardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardStepViewModelBase.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
+    <Compile Include="Views\CustomerCatalogWindow.xaml.cs">
+      <DependentUpon>CustomerCatalogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
@@ -142,29 +148,33 @@
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\LabInfoStepUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\LabInfoStepUserControl.xaml.cs">
       <DependentUpon>LabInfoStepUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\LabProjectStepUserControl.xaml.cs">
       <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\MillingCenterAdditionalEquipmentUserControl.xaml.cs">
       <DependentUpon>MillingCenterAdditionalEquipmentUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\MillingCenterInfoStepUserControl.xaml.cs">
       <DependentUpon>MillingCenterInfoStepUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\MillingCenterProjectStepUserControl.xaml.cs">
       <DependentUpon>MillingCenterProjectStepUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControls\MouthUserControl.xaml.cs">
+    <Compile Include="Views\Wizard\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowManager.cs" />
-    <Compile Include="Views\WizardMode.cs" />
-    <Compile Include="Views\WizardWindow.xaml.cs">
+    <Compile Include="Views\Wizard\WizardMode.cs" />
+    <Compile Include="Views\Wizard\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CustomerCatalogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -185,31 +195,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\LabInfoStepUserControl.xaml">
+    <Page Include="Views\Wizard\LabInfoStepUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\LabProjectStepUserControl.xaml">
+    <Page Include="Views\Wizard\LabProjectStepUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml">
+    <Page Include="Views\Wizard\MillingCenterAdditionalEquipmentUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml">
+    <Page Include="Views\Wizard\MillingCenterInfoStepUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml">
+    <Page Include="Views\Wizard\MillingCenterProjectStepUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControls\MouthUserControl.xaml">
+    <Page Include="Views\Wizard\MouthUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WizardWindow.xaml">
+    <Page Include="Views\Wizard\WizardWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

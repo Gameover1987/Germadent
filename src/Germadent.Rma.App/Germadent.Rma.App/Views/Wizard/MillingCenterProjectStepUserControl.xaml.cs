@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Germadent.Rma.App.Views.UserControls
+namespace Germadent.Rma.App.Views.Wizard
 {
     /// <summary>
     /// Interaction logic for MillingCenterProjectStepUserControl.xaml

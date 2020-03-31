@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AdditionalEquipmentDto.cs" />
+    <Compile Include="CustomerDto.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EquipmentDto.cs" />
     <Compile Include="ExcelDto.cs" />

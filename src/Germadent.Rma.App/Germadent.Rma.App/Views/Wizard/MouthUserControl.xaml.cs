@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Germadent.Rma.App.ViewModels.ToothCard;
 
-namespace Germadent.Rma.App.Views.UserControls
+namespace Germadent.Rma.App.Views.Wizard
 {
     /// <summary>
     /// Interaction logic for MouthUserControl.xaml

@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.App.Views
+﻿namespace Germadent.Rma.App.Views.Wizard
 {
     public enum WizardMode
     {

@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Germadent.Rma.App"
              xmlns:convertersUI="clr-namespace:Germadent.UI.Converters;assembly=Germadent.UI"
              xmlns:converters="clr-namespace:Germadent.Rma.App.Converters"
+             xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
              ShutdownMode="OnExplicitShutdown"
              Startup="App_OnStartup"
              Exit="App_OnExit">
@@ -41,7 +42,16 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-           
+
+            <Style x:Key="InfoTextBorderStyle" TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="2"/>
+                <Setter Property="Padding" Value="3,1,3,1"/>
+                <Setter Property="Background" Value="LightGray"/>
+                <Setter Property="ToolTip" Value="{x:Static properties:Resources.Tooltip_RequredField}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
