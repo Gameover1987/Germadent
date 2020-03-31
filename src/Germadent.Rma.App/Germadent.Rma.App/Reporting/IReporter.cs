@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
@@ -23,7 +19,12 @@ namespace Germadent.Rma.App.Reporting
 
         public void CreateReport(ReportListDto[] reports)
         {
-            throw new NotImplementedException();
+            string stackString = null;
+            foreach (var report in reports)
+            {
+                stackString += string.Concat(report.Created, "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, "\t", report.Quantity, "\t", "\t", "\t", "\t", report.ProstheticArticul + "\n");
+            }
+            Clipboard.SetText(stackString);
         }
     }
 }
