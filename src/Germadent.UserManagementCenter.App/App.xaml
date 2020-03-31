@@ -31,6 +31,7 @@
             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource StlnCheckBoxStyle}"/>
             <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource StlnDataGridStyle}"/>
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource StlnListBoxStyle}"/>
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource StlnListBoxItemStyle}"/>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
             <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource StlnDatePickerStyle}"/>
             <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource stlnTabControlStyle}"/>

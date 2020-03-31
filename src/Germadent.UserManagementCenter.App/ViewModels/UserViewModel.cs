@@ -1,4 +1,5 @@
-﻿using Germadent.UI.ViewModels;
+﻿using System.Linq;
+using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
@@ -10,6 +11,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         public UserViewModel(UserDto user)
         {
             _user = user;
+        }
+
+        public string Login => _user.Login;
+
+        public string Description => _user.Description;
+
+        public string Roles
+        {
+            get { return string.Join(", ", _user.Roles); }
         }
     }
 }
