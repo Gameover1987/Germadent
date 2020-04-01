@@ -13,13 +13,21 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             _user = user;
         }
 
+        public string FullName => _user.FullName;
+
         public string Login => _user.Login;
 
         public string Description => _user.Description;
 
         public string Roles
         {
-            get { return string.Join(", ", _user.Roles); }
+            get
+            {
+                if (_user.Roles == null)
+                    return null;
+
+                return string.Join(", ", _user.Roles);
+            }
         }
     }
 }

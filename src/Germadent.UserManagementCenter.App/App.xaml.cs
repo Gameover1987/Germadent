@@ -23,10 +23,17 @@ namespace Germadent.UserManagementCenter.App
 
         public App()
         {
+            var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
+            _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+
             _container.RegisterSingleton<IMainViewModel, MainViewModel>();
             _container.RegisterSingleton<IUsersManagerViewModel, UsersManagerViewModel>();
             _container.RegisterSingleton<IUserManagementCenterOperations, UserManagementCenterOperations>();
             _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
+            _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
+            _container.RegisterSingleton<IWindowManager, WindowManager>();
+            _container.RegisterSingleton<IAddUserViewModel, AddUserViewModel>();
+            _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

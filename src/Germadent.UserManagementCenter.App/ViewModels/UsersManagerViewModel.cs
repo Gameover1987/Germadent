@@ -8,17 +8,20 @@ using System.Threading.Tasks;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.App.ServiceClient;
+using Germadent.UserManagementCenter.App.Views;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class UsersManagerViewModel : ViewModelBase, IUsersManagerViewModel
     {
         private readonly IUserManagementCenterOperations _userManagementCenterOperations;
+        private readonly IWindowManager _windowManager;
         private UserViewModel _selectedUser;
 
-        public UsersManagerViewModel(IUserManagementCenterOperations userManagementCenterOperations)
+        public UsersManagerViewModel(IUserManagementCenterOperations userManagementCenterOperations, IWindowManager windowManager)
         {
             _userManagementCenterOperations = userManagementCenterOperations;
+            _windowManager = windowManager;
 
             AddUserCommand = new DelegateCommand(x => AddUserCommandHandler(), x => CanAddUserCommandHandler());
             EditUSerCommand = new DelegateCommand(x => EditUserCommandHandler(), x=> CanEditUserCommandHandler());
@@ -62,7 +65,12 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void AddUserCommandHandler()
         {
+            var user = _windowManager.AddUser();
+            if (user == null)
+                return;
 
+            Users.Add(user);
+            SelectedUser = user;
         }
 
         private bool CanEditUserCommandHandler()
@@ -72,7 +80,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditUserCommandHandler()
         {
-
+            var user = _windowManager.EditUser(SelectedUser);
         }
 
         private bool CanDeleteUserCommandHandler()

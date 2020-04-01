@@ -21,7 +21,8 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
-                    <Grid Margin="3,0,3,0">
+                    <Grid Margin="3,0,3,0" Background="Transparent"
+                          ToolTip="{Binding Description}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -33,7 +34,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding Login}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Description}" 
+                            <TextBlock Grid.Column="1" Text="{Binding FullName}" 
                                        TextTrimming="CharacterEllipsis" HorizontalAlignment="Right" FontSize="10"/>
                         </Grid>
 

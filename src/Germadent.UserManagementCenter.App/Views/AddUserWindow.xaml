@@ -4,13 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.UserManagementCenter.App.Views"
+        xmlns:designTime="clr-namespace:Germadent.UserManagementCenter.App.Views.DesignTime"
+        xmlns:viewModels="clr-namespace:Germadent.UserManagementCenter.App.ViewModels"
         mc:Ignorable="d"
-        Title="AddUserWindow"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
         MinHeight="450"
         Height="450"
         MinWidth="600"
         Width="600"
-        Background="{x:Static SystemColors.ControlBrush}">
+        Background="{x:Static SystemColors.ControlBrush}"
+        FocusManager.FocusedElement="{Binding ElementName=fullNameTextBox}"
+        d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockAddUserViewModel}, IsDesignTimeCreatable=True}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -31,15 +37,28 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"/>
+            <TextBox x:Name="fullNameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                     Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
             <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
             <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
 
-            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0"></ListBox>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Роли" VerticalAlignment="Top" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+                     ItemsSource="{Binding Roles}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
+                        <Grid>
+                            <CheckBox Content="{Binding Name}" Margin="3,0,0,0"
+                                      IsChecked="{Binding IsChecked}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
