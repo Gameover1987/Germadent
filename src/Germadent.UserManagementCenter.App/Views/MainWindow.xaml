@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.UserManagementCenter.App"
         xmlns:views="clr-namespace:Germadent.UserManagementCenter.App.Views"
+        xmlns:designTime="clr-namespace:Germadent.UserManagementCenter.App.Views.DesignTime"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="Центр управления пользователями" 
@@ -13,19 +14,17 @@
         MinWidth="800"
         Width="800"
         WindowStartupLocation="CenterScreen"
-        DataContextChanged="MainWindow_OnDataContextChanged">
+        DataContextChanged="MainWindow_OnDataContextChanged"
+        d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=True}">
     <TabControl Margin="0,0,0,-1">
         <TabItem Header="Пользователи">
             <views:UsersView Margin="6"
                              DataContext="{Binding UsersManager}"/>
         </TabItem>
 
-        <TabItem Header="Роли">
-            <views:RolesView/>
-        </TabItem>
-
-        <TabItem Header="Права">
-            <views:RightsView/>
+        <TabItem Header="Роли и права">
+            <views:RolesView Margin="6"
+                             DataContext="{Binding RolesManager}"/>
         </TabItem>
     </TabControl>
 

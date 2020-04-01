@@ -2,6 +2,10 @@
 {
     public interface IMainViewModel
     {
+        IUsersManagerViewModel UsersManager { get; }
+
+        IRolesManagerViewModel RolesManager { get; }
+
         void Initialize();
     }
 }

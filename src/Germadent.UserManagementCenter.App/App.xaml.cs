@@ -26,6 +26,7 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IMainViewModel, MainViewModel>();
             _container.RegisterSingleton<IUsersManagerViewModel, UsersManagerViewModel>();
             _container.RegisterSingleton<IUserManagementCenterOperations, UserManagementCenterOperations>();
+            _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

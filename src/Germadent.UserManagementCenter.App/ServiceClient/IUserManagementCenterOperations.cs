@@ -1,54 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.UserManagementCenter.Model;
+﻿using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ServiceClient
 {
+    /// <summary>
+    /// Операции ЦУП
+    /// </summary>
     public interface IUserManagementCenterOperations
     {
+        /// <summary>
+        /// Возвращает список пользователей
+        /// </summary>
+        /// <returns></returns>
         UserDto[] GetUsers();
-    }
 
-    public class UserManagementCenterOperations : IUserManagementCenterOperations
-    {
-        public UserDto[] GetUsers()
-        {
-            return new UserDto[]
-            {
-                new UserDto
-                {
-                    Login = "Admin",
-                    Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
-                    Roles = new []{"Admin"}
-                },
-                new UserDto
-                {
-                    Login = "Dmitriy",
-                    Description = "Руководитель",
-                    Roles = new []{"Admin", "Оператор", "Техник", "Руководитель" }
-                },
-                new UserDto
-                {
-                    Login = "Vyacheslav",
-                    Description = "Программист 1",
-                    Roles = new []{"Admin",}
-                },
-                new UserDto
-                {
-                    Login = "Alexey",
-                    Description = "Программист 2",
-                    Roles = new []{"Admin", "Оператор", "Техник", "Руководитель" }
-                },
-                new UserDto
-                {
-                    Login = "Vasya",
-                    Description = "Какой то Вася ))",
-                    Roles = new []{"Лишенец" }
-                },
-            };
-        }
+        /// <summary>
+        /// Возвращает список ролей
+        /// </summary>
+        /// <returns></returns>
+        RoleDto[] GetRoles();
+
+        /// <summary>
+        /// Возвращает список всех прав
+        /// </summary>
+        /// <returns></returns>
+        RightDto[] GetAllRights();
+
+        /// <summary>
+        /// Возвращает список прав для конкртеной роли
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        RightDto[] GetRightsByRole(int roleId);
     }
 }

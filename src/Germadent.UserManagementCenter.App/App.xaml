@@ -33,6 +33,7 @@
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource StlnListBoxStyle}"/>
             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource StlnListBoxItemStyle}"/>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
+            <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource StlnPasswordBoxStyle}"/>
             <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource StlnDatePickerStyle}"/>
             <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource stlnTabControlStyle}"/>
             <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource MainTabItemStyle}"/>

@@ -1,0 +1,52 @@
+﻿<Window x:Class="Germadent.UserManagementCenter.App.Views.AddUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.UserManagementCenter.App.Views"
+        mc:Ignorable="d"
+        Title="AddUserWindow"
+        MinHeight="450"
+        Height="450"
+        MinWidth="600"
+        Width="600"
+        Background="{x:Static SystemColors.ControlBrush}">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+
+            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0"></ListBox>
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Добавить" IsDefault="True"/>
+            <Button Content="Отмена" Margin="6,0,0,0" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
