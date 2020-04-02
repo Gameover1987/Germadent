@@ -1,4 +1,5 @@
-﻿using Germadent.UI.ViewModels;
+﻿using System;
+using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
@@ -8,6 +9,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private readonly RightDto _right;
 
         private bool _isEnabled;
+        private bool _isChecked;
 
         public RightViewModel(RightDto right)
         {
@@ -29,5 +31,21 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 OnPropertyChanged(() => IsEnabled);
             }
         }
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked == value)
+                    return;
+                _isChecked = value;
+                OnPropertyChanged(() => IsChecked);
+
+                Checked?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler<EventArgs> Checked;
     }
 }

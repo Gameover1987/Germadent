@@ -5,6 +5,7 @@ using System.Windows.Data;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.App.ServiceClient;
+using Germadent.UserManagementCenter.App.Views;
 using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
@@ -12,13 +13,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     public class RolesManagerViewModel : ViewModelBase, IRolesManagerViewModel
     {
         private readonly IUserManagementCenterOperations _userManagementCenterOperations;
+        private readonly IWindowManager _windowManager;
         private RoleViewModel _selectedRole;
 
         private ICollectionView _rightsView;
 
-        public RolesManagerViewModel(IUserManagementCenterOperations userManagementCenterOperations)
+        public RolesManagerViewModel(IUserManagementCenterOperations userManagementCenterOperations, IWindowManager windowManager)
         {
             _userManagementCenterOperations = userManagementCenterOperations;
+            _windowManager = windowManager;
 
             AddRoleCommand = new DelegateCommand(AddRoleCommandHandler, CanAddRoleCommandHandler);
             EditRoleCommand = new DelegateCommand(EditRoleCommandHandler, CanEditRoleCommandHandler);
@@ -90,7 +93,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void AddRoleCommandHandler()
         {
-
+            _windowManager.AddRole();
         }
 
         private bool CanEditRoleCommandHandler()

@@ -11,5 +11,7 @@ namespace Germadent.UserManagementCenter.App.Views
         UserViewModel AddUser();
 
         UserViewModel EditUser(UserViewModel user);
+
+        RoleViewModel AddRole();
     }
 }

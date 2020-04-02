@@ -106,7 +106,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             get { return Roles.Any(x => x.IsChecked); }
         }
 
-        public void Initialize(UserDto userDto, string title)
+        public void Initialize(UserDto user, string title)
         {
             Title = title;
 

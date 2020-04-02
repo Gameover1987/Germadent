@@ -34,6 +34,7 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IWindowManager, WindowManager>();
             _container.RegisterSingleton<IAddUserViewModel, AddUserViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
+            _container.RegisterSingleton<IAddRoleViewModel, AddRoleViewModel>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

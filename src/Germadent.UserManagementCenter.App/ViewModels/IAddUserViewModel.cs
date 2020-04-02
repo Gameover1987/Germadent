@@ -9,7 +9,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public interface IAddUserViewModel
     {
-        void Initialize(UserDto userDto, string title);
+        void Initialize(UserDto user, string title);
 
         UserDto GetUser();
     }

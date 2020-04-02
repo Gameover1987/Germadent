@@ -11,7 +11,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
     internal class DesignMockRolesManagerViewModel : RolesManagerViewModel
     {
         public DesignMockRolesManagerViewModel()
-            : base(new UserManagementCenterOperations())
+            : base(new UserManagementCenterOperations(), new DesignMockWindowManager())
         {
             Initialize();
             SelectedRole = Roles.LastOrDefault();

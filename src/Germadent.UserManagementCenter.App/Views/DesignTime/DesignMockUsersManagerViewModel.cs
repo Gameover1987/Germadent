@@ -29,5 +29,10 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         {
             throw new NotImplementedException();
         }
+
+        public RoleViewModel AddRole()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

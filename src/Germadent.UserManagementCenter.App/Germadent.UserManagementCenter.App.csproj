@@ -66,7 +66,9 @@
     </ApplicationDefinition>
     <Compile Include="ServiceClient\IUserManagementCenterOperations.cs" />
     <Compile Include="ServiceClient\UserManagementCenterOperations.cs" />
+    <Compile Include="ViewModels\AddRoleViewModel.cs" />
     <Compile Include="ViewModels\AddUserViewModel.cs" />
+    <Compile Include="ViewModels\IAddRoleViewModel.cs" />
     <Compile Include="ViewModels\IAddUserViewModel.cs" />
     <Compile Include="ViewModels\IRolesManagerViewModel.cs" />
     <Compile Include="ViewModels\IUsersManagerViewModel.cs" />
@@ -75,9 +77,13 @@
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\UsersManagerViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="Views\AddRoleWindow.xaml.cs">
+      <DependentUpon>AddRoleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddUserWindow.xaml.cs">
       <DependentUpon>AddUserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DesignTime\DesignMockAddRoleViewModel.cs" />
     <Compile Include="Views\DesignTime\DesignMockAddUserViewModel.cs" />
     <Compile Include="Views\DesignTime\DesignMockMainViewModel.cs" />
     <Compile Include="Views\DesignTime\DesignMockRolesManagerViewModel.cs" />
@@ -93,6 +99,10 @@
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowManager.cs" />
+    <Page Include="Views\AddRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
