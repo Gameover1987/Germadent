@@ -21,7 +21,7 @@ namespace Germadent.UserManagementCenter.App.Views
             _addUserViewModel.Initialize(new UserDto(), "Добавление нового пользователя");
             if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == true)
             {
-                return _addUserViewModel.GetUser();
+                return new UserViewModel(_addUserViewModel.GetUser());
             }
 
             return null;

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="ScrollBarDictionary.xaml"/>
+        <ResourceDictionary Source="Converters.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="validationFailed">
@@ -25,8 +26,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TextBox}">
 					<Grid UseLayoutRounding="True" >
-						<Border   Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" UseLayoutRounding="True" SnapsToDevicePixels="True">
-							<ScrollViewer  x:Name="PART_ContentHost" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
+						<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" UseLayoutRounding="True" SnapsToDevicePixels="True">
+							<ScrollViewer x:Name="PART_ContentHost" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
 								<ScrollViewer.Resources>
 									<Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource StlnScrollBarStyle}" >
 										<Setter Property="Background" Value="Transparent"/>

@@ -11,6 +11,6 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     {
         void Initialize(UserDto userDto, string title);
 
-        UserViewModel GetUser();
+        UserDto GetUser();
     }
 }

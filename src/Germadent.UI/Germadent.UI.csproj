@@ -65,9 +65,11 @@
     <Compile Include="Converters\EnumToInvisibilityConverter.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToBoolConverter.cs" />
+    <Compile Include="Converters\MoreOrEqualThanConcreteNumberToBoolConverter.cs" />
     <Compile Include="Helpers\EventManagerEx.cs" />
     <Compile Include="Helpers\FocusProperties.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\TextBoxProperties.cs" />
     <Compile Include="Helpers\UiSearchHelper.cs" />
     <Compile Include="Helpers\WindowCloseHelper.cs" />
@@ -145,6 +147,10 @@
     <Page Include="Theme\ComboBoxDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Theme\CommonDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -21,6 +21,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             Login = "Vasya";
             Password = "123";
             PasswordOnceAgain = "123";
+            Description = "Какое то описание какогото юзверя";
 
             Roles.First().IsChecked = true;
         }

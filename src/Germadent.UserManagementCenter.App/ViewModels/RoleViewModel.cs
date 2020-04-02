@@ -1,4 +1,5 @@
-﻿using Germadent.UI.ViewModels;
+﻿using System;
+using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
@@ -22,11 +23,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                     return;
                 _isChecked = value;
                 OnPropertyChanged(() => IsChecked);
+
+                Checked?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public int RoleId => _role.RoleId;
 
         public string Name => _role.Name;
+
+        public event EventHandler<EventArgs> Checked;
     }
 }

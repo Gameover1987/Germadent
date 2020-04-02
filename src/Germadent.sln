@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.App.Test", "Germadent.UserManagementCenter.App.Test\Germadent.UserManagementCenter.App.Test.csproj", "{E50944A7-D140-4F58-A567-51B6AB2BCDC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.TestUtils", "Germadent.TestUtils\Germadent.TestUtils.csproj", "{E095E843-0678-44EC-88B0-34D031BF0A0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,9 +78,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E56DD068-AC0C-4F93-9448-23A7E7058701} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
+		{E095E843-0678-44EC-88B0-34D031BF0A0C} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

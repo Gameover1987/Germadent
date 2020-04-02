@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:Germadent.UserManagementCenter.App.Views"
         xmlns:designTime="clr-namespace:Germadent.UserManagementCenter.App.Views.DesignTime"
         xmlns:viewModels="clr-namespace:Germadent.UserManagementCenter.App.ViewModels"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         mc:Ignorable="d"
         Title="{Binding Title}"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        MinHeight="450"
-        Height="450"
+        MinHeight="500"
+        Height="500"
         MinWidth="600"
         Width="600"
         Background="{x:Static SystemColors.ControlBrush}"
@@ -34,7 +35,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             <TextBox x:Name="fullNameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
@@ -43,12 +46,20 @@
             <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
                      Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                         helpers:PasswordHelper.Attach="True"
+                         helpers:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                         helpers:PasswordHelper.Attach="True"
+                         helpers:PasswordHelper.Password="{Binding PasswordOnceAgain, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Роли" VerticalAlignment="Top" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Роли" VerticalAlignment="Top" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+            <ListBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
                      ItemsSource="{Binding Roles}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
@@ -59,12 +70,20 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal" Margin="6,6,0,0"
+                        Visibility="{Binding AtLeastOneRoleChecked, Converter={StaticResource BoolToInvisibilityConverter}, ConverterParameter='Hidden'}">
+                <Path Data="{StaticResource InfoButtonGeometry}" Stretch="Fill" Fill="#ADADAD"/>
+                <TextBlock Text="Необходимо назначить хотя бы одну роль" Margin="6,0,0,0"/>
+            </StackPanel>
         </Grid>
 
-        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+        <Separator Grid.Row="1" Margin="-12,6,-12,12"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Добавить" IsDefault="True"/>
+            <Button Content="Добавить" IsDefault="True"
+                    helpers:WindowCloseHelper.DialogResult="True"
+                    Command="{Binding OkCommand}"/>
             <Button Content="Отмена" Margin="6,0,0,0" IsCancel="True"/>
         </StackPanel>
     </Grid>
