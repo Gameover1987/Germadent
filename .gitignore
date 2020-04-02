@@ -58,3 +58,11 @@ src/.idea/
 src/Germadent.sln.DotSettings
 src/Germadent.Rma.App.Test/obj/
 src/Germadent.Rma.App.Test/bin/
+src/Germadent.UserManagementCenter.App/obj/
+src/Germadent.UserManagementCenter.Model/bin/
+src/Germadent.UserManagementCenter.Model/obj/
+src/Germadent.UserManagementCenter.App/bin/
+src/Germadent.UserManagementCenter.App.Test/obj/
+src/Germadent.UserManagementCenter.App.Test/bin/
+src/Germadent.TestUtils/bin/
+src/Germadent.TestUtils/obj/

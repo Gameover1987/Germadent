@@ -12,18 +12,28 @@ namespace Germadent.UI.Commands
         private readonly Func<object, bool> _canExecute;
         private readonly Action<Exception> _exceptionAction;
         private event EventHandler _canExecuteChanged;
-       
+
         public DelegateCommand(Action<object> execute)
             : this(execute, null, DefaultExceptionHandler)
         {
         }
 
-        
+        public DelegateCommand(Action execute)
+            : this(x => execute(), null, DefaultExceptionHandler)
+        {
+        }
+
+
         public DelegateCommand(Action<object> execute, Func<object, bool> canExecute)
             : this(execute, canExecute, DefaultExceptionHandler)
         {
         }
-        
+
+        public DelegateCommand(Action execute, Func<bool> canExecute)
+            : this(x => execute(), x => canExecute(), DefaultExceptionHandler)
+        {
+        }
+
         public DelegateCommand(Action<object> execute, Func<object, bool> canExecute, Action<Exception> exceptionAction)
         {
             if (exceptionAction == null) throw new ArgumentNullException(nameof(exceptionAction));

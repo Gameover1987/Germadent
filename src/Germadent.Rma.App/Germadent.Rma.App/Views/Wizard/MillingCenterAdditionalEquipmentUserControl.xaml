@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Germadent.Rma.App.Views.Wizard.MillingCenterAdditionalEquipmentUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterAdditionalEquipmentViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <DataGrid IsReadOnly="False"
+                  ItemsSource="{Binding Equipments}"
+                  AlternationCount="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Оснастка" Binding="{Binding DisplayName, Mode=OneWay}" IsReadOnly="True" MinWidth="200">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>                    
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="ScrollBarDictionary.xaml"/>
+        <ResourceDictionary Source="Converters.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="validationFailed">
@@ -25,8 +26,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TextBox}">
 					<Grid UseLayoutRounding="True" >
-						<Border   Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" UseLayoutRounding="True" SnapsToDevicePixels="True">
-							<ScrollViewer  x:Name="PART_ContentHost" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
+						<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" UseLayoutRounding="True" SnapsToDevicePixels="True">
+							<ScrollViewer x:Name="PART_ContentHost" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
 								<ScrollViewer.Resources>
 									<Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource StlnScrollBarStyle}" >
 										<Setter Property="Background" Value="Transparent"/>
@@ -73,5 +74,61 @@
             </Trigger>
         </Style.Triggers>
 	</Style>
+
+    <Style x:Key="StlnPasswordBoxStyle"  TargetType="{x:Type PasswordBox}">
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource validationFailed}"/>
+        <Setter Property="Foreground" Value="#333333"/>
+        <Setter Property="Background" Value="#fafafa"/>
+        <Setter Property="BorderBrush" Value="#66000000"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="3,1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="23"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Grid UseLayoutRounding="True" >
+                        <Border   Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" UseLayoutRounding="True" SnapsToDevicePixels="True">
+                            <ScrollViewer  x:Name="PART_ContentHost" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource StlnScrollBarStyle}" >
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Margin" Value="0,1,0.5,1"/>
+                                    </Style>
+                                </ScrollViewer.Resources>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#ffffff" />
+                            <Setter Property="BorderBrush" Value="#7F000000" />
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f7f7f7"/>
+                            <Setter Property="Foreground" Value="#999999"/>
+                            <Setter Property="BorderBrush" Value="#19000000"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#ffffff"/>
+                            <Setter Property="Foreground" Value="#000000"/>
+                            <Setter Property="BorderBrush" Value="#7F003399"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

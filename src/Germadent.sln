@@ -15,9 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.DataAccessService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4DD6BEFD-A887-4337-8312-58A00439E1AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.Model.Test", "Germadent.Rma.Model.Test\Germadent.Rma.Model.Test.csproj", "{A8961CED-F328-4422-AB3A-1EE35E512442}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.App.Test", "Germadent.Rma.App.Test\Germadent.Rma.App.Test.csproj", "{E56DD068-AC0C-4F93-9448-23A7E7058701}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.App", "Germadent.UserManagementCenter.App\Germadent.UserManagementCenter.App.csproj", "{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.Model", "Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj", "{2F85C943-0255-4443-817F-50D13FB15943}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.App.Test", "Germadent.UserManagementCenter.App.Test\Germadent.UserManagementCenter.App.Test.csproj", "{E50944A7-D140-4F58-A567-51B6AB2BCDC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.TestUtils", "Germadent.TestUtils\Germadent.TestUtils.csproj", "{E095E843-0678-44EC-88B0-34D031BF0A0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,24 +51,37 @@ Global
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A2A0FC0-6235-4C71-B47B-739DAD974DA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8961CED-F328-4422-AB3A-1EE35E512442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8961CED-F328-4422-AB3A-1EE35E512442}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8961CED-F328-4422-AB3A-1EE35E512442}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8961CED-F328-4422-AB3A-1EE35E512442}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F85C943-0255-4443-817F-50D13FB15943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F85C943-0255-4443-817F-50D13FB15943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F85C943-0255-4443-817F-50D13FB15943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F85C943-0255-4443-817F-50D13FB15943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A8961CED-F328-4422-AB3A-1EE35E512442} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
 		{E56DD068-AC0C-4F93-9448-23A7E7058701} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
+		{E50944A7-D140-4F58-A567-51B6AB2BCDC4} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
+		{E095E843-0678-44EC-88B0-34D031BF0A0C} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

@@ -158,12 +158,22 @@ namespace Germadent.Rma.App.ServiceClient
         public ReportListDto[] GetWorkReport(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/excel/{0}", id);
-            
+
             using (var response = _client.GetAsync(apiUrl).Result)
             {
                 var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto[]>();
                 return excelDto;
             }
+        }
+
+        public CustomerDto[] GetCustomers()
+        {
+            return new CustomerDto[]
+            {
+                new CustomerDto {Name = "ООО Рога и копыта"},
+                new CustomerDto {Name = "ООО Пошла родимая"},
+                new CustomerDto {Name = "ООО Нифига себе"},
+            };
         }
     }
 }
