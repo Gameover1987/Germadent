@@ -1,8 +1,14 @@
 ﻿CREATE TABLE [dbo].[Customers] (
-    [CustomerID]   INT           IDENTITY (1, 1) NOT NULL,
-    [CustomerName] NVARCHAR (70) NOT NULL,
+    [CustomerID]          INT            IDENTITY (1, 1) NOT NULL,
+    [CustomerName]        NVARCHAR (70)  NOT NULL,
+    [CustomerPhone]       NVARCHAR (250) NULL,
+    [CustomerEmail]       NVARCHAR (250) NULL,
+    [CustomerWebsite]     NVARCHAR (250) NULL,
+    [CustomerDescription] NVARCHAR (250) NULL,
     CONSTRAINT [PK_Customers] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
 );
+
+
 
 
 

@@ -19,7 +19,6 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
 	, @doctorFullName nvarchar(150)
---	, @patientID int
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint
@@ -43,7 +42,6 @@ BEGIN
 	 	, CustomerName = @customerName
 		, PatientFullName = @patientFullName
 --		, ResponsiblePersonID = @responsiblePersonId
---		, PatientID = @patientID
 		, DateDelivery = @dateDelivery
 		, DateComment = @dateComment
 		, ProstheticArticul = @prostheticArticul

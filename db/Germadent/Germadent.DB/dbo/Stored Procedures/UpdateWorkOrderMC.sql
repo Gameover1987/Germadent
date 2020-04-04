@@ -10,7 +10,6 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderMC]
 --	, @customerID int
 	, @customerName nvarchar(100)
 --	, @responsiblePersonId int
---	, @patientID int
 	, @patientFullName nvarchar(150)
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
@@ -44,7 +43,6 @@ BEGIN
 	--	, CustomerID = @customerID
 	 	, CustomerName = @customerName
 	--	, ResponsiblePersonID = @responsiblePersonId
-	--	, PatientID = @patientID
 		, PatientFullName = @patientFullName
 		, DateDelivery = @dateDelivery
 		, DateComment = @dateComment

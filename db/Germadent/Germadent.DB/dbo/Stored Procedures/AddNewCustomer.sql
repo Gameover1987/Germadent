@@ -6,6 +6,10 @@
 CREATE PROCEDURE [dbo].[AddNewCustomer] 
 	
 	@customerName nvarchar(70),
+	@customerPhone nvarchar(250) = NULL,
+	@customerEmail nvarchar(250) = NULL,
+	@customerWebsite nvarchar(250) = NULL,
+	@customerDescription nvarchar(250) = NULL,
 	@customerId int output
 	 
 AS
@@ -25,9 +29,9 @@ BEGIN
 	-- Собственно вставка:
 	
 	INSERT INTO Customers
-	(CustomerName)
+	(CustomerName, CustomerPhone, CustomerEmail, CustomerWebsite, CustomerDescription)
 	values
-	(@customerName)
+	(@customerName, @customerPhone, @customerEmail, @customerWebSite, @customerDescription)
 
 	SET @customerId = SCOPE_IDENTITY()
 

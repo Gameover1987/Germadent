@@ -3,10 +3,13 @@
 -- Create date: 01.04.2020
 -- Description:	Редактирование заказчика
 -- =============================================
-CREATE PROCEDURE UpdateCustomer 
+CREATE PROCEDURE [dbo].[UpdateCustomer] 
 	
 	@customerId int,
-	@customerName nvarchar(70)
+	@customerName nvarchar(70),
+	@customerEmail nvarchar(250),
+	@customerWebsite nvarchar(250),
+	@customerDescription nvarchar(250)
 
 AS
 BEGIN
@@ -15,6 +18,9 @@ BEGIN
 
     UPDATE Customers
 	SET CustomerName = @customerName
+		, CustomerEmail = @customerEmail
+		, CustomerWebsite = @customerWebsite
+		, CustomerDescription = @customerDescription
 	WHERE CustomerID  = @customerId
 
 END
