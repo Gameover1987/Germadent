@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Rights\UserRightsBase.cs" />
     <Compile Include="Rights\RightDto.cs" />
-    <Compile Include="Rights\RmaUserRightsBase.cs" />
-    <Compile Include="Rights\UmcUserRightsBase.cs" />
+    <Compile Include="Rights\RmaUserRights.cs" />
+    <Compile Include="Rights\UmcUserRights.cs" />
     <Compile Include="Rights\UserRightsProvider.cs" />
     <Compile Include="RoleDto.cs" />
     <Compile Include="UserDto.cs" />

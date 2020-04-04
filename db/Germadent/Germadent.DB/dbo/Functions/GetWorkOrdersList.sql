@@ -35,7 +35,6 @@ RETURN
 		, wo.Status
 		, wo.FlagWorkAccept
 		, wo.Closed
-		, wo.WorkDescription
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID

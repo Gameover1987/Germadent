@@ -1,8 +1,8 @@
 ﻿CREATE VIEW dbo.QualitativeItems_View
 AS
-SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, i.QitemID, i.AttributeID AS Expr1, i.QualitativeItem
-FROM      dbo.QualitativeAttributes AS a INNER JOIN
-                dbo.QualitativeItems AS i ON a.AttributeID = i.AttributeID
+SELECT        a.AttributeID, a.AttributeKeyName, a.AttributeName, i.QitemID, i.QualitativeItem
+FROM            dbo.QualitativeAttributes AS a INNER JOIN
+                         dbo.QualitativeItems AS i ON a.AttributeID = i.AttributeID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeItems_View';
 
