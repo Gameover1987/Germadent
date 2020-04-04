@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.Model.Rights
     /// Права для РМА
     /// </summary>
     [Description("Рабочее место администратора")]
-    public class RmaUserRightsBase : UserRightsBase
+    public class RmaUserRights : UserRightsBase
     {
         [Description("Запуск приложения")]
         public const string RunApplication = "Germadent.Rma.RunApplication";

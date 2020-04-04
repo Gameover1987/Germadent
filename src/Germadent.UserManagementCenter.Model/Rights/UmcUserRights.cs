@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.Model.Rights
     /// Права для ЦУП
     /// </summary>
     [Description("Центр управления пользователями")]
-    public class UmcUserRightsBase : UserRightsBase
+    public class UmcUserRights : UserRightsBase
     {
         [Description("Запуск приложения")]
         public const string RunApplication = "Germadent.UserManagementCenter.RunApplication";

@@ -101,6 +101,7 @@
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />
+    <Compile Include="ViewModels\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\CustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\ICustomerCatalogViewModel.cs" />
@@ -130,6 +131,12 @@
     <Compile Include="ViewModels\ToothCard\ToothCardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardStepViewModelBase.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
+    <Compile Include="Views\AddCustomerWindow.xaml.cs">
+      <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddResponsiblePersonWindow.xaml.cs">
+      <DependentUpon>AddResponsiblePersonWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomerCatalogWindow.xaml.cs">
       <DependentUpon>CustomerCatalogWindow.xaml</DependentUpon>
     </Compile>
@@ -171,6 +178,14 @@
     <Compile Include="Views\Wizard\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AddCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddResponsiblePersonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CustomerCatalogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
