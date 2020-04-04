@@ -1,11 +1,17 @@
 ﻿using System;
 using Germadent.Common.Extensions;
+using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
+using Germadent.UI.Commands;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
+        private readonly IWindowManager _windowManager;
+        
         private string _customer;
         private string _patient;
         private string _technicFullName;
@@ -13,12 +19,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
         private string _dateComment;
 
-        public MillingCenterInfoWizardStepViewModel()
+        public MillingCenterInfoWizardStepViewModel(IWindowManager windowManager)
         {
+            _windowManager = windowManager;
+            
             AddValidationFor(() => Customer)
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
-            AddValidationFor(() => Patient)
-                .When(() => Patient.IsNullOrWhiteSpace(), () => "Укажите пациента");
+
+            SelectCustomerCommand = new DelegateCommand(SelectCustomerCommandHandler);
         }
 
         public override bool IsValid => !HasErrors && !IsEmpty();
@@ -70,6 +78,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
+        public IDelegateCommand SelectCustomerCommand { get; }
+
         public override void Initialize(OrderDto order)
         {
             _customer = order.Customer;
@@ -88,6 +98,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ResponsiblePersonPhone = TechnicPhone;
             order.Created = Created;
             order.DateComment = DateComment;
+        }
+
+        private void SelectCustomerCommandHandler()
+        {
+            var customer = _windowManager.SelectCustomer(Customer);
+
         }
 
         private bool IsEmpty()

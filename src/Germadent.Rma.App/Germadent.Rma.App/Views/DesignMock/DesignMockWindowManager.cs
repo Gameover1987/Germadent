@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.App.Views.Wizard;
+﻿using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
@@ -16,6 +18,11 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public OrdersFilter CreateOrdersFilter()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ICustomerViewModel SelectCustomer(string mask)
         {
             throw new System.NotImplementedException();
         }

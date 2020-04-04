@@ -2,11 +2,13 @@
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
-namespace Germadent.Rma.App.Views
+namespace Germadent.Rma.App.Infrastructure
 {
     public class WindowManager : IWindowManager
     {
@@ -17,21 +19,25 @@ namespace Germadent.Rma.App.Views
 
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
         private readonly IPrintModule _printModule;
+        private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
 
         public WindowManager(IShowDialogAgent dialogAgent,
             IRmaOperations rmaOperations,
             ILabWizardStepsProvider labWizardStepsProvider,
             IMillingCenterWizardStepsProvider millingCenterWizardStepsProvider,
             IOrdersFilterViewModel ordersFilterViewModel,
-            IPrintModule printModule)
+            IPrintModule printModule,
+            ICustomerCatalogViewModel customerCatalogViewModel)
         {
             _dialogAgent = dialogAgent;
             _rmaOperations = rmaOperations;
             _labWizardProvider = labWizardStepsProvider;
             _millingCenterWizardStepsProvider = millingCenterWizardStepsProvider;
+            _millingCenterWizardStepsProvider.Initialize(this);
 
             _ordersFilterViewModel = ordersFilterViewModel;
             _printModule = printModule;
+            _customerCatalogViewModel = customerCatalogViewModel;
         }
 
         public OrderDto CreateLabOrder(OrderDto order, WizardMode mode)
@@ -89,6 +95,17 @@ namespace Germadent.Rma.App.Views
             if (_dialogAgent.ShowDialog<OrdersFilterWindow>(_ordersFilterViewModel) == true)
             {
                 return _ordersFilterViewModel.GetFilter();
+            }
+
+            return null;
+        }
+
+        public ICustomerViewModel SelectCustomer(string mask)
+        {
+            _customerCatalogViewModel.Initialize();
+            if (_dialogAgent.ShowDialog<CustomerCatalogWindow>(_customerCatalogViewModel) == true)
+            {
+                return _customerCatalogViewModel.SelectedCustomer;
             }
 
             return null;

@@ -101,10 +101,10 @@
     <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
     <Compile Include="ServiceClient\IRmaOperations.cs" />
     <Compile Include="ServiceClient\RmaOperations.cs" />
-    <Compile Include="ViewModels\AddCustomerViewModel.cs" />
-    <Compile Include="ViewModels\CustomerCatalogViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\AddCustomerViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\CustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
-    <Compile Include="ViewModels\ICustomerCatalogViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\ICustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\IOrderFilesContainerViewModel.cs" />
     <Compile Include="ViewModels\OrderFilesContainerViewModel.cs" />
@@ -151,7 +151,7 @@
     <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
-    <Compile Include="Views\IWindowManager.cs" />
+    <Compile Include="Infrastructure\IWindowManager.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -173,7 +173,7 @@
     <Compile Include="Views\Wizard\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WindowManager.cs" />
+    <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Views\Wizard\WizardMode.cs" />
     <Compile Include="Views\Wizard\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>

@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.App.ViewModels
+﻿namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public interface ICustomerCatalogViewModel
     {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rma.App.ViewModels
+namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class CustomerCatalogViewModel : ViewModelBase, ICustomerCatalogViewModel
     {
@@ -18,6 +14,8 @@ namespace Germadent.Rma.App.ViewModels
         {
             _rmaOperations = rmaOperations;
         }
+
+        public ObservableCollection<ICustomerViewModel> Customers { get; } = new ObservableCollection<ICustomerViewModel>();
 
         public ICustomerViewModel SelectedCustomer
         {

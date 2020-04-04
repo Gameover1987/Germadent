@@ -38,7 +38,8 @@
         </Border>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="7,0,49,0"
                  Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" />
-        <Button Grid.Row="0" Grid.Column="2" Margin="6,0,0,0" Content="..." />
+        <Button Grid.Row="0" Grid.Column="2" Margin="6,0,0,0" Content="..."
+                Command="{Binding SelectCustomerCommand}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="ФИО пациента" Margin="0,6,0,0"/>
 
