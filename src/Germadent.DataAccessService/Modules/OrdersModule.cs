@@ -9,7 +9,7 @@ using Germadent.Rma.Model;
 using Nancy;
 using Nancy.ModelBinding;
 
-namespace Germadent.DataAccessService
+namespace Germadent.DataAccessService.Modules
 {
     public class OrdersModule : NancyModule
     {

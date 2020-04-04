@@ -4,11 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using Germadent.UI.Commands;
-using Germadent.UI.ViewModels;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
@@ -73,7 +71,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public RoleDto GetRole()
         {
-            throw new System.NotImplementedException();
+            return new RoleDto
+            {
+                Name = RoleName
+            };
         }
 
         private void RightViewModelOnChecked(object sender, EventArgs e)

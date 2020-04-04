@@ -97,8 +97,9 @@
     <Compile Include="Infrastructure\NetShResultCode.cs" />
     <Compile Include="Infrastructure\UacHelper.cs" />
     <Compile Include="Infrastructure\UrlReservationsHelper.cs" />
+    <Compile Include="Modules\UsersModule.cs" />
     <Compile Include="Repository\IRmaRepository.cs" />
-    <Compile Include="OrdersModule.cs" />
+    <Compile Include="Modules\OrdersModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\RmaRepository.cs" />
