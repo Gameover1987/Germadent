@@ -31,7 +31,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public void Initialize()
         {
-            
+            Customers.Clear();
+
+            var customers = _rmaOperations.GetCustomers();
+            foreach (var customer in customers)
+            {
+             Customers.Add(new CustomerViewModel());   
+            }
         }
     }
 }
