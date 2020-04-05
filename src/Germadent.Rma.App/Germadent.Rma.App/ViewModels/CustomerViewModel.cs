@@ -31,5 +31,9 @@ namespace Germadent.Rma.App.ViewModels
         public string DisplayName { get; }
 
         public string Description { get; }
+
+        public string Email { get; }
+
+        public string WebSite { get; }
     }
 }
