@@ -83,5 +83,12 @@ namespace Germadent.DataAccessService.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         ReportListDto[] GetWorkReport(int id);
+
+        /// <summary>
+        /// Возвращает спикок клиентов по вхождению в наименование
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        CustomerDto[] GetCustomers(string name);
     }
 }

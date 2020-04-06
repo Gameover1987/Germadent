@@ -768,5 +768,34 @@ namespace Germadent.DataAccessService.Repository
             return reports.ToArray();
   
         }
+
+        public CustomerDto[] GetCustomers(string name)
+        {
+            var cmdText = string.Format("select * from GetCustomers(default, {0})", name);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var commamd = new SqlCommand(cmdText, connection))
+                {
+                    var reader = commamd.ExecuteReader();
+                    var customerEntities = new List<CustomerEntity>();
+                    while (reader.Read())
+                    {
+                        var customerEntity = new CustomerEntity();
+                        customerEntity.CustomerId = int.Parse(reader[nameof(customerEntity.CustomerId)].ToString());
+                        customerEntity.CustomerName = reader[nameof(customerEntity.CustomerName)].ToString();
+                        customerEntity.CustomerPhone = reader[nameof(customerEntity.CustomerPhone)].ToString();
+                        customerEntity.CustomerEmail = reader[nameof(customerEntity.CustomerEmail)].ToString();
+                        customerEntity.CustomerWebSite = reader[nameof(customerEntity.CustomerWebSite)].ToString();
+                        customerEntity.CustomerDescription = reader[nameof(customerEntity.CustomerDescription)].ToString();
+                        
+                        customerEntities.Add(customerEntity);
+                    }
+
+                    var customers = customerEntities.Select(x => _converter.ConvertToCustomer(x)).ToArray();
+                    return customers;
+                }
+            }
+        }
     }
 }

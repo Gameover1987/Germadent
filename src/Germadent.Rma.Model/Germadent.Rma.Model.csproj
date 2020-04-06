@@ -48,6 +48,7 @@
     <Compile Include="OrderLiteDto.cs" />
     <Compile Include="OrdersFilter.cs" />
     <Compile Include="OrderDescriptionBuilder.cs" />
+    <Compile Include="ResponsiblePersonDto.cs" />
     <Compile Include="ToothCardDto.cs" />
     <Compile Include="ToothDto.cs" />
     <Compile Include="TransparencesDto.cs" />
