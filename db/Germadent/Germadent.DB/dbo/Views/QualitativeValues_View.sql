@@ -1,10 +1,10 @@
-﻿CREATE VIEW dbo.QualitativeItems_View
+﻿CREATE VIEW dbo.QualitativeValues_View
 AS
-SELECT        a.AttributeID, a.AttributeKeyName, a.AttributeName, i.QitemID, i.QualitativeItem
-FROM            dbo.QualitativeAttributes AS a INNER JOIN
-                         dbo.QualitativeItems AS i ON a.AttributeID = i.AttributeID
+SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.QValueID, v.QualitativeValue
+FROM      dbo.QualitativeAttributes AS a INNER JOIN
+                dbo.QualitativeValues AS v ON a.AttributeID = v.AttributeID
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeItems_View';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeValues_View';
 
 
 GO
@@ -89,12 +89,12 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "i"
+         Begin Table = "v"
             Begin Extent = 
-               Top = 1
-               Left = 324
-               Bottom = 128
-               Right = 505
+               Top = 0
+               Left = 385
+               Bottom = 122
+               Right = 568
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -106,24 +106,37 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+      End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeItems_View';
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeValues_View';
+
+
 
