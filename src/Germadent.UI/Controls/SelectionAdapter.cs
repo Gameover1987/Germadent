@@ -7,23 +7,14 @@ namespace Germadent.UI.Controls
     public class SelectionAdapter
     {
 
-        #region "Fields"
-
-
         private Selector _selectorControl;
-        #endregion
-
-        #region "Constructors"
+       
 
         public SelectionAdapter(Selector selector)
         {
             SelectorControl = selector;
             SelectorControl.PreviewMouseUp += OnSelectorMouseDown;
         }
-
-        #endregion
-
-        #region "Events"
 
         public delegate void CancelEventHandler();
 
@@ -34,19 +25,13 @@ namespace Germadent.UI.Controls
         public event CancelEventHandler Cancel;
         public event CommitEventHandler Commit;
         public event SelectionChangedEventHandler SelectionChanged;
-        #endregion
-
-        #region "Properties"
 
         public Selector SelectorControl
         {
             get { return _selectorControl; }
             set { _selectorControl = value; }
         }
-
-        #endregion
-
-        #region "Methods"
+       
 
         public void HandleKeyDown(KeyEventArgs key)
         {
@@ -122,9 +107,5 @@ namespace Germadent.UI.Controls
                 Commit();
             }
         }
-
-        #endregion
-
     }
-
 }
