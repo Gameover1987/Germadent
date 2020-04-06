@@ -44,14 +44,12 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 			wdl.FittingDate,
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
 			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
-	--		ISNULL(tr.TransparenceName, '') AS TransparenceName
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM	 WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 	--		INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 	--		INNER JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-	--		INNER JOIN Patients p ON wo.PatientID = p.PatientID	
 	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 			LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID

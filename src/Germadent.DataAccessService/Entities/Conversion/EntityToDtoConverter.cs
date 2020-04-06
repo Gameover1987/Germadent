@@ -150,5 +150,18 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 ProstheticArticul = entity.ProstheticArticul
             };
         }
+
+        public CustomerDto ConvertToCustomer(CustomerEntity entity)
+        {
+            return new CustomerDto
+            {
+                Id = entity.CustomerId,
+                Name = entity.CustomerName,
+                Phone = entity.CustomerPhone,
+                Email = entity.CustomerEmail,
+                WebSite = entity.CustomerWebSite,
+                Description = entity.CustomerDescription
+            };
+        }
     }
 }

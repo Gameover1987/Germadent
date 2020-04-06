@@ -19,7 +19,7 @@ BEGIN
     UPDATE Customers
 	SET CustomerName = @customerName
 		, CustomerEmail = @customerEmail
-		, CustomerWebsite = @customerWebsite
+		, CustomerWebSite = @customerWebsite
 		, CustomerDescription = @customerDescription
 	WHERE CustomerID  = @customerId
 
