@@ -24,9 +24,8 @@ namespace Germadent.UI.Controls
         public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(AutoCompleteTextBox));
         public static readonly DependencyProperty ProviderProperty = DependencyProperty.Register("Provider", typeof(ISuggestionProvider), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(object), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(null, OnSelectedItemChanged));
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty));
-
-        public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register("Watermark", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty){BindsTwoWayByDefault = true});
+        
         private BindingEvaluator _bindingEvaluator;
 
         private DispatcherTimer _fetchTimer;
@@ -114,15 +113,7 @@ namespace Germadent.UI.Controls
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
-
             set { SetValue(TextProperty, value); }
-        }
-
-        public string Watermark
-        {
-            get { return (string)GetValue(WatermarkProperty); }
-
-            set { SetValue(WatermarkProperty, value); }
         }
 
         public static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

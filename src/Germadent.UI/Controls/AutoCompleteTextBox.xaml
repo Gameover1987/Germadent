@@ -57,7 +57,7 @@
     </UserControl.Resources>
     <Grid>
         <TextBox x:Name="_editor"
-                 Text="{Binding ElementName=UserControl, Path=Text}" 
+                 Text="{Binding ElementName=UserControl, Path=Text, UpdateSourceTrigger=PropertyChanged}" 
                  IsReadOnly="{Binding ElementName=UserControl, Path=IsReadOnly}">
             <TextBox.Style>
                 <Style TargetType="TextBox" BasedOn="{StaticResource StlnTextBoxStyle}">
