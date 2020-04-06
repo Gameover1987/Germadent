@@ -38,6 +38,15 @@
     <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,12 +75,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.11.1\lib\net46\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.11.1\lib\net46\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -104,6 +107,7 @@
     <Compile Include="ViewModels\Wizard\Catalogs\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Wizard\Catalogs\CustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\CustomerSuggestionProvider.cs" />
     <Compile Include="ViewModels\Wizard\Catalogs\ICustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\IOrderFilesContainerViewModel.cs" />
@@ -119,6 +123,7 @@
     <Compile Include="ViewModels\ToothCard\IToothCardViewModel.cs" />
     <Compile Include="Mocks\DesignMockOrderFilesContainerViewModel.cs" />
     <Compile Include="ViewModels\Wizard\AdditionalEquipmentViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\ResponsiblePersonSuggestionProvider.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
     <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />
     <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
@@ -150,6 +155,7 @@
     <Compile Include="Views\DesignMock\DesignMockMillingCenterAdditionalEquipmentViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockMillingCenterInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockSuggestionProvider.cs" />
     <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />

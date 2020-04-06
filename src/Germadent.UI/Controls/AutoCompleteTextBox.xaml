@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Germadent.UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="23" d:DesignWidth="200"
+             d:DesignHeight="23" d:DesignWidth="300"
              x:Name="UserControl">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -72,10 +72,9 @@
 
         <controls:BusyIndicator Width="16" Height="16" IsBusy="{Binding ElementName=UserControl, Path=IsLoading}" Fill="#2D2D2D" HorizontalAlignment="Right" Margin="0,0,3,0"/>
 
-        <Popup x:Name="_popup" VerticalOffset="1"
+        <Popup x:Name="_popup" VerticalOffset="1" 
                IsOpen="{Binding ElementName=UserControl, Path=IsDropDownOpen, Mode=TwoWay}"
                Width="{Binding ElementName=UserControl, Path=ActualWidth}"
-               HorizontalOffset="0"
                MinHeight="25"
                MaxHeight="600"
                AllowsTransparency="True"
@@ -100,7 +99,8 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                            <Border Background="White" CornerRadius="2" BorderThickness="0" BorderBrush="#FFa9a9a9" SnapsToDevicePixels="True" UseLayoutRounding="True" >
+                                            <Border Background="White" CornerRadius="2" BorderThickness="0" BorderBrush="#FFa9a9a9" SnapsToDevicePixels="True" UseLayoutRounding="True" 
+                                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                 <ScrollViewer Focusable="false" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
                                                     <ScrollViewer.Resources>
                                                         <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource StlnScrollBarStyle}" >

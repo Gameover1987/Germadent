@@ -14,9 +14,9 @@ using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.UI.Commands;
+using Germadent.UI.Controls;
 using Germadent.UI.Infrastructure;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
 
 namespace Germadent.Rma.App
 {
@@ -82,9 +82,9 @@ namespace Germadent.Rma.App
                 _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
             }
 
-            RegisterViewModels();
             RegisterCommonComponents();
             RegisterPrintModule();
+            RegisterViewModels();
         }
 
         private void RegisterViewModels()
@@ -93,12 +93,21 @@ namespace Germadent.Rma.App
             _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
+            
             _container.RegisterType<IOrderFilesContainerViewModel, OrderFilesContainerViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ISuggestionProvider, CustomerSuggestionProvider>("CustomerSuggestionProvider");
+            _container.RegisterType<ISuggestionProvider, ResponsiblePersonSuggestionProvider>("ResponsiblePersonSuggestionProvider");
+            _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(
+                new InjectionConstructor(
+                    _container.Resolve<IRmaOperations>(),
+                    _container.Resolve<IOrderFilesContainerViewModel>(),
+                    _container.Resolve<ISuggestionProvider>("CustomerSuggestionProvider"),
+                    _container.Resolve<ISuggestionProvider>("ResponsiblePersonSuggestionProvider")));
+            _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
 
+            _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()
@@ -118,8 +127,7 @@ namespace Germadent.Rma.App
         {
             _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(
-                new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IClipboardWorks, ClipboardWorks>(new ContainerControlledLifetimeManager());
         }
 

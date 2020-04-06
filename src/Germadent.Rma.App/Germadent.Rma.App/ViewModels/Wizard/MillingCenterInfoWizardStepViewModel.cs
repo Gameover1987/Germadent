@@ -5,13 +5,14 @@ using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
+using Germadent.UI.Controls;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
         private readonly IWindowManager _windowManager;
-        
+
         private string _customer;
         private string _patient;
         private string _technicFullName;
@@ -19,10 +20,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
         private string _dateComment;
 
-        public MillingCenterInfoWizardStepViewModel(IWindowManager windowManager)
+        public MillingCenterInfoWizardStepViewModel(IWindowManager windowManager, ISuggestionProvider customerSuggestionProvider)
         {
             _windowManager = windowManager;
-            
+            CustomerSuggestionProvider = customerSuggestionProvider;
+
             AddValidationFor(() => Customer)
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
 
@@ -41,6 +43,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return _customer; }
             set { SetProperty(() => _customer, value); }
         }
+
+        public ISuggestionProvider CustomerSuggestionProvider { get; }
 
         public string Patient
         {

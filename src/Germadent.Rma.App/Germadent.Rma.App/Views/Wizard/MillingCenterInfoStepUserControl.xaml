@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+             xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
+             xmlns:userControls="clr-namespace:Germadent.Rma.App.Views.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterInfoWizardStepViewModel, IsDesignTimeCreatable=True}">
@@ -15,8 +18,6 @@
                 <Setter Property="HorizontalAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="0,6,0,0"/>
             </Style>
-
-            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource InfoTextBorderStyle}"/>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="210" />
@@ -33,11 +34,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0">
+        <Border Grid.Row="0" Grid.Column="0"
+                Style="{StaticResource InfoTextBorderStyle}">
             <TextBlock Text="Заказчик" Margin="0,0,0,1"/>
         </Border>
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="7,0,49,0"
-                 Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" />
+        <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                                      Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
+                                      Provider="{Binding CustomerSuggestionProvider}">
+            <controls:AutoCompleteTextBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModels:CustomerViewModel}">
+                    <TextBlock Text="{Binding}"></TextBlock>
+                </DataTemplate>
+            </controls:AutoCompleteTextBox.ItemTemplate>
+        </controls:AutoCompleteTextBox>
         <Button Grid.Row="0" Grid.Column="2" Margin="6,0,0,0" Content="..."
                 Command="{Binding SelectCustomerCommand}"/>
 
