@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 
 namespace Germadent.Rma.App.Views
 {
@@ -22,6 +23,12 @@ namespace Germadent.Rma.App.Views
         public CustomerCatalogWindow()
         {
             InitializeComponent();
+        }
+
+        private void CustomerCatalogWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var customerCatalogViewModel = (ICustomerCatalogViewModel)DataContext;
+            customerCatalogViewModel.Initialize();
         }
     }
 }

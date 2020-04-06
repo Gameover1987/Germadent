@@ -140,6 +140,8 @@
     <Compile Include="Views\CustomerCatalogWindow.xaml.cs">
       <DependentUpon>CustomerCatalogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DesignMock\DesignMockCustomerCatalogViewModel.cs" />
+    <Compile Include="Views\DesignMock\DesignMockCustomerViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
@@ -154,6 +156,9 @@
     <Compile Include="Infrastructure\IWindowManager.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\CustomerUserControl.xaml.cs">
+      <DependentUpon>CustomerUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizard\LabInfoStepUserControl.xaml.cs">
       <DependentUpon>LabInfoStepUserControl.xaml</DependentUpon>
@@ -207,6 +212,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\OrdersFilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\CustomerUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,5 +298,6 @@
   <ItemGroup>
     <Resource Include="logo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

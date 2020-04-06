@@ -5,6 +5,7 @@
              xmlns:convertersUI="clr-namespace:Germadent.UI.Converters;assembly=Germadent.UI"
              xmlns:converters="clr-namespace:Germadent.Rma.App.Converters"
              xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              ShutdownMode="OnExplicitShutdown"
              Startup="App_OnStartup"
              Exit="App_OnExit">
@@ -50,6 +51,12 @@
                 <Setter Property="ToolTip" Value="{x:Static properties:Resources.Tooltip_RequredField}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+
+            <Style x:Key="DataGridTextBlockStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Setter Property="helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming" Value="True"/>
             </Style>
 
         </ResourceDictionary>

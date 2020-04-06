@@ -199,7 +199,13 @@ namespace Germadent.Rma.App.Mocks
 
         public CustomerDto[] GetCustomers()
         {
-            throw new NotImplementedException();
+            return new CustomerDto[]
+            {
+                new CustomerDto {Name = "ООО Рога и копыта", Description = "Какой то заказчик", Phone = "+7(383)222-33-45", Email = "somethingmail@mail.com",WebSite = "https://zloekino.com/movie/Barnyard"},
+                new CustomerDto {Name = "ООО Пошла родимая", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                    Email = "somethingmail@mail.com",
+                    WebSite = "http://xn----8sbbcdtrifnipjk4bzlpa.xn--p1ai/nashi-ob-ekty/26-ooo-poshla-rodimaya"},
+            };
         }
 
         ReportListDto[] IRmaOperations.GetWorkReport(int id)

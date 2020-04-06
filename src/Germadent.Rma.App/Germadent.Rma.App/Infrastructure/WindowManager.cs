@@ -102,7 +102,6 @@ namespace Germadent.Rma.App.Infrastructure
 
         public ICustomerViewModel SelectCustomer(string mask)
         {
-            _customerCatalogViewModel.Initialize();
             if (_dialogAgent.ShowDialog<CustomerCatalogWindow>(_customerCatalogViewModel) == true)
             {
                 return _customerCatalogViewModel.SelectedCustomer;

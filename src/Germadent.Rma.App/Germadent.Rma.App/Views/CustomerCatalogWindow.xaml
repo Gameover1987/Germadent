@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
@@ -14,7 +15,9 @@
         MinHeight="500"
         Height="500" 
         MinWidth="800"
-        Width="800">
+        Width="800"
+        DataContextChanged="CustomerCatalogWindow_OnDataContextChanged"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockCustomerCatalogViewModel}, IsDesignTimeCreatable=True}">
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -27,19 +30,45 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-            <controls:SearchComboBox LabelText="Поиск заказчика" HorizontalAlignment="Left" Width="150"/>
+            <controls:SearchComboBox LabelText="Поиск заказчика" HorizontalAlignment="Left" Width="150" Height="23"
+                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="Добавить" Margin="0,12,0,0"/>
-            <Button Content="Редактировать" Margin="0,6,0,0"/>
-            <Button Content="Удалить" Margin="0,6,0,0"/>
+            <Button Content="Добавить" Margin="0,12,0,0"
+                    Command="{Binding AddCustomerCommand}"/>
+            <Button Content="Редактировать" Margin="0,6,0,0"
+                    Command="{Binding EditCustomerCommand}"/>
+            <Button Content="Удалить" Margin="0,6,0,0"
+                    Command="{Binding DeleteCustomerCommand}"/>
         </StackPanel>
 
-        <ListBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"></ListBox>
+        <DataGrid Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                  ItemsSource="{Binding Customers}"
+                  SelectedItem="{Binding SelectedCustomer}"
+                  AlternationCount="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding DisplayName}" Width="Auto"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="Auto"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Сайт" Binding="{Binding WebSite}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Комментарий" Binding="{Binding Description}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <controls:BusyIndicator Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged}"/>
+
 
         <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,12,-12,12"/>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Выбрать" Width="100" IsDefault="True"
+                    Command="{Binding SelectCustomerCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
             <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
                     helpers:WindowCloseHelper.DialogResult="False"/>

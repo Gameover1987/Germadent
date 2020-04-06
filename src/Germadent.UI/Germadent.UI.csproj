@@ -52,12 +52,18 @@
     <Compile Include="Commands\ExceptionEventArgs.cs" />
     <Compile Include="Commands\IDelegateCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Controls\AutoCompleteTextBox.xaml.cs">
+      <DependentUpon>AutoCompleteTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ISuggestionProvider.cs" />
     <Compile Include="Controls\SearchComboBox.xaml.cs">
       <DependentUpon>SearchComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectionAdapter.cs" />
+    <Compile Include="Controls\SuggestionProvider.cs" />
     <Compile Include="Converters\BoolToInvisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringConverterBase.cs" />
@@ -70,6 +76,7 @@
     <Compile Include="Helpers\FocusProperties.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Helpers\TextBlockToolTipHelper.cs" />
     <Compile Include="Helpers\TextBoxProperties.cs" />
     <Compile Include="Helpers\UiSearchHelper.cs" />
     <Compile Include="Helpers\WindowCloseHelper.cs" />
@@ -132,6 +139,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\AutoCompleteTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

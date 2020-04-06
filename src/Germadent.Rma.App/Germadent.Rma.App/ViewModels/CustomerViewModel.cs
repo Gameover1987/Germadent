@@ -9,6 +9,12 @@ namespace Germadent.Rma.App.ViewModels
 
         string DisplayName { get; }
 
+        string WebSite { get; set; }
+
+        string Email { get;}
+
+        string Phone { get; }
+
         string Description { get; }
     }
 
@@ -24,20 +30,16 @@ namespace Germadent.Rma.App.ViewModels
             WebSite = customer.WebSite;
         }
 
+        public int CustomerId { get; }
+
         public string WebSite { get; set; }
+
+        public string DisplayName { get; }
 
         public string Email { get; set; }
 
         public string Phone { get; }
 
-        public int CustomerId { get; }
-
-        public string DisplayName { get; }
-
         public string Description { get; }
-
-        public string Email { get; }
-
-        public string WebSite { get; }
     }
 }
