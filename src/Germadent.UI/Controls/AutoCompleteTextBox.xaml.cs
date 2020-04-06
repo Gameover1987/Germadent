@@ -366,11 +366,11 @@ namespace Germadent.UI.Controls
                 _filter = searchText;
                 _actb.IsLoading = true;
 
-                IEnumerable suggestions = null;
-                await ThreadTaskExtensions.Run(() =>
-                {
-                    suggestions = _actb.Provider.GetSuggestions(searchText);
-                });
+                //IEnumerable suggestions = null;
+                //await ThreadTaskExtensions.Run(() =>
+                //{
+                //    suggestions = _actb.Provider.GetSuggestions(searchText);
+                //});
 
                 //DisplaySuggestions(suggestions);
 
