@@ -1,8 +1,8 @@
-﻿namespace WpfControls.Editors
-{
+﻿using System;
+using System.Collections;
 
-    using System;
-    using System.Collections;
+namespace Germadent.UI.Controls
+{
     public class SuggestionProvider : ISuggestionProvider
     {
 

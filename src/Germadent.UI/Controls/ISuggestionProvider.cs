@@ -1,12 +1,9 @@
-﻿
-
+﻿using System.Collections;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WpfControls.Editors
+namespace Germadent.UI.Controls
 {
-    using System.Collections;
-
     public interface ISuggestionProvider
     {
 

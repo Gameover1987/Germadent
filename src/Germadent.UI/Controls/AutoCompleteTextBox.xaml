@@ -3,116 +3,100 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="23" d:DesignWidth="200"
              x:Name="UserControl">
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Theme/TextBoxDictionary.xaml"/>
+                <ResourceDictionary Source="../Theme/Converters.xaml"/>
+                <ResourceDictionary Source="../Theme/ListBoxDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-
-        <Style TargetType="ListBoxItem"
-               x:Key="SuggestionItemStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="ContentBorder"
-                                Background="White">
-                            <ContentPresenter />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        TargetName="ContentBorder"
-                                        Value="{x:Static SystemColors.HighlightBrush}" />
-                                <Setter Property="IsSelected"
-                                        Value="True" />
-                            </Trigger>
-                            <Trigger Property="IsSelected"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        TargetName="ContentBorder"
-                                        Value="{x:Static SystemColors.HighlightBrush}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="{x:Type TextBox}"
-               x:Key="TransparentTextBoxStyle">
-            <Setter Property="FocusVisualStyle"
-                    Value="{x:Null}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Grid>
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                          Background="Transparent"
-                                          Focusable="True"
-                                          HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Hidden" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <Style x:Key="AutoCompleteElementListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Padding" Value="6,4"/>
+                <Setter Property="BorderBrush" Value="#FFe0e0e0"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border x:Name="Bd" Background="Transparent" Margin="-5,0,0,0" SnapsToDevicePixels="true" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" >
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="true"/>
+                                        <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="#FF8da0bf"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Border BorderBrush="Gray"
-                            BorderThickness="1"
-                            CornerRadius="3">
-            <Grid>
-                <DockPanel>
-                    <Grid>
-                        <TextBlock x:Name="PART_Watermark"
-                                               Text="{Binding ElementName=UserControl, Path=Watermark}"
-                                               Visibility="Collapsed"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Left"
-                                               Focusable="False"
-                                               Foreground="Gray"
-                                               Margin="3,0" />
-                        <TextBox x:Name="PART_Editor"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Center"
-                                             Style="{StaticResource ResourceKey=TransparentTextBoxStyle}"
-                                             Text="{Binding ElementName=UserControl, Path=Text}" />
-                    </Grid>
-                </DockPanel>
-                <Popup x:Name="PART_Popup"
-                       IsOpen="{Binding ElementName=UserControl, Path=IsDropDownOpen, Mode=TwoWay}"
-                                   Width="{Binding ElementName=UserControl, Path=ActualWidth}"
-                                   HorizontalOffset="0"
-                                   MinHeight="25"
-                                   MaxHeight="600"
-                                   AllowsTransparency="True"
-                                   PopupAnimation="Slide"
-                                   Focusable="False">
-                    <Border Background="White"
-                                        BorderThickness="1"
-                                        BorderBrush="Gray"
-                                        CornerRadius="5"
-                                        Padding="2">
-                        <Grid>
-                            <ListBox x:Name="PART_Selector"
-                                     ItemTemplate="{Binding ElementName=UserControl, Path=ItemTemplate, Mode=TwoWay}"
-                                     ItemTemplateSelector="{Binding ElementName=UserControl, Path=ItemTemplateSelector, Mode=TwoWay}"
-                                                 Focusable="False"
-                                                 BorderThickness="0"
-                                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 ItemContainerStyle="{StaticResource ResourceKey=SuggestionItemStyle}">
-                            </ListBox>
-                            <Border Visibility="{Binding ElementName=UserControl, Path=IsLoading, Converter={StaticResource ResourceKey=BoolToVisibilityConverter}}">
-                                <ContentPresenter ContentSource="LoadingContent"/>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </Popup>
+        <TextBox x:Name="_editor"
+                 Text="{Binding ElementName=UserControl, Path=Text}" >
+            <TextBox.Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource StlnTextBoxStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=UserControl, Path=IsLoading}" Value="True">
+                            <Setter Property="Padding" Value="3,1,20,1"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
-            </Grid>
-        </Border>
+        <controls:BusyIndicator Width="16" Height="16" IsBusy="{Binding ElementName=UserControl, Path=IsLoading}" Fill="#2D2D2D" HorizontalAlignment="Right" Margin="0,0,3,0"/>
+
+        <Popup x:Name="_popup"
+               IsOpen="{Binding ElementName=UserControl, Path=IsDropDownOpen, Mode=TwoWay}"
+               Width="{Binding ElementName=UserControl, Path=ActualWidth}"
+               HorizontalOffset="0"
+               MinHeight="25"
+               MaxHeight="600"
+               AllowsTransparency="True"
+               PopupAnimation="Slide"
+               Focusable="False">
+            <Border Background="White"
+                    BorderThickness="1"
+                    BorderBrush="Gray"
+                    CornerRadius="5"
+                    Padding="2">
+                <Grid>
+                    <ListBox x:Name="_selector"
+                             ItemTemplate="{Binding ElementName=UserControl, Path=ItemTemplate, Mode=TwoWay}"
+                             ItemTemplateSelector="{Binding ElementName=UserControl, Path=ItemTemplateSelector, Mode=TwoWay}"
+                             Focusable="False"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ItemContainerStyle="{StaticResource AutoCompleteElementListBoxItemStyle}">
+                    </ListBox>
+                </Grid>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>
