@@ -57,7 +57,8 @@
     </UserControl.Resources>
     <Grid>
         <TextBox x:Name="_editor"
-                 Text="{Binding ElementName=UserControl, Path=Text}" >
+                 Text="{Binding ElementName=UserControl, Path=Text, UpdateSourceTrigger=PropertyChanged}" 
+                 IsReadOnly="{Binding ElementName=UserControl, Path=IsReadOnly}">
             <TextBox.Style>
                 <Style TargetType="TextBox" BasedOn="{StaticResource StlnTextBoxStyle}">
                     <Style.Triggers>
@@ -71,7 +72,7 @@
 
         <controls:BusyIndicator Width="16" Height="16" IsBusy="{Binding ElementName=UserControl, Path=IsLoading}" Fill="#2D2D2D" HorizontalAlignment="Right" Margin="0,0,3,0"/>
 
-        <Popup x:Name="_popup"
+        <Popup x:Name="_popup" VerticalOffset="1"
                IsOpen="{Binding ElementName=UserControl, Path=IsDropDownOpen, Mode=TwoWay}"
                Width="{Binding ElementName=UserControl, Path=ActualWidth}"
                HorizontalOffset="0"
@@ -94,6 +95,27 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemContainerStyle="{StaticResource AutoCompleteElementListBoxItemStyle}">
+                        <ListBox.Style>
+                            <Style TargetType="{x:Type ListBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                            <Border Background="White" CornerRadius="2" BorderThickness="0" BorderBrush="#FFa9a9a9" SnapsToDevicePixels="True" UseLayoutRounding="True" >
+                                                <ScrollViewer Focusable="false" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                                                    <ScrollViewer.Resources>
+                                                        <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource StlnScrollBarStyle}" >
+                                                            <Setter Property="Margin" Value="0,1,0.5,1" />
+                                                            <Setter Property="Background" Value="Transparent" />
+                                                        </Style>
+                                                    </ScrollViewer.Resources>
+                                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Style>
                     </ListBox>
                 </Grid>
             </Border>
