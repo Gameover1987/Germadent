@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Germadent.UI.Helpers;
 
 namespace Germadent.UI.Controls
 {
@@ -13,7 +16,7 @@ namespace Germadent.UI.Controls
         public SelectionAdapter(Selector selector)
         {
             SelectorControl = selector;
-            SelectorControl.PreviewMouseUp += OnSelectorMouseDown;
+            SelectorControl.PreviewMouseLeftButtonDown += SelectorControlOnPreviewMouseLeftButtonDown;
         }
 
         public delegate void CancelEventHandler();
@@ -45,25 +48,15 @@ namespace Germadent.UI.Controls
                     DecrementSelection();
                     break;
                 case Key.Enter:
-                    if (Commit != null)
-                    {
-                        Commit();
-                    }
+                    Commit?.Invoke();
 
                     break;
                 case Key.Escape:
-                    if (Cancel != null)
-                    {
-                        Cancel();
-                    }
+                    Cancel?.Invoke();
 
                     break;
                 case Key.Tab:
-                    if (Commit != null)
-                    {
-                        Commit();
-                    }
-
+                    Commit?.Invoke();
                     break;
             }
         }
@@ -100,12 +93,14 @@ namespace Germadent.UI.Controls
             }
         }
 
-        private void OnSelectorMouseDown(object sender, MouseButtonEventArgs e)
+        private void SelectorControlOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (Commit != null)
-            {
-                Commit();
-            }
+            var listBoxItem = UiSearchHelper.FindAncestor<ListBoxItem>(e.OriginalSource as FrameworkElement);
+            if (listBoxItem == null)
+                return;
+
+            SelectorControl.SelectedItem = listBoxItem.DataContext;
+            Commit?.Invoke();
         }
     }
 }

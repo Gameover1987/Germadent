@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +17,6 @@ namespace Germadent.UI.Controls
     {
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(int), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(200));
         public static readonly DependencyProperty DisplayMemberProperty = DependencyProperty.Register("DisplayMember", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty));
-
         public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(false));
         public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(false));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(false));
@@ -24,26 +24,23 @@ namespace Germadent.UI.Controls
         public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(AutoCompleteTextBox));
         public static readonly DependencyProperty ProviderProperty = DependencyProperty.Register("Provider", typeof(ISuggestionProvider), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(object), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(null, OnSelectedItemChanged));
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty){BindsTwoWayByDefault = true});
-        
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteTextBox), new FrameworkPropertyMetadata(string.Empty) { BindsTwoWayByDefault = true });
+
         private BindingEvaluator _bindingEvaluator;
-
         private DispatcherTimer _fetchTimer;
-
         private string _filter;
-
         private bool _isUpdatingText;
-
+        private bool _isKeyboardInput;
         private SelectionAdapter _selectionAdapter;
-
         private bool _selectionCancelled;
-
         private SuggestionsAdapter _suggestionsAdapter;
+
+        private DateTime _lastKeyDownOccured;
 
         public AutoCompleteTextBox()
         {
             InitializeComponent();
-            
+
             GotFocus += OnGotFocus;
         }
 
@@ -51,7 +48,6 @@ namespace Germadent.UI.Controls
         {
             _editor.Focus();
         }
-      
 
         public int Delay
         {
@@ -120,7 +116,7 @@ namespace Germadent.UI.Controls
         {
             AutoCompleteTextBox act;
             act = d as AutoCompleteTextBox;
-            if (act == null) 
+            if (act == null)
                 return;
             if (!(act._editor != null & !act._isUpdatingText))
                 return;
@@ -130,10 +126,16 @@ namespace Germadent.UI.Controls
             act._isUpdatingText = false;
         }
 
+        private bool IsKeyboardInput()
+        {
+            var dif = DateTime.Now - _lastKeyDownOccured;
+            return dif.TotalMilliseconds < 100;
+        }
+
         private void ScrollToSelectedItem()
         {
-            if (_selector != null && _selector.SelectedItem != null)
-                _selector.ScrollIntoView(_selector.SelectedItem);
+            if (_suggestionsListBox != null && _suggestionsListBox.SelectedItem != null)
+                _suggestionsListBox.ScrollIntoView(_suggestionsListBox.SelectedItem);
         }
 
         public override void OnApplyTemplate()
@@ -142,33 +144,25 @@ namespace Germadent.UI.Controls
 
             _bindingEvaluator = new BindingEvaluator(new Binding(DisplayMember));
 
-            if (_editor != null)
+            _editor.TextChanged += OnEditorTextChanged;
+            _editor.PreviewKeyDown += OnEditorKeyDown;
+            _editor.LostFocus += OnEditorLostFocus;
+
+            if (SelectedItem != null)
             {
-                _editor.TextChanged += OnEditorTextChanged;
-                _editor.PreviewKeyDown += OnEditorKeyDown;
-                _editor.LostFocus += OnEditorLostFocus;
-
-                if (SelectedItem != null)
-                {
-                    _editor.Text = _bindingEvaluator.Evaluate(SelectedItem);
-                }
-
+                _editor.Text = _bindingEvaluator.Evaluate(SelectedItem);
             }
 
-            if (_popup != null)
-            {
-                _popup.StaysOpen = false;
-                _popup.Opened += OnPopupOpened;
-                _popup.Closed += OnPopupClosed;
-            }
-            if (_selector != null)
-            {
-                _selectionAdapter = new SelectionAdapter(_selector);
-                _selectionAdapter.Commit += OnSelectionAdapterCommit;
-                _selectionAdapter.Cancel += OnSelectionAdapterCancel;
-                _selectionAdapter.SelectionChanged += OnSelectionAdapterSelectionChanged;
-            }
+            _popup.StaysOpen = false;
+            _popup.Opened += OnPopupOpened;
+            _popup.Closed += OnPopupClosed;
+
+            _selectionAdapter = new SelectionAdapter(_suggestionsListBox);
+            _selectionAdapter.Commit += OnSelectionAdapterCommit;
+            _selectionAdapter.Cancel += OnSelectionAdapterCancel;
+            _selectionAdapter.SelectionChanged += OnSelectionAdapterSelectionChanged;
         }
+
         private string GetDisplayText(object dataItem)
         {
             if (_bindingEvaluator == null)
@@ -188,13 +182,15 @@ namespace Germadent.UI.Controls
 
         private void OnEditorKeyDown(object sender, KeyEventArgs e)
         {
-            if (_selectionAdapter != null)
-            {
-                if (IsDropDownOpen)
-                    _selectionAdapter.HandleKeyDown(e);
-                else
-                    IsDropDownOpen = e.Key == Key.Down || e.Key == Key.Up;
-            }
+            _lastKeyDownOccured = DateTime.Now;
+
+            if (_selectionAdapter == null)
+                return;
+
+            if (IsDropDownOpen)
+                _selectionAdapter.HandleKeyDown(e);
+            else
+                IsDropDownOpen = e.Key == Key.Down || e.Key == Key.Up;
         }
 
         private void OnEditorLostFocus(object sender, RoutedEventArgs e)
@@ -209,6 +205,9 @@ namespace Germadent.UI.Controls
         {
             if (_isUpdatingText)
                 return;
+
+            _isKeyboardInput = IsKeyboardInput();
+
             if (_fetchTimer == null)
             {
                 _fetchTimer = new DispatcherTimer();
@@ -221,7 +220,7 @@ namespace Germadent.UI.Controls
             if (_editor.Text.Length > 0)
             {
                 IsLoading = true;
-                _selector.ItemsSource = null;
+                _suggestionsListBox.ItemsSource = null;
                 _fetchTimer.IsEnabled = true;
                 _fetchTimer.Start();
             }
@@ -235,7 +234,7 @@ namespace Germadent.UI.Controls
         {
             _fetchTimer.IsEnabled = false;
             _fetchTimer.Stop();
-            if (Provider != null && _selector != null)
+            if (Provider != null && _suggestionsListBox != null)
             {
                 _filter = _editor.Text;
                 if (_suggestionsAdapter == null)
@@ -248,22 +247,22 @@ namespace Germadent.UI.Controls
 
         private void OnPopupClosed(object sender, EventArgs e)
         {
-            if (!_selectionCancelled)
-            {
-                OnSelectionAdapterCommit();
-            }
+            if (_selectionCancelled)
+                return;
+
+            OnSelectionAdapterCommit();
         }
 
         private void OnPopupOpened(object sender, EventArgs e)
         {
             _selectionCancelled = false;
-            _selector.SelectedItem = SelectedItem;
+            _suggestionsListBox.SelectedItem = SelectedItem;
         }
 
         private void OnSelectionAdapterCancel()
         {
             _isUpdatingText = true;
-            _editor.Text = SelectedItem == null ? _filter : GetDisplayText(SelectedItem);
+            _editor.Text = _filter;
             _editor.SelectionStart = _editor.Text.Length;
             _editor.SelectionLength = 0;
             _isUpdatingText = false;
@@ -273,27 +272,28 @@ namespace Germadent.UI.Controls
 
         private void OnSelectionAdapterCommit()
         {
-            if (_selector.SelectedItem != null)
-            {
-                SelectedItem = _selector.SelectedItem;
-                _isUpdatingText = true;
-                _editor.Text = GetDisplayText(_selector.SelectedItem);
-                SetSelectedItem(_selector.SelectedItem);
-                _isUpdatingText = false;
-                IsDropDownOpen = false;
-            }
+            if (_suggestionsListBox.SelectedItem == null)
+                return;
+
+            SelectedItem = _suggestionsListBox.SelectedItem;
+            _isUpdatingText = true;
+            _editor.Text = GetDisplayText(_suggestionsListBox.SelectedItem);
+            _filter = _editor.Text;
+            SetSelectedItem(_suggestionsListBox.SelectedItem);
+            _isUpdatingText = false;
+            IsDropDownOpen = false;
         }
 
         private void OnSelectionAdapterSelectionChanged()
         {
             _isUpdatingText = true;
-            if (_selector.SelectedItem == null)
+            if (_suggestionsListBox.SelectedItem == null)
             {
                 _editor.Text = _filter;
             }
             else
             {
-                _editor.Text = GetDisplayText(_selector.SelectedItem);
+                _editor.Text = GetDisplayText(_suggestionsListBox.SelectedItem);
             }
             _editor.SelectionStart = _editor.Text.Length;
             _editor.SelectionLength = 0;
@@ -314,7 +314,7 @@ namespace Germadent.UI.Controls
             private AutoCompleteTextBox _actb;
 
             private string _filter;
-      
+
             public SuggestionsAdapter(AutoCompleteTextBox actb)
             {
                 _actb = actb;
@@ -342,8 +342,10 @@ namespace Germadent.UI.Controls
                 }
 
                 _actb.IsLoading = false;
-                _actb._selector.ItemsSource = suggestions;
-                _actb.IsDropDownOpen = _actb._selector.HasItems;
+                _actb._suggestionsListBox.ItemsSource = suggestions;
+
+                if (_actb._isKeyboardInput)
+                    _actb.IsDropDownOpen = _actb._suggestionsListBox.HasItems;
             }
 
             private void GetSuggestionsAsync(object param)
