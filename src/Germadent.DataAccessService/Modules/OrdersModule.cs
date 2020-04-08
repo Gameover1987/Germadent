@@ -36,6 +36,7 @@ namespace Germadent.DataAccessService.Modules
             Get["/transparences"] = x => GetTranparences();
             Get["/equipments"] = x => GetEquipments();
             Get["/excel/{id}"] = x => GetExcel(x);
+            Get["/customers/{name}"] = x => GetCustomers(x);
         }
 
         private object GetOrderById(dynamic arg)
@@ -113,6 +114,16 @@ namespace Germadent.DataAccessService.Modules
             {
                 var id = (int)int.Parse(arg.id.ToString());
                 return Response.AsJson(_rmaRepository.GetWorkReport(id));
+            });
+        }
+
+        private object GetCustomers(dynamic arg)
+        {
+            return ExecuteWithLogging(() =>
+            {
+                var name = (string)arg.name.ToString();
+                var customers = _rmaRepository.GetCustomers(name);
+                return Response.AsJson(customers);
             });
         }
 
