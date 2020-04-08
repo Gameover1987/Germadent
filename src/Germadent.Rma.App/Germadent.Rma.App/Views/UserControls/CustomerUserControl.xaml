@@ -14,13 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" Margin="3,0,0,0"/>
-        <TextBlock Grid.Row="1" Margin="3,3,0,0" Text="{Binding Phone}"/>
-
-        <TextBlock Grid.Row="1" HorizontalAlignment="Right">
-            <Hyperlink>
-                <TextBlock Text="Открыть карточку..."></TextBlock>
-            </Hyperlink>
-        </TextBlock>
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" Margin="3,0,0,0" HorizontalAlignment="Stretch"/>
+        <TextBlock Grid.Row="1" Margin="3,0,0,0" Text="{Binding Phone}" HorizontalAlignment="Stretch"/>
     </Grid>
 </UserControl>

@@ -40,10 +40,11 @@
         </Border>
         <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                                       Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMember="DisplayName"
                                       Provider="{Binding CustomerSuggestionProvider}">
             <controls:AutoCompleteTextBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:CustomerViewModel}">
-                    <TextBlock Text="{Binding}"></TextBlock>
+                    <userControls:CustomerUserControl />
                 </DataTemplate>
             </controls:AutoCompleteTextBox.ItemTemplate>
         </controls:AutoCompleteTextBox>

@@ -23,6 +23,13 @@ namespace Germadent.Rma.App.Views
         public CustomerCatalogWindow()
         {
             InitializeComponent();
+
+            Loaded+= OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            SearchComboBox.FocusTextBox();
         }
 
         private void CustomerCatalogWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

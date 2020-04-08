@@ -4,6 +4,8 @@
     {
         void Initialize();
 
+        string SearchString { get; set; }
+
         ICustomerViewModel SelectedCustomer { get; }
     }
 }

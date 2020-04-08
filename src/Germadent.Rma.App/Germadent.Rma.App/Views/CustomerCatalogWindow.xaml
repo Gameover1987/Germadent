@@ -17,7 +17,8 @@
         MinWidth="800"
         Width="800"
         DataContextChanged="CustomerCatalogWindow_OnDataContextChanged"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockCustomerCatalogViewModel}, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockCustomerCatalogViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -30,8 +31,10 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-            <controls:SearchComboBox LabelText="Поиск заказчика" HorizontalAlignment="Left" Width="150" Height="23"
-                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0" Width="150"
+                                     LabelText="Поиск заказ-нарядов" 
+                                     SearchEventTimeDelay="00:00:3"
+                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Button Content="Добавить" Margin="0,12,0,0"
                     Command="{Binding AddCustomerCommand}"/>

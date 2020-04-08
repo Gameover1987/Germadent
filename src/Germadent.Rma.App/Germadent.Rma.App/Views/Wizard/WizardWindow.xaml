@@ -19,8 +19,7 @@
         Width="800"
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
-        d:DataContext="{d:DesignInstance Type=designMock:DesignMockWizardViewModel, IsDesignTimeCreatable=True}"
-        helpers:WindowCloseHelper.CloseKey="Escape">
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockWizardViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type wizard:LaboratoryInfoWizardStepViewModel}">
@@ -82,7 +81,8 @@
             <Button Content="Сохранить и распечатать" Margin="6,0,0,0" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                     Command="{Binding SaveAndPrintCommand}"/>
-            <Button Width="100" Content="Отмена" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"/>
+            <Button Width="100" Content="Отмена" Margin="6,0,0,0" 
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>

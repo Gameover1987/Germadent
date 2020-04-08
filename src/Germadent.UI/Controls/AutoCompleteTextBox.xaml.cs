@@ -188,9 +188,14 @@ namespace Germadent.UI.Controls
                 return;
 
             if (IsDropDownOpen)
+            {
                 _selectionAdapter.HandleKeyDown(e);
+                e.Handled = true;
+            }
             else
+            {
                 IsDropDownOpen = e.Key == Key.Down || e.Key == Key.Up;
+            }
         }
 
         private void OnEditorLostFocus(object sender, RoutedEventArgs e)

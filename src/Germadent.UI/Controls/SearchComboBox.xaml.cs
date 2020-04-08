@@ -12,13 +12,7 @@ namespace Germadent.UI.Controls
 	/// </summary>
 	public partial class SearchComboBox
 	{
-		#region Fields
-
 		private readonly DispatcherTimer _searchEventDelayTimer;
-
-		#endregion
-
-		#region Constructor
 
 		public SearchComboBox()
 		{
@@ -29,13 +23,17 @@ namespace Germadent.UI.Controls
 				Interval = SearchEventTimeDelay.TimeSpan
 			};
 			_searchEventDelayTimer.Tick += OnSeachEventDelayTimerTick;
+
+			GotFocus += OnGotFocus;
+			LostFocus += OnLostFocus;
 		}
 
-		#endregion
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            
+        }
 
-		#region Dependency properties
-
-		public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
 			"SearchText", typeof(string), typeof(SearchComboBox));
 
 		public static readonly DependencyProperty ShowComboBoxProperty = DependencyProperty.Register(
@@ -65,10 +63,6 @@ namespace Germadent.UI.Controls
 
 		public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
 			"CommandParameter", typeof(object), typeof(SearchComboBox));
-
-		#endregion
-
-		#region Properties
 
 		/// <summary>
 		/// Текст введенный в окно поиска
@@ -178,15 +172,16 @@ namespace Germadent.UI.Controls
 			set { SetValue(CommandParameterProperty, value); }
 		}
 
-		#endregion
-
-		#region Event handlers
-
 		private void OnSeachEventDelayTimerTick(object o, EventArgs e)
 		{
 			_searchEventDelayTimer.Stop();
 			ExecuteSearchCommand();
 		}
+
+        private void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            SearchTextBox.Focus();
+        }
 
 		private void SearchTextBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
@@ -245,10 +240,6 @@ namespace Germadent.UI.Controls
             ItemsComboBox.IsDropDownOpen = true;
         }
 
-		#endregion
-
-		#region Public methods
-
 		public void FocusTextBox()
 		{
             if (!SearchTextBox.IsFocused)
@@ -256,17 +247,10 @@ namespace Germadent.UI.Controls
                 SearchTextBox.Focus();
             }
 		}
-
-		#endregion
-
-		#region Private methods
-
 		private void ExecuteSearchCommand()
 		{
 			if (SearchCommand != null)
 				SearchCommand.Execute(CommandParameter);
 		}
-
-		#endregion
 	}
 }

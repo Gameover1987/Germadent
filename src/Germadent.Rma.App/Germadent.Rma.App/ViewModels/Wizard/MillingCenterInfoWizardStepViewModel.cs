@@ -107,6 +107,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private void SelectCustomerCommandHandler()
         {
             var customer = _windowManager.SelectCustomer(Customer);
+            if (customer == null)
+                return;
+
             Customer = customer.DisplayName;
         }
 

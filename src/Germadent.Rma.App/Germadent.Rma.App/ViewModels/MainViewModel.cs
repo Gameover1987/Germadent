@@ -46,7 +46,6 @@ namespace Germadent.Rma.App.ViewModels
             _logger = logger;
             _reporter = reporter;
 
-
             SelectedOrder = Orders.FirstOrDefault();
 
             CreateLabOrderCommand = new DelegateCommand(x => CreateLabOrderCommandHandler());
