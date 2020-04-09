@@ -18,8 +18,11 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
-    CONSTRAINT [FK_WorkOrder_Branches] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]) ON UPDATE CASCADE
+    CONSTRAINT [FK_WorkOrder_Branches] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]) ON UPDATE CASCADE,
+    CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID])
 );
+
+
 
 
 

@@ -25,7 +25,7 @@ RETURN
 		, b.BranchType
 		, wo.WorkOrderID
 		, wo.DocNumber	
-		, wo.CustomerName
+		, c.CustomerName
 		, wo.PatientFullName
 		, CASE 
 				WHEN b.BranchTypeID = 2 THEN wdl.DoctorFullName
@@ -37,6 +37,7 @@ RETURN
 		, wo.Closed
 
 	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
+		INNER JOIN Customers c ON wo.CustomerID = c.CustomerID
 		LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
 		LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 

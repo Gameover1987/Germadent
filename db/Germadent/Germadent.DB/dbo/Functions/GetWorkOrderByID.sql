@@ -12,14 +12,16 @@ AS
 RETURN 
 (
 	
-SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType, 
-		/*	cs.CustomerID, cs.CustomerName, p.PatientID,
-			CONCAT_WS(' ', p.FamilyName, p.Name, p.Patronymic) AS PatientFullName, 
-			ISNULL((SELECT dbo.GetPersonAge(p.Birthday)), 0) AS PatientAge, 
-			p.Gender AS PatientGender,
-			rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, 
-		*/
-			wo.CustomerName,
+SELECT wo.WorkOrderID, 
+			wo.DocNumber,
+			b.BranchTypeID,
+			b.BranchType, 
+			cs.CustomerID,
+			cs.CustomerName,
+			
+		--	rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, 
+		
+		--	wo.CustomerName,
 			ISNULL(wo.PatientFullName, '') AS PatientFullName,
 			ISNULL(wo.Created, '') AS Created,
 			wo.Status,
@@ -48,7 +50,7 @@ SELECT wo.WorkOrderID, wo.DocNumber, b.BranchTypeID, b.BranchType,
 
 	FROM	 WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
-	--		INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
+			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 	--		INNER JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
