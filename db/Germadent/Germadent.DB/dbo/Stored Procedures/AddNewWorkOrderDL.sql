@@ -6,10 +6,7 @@
 CREATE PROCEDURE [dbo].[AddNewWorkOrderDL] 
 	
 	@customerID int = NULL,
-	@customerName nvarchar(100),
 	@responsiblePersonId int = NULL,
-	@doctorFullName nvarchar(150) = NULL,
-	@patientID int = NULL,
 	@patientFullName nvarchar(150) = NULL,
 	@patientGender bit = NULL,
 	@patientAge tinyint = NULL,
@@ -46,16 +43,16 @@ BEGIN
 
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, PatientFullName, ResponsiblePersonID, PatientID, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, PatientFullName, ResponsiblePersonID, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(2, @docNumber, @customerID, @customerName, @patientFullName, @responsiblePersonId, @patientID, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(2, @docNumber, @customerID, @patientFullName, @responsiblePersonId, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
-		(WorkOrderDLID, DoctorFullName, PatientGender, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
+		(WorkOrderDLID, PatientGender, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
 	VALUES
-		(@workOrderID, @doctorFullName, @patientGender, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+		(@workOrderID, @patientGender, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
 
 END
 GO

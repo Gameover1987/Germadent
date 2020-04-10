@@ -8,9 +8,8 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 	@workOrderID int
 	, @status tinyint
 	, @docNumber nvarchar(10)
---	, @customerID int
-	, @customerName nvarchar(100)
---	, @responsiblePersonId int
+	, @customerID int
+	, @responsiblePersonId int
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
 	, @dateComment nvarchar(50)
@@ -18,7 +17,6 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
-	, @doctorFullName nvarchar(150)
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint
@@ -38,10 +36,9 @@ BEGIN
 	UPDATE WorkOrder
 	SET Status = @status
 		, DocNumber = @docNumber
---		, CustomerID = @customerID
-	 	, CustomerName = @customerName
+		, CustomerID = @customerID
 		, PatientFullName = @patientFullName
---		, ResponsiblePersonID = @responsiblePersonId
+		, ResponsiblePersonID = @responsiblePersonId
 		, DateDelivery = @dateDelivery
 		, DateComment = @dateComment
 		, ProstheticArticul = @prostheticArticul
@@ -55,7 +52,6 @@ BEGIN
 
 	UPDATE WorkOrderDL
 	SET TransparenceID = @transparenceID
-		, DoctorFullName = @doctorFullName
 		, PatientGender = @patientGender
 		, PatientAge = @patientAge
 		, FittingDate = @fittingDate

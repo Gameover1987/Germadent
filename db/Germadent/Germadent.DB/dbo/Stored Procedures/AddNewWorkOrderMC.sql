@@ -6,11 +6,7 @@
 CREATE PROCEDURE [dbo].[AddNewWorkOrderMC] 
 	
 	@customerID int = NULL,
-	@customerName nvarchar(100),
 	@responsiblePersonId int = NULL,
-	@technicFullName nvarchar(150) = NULL,
-	@technicPhone varchar(15) = NULL,
-	@patientID int = NULL,
 	@patientFullName nvarchar(150) = NULL,
 	@dateDelivery datetime = NULL,
 	@dateComment  nvarchar(50) = NULL,
@@ -42,23 +38,18 @@ BEGIN
 	-- Генерируем номер документа для каждого филиалов свой:
 	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-MC', '~', YEAR(GETDATE())-2000)
 
-	-- Получение id клиента. Если клиента ещё нет - создаём его в таблице
-	--SET @customerID = (SELECT CustomerID FROM Customers WHERE CustomerName = @customerName)
-	--IF @customerID IS NULL EXEC AddNewCustomer @customerName, @customerID output
-
-
 	-- Собственно вставка:	
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, CustomerName, ResponsiblePersonID, PatientID, PatientFullName, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID, DocNumber, CustomerID, ResponsiblePersonID, PatientFullName, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(1, @docNumber, @customerID, @customerName, @responsiblePersonId, @patientID, @patientFullName, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(1, @docNumber, @customerID, @responsiblePersonId, @patientFullName, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderMC
-		(WorkOrderMCID, TechnicFullName, TechnicPhone, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
+		(WorkOrderMCID, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
 	VALUES
-		(@workOrderID, @technicFullName, @technicPhone, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
+		(@workOrderID, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
 
 
 END

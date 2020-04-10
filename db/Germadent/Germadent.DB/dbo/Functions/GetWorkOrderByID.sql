@@ -17,11 +17,10 @@ SELECT wo.WorkOrderID,
 			b.BranchTypeID,
 			b.BranchType, 
 			cs.CustomerID,
-			cs.CustomerName,
-			
-		--	rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, 
-		
-		--	wo.CustomerName,
+			cs.CustomerName,			
+			ISNULL(rp.RP_Position, '') AS RP_Position, 
+			ISNULL(rp.ResponsiblePerson, '') AS ResponsiblePerson,
+			ISNULL(rp.RP_Phone, '') AS RP_Phone,
 			ISNULL(wo.PatientFullName, '') AS PatientFullName,
 			ISNULL(wo.Created, '') AS Created,
 			wo.Status,
@@ -32,14 +31,14 @@ SELECT wo.WorkOrderID,
 			ISNULL(wo.OfficeAdminName, '') AS OfficeAdminName,
 			wo.Closed,
 		--	CONCAT(e.FamilyName,' ', LEFT(e.Name, 1), '.', LEFT(e.Patronymic, 1), '.') AS OfficeAdmin,
-			ISNULL(wmc.TechnicFullName, '') AS TechnicFullName,
-			ISNULL(wmc.TechnicPhone, '') AS TechnicPhone,
+			ISNULL(rp.ResponsiblePerson, '') AS TechnicFullName,
+			ISNULL(rp.RP_Phone, '') AS TechnicPhone,
 			ISNULL(wmc.AdditionalInfo, '') AS AdditionalInfo,
 			ISNULL(wmc.CarcassColor, '') AS CarcassColor,
 			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
 			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
 			ISNULL(wmc.Understaff, '') AS Understaff,
-			ISNULL(wdl.DoctorFullName, '') AS DoctorFullName,
+			ISNULL(rp.ResponsiblePerson, '') AS DoctorFullName,
 			wdl.PatientGender,
 			ISNULL(wdl.PatientAge, 0) AS PatientAge,
 			wdl.DateOfCompletion,
@@ -48,14 +47,13 @@ SELECT wo.WorkOrderID,
 			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
-	FROM	 WorkOrder wo 
+	FROM	WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
-	--		INNER JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
+			INNER JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 			LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
-	--		LEFT JOIN Transparences tr ON wdl.TransparenceID = tr.TransparenceID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

@@ -7,9 +7,8 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderMC]
 	@workOrderID int	
 	, @status tinyint
 	, @docNumber nvarchar(10)
---	, @customerID int
-	, @customerName nvarchar(100)
---	, @responsiblePersonId int
+	, @customerID int
+	, @responsiblePersonId int
 	, @patientFullName nvarchar(150)
 	, @dateDelivery datetime
 	, @flagWorkAccept bit
@@ -18,8 +17,6 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderMC]
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
 	, @officeAdminName nvarchar(50)
-	, @technicFullName nvarchar(150)
-	, @technicPhone varchar(20)
 	, @additionalInfo nvarchar(70)
 	, @carcassColor nvarchar(30)
 	, @implantSystem nvarchar(70)
@@ -40,9 +37,8 @@ BEGIN
 	UPDATE WorkOrder
 	SET Status = @status
 		, DocNumber = @docNumber
-	--	, CustomerID = @customerID
-	 	, CustomerName = @customerName
-	--	, ResponsiblePersonID = @responsiblePersonId
+		, CustomerID = @customerID
+		, ResponsiblePersonID = @responsiblePersonId
 		, PatientFullName = @patientFullName
 		, DateDelivery = @dateDelivery
 		, DateComment = @dateComment
@@ -55,9 +51,7 @@ BEGIN
 	WHERE WorkOrderID = @workOrderID
 
 	UPDATE WorkOrderMC
-	SET TechnicFullName = @technicFullName
-		, TechnicPhone = @technicPhone
-		, AdditionalInfo = @additionalInfo
+	SET AdditionalInfo = @additionalInfo
 		, CarcassColor = @carcassColor
 		, ImplantSystem = @implantSystem
 		, IndividualAbutmentProcessing = @individualAbutmentProcessing

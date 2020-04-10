@@ -1,13 +1,17 @@
 ﻿CREATE VIEW dbo.WorkOrders_View
 AS
-SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, wo.CustomerName, wo.ResponsiblePersonID, wo.PatientID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, 
-                wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, wdl.DoctorFullName, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, wmc.WorkOrderMCID, 
-                wmc.TechnicFullName, wmc.TechnicPhone, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wdl.PatientGender
-FROM      dbo.WorkOrder AS wo LEFT OUTER JOIN
+SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, 
+                wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, 
+                wmc.WorkOrderMCID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wdl.PatientGender
+FROM      dbo.WorkOrder AS wo INNER JOIN
+                dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID INNER JOIN
+                dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
                 dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
                 dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 GO
@@ -16,7 +20,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+         Configuration = "(H (1[56] 4[18] 2[17] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -85,29 +89,49 @@ Begin DesignProperties =
          Begin Table = "wo"
             Begin Extent = 
                Top = 6
-               Left = 38
-               Bottom = 427
-               Right = 237
+               Left = 286
+               Bottom = 381
+               Right = 485
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "cs"
+            Begin Extent = 
+               Top = 7
+               Left = 11
+               Bottom = 191
+               Right = 223
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "rp"
+            Begin Extent = 
+               Top = 203
+               Left = 10
+               Bottom = 408
+               Right = 223
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "wdl"
             Begin Extent = 
-               Top = 0
-               Left = 301
-               Bottom = 226
-               Right = 490
+               Top = 207
+               Left = 575
+               Bottom = 411
+               Right = 764
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "wmc"
             Begin Extent = 
-               Top = 269
-               Left = 289
-               Bottom = 497
-               Right = 530
+               Top = 5
+               Left = 578
+               Bottom = 191
+               Right = 833
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -119,13 +143,42 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+      End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
          Alias = 898
          Table = 1169
-         Output = 727
+         O', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
+
+
+
+
+
+
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[WorkOrders_View] TO [gdl_user]
+    AS [dbo];
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'utput = 727
          Append = 1400
          NewValue = 1170
          SortType = 1354
@@ -139,16 +192,4 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
-
-
-
-
-
-
-
-
-GO
-GRANT SELECT
-    ON OBJECT::[dbo].[WorkOrders_View] TO [gdl_user]
-    AS [dbo];
 

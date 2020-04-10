@@ -1,7 +1,5 @@
 ﻿CREATE TABLE [dbo].[WorkOrderMC] (
     [WorkOrderMCID]                INT            NOT NULL,
-    [TechnicFullName]              NVARCHAR (150) NULL,
-    [TechnicPhone]                 VARCHAR (20)   NULL,
     [AdditionalInfo]               NVARCHAR (70)  NULL,
     [CarcassColor]                 NVARCHAR (30)  NULL,
     [ImplantSystem]                NVARCHAR (70)  NULL,
@@ -10,6 +8,8 @@
     CONSTRAINT [PK_WorkOrderMC] PRIMARY KEY CLUSTERED ([WorkOrderMCID] ASC),
     CONSTRAINT [FK_WorkOrderMC_WorkOrder] FOREIGN KEY ([WorkOrderMCID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
 
 
 
@@ -41,8 +41,6 @@ BEGIN
 		AND ISNULL(i.CarcassColor, 'empty') = ISNULL(d.CarcassColor, 'empty')
 		AND ISNULL(i.ImplantSystem, 'empty') = ISNULL(d.ImplantSystem, 'empty')
 		AND ISNULL(i.IndividualAbutmentProcessing, 'empty') = ISNULL(d.IndividualAbutmentProcessing, 'empty')
-		AND ISNULL(i.TechnicFullName, 'empty') = ISNULL(d.TechnicFullName, 'empty')
-		AND ISNULL(i.TechnicPhone, 'empty') = ISNULL(d.TechnicPhone, 'empty')
 		AND ISNULL(i.Understaff, 'empty') = ISNULL(d.Understaff, 'empty')
 		AND i.WorkOrderMCID = d.WorkOrderMCID
 	) BEGIN
