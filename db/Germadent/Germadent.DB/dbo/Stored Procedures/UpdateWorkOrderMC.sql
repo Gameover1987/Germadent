@@ -5,7 +5,6 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[UpdateWorkOrderMC] 
 	@workOrderID int	
-	, @status tinyint
 	, @docNumber nvarchar(10)
 	, @customerID int
 	, @responsiblePersonId int
@@ -35,8 +34,7 @@ BEGIN
 		END
 
 	UPDATE WorkOrder
-	SET Status = @status
-		, DocNumber = @docNumber
+	SET  DocNumber = @docNumber
 		, CustomerID = @customerID
 		, ResponsiblePersonID = @responsiblePersonId
 		, PatientFullName = @patientFullName
