@@ -28,9 +28,19 @@ namespace Germadent.DataAccessService.Entities
         public string DocNumber { get; set; }
 
         /// <summary>
+        /// Идентификатор заказчика
+        /// </summary>
+        public int CustomerId { get; set; }
+
+        /// <summary>
         /// Заказчик
         /// </summary>
         public string CustomerName { get; set; }
+
+        /// <summary>
+        /// Идентификатор ответственного лица - доктора или техника
+        /// </summary>
+        public int ResponsiblePersonId { get; set; }
 
         /// <summary>
         /// ФИО доктора

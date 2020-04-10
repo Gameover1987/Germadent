@@ -26,6 +26,8 @@ namespace Germadent.Rma.Model
 
         public BranchType BranchType { get; set; }
 
+        public int CustomerId { get; set; }
+
         public string Customer { get; set; }
 
         public string Patient { get; set; }
@@ -35,6 +37,8 @@ namespace Germadent.Rma.Model
         public DateTime? Closed { get; set; }
 
         public string DateComment { get; set; }
+
+        public int ResponsiblePersonId { get; set; }
 
         public string ResponsiblePerson { get; set; }
 
