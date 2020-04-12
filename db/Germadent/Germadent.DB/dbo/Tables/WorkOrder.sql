@@ -3,10 +3,10 @@
     [BranchTypeID]        INT            NOT NULL,
     [Status]              INT            CONSTRAINT [DF_WorkOrder_Status] DEFAULT ((0)) NOT NULL,
     [DocNumber]           NVARCHAR (10)  NOT NULL,
-    [CustomerID]          INT            NULL,
+    [CustomerID]          INT            NOT NULL,
     [ResponsiblePersonID] INT            NULL,
     [PatientFullName]     NVARCHAR (150) NULL,
-    [Created]             DATETIME       NULL,
+    [Created]             DATETIME       NOT NULL,
     [DateDelivery]        DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
@@ -16,7 +16,6 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
-    CONSTRAINT [FK_WorkOrder_Branches] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]) ON UPDATE CASCADE,
     CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID])
 );
@@ -44,9 +43,6 @@
 
 
 
-GO
-CREATE NONCLUSTERED INDEX [IX-CustomerID]
-    ON [dbo].[WorkOrder]([CustomerID] ASC);
 
 
 GO
@@ -54,8 +50,11 @@ GO
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_ResponsiblePerson]
-    ON [dbo].[WorkOrder]([ResponsiblePersonID] ASC);
+
+
+
+GO
+
 
 
 GO

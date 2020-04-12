@@ -1,13 +1,14 @@
 ﻿CREATE VIEW dbo.WorkOrders_View
 AS
-SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, 
-                wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, wdl.DateOfCompletion, wdl.ColorAndFeatures, 
-                wmc.WorkOrderMCID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wdl.PatientGender
-FROM      dbo.WorkOrder AS wo INNER JOIN
-                dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID INNER JOIN
-                dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
-                dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
-                dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
+SELECT        wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.DateDelivery, wo.WorkDescription, wo.FlagWorkAccept, 
+                         wo.OfficeAdminID, wo.OfficeAdminName, wo.Closed, wdl.WorkOrderDLID, wdl.TransparenceID, rp.RP_Position, rp.ResponsiblePerson, rp.RP_Phone, wo.PatientFullName, wdl.PatientAge, wdl.FittingDate, 
+                         wdl.DateOfCompletion, wdl.ColorAndFeatures, wmc.WorkOrderMCID, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, 
+                         wo.ProstheticArticul, wdl.PatientGender
+FROM            dbo.WorkOrder AS wo INNER JOIN
+                         dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID LEFT OUTER JOIN
+                         dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
+                         dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
+                         dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
 
@@ -20,7 +21,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[56] 4[18] 2[17] 3) )"
+         Configuration = "(H (1[58] 4[10] 2[18] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -145,22 +146,24 @@ Begin DesignProperties =
       End
       Begin ColumnWidths = 9
          Width = 284
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
+         Width = 1425
+         Width = 1425
+         Width = 1425
+         Width = 1425
+         Width = 1425
+         Width = 1425
+         Width = 1425
+         Width = 1425
       End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 898
-         Table = 1169
+         Alias = 900
+         Table = 1170
          O', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 
@@ -178,13 +181,13 @@ GRANT SELECT
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'utput = 727
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'utput = 720
          Append = 1400
          NewValue = 1170
-         SortType = 1354
-         SortOrder = 1411
+         SortType = 1350
+         SortOrder = 1410
          GroupBy = 1350
-         Filter = 1354
+         Filter = 1350
          Or = 1350
          Or = 1350
          Or = 1350
@@ -192,4 +195,6 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'utput = 72
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
