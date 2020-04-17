@@ -75,6 +75,7 @@
     <Compile Include="Configuration\ServiceConfiguration.cs" />
     <Compile Include="Entities\AdditionalEquipmentEntity.cs" />
     <Compile Include="Entities\AttributesEntity.cs" />
+    <Compile Include="Entities\AttributesSetEntity.cs" />
     <Compile Include="Entities\Conversion\EntityToDtoConverter.cs" />
     <Compile Include="Entities\CustomerEntity.cs" />
     <Compile Include="Entities\DataFileAttributes.cs" />

@@ -165,5 +165,19 @@ namespace Germadent.DataAccessService.Entities.Conversion
                 Description = entity.CustomerDescription
             };
         }
+
+        public ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity)
+        {
+            return new ResponsiblePersonDto
+            {
+                Id = entity.ResponsiblePersonId,
+                CustomerId = entity.CustomerId,
+                Name = entity.ResponsiblePerson,
+                Position = entity.RP_Position,
+                Phone = entity.RP_Phone,
+                Email = entity.RP_Email,
+                Description = entity.RP_Description
+            };
+        }
     }
 }

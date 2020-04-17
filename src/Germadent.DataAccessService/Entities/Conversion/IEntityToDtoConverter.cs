@@ -25,5 +25,7 @@ namespace Germadent.DataAccessService.Entities.Conversion
         ReportListDto ConvertToExcel(ExcelEntity entity);
 
         CustomerDto ConvertToCustomer(CustomerEntity entity);
+
+        ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
     }
 }

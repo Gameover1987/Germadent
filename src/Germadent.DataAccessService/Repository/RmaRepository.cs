@@ -797,5 +797,34 @@ namespace Germadent.DataAccessService.Repository
                 }
             }
         }
+
+        public ResponsiblePersonDto[] GetResponsiblePersonDto(int customerId)
+        {
+            var cmdText = string.Format("select * from GetResponsiblePersons(default, {0}, default)", customerId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var commamd = new SqlCommand(cmdText, connection))
+                {
+                    var reader = commamd.ExecuteReader();
+                    var responsiblePersonEntities = new List<ResponsiblePersonEntity>();
+                    while (reader.Read())
+                    {
+                        var rpEntity = new ResponsiblePersonEntity();
+                        rpEntity.ResponsiblePersonId = int.Parse(reader[nameof(rpEntity.ResponsiblePersonId)].ToString());
+                        rpEntity.CustomerId = int.Parse(reader[nameof(rpEntity.CustomerId)].ToString());
+                        rpEntity.ResponsiblePerson = reader[nameof(rpEntity.ResponsiblePerson)].ToString();
+                        rpEntity.RP_Position = reader[nameof(rpEntity.RP_Position)].ToString();
+                        rpEntity.RP_Phone = reader[nameof(rpEntity.RP_Phone)].ToString();
+                        rpEntity.RP_Email = reader[nameof(rpEntity.RP_Email)].ToString();
+                        rpEntity.RP_Description = reader[nameof(rpEntity.RP_Description)].ToString();
+
+                        responsiblePersonEntities.Add(rpEntity);
+                    }
+                    var responsiblePersons = responsiblePersonEntities.Select(x => _converter.ConvertToResponsiblePerson(x)).ToArray();
+                    return responsiblePersons;
+                }
+            }
+        }
     }
 }

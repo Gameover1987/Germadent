@@ -1,7 +1,7 @@
 ﻿
 namespace Germadent.Rma.Model
 {
-    class ResponsiblePersonDto
+    public class ResponsiblePersonDto
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
