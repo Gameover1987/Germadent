@@ -3,7 +3,7 @@
 -- Create date: 06.04.2020
 -- Description:	Добавление или изменение набора качественных атрибутов заказ-наряда
 -- =============================================
-CREATE PROCEDURE [dbo].[AddOrUpdateQualitAttributesSet]
+CREATE PROCEDURE [dbo].[AddOrUpdateAttributesSet]
 	
 	@jsonString varchar(MAX)
 
@@ -27,20 +27,20 @@ BEGIN
 
 	-- Чистим набор атрибутов от старого содержимого
 	DELETE
-	FROM QualitAttributesSet
+	FROM AttributesSet
 	WHERE WorkOrderID = @workOrderId
 
 	-- Наполняем набор новым содержимым, распарсив строку json
-	INSERT INTO QualitAttributesSet
-		(WorkOrderID, AttributeID, QValueID)
-	SELECT WorkOrderID, AttributeID, QValueID
+	INSERT INTO AttributesSet
+		(WorkOrderID, AttributeID, AttrValueID)
+	SELECT WorkOrderID, AttributeID, AttrValueID
 		FROM OPENJSON (@jsonString)
-		WITH (WorkOrderID int, AttributeID int, QValueID int)
+		WITH (WorkOrderID int, AttributeID int, AttrValueID int)
 
 	-- Удаляем незначащие записи
 	DELETE
-	FROM QualitAttributesSet
+	FROM AttributesSet
 	WHERE WorkOrderID = @workOrderId
-	AND QValueID IS NULL
+	AND AttributeID IS NULL
 
 END

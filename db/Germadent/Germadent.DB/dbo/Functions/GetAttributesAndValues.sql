@@ -6,7 +6,7 @@
 CREATE FUNCTION [dbo].[GetAttributesAndValues]
 (	
 	@attributeId int = NULL,
-	@qValueId int = NULL,
+	@attrValueId int = NULL,
 	@attributeKeyName varchar(50) = NULL
 )
 RETURNS TABLE 
@@ -14,9 +14,9 @@ AS
 RETURN 
 (
 	
-	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, v.QValueID, v.QualitativeValue
-	FROM QualitativeAttributes a INNER JOIN QualitativeValues v ON a.AttributeID = v.AttributeID
+	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
+	FROM Attributes a INNER JOIN AttributesValues v ON a.AttributeID = v.AttributeID
 	WHERE a.AttributeID = ISNULL(@attributeId, a.AttributeID)
-		AND v.QValueID = ISNULL(@qValueId, v.QValueID)
+		AND v.AttrValueID = ISNULL(@attrValueId, v.AttrValueID)
 		AND a.AttributeKeyName LIKE '%'+ ISNULL(@attributeKeyName, '') + '%'
 )

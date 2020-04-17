@@ -3,7 +3,7 @@
 -- Create date: 11.04.2020
 -- Description:	Возвращает список атрибутов
 -- =============================================
-CREATE FUNCTION GetAttributes 
+CREATE FUNCTION [dbo].[GetAttributes] 
 (	
 	
 )
@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT *
-	FROM QualitativeAttributes
+	FROM Attributes
 )
