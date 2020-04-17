@@ -1,10 +1,10 @@
-﻿CREATE VIEW dbo.QualitativeValues_View
+﻿CREATE VIEW dbo.AttributesValues_View
 AS
 SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
 FROM      dbo.Attributes AS a INNER JOIN
                 dbo.AttributesValues AS v ON a.AttributeID = v.AttributeID
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeValues_View';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
 
 
 GO
@@ -81,20 +81,20 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "a"
             Begin Extent = 
-               Top = 5
-               Left = 31
-               Bottom = 127
-               Right = 227
+               Top = 6
+               Left = 40
+               Bottom = 128
+               Right = 236
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "v"
             Begin Extent = 
-               Top = 5
-               Left = 348
-               Bottom = 127
-               Right = 529
+               Top = 6
+               Left = 276
+               Bottom = 128
+               Right = 457
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -122,7 +122,7 @@ Begin DesignProperties =
       Begin ColumnWidths = 11
          Column = 1440
          Alias = 898
-         Table = 1169
+         Table = 1725
          Output = 727
          Append = 1400
          NewValue = 1170
@@ -136,9 +136,5 @@ Begin DesignProperties =
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'QualitativeValues_View';
-
-
-
-
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
 
