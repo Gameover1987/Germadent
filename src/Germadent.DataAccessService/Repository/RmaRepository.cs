@@ -798,7 +798,7 @@ namespace Germadent.DataAccessService.Repository
             }
         }
 
-        public ResponsiblePersonDto[] GetResponsiblePersonDto(int customerId)
+        public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
         {
             var cmdText = string.Format("select * from GetResponsiblePersons(default, {0}, default)", customerId);
             using (var connection = new SqlConnection(_configuration.ConnectionString))

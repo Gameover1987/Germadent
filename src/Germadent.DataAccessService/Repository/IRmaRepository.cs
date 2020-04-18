@@ -96,6 +96,6 @@ namespace Germadent.DataAccessService.Repository
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        ResponsiblePersonDto[] GetResponsiblePersonDto(int customerId);
+        ResponsiblePersonDto[] GetResponsiblePersons(int customerId);
     }
 }
