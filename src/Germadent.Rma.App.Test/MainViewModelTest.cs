@@ -34,7 +34,7 @@ namespace Germadent.Rma.App.Test
             mockRmaOperations.Setup(x => x.GetOrders(It.IsAny<OrdersFilter>())).Returns(orders.ToArray());
             var mockClipboard = new Mock<IClipboardWorks>();
             var target = new MainViewModel(mockRmaOperations.Object,
-                Mock.Of<IWindowManager>(),
+                Mock.Of<IOrderUIOperations>(),
                 Mock.Of<IShowDialogAgent>(),
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),

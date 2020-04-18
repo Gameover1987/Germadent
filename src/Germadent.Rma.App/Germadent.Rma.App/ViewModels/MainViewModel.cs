@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.ViewModels
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaOperations _rmaOperations;
-        private readonly IWindowManager _windowManager;
+        private readonly IOrderUIOperations _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
@@ -33,7 +33,7 @@ namespace Germadent.Rma.App.ViewModels
         private ICollectionView _collectionView;
 
         public MainViewModel(IRmaOperations rmaOperations,
-            IWindowManager windowManager,
+            IOrderUIOperations windowManager,
             IShowDialogAgent dialogAgent,
             IPrintModule printModule,
             ILogger logger,

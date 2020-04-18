@@ -197,6 +197,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public CustomerDto[] GetCustomers(string mask)
+        {
+            throw new NotImplementedException();
+        }
+
         public CustomerDto[] GetCustomers()
         {
             return new CustomerDto[]
@@ -214,6 +219,11 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddCustomer(CustomerDto сustomerDto)
         {
             throw new NotImplementedException();
         }

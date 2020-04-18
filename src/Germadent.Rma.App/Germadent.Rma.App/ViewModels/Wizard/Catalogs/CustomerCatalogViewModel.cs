@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -14,6 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
     public class CustomerCatalogViewModel : ViewModelBase, ICustomerCatalogViewModel
     {
         private readonly IRmaOperations _rmaOperations;
+        private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly ILogger _logger;
 
         private ICustomerViewModel _selectedCustomer;
@@ -22,9 +24,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private ICollectionView _customersView;
 
-        public CustomerCatalogViewModel(IRmaOperations rmaOperations, ILogger logger)
+        public CustomerCatalogViewModel(IRmaOperations rmaOperations, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {
             _rmaOperations = rmaOperations;
+            _catalogUIOperations = catalogUIOperations;
             _logger = logger;
 
             AddCustomerCommand = new DelegateCommand(AddCustomerCommandHandler);
@@ -106,7 +109,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
                 CustomerDto[] customers = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    customers = _rmaOperations.GetCustomers();
+                    customers = _rmaOperations.GetCustomers("");
                 });
                 
                 foreach (var customer in customers)
@@ -127,7 +130,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void AddCustomerCommandHandler()
         {
+            var customer = _catalogUIOperations.AddCustomer();
+            if (customer == null)
+                return;
 
+            _rmaOperations.AddCustomer(customer);
         }
 
         private bool CanEditCustomerCommandHandler()

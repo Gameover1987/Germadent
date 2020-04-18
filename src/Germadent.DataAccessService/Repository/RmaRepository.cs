@@ -771,7 +771,7 @@ namespace Germadent.DataAccessService.Repository
 
         public CustomerDto[] GetCustomers(string name)
         {
-            var cmdText = string.Format("select * from GetCustomers(default, {0})", name);
+            var cmdText = string.Format("select * from GetCustomers(default, '{0}')", name);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();

@@ -87,6 +87,8 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\RmaConfiguration.cs" />
     <Compile Include="Converters\BranchTypeToStringConverter.cs" />
+    <Compile Include="Infrastructure\CatalogUIOperations.cs" />
+    <Compile Include="Infrastructure\ICatalogUIOperations.cs" />
     <Compile Include="Reporting\ClipboardWorks.cs" />
     <Compile Include="Reporting\IPrintableOrderConverter.cs" />
     <Compile Include="Reporting\IReporter.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="ViewModels\Wizard\Catalogs\CustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\Wizard\Catalogs\CustomerSuggestionProvider.cs" />
+    <Compile Include="ViewModels\Wizard\Catalogs\IAddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Wizard\Catalogs\ICustomerCatalogViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\IOrderFilesContainerViewModel.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="Views\CustomerCatalogWindow.xaml.cs">
       <DependentUpon>CustomerCatalogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DesignMock\DesignMockAddCustomerViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockCustomerCatalogViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockCustomerViewModel.cs" />
     <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
@@ -159,7 +163,7 @@
     <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
     <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
     <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
-    <Compile Include="Infrastructure\IWindowManager.cs" />
+    <Compile Include="Infrastructure\IOrderUIOperations.cs" />
     <Compile Include="Views\OrdersFilterWindow.xaml.cs">
       <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -184,7 +188,7 @@
     <Compile Include="Views\Wizard\MouthUserControl.xaml.cs">
       <DependentUpon>MouthUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\WindowManager.cs" />
+    <Compile Include="Infrastructure\OrderUIOperations.cs" />
     <Compile Include="Views\Wizard\WizardMode.cs" />
     <Compile Include="Views\Wizard\WizardWindow.xaml.cs">
       <DependentUpon>WizardWindow.xaml</DependentUpon>

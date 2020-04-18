@@ -10,7 +10,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IMillingCenterWizardStepsProvider : IWizardStepsProvider
     {
-        void Initialize(IWindowManager windowManager);
     }
 
     public class MillingCenterWizardStepsProvider : IMillingCenterWizardStepsProvider
@@ -18,30 +17,28 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly IRmaOperations _rmaOperations;
         private readonly IOrderFilesContainerViewModel _filesContainer;
         private readonly ISuggestionProvider _customerSuggestionProvider;
-        private readonly ISuggestionProvider _responsiblePersonSuggestionProvider;
-        private IWindowManager _windowManager;
+        private readonly ICatalogUIOperations _catalogUIOperations;
 
-        public MillingCenterWizardStepsProvider(IRmaOperations rmaOperations, IOrderFilesContainerViewModel filesContainer, ISuggestionProvider customerSuggestionProvider, ISuggestionProvider responsiblePersonSuggestionProvider)
+        public MillingCenterWizardStepsProvider(IRmaOperations rmaOperations, 
+            IOrderFilesContainerViewModel filesContainer, 
+            ISuggestionProvider customerSuggestionProvider, 
+            ISuggestionProvider responsiblePersonSuggestionProvider, 
+            ICatalogUIOperations catalogUIOperations)
         {
             _rmaOperations = rmaOperations;
             _filesContainer = filesContainer;
             _customerSuggestionProvider = customerSuggestionProvider;
-            _responsiblePersonSuggestionProvider = responsiblePersonSuggestionProvider;
+            _catalogUIOperations = catalogUIOperations;
         }
 
         public IWizardStepViewModel[] GetSteps()
         {
             return new IWizardStepViewModel[]
             {
-                new MillingCenterInfoWizardStepViewModel(_windowManager, _customerSuggestionProvider),
+                new MillingCenterInfoWizardStepViewModel(_catalogUIOperations, _customerSuggestionProvider),
                 new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper()), _filesContainer),
                 new MillingCenterAdditionalEquipmentViewModel(_rmaOperations), 
             };
-        }
-
-        public void Initialize(IWindowManager windowManager)
-        {
-            _windowManager = windowManager;
         }
     }
 }

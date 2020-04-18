@@ -5,7 +5,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockMillingCenterInfoWizardStepViewModel : MillingCenterInfoWizardStepViewModel
     {
-        public DesignMockMillingCenterInfoWizardStepViewModel() : base(new DesignMockWindowManager(), new DesignMockSuggestionProvider())
+        public DesignMockMillingCenterInfoWizardStepViewModel() : base(new DesignMockCatalogUIOperations(), new DesignMockSuggestionProvider())
         {
             Customer = "Заказчик Заказчиков";
             Patient = "Пациент Пациентов";

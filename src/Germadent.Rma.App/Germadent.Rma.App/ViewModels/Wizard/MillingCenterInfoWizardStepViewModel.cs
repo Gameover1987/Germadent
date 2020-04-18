@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
-        private readonly IWindowManager _windowManager;
+        private readonly ICatalogUIOperations _catalogUIOperations;
 
         private string _customer;
         private string _patient;
@@ -20,9 +20,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
         private string _dateComment;
 
-        public MillingCenterInfoWizardStepViewModel(IWindowManager windowManager, ISuggestionProvider customerSuggestionProvider)
+        public MillingCenterInfoWizardStepViewModel(ICatalogUIOperations catalogUIOperations, ISuggestionProvider customerSuggestionProvider)
         {
-            _windowManager = windowManager;
+            _catalogUIOperations = catalogUIOperations;
             CustomerSuggestionProvider = customerSuggestionProvider;
 
             AddValidationFor(() => Customer)
@@ -106,7 +106,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void SelectCustomerCommandHandler()
         {
-            var customer = _windowManager.SelectCustomer(Customer);
+            var customer = _catalogUIOperations.SelectCustomer(Customer);
             if (customer == null)
                 return;
 

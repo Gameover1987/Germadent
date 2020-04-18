@@ -91,7 +91,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// Возвращает список заказчиков
         /// </summary>
         /// <returns></returns>
-        CustomerDto[] GetCustomers();
+        CustomerDto[] GetCustomers(string mask);
 
         /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
@@ -99,5 +99,10 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="customerId"></param>
         /// <returns></returns>
         ResponsiblePersonDto[] GetResponsiblePersons(int customerId);
+
+        /// <summary>
+        /// Добавление заказчика
+        /// </summary>
+        void AddCustomer(CustomerDto сustomerDto);
     }
 }

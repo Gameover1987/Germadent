@@ -5,7 +5,7 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
-    public class DesignMockWindowManager : IWindowManager
+    public class DesignMockWindowManager : IOrderUIOperations
     {
         public OrderDto CreateLabOrder(OrderDto order, WizardMode mode)
         {
@@ -23,6 +23,24 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public ICustomerViewModel SelectCustomer(string mask)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public CustomerDto AddCustomer()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class DesignMockCatalogUIOperations : ICatalogUIOperations
+    {
+        public ICustomerViewModel SelectCustomer(string mask)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public CustomerDto AddCustomer()
         {
             throw new System.NotImplementedException();
         }

@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
-        Title="AddCustomerWindow" 
+        Title="{Binding Title}" 
         MinHeight="280"
         Height="280"
         MinWidth="600"
-        Width="600">
+        Width="600"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddCustomerViewModel}, IsDesignTimeCreatable=True}">
     <Grid Margin="12" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -32,26 +34,34 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"/>
+            <Border Grid.Row="0" Grid.Column="0"  Style="{StaticResource InfoTextBorderStyle}">
+                <TextBlock Text="Наименование" Margin="0,0,0,0" VerticalAlignment="Center"/>
+            </Border>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Телефон" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Эл. почта" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Веб сайт" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding WebSite, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" MinLines="3"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" MinLines="3"
+                     Text="{Binding Description}"/>
         </Grid>
 
         <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="100" IsDefault="True"
+                    Command="{Binding OkCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
             <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
                     helpers:WindowCloseHelper.DialogResult="False"/>

@@ -1,9 +1,13 @@
-﻿using Germadent.UI.ViewModels;
+﻿using Germadent.Rma.Model;
+using Germadent.UI.Commands;
+using Germadent.UI.ViewModels;
+using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
-    public class AddCustomerViewModel : ViewModelBase
+    public class AddCustomerViewModel : ValidationSupportableViewModel, IAddCustomerViewModel
     {
+        private int _id;
         private string _name;
         private string _phone;
         private string _email;
@@ -12,10 +16,15 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public AddCustomerViewModel()
         {
-            
+            AddValidationFor(() => Name)
+                .When(() => string.IsNullOrWhiteSpace(Name), () => "Укажите наименование заказчика");
+
+            OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
         }
 
-        private string Name
+        public string Title { get; private set; }
+
+        public string Name
         {
             get { return _name; }
             set
@@ -27,7 +36,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             }
         }
 
-        private string Phone
+        public string Phone
         {
             get { return _phone; }
             set
@@ -40,7 +49,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         }
 
 
-        private string Email
+        public string Email
         {
             get { return _email; }
             set
@@ -52,7 +61,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             }
         }
 
-        private string WebSite
+        public string WebSite
         {
             get { return _webSite; }
             set
@@ -62,6 +71,50 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
                 _webSite = value;
                 OnPropertyChanged(() => Name);
             }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (_description == value)
+                    return;
+                _description = value;
+                OnPropertyChanged(() => Description);
+            }
+        }
+
+        public IDelegateCommand OkCommand { get; }
+
+        public void Initialize(string title, CustomerDto customer)
+        {
+            Title = title;
+
+            _id = customer.Id;
+            Name = customer.Name;
+            Phone = customer.Phone;
+            Email = customer.Email;
+            WebSite = customer.WebSite;
+            Description = customer.Description;
+        }
+
+        public CustomerDto GetCustomer()
+        {
+            return new CustomerDto
+            {
+                Id = _id,
+                Name = Name,
+                Phone = Phone,
+                WebSite = WebSite,
+                Email = Email,
+                Description = Description
+            };
+        }
+
+        private bool CanOkCommandHandler()
+        {
+            return !HasErrors && !string.IsNullOrWhiteSpace(Name);
         }
     }
 }

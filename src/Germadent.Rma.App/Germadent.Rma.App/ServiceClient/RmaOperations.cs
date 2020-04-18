@@ -167,14 +167,14 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public CustomerDto[] GetCustomers()
+        public CustomerDto[] GetCustomers(string mask)
         {
-            Thread.Sleep(1000);
-            return new CustomerDto[]
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/customers/{0}", mask);
+            using (var response = _client.GetAsync(apiUrl).Result)
             {
-                new CustomerDto {Name = "ООО Рога и копыта", Description = "Какой то заказчик", Phone = "+7(383)222-33-45", WebSite = "https://zloekino.com/movie/Barnyard"},
-                new CustomerDto {Name = "ООО Пошла родимая", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",WebSite = "http://xn----8sbbcdtrifnipjk4bzlpa.xn--p1ai/nashi-ob-ekty/26-ooo-poshla-rodimaya"},
-            };
+                var customers = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<CustomerDto[]>();
+                return customers;
+            }
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
@@ -185,6 +185,11 @@ namespace Germadent.Rma.App.ServiceClient
                 var rpDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ResponsiblePersonDto[]>();
                 return rpDto;
             }
+        }
+
+        public void AddCustomer(CustomerDto сustomerDto)
+        {
+            
         }
     }
 }

@@ -90,10 +90,15 @@ namespace Germadent.Rma.App
         private void RegisterViewModels()
         {
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IWindowManager, WindowManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrderUIOperations, OrderUIOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICatalogUIOperations, CatalogUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
-            
+
+            _container.RegisterType<IAddCustomerViewModel, AddCustomerViewModel>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
+
             _container.RegisterType<IOrderFilesContainerViewModel, OrderFilesContainerViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISuggestionProvider, CustomerSuggestionProvider>("CustomerSuggestionProvider");
             _container.RegisterType<ISuggestionProvider, ResponsiblePersonSuggestionProvider>("ResponsiblePersonSuggestionProvider");
@@ -102,12 +107,11 @@ namespace Germadent.Rma.App
                     _container.Resolve<IRmaOperations>(),
                     _container.Resolve<IOrderFilesContainerViewModel>(),
                     _container.Resolve<ISuggestionProvider>("CustomerSuggestionProvider"),
-                    _container.Resolve<ISuggestionProvider>("ResponsiblePersonSuggestionProvider")));
+                    _container.Resolve<ISuggestionProvider>("ResponsiblePersonSuggestionProvider"),
+                    _container.Resolve<ICatalogUIOperations>()));
             _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-
-            _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()

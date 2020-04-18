@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public IEnumerable GetSuggestions(string filter)
         {
-            return _rmaOperations.GetCustomers().Select(x => new CustomerViewModel(x)).ToArray();
+            return _rmaOperations.GetCustomers(filter).Select(x => new CustomerViewModel(x)).ToArray();
         }
     }
 }
