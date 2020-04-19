@@ -106,6 +106,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void SelectCustomerCommandHandler()
         {
+            _catalogUIOperations.Initialize();
             var customer = _catalogUIOperations.SelectCustomer(Customer);
             if (customer == null)
                 return;

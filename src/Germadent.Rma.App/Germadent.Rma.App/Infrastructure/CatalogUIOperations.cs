@@ -3,20 +3,27 @@ using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
+using Microsoft.Practices.Unity;
 
 namespace Germadent.Rma.App.Infrastructure
 {
     public class CatalogUIOperations : ICatalogUIOperations
     {
         private readonly IShowDialogAgent _dialogAgent;
-        private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
+        private ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IAddCustomerViewModel _addCustomerViewModel;
+        private readonly IUnityContainer _unityContainer;
 
-        public CatalogUIOperations(IShowDialogAgent dialogAgent, ICustomerCatalogViewModel customerCatalogViewModel, IAddCustomerViewModel addCustomerViewModel)
+        public CatalogUIOperations(IShowDialogAgent dialogAgent, IAddCustomerViewModel addCustomerViewModel, IUnityContainer unityContainer)
         {
             _dialogAgent = dialogAgent;
-            _customerCatalogViewModel = customerCatalogViewModel;
             _addCustomerViewModel = addCustomerViewModel;
+            _unityContainer = unityContainer;
+        }
+
+        public void Initialize()
+        {
+            _customerCatalogViewModel = _unityContainer.Resolve<ICustomerCatalogViewModel>();
         }
 
         public ICustomerViewModel SelectCustomer(string mask)

@@ -35,6 +35,11 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockCatalogUIOperations : ICatalogUIOperations
     {
+        public void Initialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ICustomerViewModel SelectCustomer(string mask)
         {
             throw new System.NotImplementedException();
