@@ -1,8 +1,6 @@
 ﻿using System;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Controls;

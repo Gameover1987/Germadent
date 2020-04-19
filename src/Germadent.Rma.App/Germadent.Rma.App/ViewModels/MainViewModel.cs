@@ -9,7 +9,6 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;

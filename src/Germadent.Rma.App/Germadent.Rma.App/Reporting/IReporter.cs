@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
 {
@@ -10,9 +9,9 @@ namespace Germadent.Rma.App.Reporting
 
     public class ClipboardReporter : IReporter
     {
-        private readonly IClipboardWorks _clipboard;
+        private readonly IClipboardHelper _clipboard;
 
-        public ClipboardReporter(IClipboardWorks clipboard)
+        public ClipboardReporter(IClipboardHelper clipboard)
         {
             _clipboard = clipboard;
         }
@@ -24,7 +23,7 @@ namespace Germadent.Rma.App.Reporting
             {
                 stackString += string.Concat(report.Created, "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, "\t", report.Quantity, "\t", "\t", "\t", "\t", report.ProstheticArticul + "\n");
             }
-            Clipboard.SetText(stackString);
+            _clipboard.CopyToClipboard(stackString);
         }
     }
 }

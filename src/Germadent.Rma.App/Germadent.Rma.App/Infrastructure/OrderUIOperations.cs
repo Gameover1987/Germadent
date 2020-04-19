@@ -2,7 +2,6 @@
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
-using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;

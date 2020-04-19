@@ -1,9 +1,7 @@
-﻿using Germadent.Common.CopyAndPaste;
-using Germadent.Rma.App.Infrastructure;
+﻿using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.App.Views;
-using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Controls;
 
 namespace Germadent.Rma.App.ViewModels.Wizard

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;

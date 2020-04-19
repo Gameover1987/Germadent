@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Germadent.Common.CopyAndPaste
+﻿namespace Germadent.Rma.App.Reporting
 {
     public interface IClipboardHelper
     {
@@ -12,7 +10,7 @@ namespace Germadent.Common.CopyAndPaste
     {
         public void CopyToClipboard(string text)
         {
-            Clipboard.SetText(text);
+           System.Windows.Clipboard.SetText(text);
         }
     }
 }

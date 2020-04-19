@@ -1,6 +1,5 @@
 ﻿using Germadent.Rma.Model;
 using Germadent.UI.Commands;
-using Germadent.UI.ViewModels;
 using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs

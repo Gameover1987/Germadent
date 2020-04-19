@@ -1,5 +1,5 @@
-﻿using Germadent.Common.CopyAndPaste;
-using Germadent.Rma.App.Mocks;
+﻿using Germadent.Rma.App.Mocks;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;

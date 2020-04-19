@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.Test
         public void ShouldCopyReportdataToClipboard(ReporterTestData testData)
         {
             // Given
-            var mockClipboard = new Mock<IClipboardWorks>();
+            var mockClipboard = new Mock<IClipboardHelper>();
             var reporter = new ClipboardReporter(mockClipboard.Object);
              
             // When

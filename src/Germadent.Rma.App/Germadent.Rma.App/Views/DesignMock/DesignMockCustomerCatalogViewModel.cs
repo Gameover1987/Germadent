@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 

@@ -66,3 +66,7 @@ src/Germadent.UserManagementCenter.App.Test/obj/
 src/Germadent.UserManagementCenter.App.Test/bin/
 src/Germadent.TestUtils/bin/
 src/Germadent.TestUtils/obj/
+src/Germadent.DataAccessServiceCore/bin/
+src/Germadent.DataAccessServiceCore/obj/
+src/Germadent.Rma.ModelCore/obj/
+src/Germadent.Rma.ModelCore/bin/

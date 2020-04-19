@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
