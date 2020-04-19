@@ -60,7 +60,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
             Rights.Clear();
 
-            var rights = _userManagementCenterOperations.GetAllRights();
+            var rights = _userManagementCenterOperations.GetRights();
             foreach (var right in rights)
             {
                 var rightViewModel = new RightViewModel(right);

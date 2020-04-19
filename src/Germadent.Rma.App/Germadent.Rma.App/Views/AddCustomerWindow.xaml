@@ -13,7 +13,11 @@
         Height="280"
         MinWidth="600"
         Width="600"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddCustomerViewModel}, IsDesignTimeCreatable=True}">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddCustomerViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
     <Grid Margin="12" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -37,7 +41,7 @@
             <Border Grid.Row="0" Grid.Column="0"  Style="{StaticResource InfoTextBorderStyle}">
                 <TextBlock Text="Наименование" Margin="0,0,0,0" VerticalAlignment="Center"/>
             </Border>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+            <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Телефон" VerticalAlignment="Center" Margin="0,6,0,0"/>

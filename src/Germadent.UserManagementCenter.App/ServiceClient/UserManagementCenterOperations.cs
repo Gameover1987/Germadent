@@ -88,7 +88,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             return roles;
         }
 
-        public RightDto[] GetAllRights()
+        public RightDto[] GetRights()
         {
             var rights = UserRightsProvider.GetAllUserRights();
             return rights;

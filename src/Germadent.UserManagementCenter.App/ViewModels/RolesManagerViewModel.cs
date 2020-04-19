@@ -79,7 +79,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (_selectedRole == null)
                 return;
 
-            var rightsByRole = _userManagementCenterOperations.GetAllRights();
+            var rightsByRole = _userManagementCenterOperations.GetRights();
             foreach (var rightDto in rightsByRole)
             {
                 Rights.Add(new RightViewModel(rightDto));

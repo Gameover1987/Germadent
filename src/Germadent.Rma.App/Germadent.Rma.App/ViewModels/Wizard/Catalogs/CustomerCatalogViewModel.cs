@@ -44,7 +44,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             if (SearchString.IsNullOrWhiteSpace())
                 return true;
 
-            var customerViewModel = (ICustomerViewModel) obj;
+            var customerViewModel = (ICustomerViewModel)obj;
             if (!customerViewModel.DisplayName.ToLower().Contains(SearchString.ToLower()))
                 return false;
 
@@ -111,7 +111,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
                 {
                     customers = _rmaOperations.GetCustomers("");
                 });
-                
+
                 foreach (var customer in customers)
                 {
                     Customers.Add(new CustomerViewModel(customer));
@@ -134,7 +134,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             if (customer == null)
                 return;
 
-            _rmaOperations.AddCustomer(customer);
+            customer = _rmaOperations.AddCustomer(customer);
+            Customers.Add(new CustomerViewModel(customer));
         }
 
         private bool CanEditCustomerCommandHandler()

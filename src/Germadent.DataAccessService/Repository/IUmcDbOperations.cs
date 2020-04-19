@@ -1,12 +1,9 @@
 ﻿using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 
-namespace Germadent.UserManagementCenter.App.ServiceClient
+namespace Germadent.DataAccessService.Repository
 {
-    /// <summary>
-    /// Операции ЦУП
-    /// </summary>
-    public interface IUserManagementCenterOperations
+    public interface IUmcDbOperations
     {
         /// <summary>
         /// Возвращает список пользователей
@@ -15,22 +12,22 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         UserDto[] GetUsers();
 
         /// <summary>
-        /// Возвращает список ролей
+        /// Вовзвращает список ролей
         /// </summary>
         /// <returns></returns>
         RoleDto[] GetRoles();
 
         /// <summary>
-        /// Возвращает список всех прав
+        /// Добавляет роль
+        /// </summary>
+        /// <param name="roleDto"></param>
+        /// <returns></returns>
+        RoleDto[] AddRole(RoleDto roleDto);
+
+        /// <summary>
+        /// Возвращает список прав
         /// </summary>
         /// <returns></returns>
         RightDto[] GetRights();
-
-        /// <summary>
-        /// Возвращает список прав для конкртеной роли
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        RightDto[] GetRightsByRole(int roleId);
     }
 }

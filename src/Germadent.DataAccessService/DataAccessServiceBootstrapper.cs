@@ -16,7 +16,7 @@ namespace Germadent.DataAccessService
         public DataAccessServiceBootstrapper()
         {
             _container.RegisterType<IServiceConfiguration, ServiceConfiguration>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaRepository, RmaRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaDbOperations, RmaDbOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IEntityToDtoConverter, EntityToDtoConverter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
 

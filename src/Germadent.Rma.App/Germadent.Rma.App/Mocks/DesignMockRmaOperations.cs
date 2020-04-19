@@ -223,7 +223,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public void AddCustomer(CustomerDto сustomerDto)
+        public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             throw new NotImplementedException();
         }

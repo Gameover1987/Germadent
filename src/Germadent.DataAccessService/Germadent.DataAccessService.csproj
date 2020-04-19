@@ -102,11 +102,13 @@
     <Compile Include="Infrastructure\UacHelper.cs" />
     <Compile Include="Infrastructure\UrlReservationsHelper.cs" />
     <Compile Include="Modules\UsersModule.cs" />
-    <Compile Include="Repository\IRmaRepository.cs" />
+    <Compile Include="Repository\IRmaDbOperations.cs" />
     <Compile Include="Modules\OrdersModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\RmaRepository.cs" />
+    <Compile Include="Repository\IUmcDbOperations.cs" />
+    <Compile Include="Repository\RmaDbOperations.cs" />
+    <Compile Include="Repository\UmcDbOperations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -120,6 +122,10 @@
     <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Rma.Model.csproj">
       <Project>{20C51207-C072-4C58-B653-5BC624B00CC3}</Project>
       <Name>Germadent.Rma.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj">
+      <Project>{2F85C943-0255-4443-817F-50D13FB15943}</Project>
+      <Name>Germadent.UserManagementCenter.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

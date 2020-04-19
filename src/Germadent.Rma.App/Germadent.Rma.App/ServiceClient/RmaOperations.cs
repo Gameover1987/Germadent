@@ -1,15 +1,11 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -187,9 +183,15 @@ namespace Germadent.Rma.App.ServiceClient
             }
         }
 
-        public void AddCustomer(CustomerDto сustomerDto)
+        public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
-            
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/addCustomer");
+            var content = new StringContent(сustomerDto.SerializeToJson(), Encoding.UTF8, "application/json");
+            using (var response = _client.PostAsync(apiUrl, content).Result)
+            {
+                var newCustomerDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<CustomerDto>();
+                return newCustomerDto;
+            }
         }
     }
 }

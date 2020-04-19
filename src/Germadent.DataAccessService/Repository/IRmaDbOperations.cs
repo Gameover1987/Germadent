@@ -4,7 +4,7 @@ using Germadent.Rma.Model;
 
 namespace Germadent.DataAccessService.Repository
 {
-    public interface IRmaRepository
+    public interface IRmaDbOperations
     {
         /// <summary>
         /// Возвращает заказ наряд по идентификатору
@@ -97,5 +97,11 @@ namespace Germadent.DataAccessService.Repository
         /// <param name="customerId"></param>
         /// <returns></returns>
         ResponsiblePersonDto[] GetResponsiblePersons(int customerId);
+
+        /// <summary>
+        /// Добавляет заказчика
+        /// </summary>
+        /// <param name="customer"></param>
+        CustomerDto AddCustomer(CustomerDto customer);
     }
 }

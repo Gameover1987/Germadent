@@ -103,6 +103,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Добавление заказчика
         /// </summary>
-        void AddCustomer(CustomerDto сustomerDto);
+        CustomerDto AddCustomer(CustomerDto сustomerDto);
     }
 }

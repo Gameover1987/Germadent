@@ -13,10 +13,10 @@ namespace Germadent.DataAccessService.Modules
 {
     public class OrdersModule : NancyModule
     {
-        private readonly IRmaRepository _rmaRepository;
+        private readonly IRmaDbOperations _rmaRepository;
         private readonly ILogger _logger;
 
-        public OrdersModule(IRmaRepository rmaRepository, ILogger logger)
+        public OrdersModule(IRmaDbOperations rmaRepository, ILogger logger)
         {
             _rmaRepository = rmaRepository;
             _logger = logger;
@@ -38,6 +38,7 @@ namespace Germadent.DataAccessService.Modules
             Get["/excel/{id}"] = x => GetExcel(x);
             Get["/customers"] = x => GetAllCustomers();
             Get["/customers/{name}"] = x => GetCustomers(x);
+            Post["/addCustomer"] = x => AddCustomer();
             Get["/responsiblePersons/{customerId}"] = x => GetResponsiblePersons(x);
         }
 
@@ -83,7 +84,7 @@ namespace Germadent.DataAccessService.Modules
         {
             return ExecuteWithLogging(() =>
             {
-                var order = GetFromRequestBody();
+                var order = GetFromRequestBody<OrderDto>();
                 var stream = GetFileFromRequest();
                 _rmaRepository.AddOrder(order, stream);
                 return Response.AsJson(order);
@@ -94,7 +95,7 @@ namespace Germadent.DataAccessService.Modules
         {
             return ExecuteWithLogging(() =>
             {
-                var order = GetFromRequestBody();
+                var order = GetFromRequestBody<OrderDto>();
                 var stream = GetFileFromRequest();
                 _rmaRepository.UpdateOrder(order, stream);
                 return Response.AsJson(order);
@@ -172,15 +173,15 @@ namespace Germadent.DataAccessService.Modules
             return ExecuteWithLogging(() => { return Response.AsJson(_rmaRepository.GetEquipment()); });
         }
 
-        private OrderDto GetFromRequestBody()
+        private T GetFromRequestBody<T>()
         {
             var contentTypeRegex = new Regex("^multipart/form-data;\\s*boundary=(.*)$", RegexOptions.IgnoreCase);
-            System.IO.Stream bodyStream = null;
+            Stream bodyStream;
 
-            if (contentTypeRegex.IsMatch(this.Request.Headers.ContentType))
+            if (contentTypeRegex.IsMatch(Request.Headers.ContentType))
             {
-                var boundary = contentTypeRegex.Match(this.Request.Headers.ContentType).Groups[1].Value;
-                var multipart = new HttpMultipart(this.Request.Body, boundary);
+                var boundary = contentTypeRegex.Match(Request.Headers.ContentType).Groups[1].Value;
+                var multipart = new HttpMultipart(Request.Body, boundary);
                 bodyStream = multipart.GetBoundaries().First(b => b.ContentType.Equals("application/json")).Value;
             }
             else
@@ -189,11 +190,11 @@ namespace Germadent.DataAccessService.Modules
                 bodyStream = Request.Body;
             }
 
-            var jsonBody = new System.IO.StreamReader(bodyStream).ReadToEnd();
+            var jsonBody = new StreamReader(bodyStream).ReadToEnd();
             bodyStream.Close();
 
-            var order = jsonBody.DeserializeFromJson<OrderDto>();
-            return order;
+            var obj = jsonBody.DeserializeFromJson<T>();
+            return obj;
         }
 
         private Stream GetFileFromRequest()
@@ -216,6 +217,16 @@ namespace Germadent.DataAccessService.Modules
             }
 
             return null;
+        }
+
+        private object AddCustomer()
+        {
+            return ExecuteWithLogging(() =>
+            {
+                var customer = GetFromRequestBody<CustomerDto>();
+                _rmaRepository.AddCustomer(customer);
+                return Response.AsJson(customer);
+            });
         }
     }
 }

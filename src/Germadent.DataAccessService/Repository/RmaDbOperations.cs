@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace Germadent.DataAccessService.Repository
 {
-    public class RmaRepository : IRmaRepository
+    public class RmaDbOperations : IRmaDbOperations
     {
         private readonly IEntityToDtoConverter _converter;
         private readonly IServiceConfiguration _configuration;
@@ -22,7 +22,7 @@ namespace Germadent.DataAccessService.Repository
 
         private readonly string _storageDirectory;
 
-        public RmaRepository(IEntityToDtoConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
+        public RmaDbOperations(IEntityToDtoConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
         {
             _converter = converter;
             _configuration = configuration;
@@ -82,11 +82,8 @@ namespace Germadent.DataAccessService.Repository
             using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = DBNull.Value; //только не NULL!!!
-                //command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer; //больше не нужен
+                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = DBNull.Value; 
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = DBNull.Value;
-                //command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson; //больше не нужен
-                //command.Parameters.Add(new SqlParameter("@patientId", SqlDbType.Int)).Value = DBNull.Value; //справочника пациентов не будет
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.TinyInt)).Value = (int)order.Gender;
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.TinyInt)).Value = order.Age;
@@ -823,6 +820,30 @@ namespace Germadent.DataAccessService.Repository
                     }
                     var responsiblePersons = responsiblePersonEntities.Select(x => _converter.ConvertToResponsiblePerson(x)).ToArray();
                     return responsiblePersons;
+                }
+            }
+        }
+
+        public CustomerDto AddCustomer(CustomerDto customer)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("AddNewCustomer", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = customer.Name;
+                    command.Parameters.Add(new SqlParameter("@customerPhone", SqlDbType.NVarChar)).Value = customer.Phone.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerEmail", SqlDbType.NVarChar)).Value = customer.Email.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerWebsite", SqlDbType.NVarChar)).Value = customer.WebSite.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerDescription", SqlDbType.NVarChar)).Value = customer.Description.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int){Direction = ParameterDirection.Output});
+
+                    command.ExecuteNonQuery();
+
+                    customer.Id = command.Parameters["@customerId"].Value.ToInt();
+
+                    return customer;
                 }
             }
         }

@@ -70,7 +70,6 @@ namespace Germadent.UI.Controls
         public bool IsLoading
         {
             get { return (bool)GetValue(IsLoadingProperty); }
-
             set { SetValue(IsLoadingProperty, value); }
         }
 
@@ -180,6 +179,11 @@ namespace Germadent.UI.Controls
             return _bindingEvaluator.Evaluate(dataItem);
         }
 
+        private readonly Key[] _StopKeys = new Key[]
+        {
+            Key.Left, Key.Right, Key.Up, Key.Down
+        };
+
         private void OnEditorKeyDown(object sender, KeyEventArgs e)
         {
             _lastKeyDownOccured = DateTime.Now;
@@ -194,7 +198,7 @@ namespace Germadent.UI.Controls
             }
             else
             {
-                IsDropDownOpen = e.Key == Key.Down || e.Key == Key.Up;
+                IsDropDownOpen = (e.Key == Key.Down || e.Key == Key.Up) && _suggestionsListBox.HasItems;
             }
         }
 
@@ -212,6 +216,8 @@ namespace Germadent.UI.Controls
                 return;
 
             _isKeyboardInput = IsKeyboardInput();
+            if (!_isKeyboardInput)
+                return;
 
             if (_fetchTimer == null)
             {
