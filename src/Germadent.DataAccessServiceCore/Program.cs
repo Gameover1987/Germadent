@@ -24,9 +24,9 @@ namespace Germadent.DataAccessServiceCore
 
         static void Main(string[] args)
         {
-            var bootstrapper = new DataAccessServiceBootstrapper();
-            var serviceConfiguration = bootstrapper.GetServiceConfiguration();
-            var logger = bootstrapper.GetLogger();
+            //var bootstrapper = new DataAccessServiceBootstrapper();
+            //var serviceConfiguration = bootstrapper.GetServiceConfiguration();
+            //var logger = bootstrapper.GetLogger();
 
             logger.Info("Service is ready to config...");
 

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Nancy.Hosting.Self;
+using System;
 using System.Linq;
-using Nancy.Hosting.Self;
 using Topshelf.Logging;
 
 namespace Germadent.DataAccessServiceCore.Infrastructure
