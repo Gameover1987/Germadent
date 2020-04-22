@@ -23,23 +23,23 @@ namespace Germadent.DataAccessService.Modules
 
             ModulePath = "api/Rma";
 
-            Get["/orders/{id}"] = x => GetOrderById(x);
-            Get["/files/{id}"] = x => GetFileByWorkOrderId(x);
-            Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
-            Post["/addOrder"] = x => AddOrder();
-            Post["/updateOrder"] = x => UpdateOrder();
-            Get["/closeOrder/{id}"] = x => CloseOrder(x);
+            //Get["/orders/{id}"] = x => GetOrderById(x);
+            //Get["/files/{id}"] = x => GetFileByWorkOrderId(x);
+            //Post["/getOrdersByFilter"] = x => GetOrdersByFilter();
+            //Post["/addOrder"] = x => AddOrder();
+            //Post["/updateOrder"] = x => UpdateOrder();
+            //Get["/closeOrder/{id}"] = x => CloseOrder(x);
 
-            Get["/prostheticConditions"] = x => GetProstheticConditions();
-            Get["/prostheticTypes"] = x => GetProstheticTypes();
-            Get["/materials"] = x => GetMaterials();
-            Get["/transparences"] = x => GetTranparences();
-            Get["/equipments"] = x => GetEquipments();
-            Get["/excel/{id}"] = x => GetExcel(x);
-            Get["/customers"] = x => GetAllCustomers();
-            Get["/customers/{name}"] = x => GetCustomers(x);
-            Post["/addCustomer"] = x => AddCustomer();
-            Get["/responsiblePersons/{customerId}"] = x => GetResponsiblePersons(x);
+            //Get["/prostheticConditions"] = x => GetProstheticConditions();
+            //Get["/prostheticTypes"] = x => GetProstheticTypes();
+            //Get["/materials"] = x => GetMaterials();
+            //Get["/transparences"] = x => GetTranparences();
+            //Get["/equipments"] = x => GetEquipments();
+            //Get["/excel/{id}"] = x => GetExcel(x);
+            //Get["/customers"] = x => GetAllCustomers();
+            //Get["/customers/{name}"] = x => GetCustomers(x);
+            //Post["/addCustomer"] = x => AddCustomer();
+            //Get["/responsiblePersons/{customerId}"] = x => GetResponsiblePersons(x);
         }
 
         private object GetOrderById(dynamic arg)

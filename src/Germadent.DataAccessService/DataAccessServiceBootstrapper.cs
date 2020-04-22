@@ -6,6 +6,7 @@ using Germadent.DataAccessService.Repository;
 using Microsoft.Practices.Unity;
 using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Unity;
+using Nancy.Configuration;
 
 namespace Germadent.DataAccessService
 {
@@ -23,27 +24,19 @@ namespace Germadent.DataAccessService
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
         }
 
-        protected override void ApplicationStartup(IUnityContainer container, IPipelines pipelines)
+        protected override INancyEnvironmentConfigurator GetEnvironmentConfigurator()
         {
-            Nancy.Json.JsonSettings.MaxJsonLength = int.MaxValue;
-            Nancy.Json.JsonSettings.MaxRecursions = 100;
-            Nancy.Json.JsonSettings.RetainCasing = false;
-            base.ApplicationStartup(container, pipelines);          
+            throw new System.NotImplementedException();
         }
 
-        protected override IUnityContainer GetApplicationContainer()
+        public override INancyEnvironment GetEnvironment()
         {
-            return _container;
+            throw new System.NotImplementedException();
         }
 
-        public IServiceConfiguration GetServiceConfiguration()
+        protected override void RegisterNancyEnvironment(IUnityContainer container, INancyEnvironment environment)
         {
-            return _container.Resolve<IServiceConfiguration>();
-        }
-
-        public ILogger GetLogger()
-        {
-            return _container.Resolve<ILogger>();
+            throw new System.NotImplementedException();
         }
     }
 }

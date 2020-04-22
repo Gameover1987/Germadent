@@ -19,7 +19,7 @@ namespace Germadent.DataAccessService.Modules
 
             ModulePath = "api/Umc";
 
-            Get["/users"] = o => GetUsers();
+            //Get["/users"] = o => GetUsers();
         }
 
         private object GetUsers()
