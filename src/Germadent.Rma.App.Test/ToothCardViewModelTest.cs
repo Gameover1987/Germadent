@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.Common.CopyAndPaste;
+﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+using System.Linq;
 
 namespace Germadent.Rma.App.Test
 {

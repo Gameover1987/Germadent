@@ -3,7 +3,7 @@ using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Germadent.Rma.App.Infrastructure
 {

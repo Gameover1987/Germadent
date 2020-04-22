@@ -32,7 +32,7 @@ namespace Germadent.Rma.App.Test
             orders.Add(new OrderLiteDto() { WorkOrderId = 1 });
             orders.Add(new OrderLiteDto() { WorkOrderId = 2 });
             mockRmaOperations.Setup(x => x.GetOrders(It.IsAny<OrdersFilter>())).Returns(orders.ToArray());
-            var mockClipboard = new Mock<IClipboardWorks>();
+            var mockClipboard = new Mock<IClipboardHelper>();
             var target = new MainViewModel(mockRmaOperations.Object,
                 Mock.Of<IOrderUIOperations>(),
                 Mock.Of<IShowDialogAgent>(),

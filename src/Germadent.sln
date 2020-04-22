@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.App", "Germadent.Rma.App\Germadent.Rma.App\Germadent.Rma.App.csproj", "{D30A163A-E335-4829-B539-7DD8476B6E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Common", "Germadent.Common\Germadent.Common.csproj", "{A73F2837-286E-4DF2-95A7-6A383B67A66B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Common", "Germadent.Common\Germadent.Common.csproj", "{A73F2837-286E-4DF2-95A7-6A383B67A66B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UI", "Germadent.UI\Germadent.UI.csproj", "{E3944E28-D2B6-471B-ACC7-316315C602A1}"
 EndProject
@@ -19,15 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.App.Test", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.App", "Germadent.UserManagementCenter.App\Germadent.UserManagementCenter.App.csproj", "{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.Model", "Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj", "{2F85C943-0255-4443-817F-50D13FB15943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UserManagementCenter.Model", "Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj", "{2F85C943-0255-4443-817F-50D13FB15943}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.UserManagementCenter.App.Test", "Germadent.UserManagementCenter.App.Test\Germadent.UserManagementCenter.App.Test.csproj", "{E50944A7-D140-4F58-A567-51B6AB2BCDC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.TestUtils", "Germadent.TestUtils\Germadent.TestUtils.csproj", "{E095E843-0678-44EC-88B0-34D031BF0A0C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.DataAccessServiceCore", "Germadent.DataAccessServiceCore\Germadent.DataAccessServiceCore.csproj", "{A16F7A99-BCBF-4D3F-A497-99754AD076C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germadent.Rma.ModelCore", "Germadent.Rma.ModelCore\Germadent.Rma.ModelCore.csproj", "{ED01A05E-97F1-42B2-844F-EDC50EABB2B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,14 +71,6 @@ Global
 		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E095E843-0678-44EC-88B0-34D031BF0A0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A16F7A99-BCBF-4D3F-A497-99754AD076C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A16F7A99-BCBF-4D3F-A497-99754AD076C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A16F7A99-BCBF-4D3F-A497-99754AD076C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A16F7A99-BCBF-4D3F-A497-99754AD076C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED01A05E-97F1-42B2-844F-EDC50EABB2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED01A05E-97F1-42B2-844F-EDC50EABB2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED01A05E-97F1-42B2-844F-EDC50EABB2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED01A05E-97F1-42B2-844F-EDC50EABB2B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,7 +81,7 @@ Global
 		{E095E843-0678-44EC-88B0-34D031BF0A0C} = {4DD6BEFD-A887-4337-8312-58A00439E1AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

@@ -42,8 +42,6 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
         };
 
         
-
-        
         public byte[] Assembly(byte[] templateDoc, string jsonString)
         {
             using (var mem = new MemoryStream())
@@ -64,14 +62,11 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
 
         }
 
-
         
         private bool PartHasTrackedRevisions(OpenXmlPart part)
         {
             return GetXDocument(part).Descendants().Any(e => _trackedRevisionsElements.Contains(e.Name));
         }
-
-
 
         private static void ProcessTemplatePart(OpenXmlPart docPart, JToken jsonData)
         {
@@ -81,9 +76,6 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
             xDoc.Elements().First().ReplaceWith(xDocRootResult);
             PutXDocument(docPart);
         }
-
-
-
 
         private static XDocument GetXDocument(OpenXmlPart part)
         {
@@ -125,13 +117,5 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
                     xdocument.Save(writer);
             }
         }
-
-
-        
-
-
-        
-
-
     }
 }

@@ -16,7 +16,9 @@ using Germadent.Rma.App.Views;
 using Germadent.UI.Commands;
 using Germadent.UI.Controls;
 using Germadent.UI.Infrastructure;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Germadent.Rma.App
 {

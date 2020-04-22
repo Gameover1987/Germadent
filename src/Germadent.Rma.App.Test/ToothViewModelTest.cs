@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using NUnit.Framework;
-using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.App.ViewModels.ToothCard;
+using System.Linq;
 
 namespace Germadent.Rma.App.Test
 {
