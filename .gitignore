@@ -70,3 +70,5 @@ src/Germadent.DataAccessServiceCore/bin/
 src/Germadent.DataAccessServiceCore/obj/
 src/Germadent.Rma.ModelCore/obj/
 src/Germadent.Rma.ModelCore/bin/
+src/Germadent.WebApi/bin/
+src/Germadent.WebApi/obj/
