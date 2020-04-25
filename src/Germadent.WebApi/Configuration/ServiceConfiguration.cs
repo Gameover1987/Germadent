@@ -1,17 +1,16 @@
-﻿namespace Germadent.WebApi.Configuration
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Germadent.WebApi.Configuration
 {
     public class ServiceConfiguration : IServiceConfiguration
     {
-        public ServiceConfiguration()
+        public ServiceConfiguration(IConfiguration configuration)
         {
+            ConnectionString = configuration["ConnectionString"];
             //Url = ConfigurationManager.AppSettings[nameof(Url)];
             //Port = int.Parse(ConfigurationManager.AppSettings[nameof(Port)]);
             //ConnectionString = ConfigurationManager.AppSettings[nameof(ConnectionString)];
         }
-
-        public string Url { get; }
-
-        public int Port { get; }
 
         public string ConnectionString { get; }
     }

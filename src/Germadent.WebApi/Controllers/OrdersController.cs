@@ -21,12 +21,9 @@ namespace Germadent.WebApi.Controllers
         }
 
         [HttpGet]
-        public OrderDto[] Get()
+        public OrderLiteDto[] Get()
         {
-            return new OrderDto[]
-            {
-                new OrderDto(),
-            };
+            return _rmaDbOperations.GetOrders(new OrdersFilter());
         }
     }
 }
