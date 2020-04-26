@@ -123,8 +123,15 @@ namespace Germadent.Rma.App.ViewModels
         }
 
         public void Initialize()
-        {           
-            FillOrders();
+        {
+            var ordersFilter = new OrdersFilter
+            {
+                PeriodBegin = DateTime.Now.AddMonths(-2), 
+                PeriodEnd = DateTime.Now,
+                MillingCenter = true, 
+                Laboratory = true
+            };
+            FillOrders(ordersFilter);
         }
 
         private void CreateLabOrderCommandHandler()

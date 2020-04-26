@@ -25,9 +25,10 @@ namespace Germadent.Rma.App.ViewModels
         {
             try
             {
-                return new BitmapImage(new Uri(
-                    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
-                    UriKind.Absolute));
+                return null;
+                //return new BitmapImage(new Uri(
+                //    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
+                //    UriKind.Absolute));
             }
             catch
             {

@@ -15,8 +15,14 @@ namespace Germadent.WebApi.Controllers
             _rmaDbOperations = rmaDbOperations;
         }
 
+        [HttpGet("{id}")]
+        public OrderDto GetWorkOrderById(int id)
+        {
+            return _rmaDbOperations.GetOrderDetails(id);
+        }
+
         [HttpGet]
-        public OrderLiteDto[] Get()
+        public OrderLiteDto[] GetOrders()
         {
             return _rmaDbOperations.GetOrders(new OrdersFilter());
         }

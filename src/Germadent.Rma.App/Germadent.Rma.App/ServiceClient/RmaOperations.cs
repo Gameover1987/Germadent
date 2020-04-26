@@ -27,15 +27,12 @@ namespace Germadent.Rma.App.ServiceClient
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
+        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            if (ordersFilter == null)
-                ordersFilter = new OrdersFilter();
+            //var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
 
-            var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
-
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/getOrdersByFilter";
-            using (var response = _client.PostAsync(apiUrl, content).Result)
+            var apiUrl = _configuration.DataServiceUrl + "/api/orders";
+            using (var response = _client.GetAsync(apiUrl).Result)
             {
                 var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLiteDto[]>();
                 return orders;
@@ -44,7 +41,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto GetOrderDetails(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/{0}", id);
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/orders/{0}", id);
             using (var response = _client.GetAsync(apiUrl).Result)
             {
                 var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
