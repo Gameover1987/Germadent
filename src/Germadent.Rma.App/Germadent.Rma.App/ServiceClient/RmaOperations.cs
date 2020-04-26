@@ -29,17 +29,17 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            //var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
+            var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
 
             var apiUrl = _configuration.DataServiceUrl + "/api/orders";
-            using (var response = _client.GetAsync(apiUrl).Result)
+            using (var response = _client.PostAsync(apiUrl, content).Result)
             {
                 var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLiteDto[]>();
                 return orders;
             }
         }
 
-        public OrderDto GetOrderDetails(int id)
+        public OrderDto GetOrderById(int id)
         {
             var apiUrl = _configuration.DataServiceUrl + string.Format("/api/orders/{0}", id);
             using (var response = _client.GetAsync(apiUrl).Result)

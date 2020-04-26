@@ -15,6 +15,11 @@ namespace Germadent.Rma.Model
 
     public class OrdersFilter
     {
+        public OrdersFilter()
+        {
+            Materials = new MaterialDto[0];
+        }
+
         public bool MillingCenter { get; set; }
 
         public bool Laboratory { get; set; }

@@ -2,6 +2,15 @@
 
 namespace Germadent.Rma.App.ServiceClient
 {
+    public enum DictionaryType
+    {
+        ProstheticCondition,
+        ProstheticTypes,
+        Materials,
+        Transparences,
+        Equipments
+    }
+
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -12,14 +21,14 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        OrderLiteDto[] GetOrders(OrdersFilter filter = null);
+        OrderLiteDto[] GetOrders(OrdersFilter filter);
 
         /// <summary>
         /// Получить детали по выбранному заказнаряду
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        OrderDto GetOrderDetails(int id);
+        OrderDto GetOrderById(int id);
 
         /// <summary>
         /// Возвращает файл по заказ наряду

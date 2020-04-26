@@ -84,7 +84,7 @@ namespace Germadent.Rma.App.Mocks
             return _orders.Select(x => x.ToOrderLite()).ToArray();
         }
 
-        public OrderDto GetOrderDetails(int id)
+        public OrderDto GetOrderById(int id)
         {
             //Thread.Sleep(1000);
             return _orders.First(x => x.WorkOrderId == id);

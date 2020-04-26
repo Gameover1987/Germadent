@@ -215,7 +215,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(_rmaOperations.GetOrderDetails(SelectedOrder.Model.WorkOrderId));
+            _printModule.Print(_rmaOperations.GetOrderById(SelectedOrder.Model.WorkOrderId));
         }
 
         private bool CanOpenOrderCommandHandler()
@@ -227,7 +227,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
-            var orderDto = _rmaOperations.GetOrderDetails(orderLiteViewModel.Model.WorkOrderId);
+            var orderDto = _rmaOperations.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
             var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
             if (orderDto.BranchType == BranchType.Laboratory)
             {

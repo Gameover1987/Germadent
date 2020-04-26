@@ -52,7 +52,7 @@ namespace Germadent.Rma.App.Infrastructure
                 }
 
                 if (labWizard.PrintAfterSave)
-                    _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));
+                    _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
 
                 return changedOrder;
             }
@@ -77,7 +77,7 @@ namespace Germadent.Rma.App.Infrastructure
                 }
 
                 if (millingCenterWizard.PrintAfterSave)
-                    _printModule.Print(_rmaOperations.GetOrderDetails(changedOrder.WorkOrderId));
+                    _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
 
                 return changedOrder;
             }
