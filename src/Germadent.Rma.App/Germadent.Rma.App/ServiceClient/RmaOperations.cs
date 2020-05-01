@@ -50,7 +50,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            return ExecuteHttpPost<OrderDto>("/api/orders", order);
+            return ExecuteHttpPost<OrderDto>("/api/orders", order, order.DataFileName == null ? null : _fileManager.ReadAllBytes(order.DataFileName));
         }
 
         public OrderDto UpdateOrder(OrderDto order)
@@ -126,13 +126,19 @@ namespace Germadent.Rma.App.ServiceClient
             return response.Content.DeserializeFromJson<T>();
         }
 
-        private T ExecuteHttpPost<T>(string api, object body)
+        private T ExecuteHttpPost<T>(string api, object body, byte[] file = null)
         {
             var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.POST);
 
             restRequest.RequestFormat = DataFormat.Json;
 
             restRequest.AddJsonBody(body);
+
+            if (file != null)
+            {
+                restRequest.AddHeader("Content-Type", "multipart/form-data");
+                restRequest.AddFile("DataFile", file, "DataFile");
+            }
 
             var response = _client.Execute(restRequest, Method.POST);
             return response.Content.DeserializeFromJson<T>();

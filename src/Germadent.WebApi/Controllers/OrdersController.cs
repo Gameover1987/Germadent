@@ -26,6 +26,8 @@ namespace Germadent.WebApi.Controllers
 
         public OrderDto AddOrder(OrderDto orderDto)
         {
+            var aaa = Request.Form.Files;
+
             return _rmaDbOperations.AddOrder(orderDto, null);
         }
     }

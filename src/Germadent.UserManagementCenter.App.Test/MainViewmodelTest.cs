@@ -6,7 +6,7 @@ using Moq;
 namespace Germadent.UserManagementCenter.App.Test
 {
     [TestFixture]
-    public class MainViewModelTest : AutoMockerTestsBase<MainViewModel>
+    public class MainViewmodelTest : AutoMockerTestsBase<MainViewModel>
     {
         [Test]
         public void ShouldInitialize()
