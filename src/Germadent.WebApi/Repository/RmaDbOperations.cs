@@ -54,7 +54,7 @@ namespace Germadent.WebApi.Repository
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard, connection);
-                //SaveOrderDataFile(order, connection, stream);
+                SaveOrderDataFile(order, connection, stream);
 
                 return outputOrder;
             }

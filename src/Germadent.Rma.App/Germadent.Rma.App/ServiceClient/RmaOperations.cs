@@ -131,13 +131,14 @@ namespace Germadent.Rma.App.ServiceClient
             var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.POST);
 
             restRequest.RequestFormat = DataFormat.Json;
-
+            restRequest.AddHeader("Accept", "application/json");
+            
             restRequest.AddJsonBody(body);
 
             if (file != null)
             {
                 restRequest.AddHeader("Content-Type", "multipart/form-data");
-                restRequest.AddFile("DataFile", file, "DataFile");
+                //restRequest.AddFile("DataFile", file, "DataFile");
             }
 
             var response = _client.Execute(restRequest, Method.POST);

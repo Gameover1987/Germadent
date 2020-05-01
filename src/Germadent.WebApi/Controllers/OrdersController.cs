@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System.IO;
+using System.Linq;
+using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,11 +26,16 @@ namespace Germadent.WebApi.Controllers
 
         [HttpPost]
 
-        public OrderDto AddOrder(OrderDto orderDto)
+        public OrderDto AddOrder([FromForm] OrderDto orderDto)
         {
-            var aaa = Request.Form.Files;
+            Stream stream = null;
+            if (Request.Form != null && Request.Form.Files.Any())
+            {
+                stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
+            }
 
-            return _rmaDbOperations.AddOrder(orderDto, null);
+            return _rmaDbOperations.AddOrder(orderDto, stream);
+
         }
     }
 }
