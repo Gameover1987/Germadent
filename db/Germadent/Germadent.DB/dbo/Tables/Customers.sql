@@ -3,7 +3,7 @@
     [CustomerName]        NVARCHAR (70)  NOT NULL,
     [CustomerPhone]       NVARCHAR (250) NULL,
     [CustomerEmail]       NVARCHAR (250) NULL,
-    [CustomerWebsite]     NVARCHAR (250) NULL,
+    [CustomerWebSite]     NVARCHAR (250) NULL,
     [CustomerDescription] NVARCHAR (250) NULL,
     CONSTRAINT [PK_Customers] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
 );
@@ -17,7 +17,11 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_Customers]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Customers]
     ON [dbo].[Customers]([CustomerName] ASC);
+
+
 
