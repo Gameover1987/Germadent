@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using Germadent.Common.Extensions;
+﻿using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
@@ -14,93 +10,47 @@ namespace Germadent.Rma.App.ServiceClient
     {
         private readonly IConfiguration _configuration;
         private readonly IFileManager _fileManager;
-        private readonly HttpClient _client;
+        private readonly RestClient _client;
 
         public RmaOperations(IConfiguration configuration, IFileManager fileManager)
         {
             _configuration = configuration;
             _fileManager = fileManager;
 
-            _client = new HttpClient();
-            _client.BaseAddress = new Uri(_configuration.DataServiceUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client = new RestClient();
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            var content = new StringContent(ordersFilter.SerializeToJson(), Encoding.UTF8, "application/json");
+            var client = new RestClient();
+            var restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/OrdersList", Method.POST);
 
-            var apiUrl = _configuration.DataServiceUrl + "/api/orders";
-            using (var response = _client.PostAsync(apiUrl, content).Result)
-            {
-                var orders = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderLiteDto[]>();
-                return orders;
-            }
+            restRequest.RequestFormat = DataFormat.Json;
+
+            restRequest.AddJsonBody(ordersFilter);
+
+            var response = client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<OrderLiteDto[]>();
         }
 
         public OrderDto GetOrderById(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/orders/{0}", id);
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
-                return order;
-            }
+            var api = string.Format("/api/orders/{0}", id);
+            return ExecuteHttpGet<OrderDto>(api);
         }
 
         public IFileResponse GetDataFileByWorkOrderId(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/files/{0}", id);
-            var response = _client.GetAsync(apiUrl).Result;
+            return null;
+            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/files/{0}", id);
+            //var response = _client.GetAsync(apiUrl).Result;
 
-            return new FileResponse(response);
-        }
-
-        public ProstheticConditionDto[] GetProstheticConditions()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticConditions";
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var prostheticConditions = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ProstheticConditionDto[]>();
-                return prostheticConditions;
-            }
-        }
-
-        public MaterialDto[] GetMaterials()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/materials";
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var materials = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<MaterialDto[]>();
-                return materials;
-            }
-        }
-
-        public ProstheticsTypeDto[] GetProstheticTypes()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/prostheticTypes";
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var prostheticTypes = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ProstheticsTypeDto[]>();
-                return prostheticTypes;
-            }
+            //return new FileResponse(response);
         }
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var client = new RestClient();
-            var restRequest = new RestRequest(_configuration.DataServiceUrl + "/api/Rma/addOrder", Method.POST);
-
-            restRequest.RequestFormat = DataFormat.Json;
-
-            restRequest.AddBody(order.SerializeToJson());
-
-            if (order.DataFileName != null)
-                restRequest.AddFile("OrderData", _fileManager.ReadAllBytes(order.DataFileName), "OrderData");
-
-            var response = client.Execute(restRequest, Method.POST);
-            return response.Content.DeserializeFromJson<OrderDto>();
+            return ExecuteHttpPost<OrderDto>("/api/orders", order);
         }
 
         public OrderDto UpdateOrder(OrderDto order)
@@ -121,74 +71,71 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id);
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
-                return order;
-            }
-        }
-
-        public TransparencesDto[] GetTransparences()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/transparences";
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var transparences = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<TransparencesDto[]>();
-                return transparences;
-            }
-        }
-
-        public EquipmentDto[] GetEquipments()
-        {
-            var apiUrl = _configuration.DataServiceUrl + "/api/Rma/equipments";
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var equipments = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<EquipmentDto[]>();
-                return equipments;
-            }
+            return null;
+            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/closeOrder/{0}", id);
+            //using (var response = _client.GetAsync(apiUrl).Result)
+            //{
+            //    var order = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<OrderDto>();
+            //    return order;
+            //}
         }
 
         public ReportListDto[] GetWorkReport(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/excel/{0}", id);
+            return null;
+            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/excel/{0}", id);
 
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto[]>();
-                return excelDto;
-            }
+            //using (var response = _client.GetAsync(apiUrl).Result)
+            //{
+            //    var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto[]>();
+            //    return excelDto;
+            //}
         }
 
         public CustomerDto[] GetCustomers(string mask)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/customers/{0}", mask);
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var customers = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<CustomerDto[]>();
-                return customers;
-            }
+            return ExecuteHttpGet<CustomerDto[]>(string.Format("/api/Customers?mask={0}", mask));
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/responsiblePersons/{0}", customerId);
-            using (var response = _client.GetAsync(apiUrl).Result)
-            {
-                var rpDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ResponsiblePersonDto[]>();
-                return rpDto;
-            }
+            return null;
+            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/responsiblePersons/{0}", customerId);
+            //using (var response = _client.GetAsync(apiUrl).Result)
+            //{
+            //    var rpDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ResponsiblePersonDto[]>();
+            //    return rpDto;
+            //}
         }
 
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/addCustomer");
-            var content = new StringContent(сustomerDto.SerializeToJson(), Encoding.UTF8, "application/json");
-            using (var response = _client.PostAsync(apiUrl, content).Result)
-            {
-                var newCustomerDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<CustomerDto>();
-                return newCustomerDto;
-            }
+            return ExecuteHttpPost<CustomerDto>("/api/customers", сustomerDto);
+        }
+
+        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
+        {
+            return ExecuteHttpGet<DictionaryItemDto[]>(string.Format("/api/Dictionaries/{0}", dictionaryType));
+        }
+
+        private T ExecuteHttpGet<T>(string api)
+        {
+            var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.GET);
+            restRequest.RequestFormat = DataFormat.Json;
+            var response = _client.Execute(restRequest, Method.GET);
+            return response.Content.DeserializeFromJson<T>();
+        }
+
+        private T ExecuteHttpPost<T>(string api, object body)
+        {
+            var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.POST);
+
+            restRequest.RequestFormat = DataFormat.Json;
+
+            restRequest.AddJsonBody(body);
+
+            var response = _client.Execute(restRequest, Method.POST);
+            return response.Content.DeserializeFromJson<T>();
         }
     }
 }

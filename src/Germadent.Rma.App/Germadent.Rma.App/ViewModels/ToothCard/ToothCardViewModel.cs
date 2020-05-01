@@ -24,8 +24,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             _clipboard = clipboard;
 
             Teeth = new ObservableCollection<ToothViewModel>();
-            Materials = new ObservableCollection<MaterialViewModel>();
-            Prosthetics = new ObservableCollection<ProstheticsTypeViewModel>();
+            Materials = new ObservableCollection<CheckableDictionaryItemViewModel>();
+            Prosthetics = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
             SelectPtostheticsConditionCommand = new DelegateCommand(x => SelectProstheticConditionsCommandHandler(x), x => CanSelectProstheticConditionCommandHandler());
             SelectPtostheticsTypeCommand = new DelegateCommand(x => SelectProstheticsTypeCommandHandler(x), x => CanSelectTypeOfProstheticsCommandHandler());
@@ -37,9 +37,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ObservableCollection<ToothViewModel> Teeth { get; }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; }
+        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; }
 
-        public ObservableCollection<ProstheticsTypeViewModel> Prosthetics { get; }
+        public ObservableCollection<CheckableDictionaryItemViewModel> Prosthetics { get; }
 
         public ICommand SelectPtostheticsConditionCommand { get; }
 
@@ -60,9 +60,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public void Initialize(ToothDto[] toothCard)
         {
-            var prostheticConditions = _rmaOperations.GetProstheticConditions();
-            var materials = _rmaOperations.GetMaterials();
-            var prosteticTypes = _rmaOperations.GetProstheticTypes();
+            var prostheticConditions = _rmaOperations.GetDictionary(DictionaryType.ProstheticCondition);
+            var materials = _rmaOperations.GetDictionary(DictionaryType.Material);
+            var prosteticTypes = _rmaOperations.GetDictionary(DictionaryType.ProstheticType);
 
             foreach (var toothViewModel in Teeth)
             {
@@ -149,7 +149,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private void SelectProstheticConditionsCommandHandler(object obj)
         {
-            var prostheticConditionViewModel = (ProstheticConditionViewModel)obj;
+            var prostheticConditionViewModel = (CheckableDictionaryItemViewModel)obj;
 
             foreach (var selectedTooth in SelectedTeeth)
             {
@@ -164,7 +164,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private void SelectProstheticsTypeCommandHandler(object obj)
         {
-            var prostheticTypeViewModel = (ProstheticsTypeViewModel)obj;
+            var prostheticTypeViewModel = (CheckableDictionaryItemViewModel)obj;
 
             foreach (var selectedTooth in SelectedTeeth)
             {
@@ -179,7 +179,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private void SelectMaterialCommandHandler(object obj)
         {
-            var materialViewModel = (MaterialViewModel)obj;
+            var materialViewModel = (CheckableDictionaryItemViewModel)obj;
 
             foreach (var selectedTooth in SelectedTeeth)
             {

@@ -29,7 +29,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             Equipments.Clear();
-            var equipments = _rmaOperations.GetEquipments();
+            var equipments = _rmaOperations.GetDictionary(DictionaryType.Equipment);
             foreach (var equipment in equipments)
             {
                 var equipmentViewModel = new AdditionalEquipmentViewModel(equipment);

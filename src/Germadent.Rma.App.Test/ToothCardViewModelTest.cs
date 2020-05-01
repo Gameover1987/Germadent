@@ -34,17 +34,17 @@ namespace Germadent.Rma.App.Test
         {
             var rmaOperationsMock = new Mock<IRmaOperations>();
             rmaOperationsMock
-                .Setup(x => x.GetMaterials())
+                .Setup(x => x.GetDictionary(DictionaryType.Material))
                 .Returns(new[]
                 {
-                    new MaterialDto {MaterialName = "ZrO", Id = 1},
+                    new DictionaryItemDto {Name = "ZrO", Id = 1},
                 });
 
             rmaOperationsMock
-                .Setup(x => x.GetProstheticTypes())
-                .Returns(new ProstheticsTypeDto[]
+                .Setup(x => x.GetDictionary(DictionaryType.ProstheticType))
+                .Returns(new DictionaryItemDto[]
                 {
-                    new ProstheticsTypeDto {Name = "Каркас", Id = 1},
+                    new DictionaryItemDto {Name = "Каркас", Id = 1},
 
                 });
 

@@ -54,7 +54,7 @@ namespace Germadent.WebApi.Repository
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard, connection);
-                SaveOrderDataFile(order, connection, stream);
+                //SaveOrderDataFile(order, connection, stream);
 
                 return outputOrder;
             }
@@ -82,7 +82,7 @@ namespace Germadent.WebApi.Repository
             using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = DBNull.Value; 
+                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.TinyInt)).Value = (int)order.Gender;
@@ -178,7 +178,7 @@ namespace Germadent.WebApi.Repository
         public OrderDto CloseOrder(int id)
         {
             var cmdText = "CloseWorkOrder";
-            using(var connection = new SqlConnection(_configuration.ConnectionString))
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
                 using (var command = new SqlCommand(cmdText, connection))
@@ -191,6 +191,30 @@ namespace Germadent.WebApi.Repository
             }
             var orderDto = GetWorkOrderById(id);
             return orderDto;
+        }
+
+        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
+        {
+            switch (dictionaryType)
+            {
+                case DictionaryType.Equipment:
+                    return GetEquipment();
+
+                case DictionaryType.Material:
+                    return GetMaterials();
+
+                case DictionaryType.ProstheticCondition:
+                    return GetProstheticConditions();
+
+                case DictionaryType.ProstheticType:
+                    return GetProstheticTypes();
+
+                case DictionaryType.Transparency:
+                    return GetTransparences();
+
+                default:
+                    throw new NotImplementedException("Неизвестный тип словаря");
+            }
         }
 
         private void SaveOrderDataFile(OrderDto order, SqlConnection connection, Stream stream)
@@ -233,7 +257,7 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        public ProstheticConditionDto[] GetProstheticConditions()
+        public DictionaryItemDto[] GetProstheticConditions()
         {
             var cmdText = "select * from GetConditionsOfProsthetics()";
 
@@ -244,18 +268,19 @@ namespace Germadent.WebApi.Repository
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var prostheticConditionEntities = new List<ProstheticConditionEntity>();
+                    var prostheticConditionEntities = new List<DictionaryItemEntity>();
                     while (reader.Read())
                     {
-                        var prostheticConditionEntity = new ProstheticConditionEntity();
-                        prostheticConditionEntity.ConditionId = int.Parse(reader[nameof(prostheticConditionEntity.ConditionId)].ToString());
-                        prostheticConditionEntity.ConditionName = reader[nameof(prostheticConditionEntity.ConditionName)].ToString().Trim();
+                        var prostheticConditionEntity = new DictionaryItemEntity();
+                        prostheticConditionEntity.Id = int.Parse(reader["ConditionId"].ToString());
+                        prostheticConditionEntity.Name = reader["ConditionName"].ToString().Trim();
+                        prostheticConditionEntity.DictionaryName = DictionaryType.ProstheticCondition.GetDescription();
 
                         prostheticConditionEntities.Add(prostheticConditionEntity);
                     }
                     reader.Close();
 
-                    return prostheticConditionEntities.Select(x => _converter.ConvertToProstheticCondition(x)).ToArray();
+                    return prostheticConditionEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                 }
             }
         }
@@ -266,16 +291,12 @@ namespace Germadent.WebApi.Repository
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                //command.Parameters.Add(new SqlParameter("@status", SqlDbType.SmallInt)).Value = order.Status; //статус меняем отдельно
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
-                //command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer; //больше не нужен
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
-                //command.Parameters.Add(new SqlParameter("@technicFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson.GetValueOrDbNull(); //больше не нужен
-                //command.Parameters.Add(new SqlParameter("@technicPhone", SqlDbType.NVarChar)).Value = order.ResponsiblePersonPhone.GetValueOrDbNull(); //больше не нужен
                 command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo;
                 command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor;
                 command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
@@ -310,14 +331,11 @@ namespace Germadent.WebApi.Repository
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                //command.Parameters.Add(new SqlParameter("@status", SqlDbType.SmallInt)).Value = order.Status; //статус меняем отдельно
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
-                //command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = order.Customer; //больше не нужен
                 command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
-                //command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = order.ResponsiblePerson; //больше не нужен
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.Bit)).Value = (int)order.Gender;
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
@@ -332,7 +350,7 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        public MaterialDto[] GetMaterials()
+        public DictionaryItemDto[] GetMaterials()
         {
             var cmdText = "select * from GetMaterialsList()";
 
@@ -343,28 +361,29 @@ namespace Germadent.WebApi.Repository
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var materials = new List<MaterialEntity>();
+                    var materials = new List<DictionaryItemEntity>();
                     while (reader.Read())
                     {
-                        var materialEntity = new MaterialEntity();
-                        materialEntity.MaterialId = int.Parse(reader[nameof(materialEntity.MaterialId)].ToString());
-                        materialEntity.MaterialName = reader[nameof(materialEntity.MaterialName)].ToString().Trim();
+                        var materialEntity = new DictionaryItemEntity();
+                        materialEntity.Id = int.Parse(reader["MaterialId"].ToString());
+                        materialEntity.Name = reader["MaterialName"].ToString().Trim();
+                        materialEntity.DictionaryName = DictionaryType.Material.GetDescription();
 
-                        if (bool.TryParse(reader[nameof(materialEntity.FlagUnused)].ToString(), out bool flagUnused))
-                        {
-                            materialEntity.FlagUnused = flagUnused;
-                        }
+                        //if (bool.TryParse(reader[nameof(materialEntity.FlagUnused)].ToString(), out bool flagUnused))
+                        //{
+                        //    materialEntity.FlagUnused = flagUnused;
+                        //}
 
                         materials.Add(materialEntity);
                     }
                     reader.Close();
 
-                    return materials.Select(x => _converter.ConvertToMaterial(x)).ToArray();
+                    return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                 }
             }
         }
 
-        public ProstheticsTypeDto[] GetProstheticTypes()
+        public DictionaryItemDto[] GetProstheticTypes()
         {
             var cmdText = "select * from GetTypesOfProsthetics()";
 
@@ -375,18 +394,19 @@ namespace Germadent.WebApi.Repository
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var prostheticTypeEntities = new List<ProstheticTypeEntity>();
+                    var prostheticTypeEntities = new List<DictionaryItemEntity>();
                     while (reader.Read())
                     {
-                        var prostheticTypeEntity = new ProstheticTypeEntity();
-                        prostheticTypeEntity.ProstheticsId = int.Parse(reader[nameof(prostheticTypeEntity.ProstheticsId)].ToString());
-                        prostheticTypeEntity.ProstheticsName = reader[nameof(prostheticTypeEntity.ProstheticsName)].ToString().Trim();
+                        var prostheticTypeEntity = new DictionaryItemEntity();
+                        prostheticTypeEntity.Id = int.Parse(reader["ProstheticsId"].ToString());
+                        prostheticTypeEntity.Name = reader["ProstheticsName"].ToString().Trim();
+                        prostheticTypeEntity.DictionaryName = DictionaryType.ProstheticType.GetDescription();
 
                         prostheticTypeEntities.Add(prostheticTypeEntity);
                     }
                     reader.Close();
 
-                    return prostheticTypeEntities.Select(x => _converter.ConvertToProstheticType(x)).ToArray();
+                    return prostheticTypeEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                 }
             }
         }
@@ -674,7 +694,7 @@ namespace Germadent.WebApi.Repository
                 return orders;
             }
         }
-        public TransparencesDto[] GetTransparences()
+        public DictionaryItemDto[] GetTransparences()
         {
             var cmdText = "select * from GetTransparencesList()";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -683,21 +703,22 @@ namespace Germadent.WebApi.Repository
                 using (var commamd = new SqlCommand(cmdText, connection))
                 {
                     var reader = commamd.ExecuteReader();
-                    var transparencesEntities = new List<TransparencesEntity>();
+                    var transparencesEntities = new List<DictionaryItemEntity>();
                     while (reader.Read())
                     {
-                        var transparenceEntity = new TransparencesEntity();
-                        transparenceEntity.TransparenceId = int.Parse(reader[nameof(transparenceEntity.TransparenceId)].ToString());
-                        transparenceEntity.TransparenceName = reader[nameof(transparenceEntity.TransparenceName)].ToString();
+                        var transparenceEntity = new DictionaryItemEntity();
+                        transparenceEntity.Id = int.Parse(reader["TransparenceId"].ToString());
+                        transparenceEntity.Name = reader["TransparenceName"].ToString();
+                        transparenceEntity.DictionaryName = DictionaryType.Transparency.GetDescription();
 
                         transparencesEntities.Add(transparenceEntity);
                     }
-                    var transparences = transparencesEntities.Select(x => _converter.ConvertToTransparences(x)).ToArray();
+                    var transparences = transparencesEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                     return transparences;
                 }
             }
         }
-        public EquipmentDto[] GetEquipment()
+        public DictionaryItemDto[] GetEquipment()
         {
             var cmdText = "select * from GetEquipmentsList()";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -706,16 +727,17 @@ namespace Germadent.WebApi.Repository
                 using (var commamd = new SqlCommand(cmdText, connection))
                 {
                     var reader = commamd.ExecuteReader();
-                    var equipmentEntities = new List<EquipmentEntity>();
+                    var equipmentEntities = new List<DictionaryItemEntity>();
                     while (reader.Read())
                     {
-                        var equipmentEntity = new EquipmentEntity();
-                        equipmentEntity.EquipmentId = int.Parse(reader[nameof(equipmentEntity.EquipmentId)].ToString());
-                        equipmentEntity.EquipmentName = reader[nameof(equipmentEntity.EquipmentName)].ToString();
+                        var equipmentEntity = new DictionaryItemEntity();
+                        equipmentEntity.Id = int.Parse(reader["EquipmentId"].ToString());
+                        equipmentEntity.Name = reader["EquipmentName"].ToString();
+                        equipmentEntity.DictionaryName = DictionaryType.Equipment.GetDescription();
 
                         equipmentEntities.Add(equipmentEntity);
                     }
-                    var equipment = equipmentEntities.Select(x => _converter.ConvertToEquipment(x)).ToArray();
+                    var equipment = equipmentEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                     return equipment;
                 }
             }
@@ -726,17 +748,17 @@ namespace Germadent.WebApi.Repository
             var orderDto = GetWorkOrderById(id);
 
             var toothCard = GetToothCard(id);
-         
+
             var prosteticsCollection = toothCard
                 .GroupBy(x => x.ProstheticsName)
-                .Select(x => new {quantity = x.Count(), pName = x.Key})
+                .Select(x => new { quantity = x.Count(), pName = x.Key })
                 .ToArray();
 
             var equipmentNames = new[]
             {
                 "STL", "Слепок", "Модель"
             };
-         
+
             var equipments = orderDto.AdditionalEquipment
                 .Where(x => equipmentNames.Contains(x.EquipmentName))
                 .Select(x => x.EquipmentName)
@@ -760,10 +782,10 @@ namespace Germadent.WebApi.Repository
                 };
                 var reportDto = _converter.ConvertToExcel(entity);
                 reports.Add(reportDto);
-            }            
+            }
 
             return reports.ToArray();
-  
+
         }
 
         public CustomerDto[] GetCustomers(string name)
@@ -785,7 +807,7 @@ namespace Germadent.WebApi.Repository
                         customerEntity.CustomerEmail = reader[nameof(customerEntity.CustomerEmail)].ToString();
                         customerEntity.CustomerWebSite = reader[nameof(customerEntity.CustomerWebSite)].ToString();
                         customerEntity.CustomerDescription = reader[nameof(customerEntity.CustomerDescription)].ToString();
-                        
+
                         customerEntities.Add(customerEntity);
                     }
 
@@ -837,7 +859,7 @@ namespace Germadent.WebApi.Repository
                     command.Parameters.Add(new SqlParameter("@customerEmail", SqlDbType.NVarChar)).Value = customer.Email.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@customerWebsite", SqlDbType.NVarChar)).Value = customer.WebSite.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@customerDescription", SqlDbType.NVarChar)).Value = customer.Description.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int){Direction = ParameterDirection.Output});
+                    command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                     command.ExecuteNonQuery();
 

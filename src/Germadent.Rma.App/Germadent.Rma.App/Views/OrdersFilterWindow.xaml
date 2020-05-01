@@ -81,9 +81,9 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Materials}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
+                    <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
                         <Grid>
-                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.MaterialName}" />
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Content="{Binding Item.Name}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

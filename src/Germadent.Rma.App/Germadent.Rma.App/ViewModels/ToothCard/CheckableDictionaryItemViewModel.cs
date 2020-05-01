@@ -4,14 +4,14 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
 {
-    public class ProstheticConditionViewModel : ViewModelBase
+    public class CheckableDictionaryItemViewModel : ViewModelBase
     {
         private bool _isChecked;
-        private ProstheticConditionDto _item;
+        private DictionaryItemDto _item;
 
-        public ProstheticConditionViewModel(ProstheticConditionDto prostheticConditionDto)
+        public CheckableDictionaryItemViewModel(DictionaryItemDto dictionaryItemDto)
         {
-            _item = prostheticConditionDto;
+            _item = dictionaryItemDto;
         }
 
         public string DisplayName => _item.Name;
@@ -28,7 +28,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
-        public ProstheticConditionDto Item
+        public DictionaryItemDto Item
         {
             get { return _item; }
             set { SetProperty(() => _item, value); }

@@ -9,11 +9,7 @@
              xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type toothCard:MaterialViewModel}">
-            <TextBlock Text="{Binding Item.MaterialName}"/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type toothCard:ProstheticsTypeViewModel}">
+        <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
             <TextBlock Text="{Binding Item.Name}"/>
         </DataTemplate>
     </UserControl.Resources>

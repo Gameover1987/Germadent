@@ -114,8 +114,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool IsEmpty()
         {
-            return Customer.IsNullOrWhiteSpace() ||
-                   Patient.IsNullOrWhiteSpace();
+            return Customer.IsNullOrWhiteSpace();
         }
     }
 }

@@ -12,13 +12,6 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public interface IOrdersFilterViewModel
-    {
-        OrdersFilter GetFilter();
-
-        void Initialize();
-    }
-
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {
         private readonly IRmaOperations _rmaOperations;
@@ -117,7 +110,7 @@ namespace Germadent.Rma.App.ViewModels
             set { SetProperty(() => _patient, value); }
         }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
         public ObservableCollection<string> ValidationErrors { get; } = new ObservableCollection<string>();
 
@@ -199,15 +192,15 @@ namespace Germadent.Rma.App.ViewModels
                 IsBusy = true;
                 Materials.Clear();
 
-                MaterialDto[] materials = null;
+                DictionaryItemDto[] materials = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    materials = _rmaOperations.GetMaterials();
+                    materials = _rmaOperations.GetDictionary(DictionaryType.Material);
                 });
 
                 foreach (var material in materials)
                 {
-                    Materials.Add(new MaterialViewModel(material));
+                    Materials.Add(new CheckableDictionaryItemViewModel(material));
                 }
             }
             catch (Exception e)

@@ -95,56 +95,6 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public ProstheticConditionDto[] GetProstheticConditions()
-        {
-            var ptostheticsConditions = new[]
-            {
-                new ProstheticConditionDto{Name = "Культя", Id = 1},
-                new ProstheticConditionDto{Name = "Имплант", Id = 2},
-            };
-
-            return ptostheticsConditions;
-        }
-
-        public MaterialDto[] GetMaterials()
-        {
-            //Thread.Sleep(2000);
-            var materials = new[]
-            {
-                new MaterialDto {MaterialName = "ZrO", Id = 1},
-                new MaterialDto {MaterialName = "PMMA mono", Id = 2},
-                new MaterialDto {MaterialName = "PMMA multi", Id = 3},
-                new MaterialDto {MaterialName = "WAX", Id = 4},
-                new MaterialDto {MaterialName = "MIK", Id = 5},
-                new MaterialDto {MaterialName = "CAD-Temp mono", Id = 6},
-                new MaterialDto {MaterialName = "CAD-Temp multi", Id = 7},
-                new MaterialDto {MaterialName = "Enamik mono", Id = 8},
-                new MaterialDto {MaterialName = "Enamik multi", Id = 9},
-                new MaterialDto {MaterialName = "SUPRINITY", Id = 10},
-                new MaterialDto {MaterialName = "Mark II", Id = 11},
-                new MaterialDto {MaterialName = "WAX", Id = 12},
-                new MaterialDto {MaterialName = "TriLuxe forte", Id = 13},
-                new MaterialDto {MaterialName = "Ti", Id = 14},
-                new MaterialDto {MaterialName = "E.MAX", Id = 15},
-            };
-
-            return materials;
-        }
-
-        public ProstheticsTypeDto[] GetProstheticTypes()
-        {
-            //Thread.Sleep(2000);
-            return new ProstheticsTypeDto[]
-            {
-                new ProstheticsTypeDto {Name = "Каркас", Id = 1},
-                new ProstheticsTypeDto {Name = "Каркас винт. фикс", Id = 2},
-                new ProstheticsTypeDto {Name = "Абатмент", Id = 3},
-                new ProstheticsTypeDto {Name = "Полная анатомия", Id = 4},
-                new ProstheticsTypeDto {Name = "Временная конструкция", Id = 5},
-                new ProstheticsTypeDto {Name = "Другая конструкция", Id = 6},
-            };
-        }
-
         public OrderDto AddOrder(OrderDto order)
         {
             throw new NotImplementedException();
@@ -165,20 +115,20 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public TransparencesDto[] GetTransparences()
+        private DictionaryItemDto[] GetTransparences()
         {
-            return new TransparencesDto[]
+            return new DictionaryItemDto[]
             {
-                new TransparencesDto {Id = 0, Name = "Мамелоны"},
-                new TransparencesDto {Id = 1, Name = "Вторичный дентин"},
-                new TransparencesDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью "},
-                new TransparencesDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью "},
+                new DictionaryItemDto {Id = 0, Name = "Мамелоны"},
+                new DictionaryItemDto {Id = 1, Name = "Вторичный дентин"},
+                new DictionaryItemDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью "},
+                new DictionaryItemDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью "},
             };
         }
 
-        public EquipmentDto[] GetEquipments()
+        public DictionaryItemDto[] GetEquipments()
         {
-            return GetMaterials().Select(x => new EquipmentDto { Id = x.Id, Name = x.MaterialName }).ToArray();
+            return GetMaterials().Select(x => new DictionaryItemDto { Id = x.Id, Name = x.Name }).ToArray();
         }
 
         public OrderDto CloseOrder(int id)
@@ -225,6 +175,80 @@ namespace Germadent.Rma.App.Mocks
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             throw new NotImplementedException();
+        }
+
+        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
+        {
+            switch (dictionaryType)
+            {
+                case DictionaryType.Equipment:
+                    return GetEquipments();
+
+                case DictionaryType.Material:
+                    return GetMaterials();
+
+                case DictionaryType.ProstheticCondition:
+                    return GetProstheticConditions();
+
+                case DictionaryType.ProstheticType:
+                    return GetProstheticTypes();
+
+                case DictionaryType.Transparency:
+                    return GetTransparences();
+
+                default:
+                    throw new NotImplementedException("Неизвестный тип словаря");
+            }
+        }
+
+        private DictionaryItemDto[] GetProstheticConditions()
+        {
+            var ptostheticsConditions = new[]
+            {
+                new DictionaryItemDto{Name = "Культя", Id = 1},
+                new DictionaryItemDto{Name = "Имплант", Id = 2},
+            };
+
+            return ptostheticsConditions;
+        }
+
+        private DictionaryItemDto[] GetMaterials()
+        {
+
+            var materials = new[]
+            {
+                new DictionaryItemDto {Name = "ZrO", Id = 1},
+                new DictionaryItemDto {Name = "PMMA mono", Id = 2},
+                new DictionaryItemDto {Name = "PMMA multi", Id = 3},
+                new DictionaryItemDto {Name = "WAX", Id = 4},
+                new DictionaryItemDto {Name = "MIK", Id = 5},
+                new DictionaryItemDto {Name = "CAD-Temp mono", Id = 6},
+                new DictionaryItemDto {Name = "CAD-Temp multi", Id = 7},
+                new DictionaryItemDto {Name = "Enamik mono", Id = 8},
+                new DictionaryItemDto {Name = "Enamik multi", Id = 9},
+                new DictionaryItemDto {Name = "SUPRINITY", Id = 10},
+                new DictionaryItemDto {Name = "Mark II", Id = 11},
+                new DictionaryItemDto {Name = "WAX", Id = 12},
+                new DictionaryItemDto {Name = "TriLuxe forte", Id = 13},
+                new DictionaryItemDto {Name = "Ti", Id = 14},
+                new DictionaryItemDto {Name = "E.MAX", Id = 15},
+            };
+
+            return materials;
+        }
+
+        private DictionaryItemDto[] GetProstheticTypes()
+        {
+            //Thread.Sleep(2000);
+            return new DictionaryItemDto[]
+            {
+                new DictionaryItemDto {Name = "Каркас", Id = 1},
+                new DictionaryItemDto {Name = "Каркас винт. фикс", Id = 2},
+                new DictionaryItemDto {Name = "Абатмент", Id = 3},
+                new DictionaryItemDto {Name = "Полная анатомия", Id = 4},
+                new DictionaryItemDto {Name = "Временная конструкция", Id = 5},
+                new DictionaryItemDto {Name = "Другая конструкция", Id = 6},
+            };
         }
     }
 }

@@ -6,27 +6,25 @@ namespace Germadent.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class CustomersController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations)
+        public CustomersController(IRmaDbOperations rmaDbOperations)
         {
             _rmaDbOperations = rmaDbOperations;
         }
 
-        [HttpGet("{id:int}")]
-        public OrderDto GetWorkOrderById(int id)
+        [HttpGet]
+        public CustomerDto[] GetCustomers(string mask)
         {
-            return _rmaDbOperations.GetOrderDetails(id);
+            return _rmaDbOperations.GetCustomers(mask);
         }
 
-
         [HttpPost]
-
-        public OrderDto AddOrder(OrderDto orderDto)
+        public CustomerDto AddCustomer(CustomerDto customer)
         {
-            return _rmaDbOperations.AddOrder(orderDto, null);
+            return _rmaDbOperations.AddCustomer(customer);
         }
     }
 }

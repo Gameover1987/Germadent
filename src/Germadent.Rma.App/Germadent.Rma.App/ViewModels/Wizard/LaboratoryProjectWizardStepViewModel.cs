@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private int _transparency;
         private string _prostheticArticul;
 
-        private TransparencesDto _selectedTransparency;
+        private DictionaryItemDto _selectedTransparency;
 
         public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaOperations rmaOperations)
         {
@@ -46,9 +46,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _prostheticArticul, value); }
         }
 
-        public ObservableCollection<TransparencesDto> Transparences { get; } = new ObservableCollection<TransparencesDto>();
+        public ObservableCollection<DictionaryItemDto> Transparences { get; } = new ObservableCollection<DictionaryItemDto>();
 
-        public TransparencesDto SelectedTransparency
+        public DictionaryItemDto SelectedTransparency
         {
             get { return _selectedTransparency; }
             set
@@ -72,7 +72,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _prostheticArticul = order.ProstheticArticul;
 
             Transparences.Clear();
-            var transparences = _rmaOperations.GetTransparences();
+            var transparences = _rmaOperations.GetDictionary(DictionaryType.Transparency);
             transparences.ForEach(x => Transparences.Add(x));
 
             SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);

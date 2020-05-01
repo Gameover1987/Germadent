@@ -17,7 +17,7 @@ namespace Germadent.Rma.Model
     {
         public OrdersFilter()
         {
-            Materials = new MaterialDto[0];
+            Materials = new DictionaryItemDto[0];
         }
 
         public bool MillingCenter { get; set; }
@@ -34,6 +34,6 @@ namespace Germadent.Rma.Model
 
         public string Patient { get; set; }
 
-        public MaterialDto[] Materials { get; set; }
+        public DictionaryItemDto[] Materials { get; set; }
     }
 }

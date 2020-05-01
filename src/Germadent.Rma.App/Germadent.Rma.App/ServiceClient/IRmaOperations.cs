@@ -2,15 +2,6 @@
 
 namespace Germadent.Rma.App.ServiceClient
 {
-    public enum DictionaryType
-    {
-        ProstheticCondition,
-        ProstheticTypes,
-        Materials,
-        Transparences,
-        Equipments
-    }
-
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -38,24 +29,6 @@ namespace Germadent.Rma.App.ServiceClient
         IFileResponse GetDataFileByWorkOrderId(int id);
 
         /// <summary>
-        /// Получить список условий протезирования
-        /// </summary>
-        /// <returns></returns>
-        ProstheticConditionDto[] GetProstheticConditions();
-
-        /// <summary>
-        /// Получить список типов протезирования
-        /// </summary>
-        /// <returns></returns>
-        ProstheticsTypeDto[] GetProstheticTypes();
-
-        /// <summary>
-        /// Получить список материалов
-        /// </summary>
-        /// <returns></returns>
-        MaterialDto[] GetMaterials();
-
-        /// <summary>
         /// Добавить заказнаряд
         /// </summary>
         /// <param name="order"></param>
@@ -75,18 +48,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="id"></param>
         /// <returns></returns>
         OrderDto CloseOrder(int id);
-
-        /// <summary>
-        /// Получить список прозрачностей
-        /// </summary>
-        /// <returns></returns>
-        TransparencesDto[] GetTransparences();
-
-        /// <summary>
-        /// Получить список оснасток
-        /// </summary>
-        /// <returns></returns>
-        EquipmentDto[] GetEquipments();
 
         /// <summary>
         /// Скопировать данные заказ-наряда в буфер обмена
@@ -112,5 +73,12 @@ namespace Germadent.Rma.App.ServiceClient
         /// Добавление заказчика
         /// </summary>
         CustomerDto AddCustomer(CustomerDto сustomerDto);
+
+        /// <summary>
+        /// Возвращает словарь по его названию
+        /// </summary>
+        /// <param name="dictionaryType"></param>
+        /// <returns></returns>
+        DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
     }
 }

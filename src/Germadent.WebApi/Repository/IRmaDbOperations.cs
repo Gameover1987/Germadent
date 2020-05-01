@@ -47,34 +47,11 @@ namespace Germadent.WebApi.Repository
         OrderDto CloseOrder(int id);
 
         /// <summary>
-        /// Возвращает список условий протезирования
+        /// Возвращает словарь
         /// </summary>
+        /// <param name="dictionaryType"></param>
         /// <returns></returns>
-        ProstheticConditionDto[] GetProstheticConditions();
-
-        /// <summary>
-        /// Возвращает список типов протезирования
-        /// </summary>
-        /// <returns></returns>
-        ProstheticsTypeDto[] GetProstheticTypes();
-
-        /// <summary>
-        /// Возвращает список материалов
-        /// </summary>
-        /// <returns></returns>
-        MaterialDto[] GetMaterials();
-
-        /// <summary>
-        /// Возвращает список прозрачностей
-        /// </summary>
-        /// <returns></returns>
-        TransparencesDto[] GetTransparences();
-
-        /// <summary>
-        /// Возвращает список оснасток
-        /// </summary>
-        /// <returns></returns>
-        EquipmentDto[] GetEquipment();
+        DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
 
         /// <summary>
         /// Возвращает список свойств для вставки в Excel

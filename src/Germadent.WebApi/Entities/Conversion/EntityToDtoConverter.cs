@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model;
+﻿using Germadent.Common.Extensions;
+using Germadent.Rma.Model;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -80,48 +81,13 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
-        public ProstheticConditionDto ConvertToProstheticCondition(ProstheticConditionEntity entity)
+        public DictionaryItemDto ConvertToDictionaryItem(DictionaryItemEntity entity)
         {
-            return new ProstheticConditionDto
+            return new DictionaryItemDto
             {
-                Id = entity.ConditionId,
-                Name = entity.ConditionName
-            };
-        }
-
-        public MaterialDto ConvertToMaterial(MaterialEntity entity)
-        {
-            return new MaterialDto
-            {
-                Id = entity.MaterialId,
-                MaterialName = entity.MaterialName,
-                IsObsolete = entity.FlagUnused
-            };
-        }
-
-        public ProstheticsTypeDto ConvertToProstheticType(ProstheticTypeEntity entity)
-        {
-            return new ProstheticsTypeDto
-            {
-                Id = entity.ProstheticsId,
-                Name = entity.ProstheticsName
-            };
-        }
-        public TransparencesDto ConvertToTransparences(TransparencesEntity entity)
-        {
-            return new TransparencesDto
-            {
-                Id = entity.TransparenceId,
-                Name = entity.TransparenceName
-            };
-        }
-
-        public EquipmentDto ConvertToEquipment(EquipmentEntity entity)
-        {
-            return new EquipmentDto
-            {
-                Id = entity.EquipmentId,
-                Name = entity.EquipmentName
+                Id = entity.Id,
+                Name = entity.Name,
+                DictionaryName = entity.DictionaryName
             };
         }
 

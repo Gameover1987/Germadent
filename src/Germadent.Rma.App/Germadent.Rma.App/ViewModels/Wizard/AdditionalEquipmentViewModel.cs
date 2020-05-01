@@ -7,10 +7,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {     
         private int _quantity;
 
-        public AdditionalEquipmentViewModel(EquipmentDto equipmentDto)
+        public AdditionalEquipmentViewModel(DictionaryItemDto dictionaryItemDto)
         {
-            EquipmentId = equipmentDto.Id;
-            DisplayName = equipmentDto.Name;
+            EquipmentId = dictionaryItemDto.Id;
+            DisplayName = dictionaryItemDto.Name;
         }
 
         public int EquipmentId { get; }

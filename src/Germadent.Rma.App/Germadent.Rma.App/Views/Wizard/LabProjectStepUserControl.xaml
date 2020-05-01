@@ -51,7 +51,7 @@
                   ItemsSource="{Binding Transparences}"
                   SelectedItem="{Binding SelectedTransparency}">
             <ComboBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:TransparencesDto}">
+                <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
                     <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>

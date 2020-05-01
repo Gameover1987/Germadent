@@ -101,7 +101,7 @@ namespace Germadent.Rma.App.Reporting
 
         private string GetTransparenceName(int transparenceId)
         {
-            var transparences = _rmaOperations.GetTransparences();
+            var transparences = _rmaOperations.GetDictionary(DictionaryType.Transparency);
             return transparences.First(x => x.Id == transparenceId).Name;
         }
     }
