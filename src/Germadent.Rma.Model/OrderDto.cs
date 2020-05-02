@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Germadent.Rma.Model
 {
@@ -23,7 +24,7 @@ namespace Germadent.Rma.Model
         public int Status { get; set; }
 
         public string DocNumber { get; set; }
-
+        
         public BranchType BranchType { get; set; }
 
         public int CustomerId { get; set; }

@@ -25,17 +25,15 @@ namespace Germadent.WebApi.Controllers
 
 
         [HttpPost]
-
-        public OrderDto AddOrder([FromForm] OrderDto orderDto)
+        public OrderDto AddOrder([FromBody] OrderDto orderDto)
         {
             Stream stream = null;
-            if (Request.Form != null && Request.Form.Files.Any())
-            {
-                stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
-            }
+            //if (Request.ContentType.Contains("multipart/form-data") && Request.Form.Files.Any())
+            //{
+            //    stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
+            //}
 
             return _rmaDbOperations.AddOrder(orderDto, stream);
-
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Germadent.Rma.Model
 {
@@ -12,7 +14,7 @@ namespace Germadent.Rma.Model
     {
         VitaClassical, Opak, Translucen
     }
-
+    
     public enum BranchType
     {
         [Description("Фрезерный центр")]

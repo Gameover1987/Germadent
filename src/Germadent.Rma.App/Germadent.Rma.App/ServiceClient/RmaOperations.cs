@@ -138,7 +138,7 @@ namespace Germadent.Rma.App.ServiceClient
             if (file != null)
             {
                 restRequest.AddHeader("Content-Type", "multipart/form-data");
-                //restRequest.AddFile("DataFile", file, "DataFile");
+                restRequest.AddFile("DataFile", file, "DataFile");
             }
 
             var response = _client.Execute(restRequest, Method.POST);
