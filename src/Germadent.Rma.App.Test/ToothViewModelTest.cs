@@ -100,10 +100,10 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
-        [TestCase("Культя", "Каркас", "ZrO", true, "Культя/Каркас/ZrO/Мост")]
-        [TestCase(null, "Каркас", "ZrO", true, "Каркас/ZrO/Мост")]
-        [TestCase(null, null, "ZrO", true, "ZrO/Мост")]
-        [TestCase(null, null, null, true, "Мост")]
+        [TestCase("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
+        [TestCase(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
+        [TestCase(null, null, "ZrO", true, "0 - ZrO/Мост")]
+        [TestCase(null, null, null, true, "0 - Мост")]
         public void ShouldGetCorrectDescription(string prostheticsCondition, string prosthetics, string material, bool hasBridge, string expectedDescription)
         {
             // Given

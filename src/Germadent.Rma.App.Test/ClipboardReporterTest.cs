@@ -44,7 +44,7 @@ namespace Germadent.Rma.App.Test
                     {
                         new ReportListDto {Quantity = 18},
                     },
-                    ExpectedData = "18"
+                    ExpectedData = "18\r\n"
                 },
                 new ReporterTestData
                 {
@@ -52,7 +52,7 @@ namespace Germadent.Rma.App.Test
                     {
                         new ReportListDto {Quantity = 18},
                     },
-                    ExpectedData = "18"
+                    ExpectedData = "18\r\n"
                 }
             };
         }

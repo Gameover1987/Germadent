@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using System.Text;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
 {
@@ -18,12 +20,17 @@ namespace Germadent.Rma.App.Reporting
 
         public void CreateReport(ReportListDto[] reports)
         {
-            string stackString = null;
+            var builder = new StringBuilder();
+
             foreach (var report in reports)
             {
-                stackString += string.Concat(report.Created, "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, "\t", report.Quantity, "\t", "\t", "\t", "\t", report.ProstheticArticul + "\n");
+                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, "\t", report.Quantity, "\t", "\t", "\t", "\t", report.ProstheticArticul + "\n").Trim();
+                builder.AppendLine(line);
             }
-            _clipboard.CopyToClipboard(stackString);
+
+            var data = builder.ToString();
+
+            _clipboard.CopyToClipboard(data);
         }
     }
 }
