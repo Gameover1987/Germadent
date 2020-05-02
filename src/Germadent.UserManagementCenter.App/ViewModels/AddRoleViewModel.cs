@@ -12,12 +12,12 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class AddRoleViewModel : ValidationSupportableViewModel, IAddRoleViewModel
     {
-        private readonly IUserManagementCenterOperations _userManagementCenterOperations;
+        private readonly IUmcOperations _userManagementCenterOperations;
         private string _roleName;
 
         private ICollectionView _rightsView;
 
-        public AddRoleViewModel(IUserManagementCenterOperations userManagementCenterOperations)
+        public AddRoleViewModel(IUmcOperations userManagementCenterOperations)
         {
             _userManagementCenterOperations = userManagementCenterOperations;
 

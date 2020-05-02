@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
+using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.Model;
@@ -13,7 +14,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
     internal class DesignMockAddRoleViewModel : AddRoleViewModel
     {
         public DesignMockAddRoleViewModel()
-            : base(new UserManagementCenterOperations())
+            : base(new DesignMockUserManagementCenterOperations())
         {
             Initialize(new RoleDto(), "Добавление новой роли");
 

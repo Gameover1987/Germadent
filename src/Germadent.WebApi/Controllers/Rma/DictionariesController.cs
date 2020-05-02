@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Germadent.WebApi.Controllers
+namespace Germadent.WebApi.Controllers.Rma
 {
     [Route("api/[controller]")]
     [ApiController]

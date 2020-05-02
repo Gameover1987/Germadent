@@ -4,33 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ServiceClient;
+using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
+using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {
     internal class DesignMockUsersManagerViewModel : UsersManagerViewModel
     {
-        public DesignMockUsersManagerViewModel() : base(new UserManagementCenterOperations(), new DesignMockWindowManager() )
+        public DesignMockUsersManagerViewModel() : base(new DesignMockUserManagementCenterOperations(), new DesignMockWindowManager() )
         {
             Initialize();
             SelectedUser = Users.LastOrDefault();
         }
     }
 
-    internal class DesignMockWindowManager : IWindowManager
+    internal class DesignMockWindowManager : IUserManagementUIOperations
     {
-        public UserViewModel AddUser()
+        public UserDto AddUser()
         {
             throw new NotImplementedException();
         }
 
-        public UserViewModel EditUser(UserViewModel user)
+        public UserDto EditUser(UserViewModel user)
         {
             throw new NotImplementedException();
         }
 
-        public RoleViewModel AddRole()
+        public RoleDto AddRole()
         {
             throw new NotImplementedException();
         }

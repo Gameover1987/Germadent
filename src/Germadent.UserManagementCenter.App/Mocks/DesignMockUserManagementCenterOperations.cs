@@ -1,9 +1,10 @@
-﻿using Germadent.UserManagementCenter.Model;
+﻿using Germadent.UserManagementCenter.App.ServiceClient;
+using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 
-namespace Germadent.UserManagementCenter.App.ServiceClient
+namespace Germadent.UserManagementCenter.App.Mocks
 {
-    public class UserManagementCenterOperations : IUserManagementCenterOperations
+    public class DesignMockUserManagementCenterOperations : IUmcOperations
     {
         public UserDto[] GetUsers()
         {
@@ -14,35 +15,35 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
                     Login = "Admin",
                     FullName = "Админ Админыч",
                     Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
-                    Roles = new []{"Admin"}
+                    Roles = new []{new RoleDto{Name =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Dmitriy",
                     FullName = "Дмитрий",
                     Description = "Руководитель",
-                    Roles = new []{"Admin", "Оператор", "Техник", "Руководитель" }
+                    Roles = new []{new RoleDto{Name =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vyacheslav",
                     FullName = "Некрасов Вячеслав",
                     Description = "Программист 1",
-                    Roles = new []{"Admin",}
+                    Roles = new []{new RoleDto{Name =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Alexey",
                     FullName = "Колосенок Алексей",
                     Description = "Программист 2",
-                    Roles = new []{"Admin", "Оператор", "Техник", "Руководитель" }
+                    Roles = new []{new RoleDto{Name =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vasya",
                     FullName = "Василий Алибабаевич",
                     Description = "Какой то Вася ))",
-                    Roles = new []{"Лишенец" }
+                    Roles = new []{new RoleDto{Name =   "Admin"}}
                 },
             };
 
@@ -86,6 +87,11 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             }
 
             return roles;
+        }
+
+        public RoleDto AddRole(RoleDto role)
+        {
+            throw new System.NotImplementedException();
         }
 
         public RightDto[] GetRights()

@@ -4,6 +4,7 @@ using Germadent.WebApi.Entities.Conversion;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +23,10 @@ namespace Germadent.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
-            services.AddSingleton<IEntityToDtoConverter, EntityToDtoConverter>();
             services.AddSingleton<IServiceConfiguration, ServiceConfiguration>();
+            services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
+            services.AddSingleton<IUmcDbOperations, UmcDbOperations>();
+            services.AddSingleton<IEntityToDtoConverter, EntityToDtoConverter>();
             services.AddSingleton<IFileManager, FileManager>();
         }
 

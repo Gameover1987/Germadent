@@ -32,6 +32,16 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public string Name => _role.Name;
 
+
         public event EventHandler<EventArgs> Checked;
+
+        public RoleDto ToModel()
+        {
+            return new RoleDto
+            {
+                Name = Name,
+                RoleId = RoleId
+            };
+        }
     }
 }

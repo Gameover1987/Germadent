@@ -11,14 +11,14 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
-        private readonly IUserManagementCenterOperations _userManagementCenterOperations;
+        private readonly IUmcOperations _userManagementCenterOperations;
         private string _fullName;
         private string _login;
         private string _password;
         private string _passwordOnceAgain;
         private string _description;
 
-        public AddUserViewModel(IUserManagementCenterOperations userManagementCenterOperations)
+        public AddUserViewModel(IUmcOperations userManagementCenterOperations)
         {
             _userManagementCenterOperations = userManagementCenterOperations;
 
@@ -138,7 +138,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 FullName = FullName,
                 Login = Login,
                 Password = Password,
-                Roles = Roles.Where(x => x.IsChecked).Select(x => x.Name).ToArray()
+                Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray()
             };
         }
 

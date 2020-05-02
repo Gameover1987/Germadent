@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.6.0-3.final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="Unity" Version="5.11.6" />
@@ -17,6 +18,12 @@
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
     <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
     <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RestSharp">
+      <HintPath>C:\Users\Вячеслав Некрасов\.nuget\packages\restsharp\106.10.1\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

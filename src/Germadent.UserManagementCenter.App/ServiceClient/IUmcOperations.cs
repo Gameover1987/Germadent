@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     /// <summary>
     /// Операции ЦУП
     /// </summary>
-    public interface IUserManagementCenterOperations
+    public interface IUmcOperations
     {
         /// <summary>
         /// Возвращает список пользователей
@@ -19,6 +19,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         RoleDto[] GetRoles();
+
+        /// <summary>
+        /// Добавляет роль
+        /// </summary>
+        /// <returns></returns>
+        RoleDto AddRole(RoleDto role);
 
         /// <summary>
         /// Возвращает список всех прав

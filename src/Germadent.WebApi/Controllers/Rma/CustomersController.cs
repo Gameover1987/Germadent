@@ -2,7 +2,7 @@
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Germadent.WebApi.Controllers
+namespace Germadent.WebApi.Controllers.Rma
 {
     [Route("api/[controller]")]
     [ApiController]

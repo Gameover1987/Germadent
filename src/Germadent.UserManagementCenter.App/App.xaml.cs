@@ -2,7 +2,10 @@
 using System.Windows;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.App.Configuration;
+using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ServiceClient;
+using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
 using Unity;
@@ -21,12 +24,13 @@ namespace Germadent.UserManagementCenter.App
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
 
+            _container.RegisterSingleton<IUmcConfiguration, UmcConfiguration>();
             _container.RegisterSingleton<IMainViewModel, MainViewModel>();
             _container.RegisterSingleton<IUsersManagerViewModel, UsersManagerViewModel>();
-            _container.RegisterSingleton<IUserManagementCenterOperations, UserManagementCenterOperations>();
+            _container.RegisterSingleton<IUmcOperations, UmcOperations>();
             _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
-            _container.RegisterSingleton<IWindowManager, WindowManager>();
+            _container.RegisterSingleton<IUserManagementUIOperations, UserManagementUIOperations>();
             _container.RegisterSingleton<IAddUserViewModel, AddUserViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
             _container.RegisterSingleton<IAddRoleViewModel, AddRoleViewModel>();

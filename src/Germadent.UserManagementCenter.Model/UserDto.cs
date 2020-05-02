@@ -19,6 +19,6 @@ namespace Germadent.UserManagementCenter.Model
 
         public string Description { get; set; }
 
-        public string[] Roles { get; set; }
+        public RoleDto[] Roles { get; set; }
     }
 }

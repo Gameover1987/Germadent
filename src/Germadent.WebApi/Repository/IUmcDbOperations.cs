@@ -12,6 +12,13 @@ namespace Germadent.WebApi.Repository
         UserDto[] GetUsers();
 
         /// <summary>
+        /// Добавляет пользователя
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
+        UserDto AddUser(UserDto userDto);
+
+        /// <summary>
         /// Вовзвращает список ролей
         /// </summary>
         /// <returns></returns>
@@ -22,7 +29,7 @@ namespace Germadent.WebApi.Repository
         /// </summary>
         /// <param name="roleDto"></param>
         /// <returns></returns>
-        RoleDto[] AddRole(RoleDto roleDto);
+        RoleDto AddRole(RoleDto roleDto);
 
         /// <summary>
         /// Возвращает список прав

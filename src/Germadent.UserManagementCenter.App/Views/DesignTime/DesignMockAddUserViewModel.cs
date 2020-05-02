@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
+using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.Model;
@@ -13,7 +14,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
     public class DesignMockAddUserViewModel : AddUserViewModel
     {
         public DesignMockAddUserViewModel() 
-            : base(new UserManagementCenterOperations())
+            : base(new DesignMockUserManagementCenterOperations())
         {
             Initialize(new UserDto(), "Добавление нового пользователя");
 

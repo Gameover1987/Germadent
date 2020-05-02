@@ -27,19 +27,11 @@ namespace Germadent.Rma.App
     /// </summary>
     public partial class App : Application
     {
-        private readonly IUnityContainer _container;
-        private readonly IConfiguration _configuration;
+        private IUnityContainer _container;
+        private IConfiguration _configuration;
 
         public App()
         {
-            _container = new UnityContainer();
-
-            _configuration = new RmaConfiguration();
-            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
-
-            var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
-            _container.RegisterInstance(typeof(IDispatcher), dispatcher);
-
             FillContainer();
         }
 
@@ -74,6 +66,14 @@ namespace Germadent.Rma.App
 
         private void FillContainer()
         {
+            _container = new UnityContainer();
+
+            _configuration = new RmaConfiguration();
+            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
+
+            var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
+            _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+
             if (_configuration.WorkMode == WorkMode.Server)
             {
                 RegisterServiceComponents();
