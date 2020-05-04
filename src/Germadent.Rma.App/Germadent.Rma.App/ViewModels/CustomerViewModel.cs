@@ -41,5 +41,18 @@ namespace Germadent.Rma.App.ViewModels
         public string Phone { get; }
 
         public string Description { get; }
+
+        public CustomerDto ToDto()
+        {
+            return new CustomerDto
+            {
+                Id = CustomerId,
+                Description = Description,
+                Email = Email,
+                Name = DisplayName,
+                Phone = Phone,
+                WebSite = WebSite
+            };
+        }
     }
 }

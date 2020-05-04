@@ -130,7 +130,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void AddCustomerCommandHandler()
         {
-            var customer = _catalogUIOperations.AddCustomer();
+            var customer = _catalogUIOperations.AddCustomer(new CustomerDto());
             if (customer == null)
                 return;
 

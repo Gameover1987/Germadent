@@ -9,6 +9,8 @@ namespace Germadent.Rma.App.Infrastructure
 
         ICustomerViewModel SelectCustomer(string mask);
 
-        CustomerDto AddCustomer();
+        CustomerDto AddCustomer(CustomerDto customer);
+
+        void ShowCustomerCart(CustomerDto customer);
     }
 }

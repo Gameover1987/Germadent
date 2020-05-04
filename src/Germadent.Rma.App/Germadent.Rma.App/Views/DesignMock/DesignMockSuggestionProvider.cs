@@ -10,5 +10,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             throw new NotImplementedException();
         }
+
+        public event EventHandler<SuggestionsEventArgs> Loaded;
     }
 }

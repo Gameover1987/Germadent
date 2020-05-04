@@ -1,45 +1,28 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Data;
+﻿using System;
+using System.Collections;
+using System.Linq;
 
 namespace Germadent.UI.Controls
 {
-    public interface ISuggestionProvider
+    public class SuggestionsEventArgs
     {
+        public SuggestionsEventArgs(IEnumerable suggestions)
+        {
+            Suggestions = suggestions;
+        }
 
-        IEnumerable GetSuggestions(string filter);
+        public IEnumerable Suggestions { get; }
+
+        public bool IsEmpty
+        {
+            get { return Suggestions == null || !Suggestions.Cast<object>().Any(); }
+        }
     }
 
-    public class BindingEvaluator : FrameworkElement
+    public interface ISuggestionProvider
     {
+        IEnumerable GetSuggestions(string filter);
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(BindingEvaluator), new FrameworkPropertyMetadata(string.Empty));
-
-        private Binding _valueBinding;
-
-        public BindingEvaluator(Binding binding)
-        {
-            ValueBinding = binding;
-        }
-
-        public string Value
-        {
-            get { return (string)GetValue(ValueProperty); }
-
-            set { SetValue(ValueProperty, value); }
-        }
-
-        public Binding ValueBinding
-        {
-            get { return _valueBinding; }
-            set { _valueBinding = value; }
-        }
-
-        public string Evaluate(object dataItem)
-        {
-            DataContext = dataItem;
-            SetBinding(ValueProperty, ValueBinding);
-            return Value;
-        }
+        event EventHandler<SuggestionsEventArgs> Loaded;
     }
 }

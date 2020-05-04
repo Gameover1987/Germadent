@@ -32,22 +32,4 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new System.NotImplementedException();
         }
     }
-
-    public class DesignMockCatalogUIOperations : ICatalogUIOperations
-    {
-        public void Initialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ICustomerViewModel SelectCustomer(string mask)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public CustomerDto AddCustomer()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }

@@ -194,7 +194,6 @@ namespace Germadent.UI.Controls
             if (IsDropDownOpen)
             {
                 _selectionAdapter.HandleKeyDown(e);
-                e.Handled = true;
             }
             else
             {

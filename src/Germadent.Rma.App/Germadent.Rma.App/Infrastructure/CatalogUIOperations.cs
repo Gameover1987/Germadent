@@ -37,14 +37,20 @@ namespace Germadent.Rma.App.Infrastructure
             return null;
         }
 
-        public CustomerDto AddCustomer()
+        public CustomerDto AddCustomer(CustomerDto customer)
         {
-            _addCustomerViewModel.Initialize("Добавление нового заказчика", new CustomerDto());
+            _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
             if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) == true)
             {
                 return _addCustomerViewModel.GetCustomer();
             }
             return null;
+        }
+
+        public void ShowCustomerCart(CustomerDto customer)
+        {
+            _addCustomerViewModel.Initialize("Просмотр карточки заказчика", customer);
+            _dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel);
         }
     }
 }

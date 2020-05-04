@@ -33,7 +33,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             return new IWizardStepViewModel[]
             {
-                new MillingCenterInfoWizardStepViewModel(_catalogUIOperations, _customerSuggestionProvider),
+                new MillingCenterInfoWizardStepViewModel(_catalogUIOperations, _customerSuggestionProvider, _rmaOperations),
                 new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaOperations, new ClipboardHelper()), _filesContainer),
                 new MillingCenterAdditionalEquipmentViewModel(_rmaOperations), 
             };
