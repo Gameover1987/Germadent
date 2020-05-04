@@ -54,6 +54,11 @@
                     Command="{Binding AddCustomerCommand}"/>
             <Button Content="Показать карточку" Margin="6,0,0,0"
                     Command="{Binding ShowCustomerCartCommand}"/>
+            <StackPanel Orientation="Horizontal" Margin="12,0,0,0"
+                        Visibility="{Binding IsNewCustomer, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Path Style="{StaticResource InfoIconPathStyle}"/>
+                <TextBlock Text="Отсутствует в справочнике" VerticalAlignment="Center" Margin="3,0,0,0"/>
+            </StackPanel>
         </StackPanel>
 
         <Button Grid.Column="2" Grid.Row="0" Margin="6,0,0,0" Content="..."
