@@ -8,9 +8,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class ResponsiblePersonSuggestionProvider : SuggestionsProviderBase
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
 
-        public ResponsiblePersonSuggestionProvider(IRmaOperations rmaOperations, IDispatcher dispatcher)
+        public ResponsiblePersonSuggestionProvider(IRmaServiceClient rmaOperations, IDispatcher dispatcher)
             : base(dispatcher)
         {
             _rmaOperations = rmaOperations;

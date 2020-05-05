@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 using Moq;
@@ -27,7 +22,7 @@ namespace Germadent.Rma.App.Test
         public void ShouldInitialize()
         {
             // Given
-            var mockRmaOperations = new Mock<IRmaOperations>();
+            var mockRmaOperations = new Mock<IRmaServiceClient>();
             var orders = new List<OrderLiteDto>();
             orders.Add(new OrderLiteDto() { WorkOrderId = 1 });
             orders.Add(new OrderLiteDto() { WorkOrderId = 2 });

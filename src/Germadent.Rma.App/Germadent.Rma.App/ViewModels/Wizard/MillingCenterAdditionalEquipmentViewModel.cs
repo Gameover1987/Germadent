@@ -9,9 +9,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class MillingCenterAdditionalEquipmentViewModel : WizardStepViewModelBase
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
 
-        public MillingCenterAdditionalEquipmentViewModel(IRmaOperations rmaOperations)
+        public MillingCenterAdditionalEquipmentViewModel(IRmaServiceClient rmaOperations)
         {
             _rmaOperations = rmaOperations;
         }

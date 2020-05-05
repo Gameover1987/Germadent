@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels
 {
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly IOrderUIOperations _windowManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IPrintModule _printModule;
@@ -31,7 +31,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private ICollectionView _collectionView;
 
-        public MainViewModel(IRmaOperations rmaOperations,
+        public MainViewModel(IRmaServiceClient rmaOperations,
             IOrderUIOperations windowManager,
             IShowDialogAgent dialogAgent,
             IPrintModule printModule,
@@ -64,7 +64,7 @@ namespace Germadent.Rma.App.ViewModels
             if (SearchString.IsNullOrWhiteSpace())
                 return true;
 
-            var order = (OrderLiteViewModel) obj;
+            var order = (OrderLiteViewModel)obj;
             return order.MatchBySearchString(SearchString);
         }
 
@@ -86,7 +86,13 @@ namespace Germadent.Rma.App.ViewModels
         public bool IsBusy
         {
             get { return _isBusy; }
-            set { SetProperty(() => _isBusy, value); }
+            set
+            {
+                if (_isBusy == value)
+                    return;
+                _isBusy = value;
+                OnPropertyChanged(() => IsBusy);
+            }
         }
 
         public IDelegateCommand CreateLabOrderCommand { get; }
@@ -126,9 +132,9 @@ namespace Germadent.Rma.App.ViewModels
         {
             var ordersFilter = new OrdersFilter
             {
-                PeriodBegin = DateTime.Now.AddMonths(-2), 
+                PeriodBegin = DateTime.Now.AddMonths(-2),
                 PeriodEnd = DateTime.Now,
-                MillingCenter = true, 
+                MillingCenter = true,
                 Laboratory = true
             };
             FillOrders(ordersFilter);
@@ -148,7 +154,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            var millingCenterOrder = _windowManager.CreateMillingCenterOrder(new OrderDto { BranchType = BranchType.MillingCenter}, WizardMode.Create);
+            var millingCenterOrder = _windowManager.CreateMillingCenterOrder(new OrderDto { BranchType = BranchType.MillingCenter }, WizardMode.Create);
 
             if (millingCenterOrder == null)
                 return;
@@ -197,7 +203,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanCloseOrderCommandHandler()
         {
-            return SelectedOrder != null;
+            return SelectedOrder != null && SelectedOrder.Model.Closed == null;
         }
 
         private void CloseOrderCommandHandler()
@@ -240,7 +246,7 @@ namespace Germadent.Rma.App.ViewModels
 
             if (changedOrderDto == null)
                 return;
-            
+
             orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
 

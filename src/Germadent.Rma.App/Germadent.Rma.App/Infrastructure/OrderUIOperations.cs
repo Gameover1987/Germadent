@@ -12,7 +12,7 @@ namespace Germadent.Rma.App.Infrastructure
     public class OrderUIOperations : IOrderUIOperations
     {
         private readonly IShowDialogAgent _dialogAgent;
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly ILabWizardStepsProvider _labWizardProvider;
         private readonly IMillingCenterWizardStepsProvider _millingCenterWizardStepsProvider;
 
@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly IPrintModule _printModule;
 
         public OrderUIOperations(IShowDialogAgent dialogAgent,
-            IRmaOperations rmaOperations,
+            IRmaServiceClient rmaOperations,
             ILabWizardStepsProvider labWizardStepsProvider,
             IMillingCenterWizardStepsProvider millingCenterWizardStepsProvider,
             IOrdersFilterViewModel ordersFilterViewModel,

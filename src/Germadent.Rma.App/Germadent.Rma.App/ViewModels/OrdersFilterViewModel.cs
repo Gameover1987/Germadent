@@ -14,7 +14,7 @@ namespace Germadent.Rma.App.ViewModels
 {
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly ILogger _logger;
 
         private bool _millingCenter;
@@ -29,7 +29,7 @@ namespace Germadent.Rma.App.ViewModels
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
         private bool _isBusy;
 
-        public OrdersFilterViewModel(IRmaOperations rmaOperations, ILogger logger)
+        public OrdersFilterViewModel(IRmaServiceClient rmaOperations, ILogger logger)
         {
             _rmaOperations = rmaOperations;
             _logger = logger;
@@ -46,68 +46,92 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool MillingCenter
         {
-            get { return _millingCenter; }
+            get => _millingCenter;
             set
             {
-                if (SetProperty(() => _millingCenter, value))
-                {
-                    ValidateDepartments();
-                }
+                if (_millingCenter == value)
+                    return;
+                _millingCenter = value;
+                OnPropertyChanged(() => MillingCenter);
+
+                ValidateDepartments();
             }
         }
 
         public bool Laboratory
         {
-            get { return _laboratory; }
+            get => _laboratory;
             set
             {
-                if (SetProperty(() => _laboratory, value))
-                {
-                    ValidateDepartments();
-                }
+                if (_laboratory == value)
+                    return;
+                _laboratory = value;
+                OnPropertyChanged(() => Laboratory);
+
+                ValidateDepartments();
             }
         }
 
         public DateTime PeriodBegin
         {
-            get { return _periodBegin; }
+            get => _periodBegin;
             set
             {
-                if (SetProperty(() => _periodBegin, value))
-                {
-                    ValidateDates();
-                }
+                if (_periodBegin == value)
+                    return;
+                _periodBegin = value;
+                OnPropertyChanged(() => PeriodBegin);
+                ValidateDates();
             }
         }
 
         public DateTime PeriodEnd
         {
-            get { return _periodEnd; }
+            get => _periodEnd;
             set
             {
-                if (SetProperty(() => _periodEnd, value))
-                {
-                    ValidateDates();
-                }
+                if (_periodEnd == value)
+                    return;
+                _periodEnd = value;
+                OnPropertyChanged(() => PeriodEnd);
+                ValidateDates();
             }
         }
 
         public string Customer
         {
-            get { return _customer; }
-            set { SetProperty(() => _customer, value); }
+            get => _customer;
+            set
+            {
+                if (_customer == value)
+                    return;
+                _customer = value;
+                OnPropertyChanged(() => Customer);
+            }
         }
 
         public string Employee
         {
-            get { return _employee; }
-            set { SetProperty(() => _employee, value); }
+            get => _employee;
+            set
+            {
+                if (_employee == value)
+                    return;
+                _employee = value;
+                OnPropertyChanged(() => Employee);
+            }
         }
 
         public string Patient
         {
-            get { return _patient; }
-            set { SetProperty(() => _patient, value); }
+            get => _patient;
+            set
+            {
+                if (_patient == value)
+                    return;
+                _patient = value;
+                OnPropertyChanged(() => Patient);
+            }
         }
 
         public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
@@ -116,19 +140,19 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(() => _isBusy, value); }
+            get => _isBusy;
+            set
+            {
+                if (_isBusy == value)
+                    return;
+                _isBusy = value;
+                OnPropertyChanged(() => IsBusy);
+            }
         }
 
-        public bool IsValid
-        {
-            get { return ValidationErrors.Count == 0; }
-        }
+        public bool IsValid => ValidationErrors.Count == 0;
 
-        public string LastError
-        {
-            get { return ValidationErrors.LastOrDefault(); }
-        }
+        public string LastError => ValidationErrors.LastOrDefault();
 
         public ICommand OKCommand { get; }
 

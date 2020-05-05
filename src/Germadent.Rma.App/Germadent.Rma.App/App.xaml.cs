@@ -8,6 +8,7 @@ using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.Reporting.TemplateProcessing;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
@@ -40,7 +41,7 @@ namespace Germadent.Rma.App
             DelegateCommand.CommandException += CommandException;
 
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
-            var authorizationViewModel = new AuthorizationViewModel(dialogAgent, _container.Resolve<IRmaAuthorizer>());
+            var authorizationViewModel = new AuthorizationViewModel(dialogAgent, _container.Resolve<IRmaServiceClient>());
             bool? authorized = true;
             if (_configuration.WorkMode == WorkMode.Mock)
             {
@@ -51,17 +52,21 @@ namespace Germadent.Rma.App
                 //authorized = dialogAgent.ShowDialog<AuthorizationWindow>(authorizationViewModel);
             }
 
-            if (authorized == true)
-            {
-                MainWindow = new MainWindow();
-                MainWindow.Closed += MainWindowOnClosed;
-                MainWindow.DataContext = _container.Resolve<MainViewModel>();
-                MainWindow.Show();
-            }
-            else
-            {
+            if (authorized == false)
                 Current.Shutdown(0);
-            }
+
+            InitializeRepositories();
+
+            MainWindow = new MainWindow();
+            MainWindow.Closed += MainWindowOnClosed;
+            MainWindow.DataContext = _container.Resolve<MainViewModel>();
+            MainWindow.Show();
+        }
+
+        private void InitializeRepositories()
+        {
+            var customerRepository = _container.Resolve<ICustomerRepository>();
+            customerRepository.Initialize();
         }
 
         private void FillContainer()
@@ -76,12 +81,11 @@ namespace Germadent.Rma.App
 
             if (_configuration.WorkMode == WorkMode.Server)
             {
-                RegisterServiceComponents();
+                RegisterServiceClient();
             }
             else
             {
-                _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-                _container.RegisterType<IRmaOperations, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IRmaServiceClient, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
             }
 
             RegisterCommonComponents();
@@ -106,11 +110,12 @@ namespace Germadent.Rma.App
             _container.RegisterType<ISuggestionProvider, ResponsiblePersonSuggestionProvider>("ResponsiblePersonSuggestionProvider");
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(
                 new InjectionConstructor(
-                    _container.Resolve<IRmaOperations>(),
+                    _container.Resolve<IRmaServiceClient>(),
                     _container.Resolve<IOrderFilesContainerViewModel>(),
                     _container.Resolve<ISuggestionProvider>("CustomerSuggestionProvider"),
                     _container.Resolve<ISuggestionProvider>("ResponsiblePersonSuggestionProvider"),
-                    _container.Resolve<ICatalogUIOperations>()));
+                    _container.Resolve<ICatalogUIOperations>(),
+                    _container.Resolve<ICustomerRepository>()));
             _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
@@ -124,10 +129,10 @@ namespace Germadent.Rma.App
             _container.RegisterType<IReporter, ClipboardReporter>(new ContainerControlledLifetimeManager());
         }
 
-        private void RegisterServiceComponents()
+        private void RegisterServiceClient()
         {
-            _container.RegisterType<IRmaAuthorizer, DesignMockRmaAuthorizer>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRmaOperations, RmaOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaServiceClient, RmaServiceClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICustomerRepository, CustomerRepository>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterPrintModule()

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Germadent.UserManagementCenter.Model;
-
-namespace Germadent.WebApi.Entities
+﻿namespace Germadent.WebApi.Entities
 {
     public class UserEntity
     {

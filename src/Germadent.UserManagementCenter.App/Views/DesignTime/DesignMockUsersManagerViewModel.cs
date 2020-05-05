@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.App.Mocks;
-using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.Model;

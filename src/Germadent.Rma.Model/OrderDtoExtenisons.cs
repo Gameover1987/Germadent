@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Germadent.Rma.Model
+﻿namespace Germadent.Rma.Model
 {
     public static class OrderDtoExtenisons
     {

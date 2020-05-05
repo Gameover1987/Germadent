@@ -14,11 +14,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 {
     public class ToothCardViewModel : ViewModelBase, IToothCardViewModel
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly IClipboardHelper _clipboard;
         private ToothViewModel[] _selectedTeeth;
 
-        public ToothCardViewModel(IRmaOperations rmaOperations, IClipboardHelper clipboard)
+        public ToothCardViewModel(IRmaServiceClient rmaOperations, IClipboardHelper clipboard)
         {
             _rmaOperations = rmaOperations;
             _clipboard = clipboard;

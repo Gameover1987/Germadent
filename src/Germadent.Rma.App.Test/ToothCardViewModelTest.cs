@@ -32,7 +32,7 @@ namespace Germadent.Rma.App.Test
 
         private ToothCardViewModel CreateTarget()
         {
-            var rmaOperationsMock = new Mock<IRmaOperations>();
+            var rmaOperationsMock = new Mock<IRmaServiceClient>();
             rmaOperationsMock
                 .Setup(x => x.GetDictionary(DictionaryType.Material))
                 .Returns(new[]

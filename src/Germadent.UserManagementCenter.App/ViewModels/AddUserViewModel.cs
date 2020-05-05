@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Germadent.UI.Commands;
-using Germadent.UI.ViewModels;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.Model;

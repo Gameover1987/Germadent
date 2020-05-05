@@ -1,5 +1,4 @@
-﻿using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 
 namespace Germadent.WebApi.Entities.Conversion
 {

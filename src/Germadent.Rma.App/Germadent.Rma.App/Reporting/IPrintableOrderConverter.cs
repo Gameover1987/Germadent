@@ -14,9 +14,9 @@ namespace Germadent.Rma.App.Reporting
 
     public class PrintableOrderConverter : IPrintableOrderConverter
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
 
-        public PrintableOrderConverter(IRmaOperations rmaOperations)
+        public PrintableOrderConverter(IRmaServiceClient rmaOperations)
         {
             _rmaOperations = rmaOperations;
         }

@@ -1,12 +1,33 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
+    public class CustomerRepositoryChangedEventArgs : EventArgs
+    {
+        public CustomerRepositoryChangedEventArgs(CustomerDto[] addedItems, CustomerDto[] deletedItems)
+        {
+            AddedItems = addedItems;
+            DeletedItems = deletedItems;
+        }
+
+        public CustomerDto[] AddedItems { get; }
+
+        public CustomerDto[] DeletedItems { get; }
+    }
+
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
-    public interface IRmaOperations
+    public interface IRmaServiceClient
     {
+        /// <summary>
+        /// Авторизация
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="password"></param>
+        void Authorize(string user, string password);
+
         /// <summary>
         /// Получить список заказнарядов
         /// </summary>
@@ -80,5 +101,10 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="dictionaryType"></param>
         /// <returns></returns>
         DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
+
+        /// <summary>
+        /// Собтие изменения репозитория заказчиков
+        /// </summary>
+        event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
     }
 }

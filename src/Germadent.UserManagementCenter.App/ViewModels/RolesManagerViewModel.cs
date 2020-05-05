@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
-using Germadent.UserManagementCenter.App.Views;
 using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels

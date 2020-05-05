@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
-using Germadent.UserManagementCenter.App.Views;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {

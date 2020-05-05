@@ -3,7 +3,6 @@ using System.Windows;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.App.Configuration;
-using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;

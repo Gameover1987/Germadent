@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
-using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.UI.Controls;
 using Germadent.UI.Infrastructure;
 
@@ -9,19 +8,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class CustomerSuggestionProvider : SuggestionsProviderBase
     {
-        private readonly IRmaOperations _rmaOperations;
-        private readonly IDispatcher _dispatcher;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerSuggestionProvider(IRmaOperations rmaOperations, IDispatcher dispatcher)
+        public CustomerSuggestionProvider(ICustomerRepository customerRepository, IDispatcher dispatcher)
             : base(dispatcher)
         {
-            _rmaOperations = rmaOperations;
-            _dispatcher = dispatcher;
+            _customerRepository = customerRepository;
         }
 
         protected override IEnumerable GetSuggestionsImpl(string filter)
         {
-            return _rmaOperations.GetCustomers(filter).Select(x => new CustomerViewModel(x)).ToArray();
+            return _customerRepository.Items.Where(x => x.Name.ToLower().Contains(filter.ToLower())).Select(x => new CustomerViewModel(x)).ToArray();
         }
     }
 }

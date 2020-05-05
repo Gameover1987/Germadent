@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Germadent.UserManagementCenter.Model.Rights
+﻿namespace Germadent.UserManagementCenter.Model.Rights
 {
     public class RightDto
     {

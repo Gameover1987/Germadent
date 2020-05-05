@@ -6,7 +6,7 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Mocks
 {
-    public class DesignMockRmaOperations : IRmaOperations
+    public class DesignMockRmaOperations : IRmaServiceClient
     {
         private readonly List<OrderDto> _orders = new List<OrderDto>();
 
@@ -76,6 +76,11 @@ namespace Germadent.Rma.App.Mocks
                     },
                 }
             });
+        }
+
+        public void Authorize(string user, string password)
+        {
+            throw new NotImplementedException();
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
@@ -162,7 +167,7 @@ namespace Germadent.Rma.App.Mocks
             };
         }
 
-        ReportListDto[] IRmaOperations.GetWorkReport(int id)
+        ReportListDto[] IRmaServiceClient.GetWorkReport(int id)
         {
             throw new NotImplementedException();
         }
@@ -200,6 +205,8 @@ namespace Germadent.Rma.App.Mocks
                     throw new NotImplementedException("Неизвестный тип словаря");
             }
         }
+        
+        public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
 
         private DictionaryItemDto[] GetProstheticConditions()
         {

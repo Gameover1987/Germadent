@@ -14,7 +14,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class CustomerCatalogViewModel : ViewModelBase, ICustomerCatalogViewModel
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly ILogger _logger;
 
@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private ICollectionView _customersView;
 
-        public CustomerCatalogViewModel(IRmaOperations rmaOperations, ICatalogUIOperations catalogUIOperations, ILogger logger)
+        public CustomerCatalogViewModel(IRmaServiceClient rmaOperations, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {
             _rmaOperations = rmaOperations;
             _catalogUIOperations = catalogUIOperations;
@@ -133,8 +133,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             var customer = _catalogUIOperations.AddCustomer(new CustomerDto());
             if (customer == null)
                 return;
-
-            customer = _rmaOperations.AddCustomer(customer);
+            
             Customers.Add(new CustomerViewModel(customer));
         }
 

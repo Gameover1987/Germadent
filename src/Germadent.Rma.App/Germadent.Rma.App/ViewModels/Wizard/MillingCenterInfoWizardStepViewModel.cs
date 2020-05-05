@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Controls;
@@ -14,7 +12,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
         private readonly ICatalogUIOperations _catalogUIOperations;
-        private readonly IRmaOperations _rmaOperations;
+        private readonly ICustomerRepository _customerRepository;
 
         private int _customerId;
         private string _customer;
@@ -24,15 +22,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
         private string _dateComment;
 
-        private bool _hasSuggestions;
-        private CustomerViewModel[] _suggestions;
-
-        public MillingCenterInfoWizardStepViewModel(ICatalogUIOperations catalogUIOperations, ISuggestionProvider customerSuggestionProvider, IRmaOperations rmaOperations)
+        public MillingCenterInfoWizardStepViewModel(ICatalogUIOperations catalogUIOperations, ISuggestionProvider customerSuggestionProvider, ICustomerRepository customerRepository)
         {
             _catalogUIOperations = catalogUIOperations;
-            _rmaOperations = rmaOperations;
+            _customerRepository = customerRepository;
+            _customerRepository.Changed += CustomerRepositoryOnChanged;
             CustomerSuggestionProvider = customerSuggestionProvider;
-            CustomerSuggestionProvider.Loaded += CustomerSuggestionProviderOnLoaded;
 
             AddValidationFor(() => Customer)
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
@@ -42,18 +37,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ShowCustomerCartCommand = new DelegateCommand(ShowCustomerCartCommandHandler, CanShowCustomerCartCommandHandler);
         }
 
-        private void CustomerSuggestionProviderOnLoaded(object sender, SuggestionsEventArgs e)
-        {
-            _hasSuggestions = !e.IsEmpty;
-            _suggestions = e.Suggestions.Cast<CustomerViewModel>().ToArray();
-
-            AddCustomerCommand.NotifyCanExecuteChanged();
-            ShowCustomerCartCommand.NotifyCanExecuteChanged();
-
-            OnPropertyChanged(() => IsNewCustomer);
-        }
-
-        public override bool IsValid => !HasErrors && !IsEmpty() && !IsNewCustomer;
+        public override bool IsValid => !HasErrors && !Customer.IsNullOrWhiteSpace() && !IsNewCustomer;
 
         public override string DisplayName
         {
@@ -63,7 +47,19 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public string Customer
         {
             get { return _customer; }
-            set { SetProperty(() => _customer, value); }
+            set
+            {
+                if (_customer == value)
+                    return;
+                _customer = value;
+                OnPropertyChanged(() => Customer);
+                OnPropertyChanged(() => IsNewCustomer);
+
+                if (!IsNewCustomer && !Customer.IsNullOrWhiteSpace())
+                {
+                    _customerId = _customerRepository.Items.First(x => x.Name == Customer).Id;
+                }
+            }
         }
 
         public bool IsNewCustomer
@@ -73,7 +69,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 if (Customer.IsNullOrWhiteSpace())
                     return false;
 
-                return !_hasSuggestions && !Customer.IsNullOrWhiteSpace();
+                return _customerRepository.Items.All(x => x.Name != Customer);
             }
         }
 
@@ -143,6 +139,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.DateComment = DateComment;
         }
 
+        private void CustomerRepositoryOnChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged(() => IsNewCustomer);
+        }
+
         private void SelectCustomerCommandHandler()
         {
             _catalogUIOperations.Initialize();
@@ -156,7 +157,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private bool CanAddCustomerCommandHandler()
         {
-            return !_hasSuggestions && !Customer.IsNullOrWhiteSpace();
+            if (Customer.IsNullOrWhiteSpace())
+                return false;
+
+            return _customerRepository.Items.All(x => x.Name != Customer);
         }
 
         private void AddCustomerCommandHandler()
@@ -165,25 +169,21 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             if (customer == null)
                 return;
 
-            _rmaOperations.AddCustomer(customer);
-
-            CustomerSuggestionProvider.GetSuggestions(Customer);
+            _customerId = customer.Id;
         }
 
 
         private bool CanShowCustomerCartCommandHandler()
         {
-            return _hasSuggestions && _suggestions.Any(x => x.DisplayName == Customer);
+            if (Customer.IsNullOrWhiteSpace())
+                return false;
+
+            return _customerRepository.Items.Any(x => x.Name == Customer);
         }
 
         private void ShowCustomerCartCommandHandler()
         {
-            _catalogUIOperations.ShowCustomerCart(_suggestions.First(x => x.DisplayName == Customer).ToDto());
-        }
-
-        private bool IsEmpty()
-        {
-            return Customer.IsNullOrWhiteSpace();
+            _catalogUIOperations.ShowCustomerCart(_customerRepository.Items.First(x => x.Name == Customer));
         }
     }
 }

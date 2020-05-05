@@ -14,13 +14,13 @@ namespace Germadent.Rma.App.ViewModels
     {
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IFileManager _fileManager;
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
 
         private OrderDto _order;
         private string _fileName;
         private bool _isBusy;
 
-        public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IRmaOperations rmaOperations)
+        public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IRmaServiceClient rmaOperations)
         {
             _dialogAgent = dialogAgent;
             _fileManager = fileManager;

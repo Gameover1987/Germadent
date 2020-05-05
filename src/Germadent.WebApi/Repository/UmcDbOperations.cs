@@ -3,7 +3,6 @@ using System.Linq;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.Configuration;
-using Germadent.WebApi.Entities;
 
 namespace Germadent.WebApi.Repository
 {

@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private string _workDescription;
         private string _colorAndFeatures;
         private int _transparency;
@@ -17,7 +17,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private DictionaryItemDto _selectedTransparency;
 
-        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaOperations rmaOperations)
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaServiceClient rmaOperations)
         {
             _rmaOperations = rmaOperations;
             FilesContainer = orderFilesContainer;

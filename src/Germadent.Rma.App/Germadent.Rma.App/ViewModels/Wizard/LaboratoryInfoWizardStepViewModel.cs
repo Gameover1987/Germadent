@@ -9,15 +9,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _customer;
         private string _doctorFio;
         private string _patientFio;
-
         private Gender _gender;
         private int _age;
-
         private DateTime _created;
-
         private DateTime? _fittingDate;
         private DateTime? _dateOfCompletion;
-
         private string _dateComment;
 
         public LaboratoryInfoWizardStepViewModel()
@@ -32,70 +28,104 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 .When(() => Age < 0 || Age > 150, () => "Возраст должен быть в диапазоне от 0 до 150");
         }
 
-        public override string DisplayName
-        {
-            get { return "Общие данные"; }
-        }
+        public override string DisplayName => "Общие данные";
 
-        public override bool IsValid
-        {
-            get { return !HasErrors && !IsEmpty(); }
-        }
+        public override bool IsValid => !HasErrors && !IsEmpty();
 
         public string Customer
         {
-            get { return _customer; }
+            get => _customer;
             set
             {
-                SetProperty(() => _customer, value); 
+                if (_customer == value)
+                    return;
+                _customer = value;
+                OnPropertyChanged(() => Customer);
             }
         }
 
         public string DoctorFio
         {
-            get { return _doctorFio; }
-            set { SetProperty(() => _doctorFio, value); }
+            get => _doctorFio;
+            set
+            {
+                if (_doctorFio == value)
+                    return;
+                _doctorFio = value;
+                OnPropertyChanged(() => DoctorFio);
+            }
         }
 
         public Gender Gender
         {
-            get { return _gender; }
-            set { SetProperty(() => _gender, value); }
+            get => _gender;
+            set {
+                if (_gender == value)
+                    return;
+                _gender = value;
+                OnPropertyChanged(() => Gender);
+            }
         }
 
         public int Age
         {
-            get { return _age; }
-            set { SetProperty(() => _age, value); }
+            get => _age;
+            set
+            {
+                if (_age == value)
+                    return;
+                _age = value;
+                OnPropertyChanged(() => Age);
+            }
         }
 
         public string PatientFio
         {
-            get { return _patientFio; }
-            set { SetProperty(() => _patientFio, value); }
+            get => _patientFio;
+            set {
+                if (_patientFio == value)
+                    return;
+                _patientFio = value;
+                OnPropertyChanged(() => PatientFio);
+            }
         }
 
         public DateTime Created
         {
-            get { return _created; }
-            set { SetProperty(() => _created, value); }
+            get => _created;
+            set {
+                if (_created == value)
+                    return;
+                _created = value;
+                OnPropertyChanged(() => Created);
+            }
         }
 
         public DateTime? FittingDate
         {
-            get { return _fittingDate; }
-            set { SetProperty(() => _fittingDate, value); }
+            get => _fittingDate;
+            set {
+                if (_fittingDate == value)
+                    return;
+                _fittingDate = value;
+                OnPropertyChanged(() => FittingDate);
+            }
         }
 
         public DateTime? DateOfCompletion
         {
-            get { return _dateOfCompletion; }
-            set { SetProperty(() => _dateOfCompletion, value); }
+            get => _dateOfCompletion;
+            set {
+                if (_dateOfCompletion == value)
+                    return;
+                _dateOfCompletion = value;
+                OnPropertyChanged(() => DateOfCompletion);
+            }
         }
 
         public string DateComment
         {
-            get { return _dateComment; }
+            get => _dateComment;
             set
             {
                 if (_dateComment == value)

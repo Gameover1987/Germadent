@@ -57,7 +57,7 @@
                      Text="{Binding WebSite, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" MinLines="3"
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" MinLines="3" VerticalContentAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible"
                      Text="{Binding Description}"/>
         </Grid>
 

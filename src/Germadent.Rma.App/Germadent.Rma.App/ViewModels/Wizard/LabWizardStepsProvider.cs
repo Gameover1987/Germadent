@@ -11,10 +11,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class LabWizardStepsProvider : ILabWizardStepsProvider
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
         private readonly IOrderFilesContainerViewModel _filesContainer;
 
-        public LabWizardStepsProvider(IRmaOperations rmaOperations, IOrderFilesContainerViewModel filesContainer)
+        public LabWizardStepsProvider(IRmaServiceClient rmaOperations, IOrderFilesContainerViewModel filesContainer)
         {
             _rmaOperations = rmaOperations;
             _filesContainer = filesContainer;

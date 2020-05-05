@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace Germadent.Rma.Model
 {

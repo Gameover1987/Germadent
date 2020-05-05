@@ -34,5 +34,21 @@ namespace Germadent.WebApi.Controllers.Rma
 
             return _rmaDbOperations.AddOrder(orderDto, stream);
         }
+
+        [HttpPut]
+        public OrderDto UpdateOrder([FromBody] OrderDto orderDto)
+        {
+            Stream stream = null;
+
+            _rmaDbOperations.UpdateOrder(orderDto, stream);
+
+            return orderDto;
+        }
+
+        [HttpDelete("{id:int}")]
+        public OrderDto CloseOrder(int id)
+        {
+            return _rmaDbOperations.CloseOrder(id);
+        }
     }
 }

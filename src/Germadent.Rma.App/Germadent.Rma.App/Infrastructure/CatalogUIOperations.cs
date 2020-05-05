@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ViewModels;
+﻿using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
@@ -13,12 +14,14 @@ namespace Germadent.Rma.App.Infrastructure
         private ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IAddCustomerViewModel _addCustomerViewModel;
         private readonly IUnityContainer _unityContainer;
+        private readonly IRmaServiceClient _rmaOperations;
 
-        public CatalogUIOperations(IShowDialogAgent dialogAgent, IAddCustomerViewModel addCustomerViewModel, IUnityContainer unityContainer)
+        public CatalogUIOperations(IShowDialogAgent dialogAgent, IAddCustomerViewModel addCustomerViewModel, IUnityContainer unityContainer, IRmaServiceClient rmaOperations)
         {
             _dialogAgent = dialogAgent;
             _addCustomerViewModel = addCustomerViewModel;
             _unityContainer = unityContainer;
+            _rmaOperations = rmaOperations;
         }
 
         public void Initialize()
@@ -42,8 +45,10 @@ namespace Germadent.Rma.App.Infrastructure
             _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
             if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) == true)
             {
-                return _addCustomerViewModel.GetCustomer();
+                var newCustomer = _addCustomerViewModel.GetCustomer();
+                return _rmaOperations.AddCustomer(newCustomer);
             }
+
             return null;
         }
 
