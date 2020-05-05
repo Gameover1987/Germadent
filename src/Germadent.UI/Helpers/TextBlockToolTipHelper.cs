@@ -115,7 +115,9 @@ namespace Germadent.UI.Helpers
 
         private static double GetTextWidth(TextBlock textBlock)
         {
+#pragma warning disable 618
             var formattedText = new FormattedText(
+#pragma warning restore 618
                 textBlock.Text,
                 CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
