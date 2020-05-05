@@ -57,5 +57,10 @@ namespace Germadent.Rma.App.Infrastructure
             _addCustomerViewModel.Initialize("Просмотр карточки заказчика", customer);
             _dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel);
         }
+
+        public ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

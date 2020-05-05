@@ -11,6 +11,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             {
                 Name = "ООО Пошла родимая",
                 Phone = "222-333-444",
+                Email = "asdasd@gmail.com",
                 WebSite = "http://megasite.ru",
                 Description = "Lorem ipsum dolor sit amet"
             };
