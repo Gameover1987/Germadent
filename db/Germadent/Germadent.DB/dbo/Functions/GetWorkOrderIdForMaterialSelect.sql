@@ -5,17 +5,16 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetWorkOrderIdForMaterialSelect] 
 (	
-	@materialSet nvarchar(MAX)
+	@materialSet nvarchar(MAX) -- в составе json-строки обязательно должны быть id материалов
 )
 RETURNS TABLE 
 AS
 RETURN 
 (
-	SELECT tc.WorkOrderID
-	FROM ToothCard tc inner join Materials m on tc.MaterialID = m.MaterialID
-	WHERE m.MaterialName IN 
-	(SELECT MaterialName 
+	SELECT WorkOrderID
+	FROM ToothCard
+	WHERE MaterialID IN 
+	(SELECT Id
 		FROM OPENJSON(@materialSet) 
-		WITH (materialName nvarchar(50)))
-	GROUP BY tc.WorkOrderID, m.MaterialName
+		WITH (Id int))
 )
