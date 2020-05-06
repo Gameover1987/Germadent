@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 
         public void Initialize()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void ReLoad()

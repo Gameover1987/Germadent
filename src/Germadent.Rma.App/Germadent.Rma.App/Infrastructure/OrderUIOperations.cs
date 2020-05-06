@@ -15,7 +15,6 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly IRmaServiceClient _rmaOperations;
         private readonly ILabWizardStepsProvider _labWizardProvider;
         private readonly IMillingCenterWizardStepsProvider _millingCenterWizardStepsProvider;
-
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
         private readonly IPrintModule _printModule;
 
@@ -37,7 +36,8 @@ namespace Germadent.Rma.App.Infrastructure
 
         public OrderDto CreateLabOrder(OrderDto order, WizardMode mode)
         {
-            var labWizard = new WizardViewModel(_labWizardProvider, _printModule);
+            // TODO: Virtual method or factory
+            var labWizard = CreateWizard(_labWizardProvider);
             labWizard.Initialize(mode, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
             {
@@ -62,27 +62,32 @@ namespace Germadent.Rma.App.Infrastructure
 
         public OrderDto CreateMillingCenterOrder(OrderDto order, WizardMode mode)
         {
-            var millingCenterWizard = new WizardViewModel(_millingCenterWizardStepsProvider, _printModule);
+            // TODO: Virtual method or factory
+            var millingCenterWizard = CreateWizard(_millingCenterWizardStepsProvider);
             millingCenterWizard.Initialize(mode, order);
-            if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) == true)
+            if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) != true) 
+                return null;
+
+            var changedOrder = millingCenterWizard.GetOrder();
+            if (mode == WizardMode.Create)
             {
-                var changedOrder = millingCenterWizard.GetOrder();
-                if (mode == WizardMode.Create)
-                {
-                    changedOrder = _rmaOperations.AddOrder(changedOrder);
-                }
-                else
-                {
-                    changedOrder = _rmaOperations.UpdateOrder(changedOrder);
-                }
-
-                if (millingCenterWizard.PrintAfterSave)
-                    _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
-
-                return changedOrder;
+                changedOrder = _rmaOperations.AddOrder(changedOrder);
+            }
+            else
+            {
+                changedOrder = _rmaOperations.UpdateOrder(changedOrder);
             }
 
-            return null;
+            if (millingCenterWizard.PrintAfterSave)
+                _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
+
+            return changedOrder;
+
+        }
+
+        protected virtual IWizardViewModel CreateWizard(IWizardStepsProvider stepsProvider)
+        {
+            return new WizardViewModel(stepsProvider, _printModule);
         }
 
         public OrdersFilter CreateOrdersFilter()

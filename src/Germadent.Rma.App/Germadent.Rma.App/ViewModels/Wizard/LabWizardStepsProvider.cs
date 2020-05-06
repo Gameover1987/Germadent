@@ -1,6 +1,7 @@
 ﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -19,6 +20,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _rmaOperations = rmaOperations;
             _filesContainer = filesContainer;
         }
+
+        public BranchType BranchType => BranchType.Laboratory;
 
         public IWizardStepViewModel[] GetSteps()
         {

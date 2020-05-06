@@ -20,10 +20,4 @@
     <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="RestSharp">
-      <HintPath>C:\Users\Вячеслав Некрасов\.nuget\packages\restsharp\106.10.1\lib\netstandard2.0\RestSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

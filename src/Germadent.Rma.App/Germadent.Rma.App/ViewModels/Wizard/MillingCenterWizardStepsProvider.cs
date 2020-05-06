@@ -3,6 +3,7 @@ using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
+using Germadent.Rma.Model;
 using Germadent.UI.Controls;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
@@ -32,6 +33,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _catalogUIOperations = catalogUIOperations;
             _customerRepository = customerRepository;
         }
+
+        public BranchType BranchType => BranchType.MillingCenter;
 
         public IWizardStepViewModel[] GetSteps()
         {

@@ -29,7 +29,7 @@ namespace Germadent.Rma.App.ViewModels
         private bool _isBusy;
         private string _searchString;
 
-        private ICollectionView _collectionView;
+        private readonly ICollectionView _collectionView;
 
         public MainViewModel(IRmaServiceClient rmaOperations,
             IOrderUIOperations windowManager,

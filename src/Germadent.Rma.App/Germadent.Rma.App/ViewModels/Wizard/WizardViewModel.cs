@@ -12,6 +12,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IWizardViewModel
     {
+        void Initialize(WizardMode wizardMode, OrderDto order);
+
+        OrderDto GetOrder();
+
         bool PrintAfterSave { get; set; }
     }
 
@@ -26,17 +30,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public WizardViewModel(IWizardStepsProvider stepsProvider, IPrintModule printModule)
         {
             _printModule = printModule;
-            if (stepsProvider is ILabWizardStepsProvider)
-                _branchType = BranchType.Laboratory;
-            else
-                _branchType = BranchType.MillingCenter;
+            _branchType = stepsProvider.BranchType;
 
             Steps = new ObservableCollection<IWizardStepViewModel>(stepsProvider.GetSteps());
             CurrentStep = Steps.First();
 
             BackCommand = new DelegateCommand(x => BackCommandHandler(), x => CanBackCommandHandler());
             NextCommand = new DelegateCommand(x => NextCommandHandler(), x => CanNextCommandHandler());
-
             PrintCommand = new DelegateCommand(x => PrintCommandHandler(), x => CanPrintCommandHandler());
             SaveCommand = new DelegateCommand(x => SaveCommandHandler(), x => CanSaveCommandHandler());
             SaveAndPrintCommand = new DelegateCommand(x => SaveAndPrintCommandHandler(x), x => CanSaveAndPrintCommandHandler());
@@ -173,19 +173,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public OrderDto GetOrder()
         {
             var order = new OrderDto();
+
+            order.WorkOrderId = _order.WorkOrderId;
+            order.BranchType = _order.BranchType;
+            order.DocNumber = _order.DocNumber;
+            order.Closed = _order.Closed;
+
             foreach (var step in Steps)
             {
                 step.AssemblyOrder(order);
-
-                order.WorkOrderId = _order.WorkOrderId;
-                order.BranchType = _order.BranchType;
-                order.DocNumber = _order.DocNumber;
-                order.Closed = _order.Closed;
             }
 
             return order;
         }
-
-      
     }
 }

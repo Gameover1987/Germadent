@@ -22,7 +22,5 @@ namespace Germadent.UI.Controls
     public interface ISuggestionProvider
     {
         IEnumerable GetSuggestions(string filter);
-
-        event EventHandler<SuggestionsEventArgs> Loaded;
     }
 }

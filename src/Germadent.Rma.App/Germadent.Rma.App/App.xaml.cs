@@ -14,6 +14,7 @@ using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Controls;
 using Germadent.UI.Infrastructure;
@@ -86,6 +87,7 @@ namespace Germadent.Rma.App
             else
             {
                 _container.RegisterType<IRmaServiceClient, DesignMockRmaOperations>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<ICustomerRepository, DesignMockCustomerRepository>(new ContainerControlledLifetimeManager());
             }
 
             RegisterCommonComponents();
