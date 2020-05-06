@@ -94,10 +94,10 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
             if (element == null)
                 return node;
 
-            
+            //TODO Nekrasov: я бы инвертировал, чисто что бы уменьшить вложенный блок
             if (element.Name == Wrd.Sdt && element.ParentHasXName(Wrd.Tr))
             {
-
+                //TODO Nekrasov: а можно попроще сделать? ну там разбить на 2-3 строчки?
                 return XElementFactory.Make(Wrd.Tc,
                     XElementFactory.Make(Wrd.Sdt,
                         element.Elements(Wrd.SdtPr),
@@ -153,6 +153,7 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
 
             var childMeta = GetChildMetaTags(element);
 
+            //TODO Nekrasov:можно инвертировать
             if (childMeta.Count() == 1)
             {
                 var otherTextInParagraph = element.Elements(Wrd.R).Elements(Wrd.T).Select(t => (string)t).ToList();
@@ -227,6 +228,7 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
             if (element == null)
                 return node;
 
+            //TODO Nekrasov:инвертировать
             if (Metas.Contains(element.Name))
             {
                 var jPath = (string)element.Attribute(MetaNames.Select);
@@ -395,7 +397,7 @@ namespace Germadent.Rma.App.Reporting.TemplateProcessing
 
             protoRow.Descendants(Wrd.BookmarkStart).Remove();
             protoRow.Descendants(Wrd.BookmarkEnd).Remove();
-
+            //TODO Nekrasov: шо за пиздец? разбить на несколько переменных, особенно последнее
             var newTable = XElementFactory.Make(Wrd.Tbl,
                 table.Elements(Wrd.TblPr),
                 table.Elements(Wrd.TblGrid),

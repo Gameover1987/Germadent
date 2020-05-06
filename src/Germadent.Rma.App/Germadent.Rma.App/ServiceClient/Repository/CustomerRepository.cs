@@ -14,12 +14,14 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         public CustomerRepository(IRmaServiceClient rmaOperations)
         {
+            //TODO Nekrasov:нул
             _rmaOperations = rmaOperations;
             _rmaOperations.CustomerRepositoryChanged += RmaOperationsOnCustomerRepositoryChanged;
         }
 
         private void RmaOperationsOnCustomerRepositoryChanged(object sender, CustomerRepositoryChangedEventArgs e)
         {
+            //TODO Nekrasov:ReLoad?)))
             ReLoad();
         }
 

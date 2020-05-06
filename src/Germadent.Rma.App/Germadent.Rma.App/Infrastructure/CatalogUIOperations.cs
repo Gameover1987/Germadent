@@ -16,6 +16,7 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly IUnityContainer _unityContainer;
         private readonly IRmaServiceClient _rmaOperations;
 
+        //TODO Nekrasov: где проверки на null?
         public CatalogUIOperations(IShowDialogAgent dialogAgent, IAddCustomerViewModel addCustomerViewModel, IUnityContainer unityContainer, IRmaServiceClient rmaOperations)
         {
             _dialogAgent = dialogAgent;
@@ -26,12 +27,14 @@ namespace Germadent.Rma.App.Infrastructure
 
         public void Initialize()
         {
+            //TODO Nekrasov:плохая практика пихать сюда DI контейнер, ничего страшного, но лучше избегать если есть возможность
             _customerCatalogViewModel = _unityContainer.Resolve<ICustomerCatalogViewModel>();
         }
 
         public ICustomerViewModel SelectCustomer(string mask)
         {
             _customerCatalogViewModel.SearchString = mask;
+            //TODO Nekrasov: инвертировать
             if (_dialogAgent.ShowDialog<CustomerCatalogWindow>(_customerCatalogViewModel) == true)
             {
                 return _customerCatalogViewModel.SelectedCustomer;
@@ -43,6 +46,7 @@ namespace Germadent.Rma.App.Infrastructure
         public CustomerDto AddCustomer(CustomerDto customer)
         {
             _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
+            //TODO Nekrasov:инвертировать
             if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) == true)
             {
                 var newCustomer = _addCustomerViewModel.GetCustomer();

@@ -11,6 +11,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public CheckableDictionaryItemViewModel(DictionaryItemDto dictionaryItemDto)
         {
+            //TODO Nekrasov:нул
             _item = dictionaryItemDto;
         }
 

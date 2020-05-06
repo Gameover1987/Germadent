@@ -18,6 +18,7 @@ namespace Germadent.Rma.App.Reporting
 
         public PrintableOrderConverter(IRmaServiceClient rmaOperations)
         {
+            //TODO Nekrasov: проверка на нул
             _rmaOperations = rmaOperations;
         }
 
@@ -80,6 +81,7 @@ namespace Germadent.Rma.App.Reporting
                     return "Фрезерный центр";
 
                 default:
+                    //TODO Nekrasov: NotSupportedException
                     throw new NotImplementedException("Неизвестный тип подразделения");
             }
         }
@@ -95,6 +97,7 @@ namespace Germadent.Rma.App.Reporting
                     return "муж.";
 
                 default:
+                    //TODO Nekrasov:same shit
                     throw new ArgumentException(nameof(gender));
             }
         }

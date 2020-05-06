@@ -12,6 +12,7 @@ namespace Germadent.Common.Logging
         void Fatal(Exception exception);
     }
 
+    //TODO Nekrasov: раз создал логгер, используй
     public class Logger : ILogger
     {
         private readonly NLog.Logger _logger = LogManager.GetCurrentClassLogger();

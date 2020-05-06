@@ -20,6 +20,7 @@ namespace Germadent.Rma.App.Reporting
 
         public PrintModule(IShowDialogAgent dialogAgent, IWordAssembler wordAssembler, IFileManager fileManager, IPrintableOrderConverter converter)
         {
+            //TODO Nekrasov:нул
             _dialogAgent = dialogAgent;
             _wordAssembler = wordAssembler;
             _fileManager = fileManager;
@@ -29,12 +30,14 @@ namespace Germadent.Rma.App.Reporting
         public void Print(OrderDto order)
         {
             var pathToTemplate = GetTemplatePathForOrder(order);
+            //TODO Nekrasov:вычитывать весь файл в байтовый массив, имх так себе идея, разве что ты на 100% уверен, что файлы не больше 50 кб
             var template = _fileManager.ReadAllBytes(pathToTemplate);
             var printableOrder = _converter.ConvertFrom(order);
             var wordDocument = _wordAssembler.Assembly(template, printableOrder.SerializeToJson());
 
             const string fileFilter = "Word XML (*.docx)|*.docx";
             string fileName;
+            //TODO Nekrasov:инвертировать
             if (_dialogAgent.ShowSaveFileDialog(fileFilter, GetOrderDocumentName(order), out fileName) == true)
             {
                 _fileManager.Save(wordDocument, fileName);
@@ -45,6 +48,7 @@ namespace Germadent.Rma.App.Reporting
         private string GetTemplatePathForOrder(OrderDto order)
         {
             var fullPathToTemplate = string.Empty;
+            //TODO Nekrasov:свитч с дефолтом исключением
             if (order.BranchType == BranchType.Laboratory)
             {
                 fullPathToTemplate = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathToZtlTemplate);
@@ -59,6 +63,7 @@ namespace Germadent.Rma.App.Reporting
 
         private string GetOrderDocumentName(OrderDto order)
         {
+            //TODO Nekrasov:можно в свитч
             if (order.BranchType == BranchType.Laboratory)
             {
                 return string.Format("Заказ-наряд в зуботехническую лабораторию №{0}", order.DocNumber);

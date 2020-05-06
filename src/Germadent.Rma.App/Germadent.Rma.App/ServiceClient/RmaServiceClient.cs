@@ -23,6 +23,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public void Authorize(string user, string password)
         {
+            //TODO Nekrasov:надеюсь пароль будет хотя бы формально шифроваться?
             throw new System.NotImplementedException();
         }
 
@@ -104,6 +105,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
 
+        //TODO Nekrasov:клиент по хттп будет только 1? если нет, то стоит сделать базовый класс с этими методами
         private T ExecuteHttpGet<T>(string api)
         {
             var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.GET);
