@@ -6,7 +6,6 @@
 CREATE PROCEDURE [dbo].[UpdateRespPerson]
 	
 	@responsiblePersonId int,
-	@customerId int, 
 	@rp_Position nvarchar(30),
 	@responsiblePerson nvarchar(150),
 	@rp_phone varchar(150),
@@ -19,8 +18,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     UPDATE ResponsiblePersons
-	SET CustomerID = @customerId
-		, RP_Position = @rp_Position
+	SET  RP_Position = @rp_Position
 		, ResponsiblePerson = @responsiblePerson
 		, RP_Phone = @rp_phone
 		, RP_Email = @rp_email

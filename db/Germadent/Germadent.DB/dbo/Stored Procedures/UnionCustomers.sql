@@ -13,11 +13,6 @@ BEGIN
 	
 	SET NOCOUNT ON;
 	
-
-	UPDATE ResponsiblePersons 
-	SET CustomerID = @newCustomerId 
-	WHERE CustomerID = @oldCustomerId
-
 	UPDATE WorkOrder 
 	SET CustomerID = @newCustomerId 
 	WHERE CustomerID = @oldCustomerId
