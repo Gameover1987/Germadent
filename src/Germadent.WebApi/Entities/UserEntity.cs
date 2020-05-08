@@ -1,7 +1,11 @@
-﻿namespace Germadent.WebApi.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+
+namespace Germadent.WebApi.Entities
 {
     public class UserEntity
     {
+        [Key]
         public int UserId { get; set; }
 
         public string FullName { get; set; }
@@ -17,6 +21,7 @@
 
     public class RoleEntity
     {
+        [Key]
         public int RoleId { get; set; }
 
         public string Name { get; set; }
@@ -26,6 +31,7 @@
 
     public class RightEntity
     {
+        [Key]
         public int RightId { get; set; }
 
         /// <summary>

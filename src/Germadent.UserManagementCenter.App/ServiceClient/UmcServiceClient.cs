@@ -6,12 +6,12 @@ using RestSharp;
 
 namespace Germadent.UserManagementCenter.App.ServiceClient
 {
-    public class UmcOperations : IUmcOperations
+    public class UmcServiceClient : IUmcServiceClient
     {
         private readonly IUmcConfiguration _configuration;
         private readonly RestClient _client;
 
-        public UmcOperations(IUmcConfiguration configuration)
+        public UmcServiceClient(IUmcConfiguration configuration)
         {
             _configuration = configuration;
 
@@ -20,13 +20,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public UserDto[] GetUsers()
         {
-            return new UserDto[0];
-            //return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
+            return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
         }
 
         public RoleDto[] GetRoles()
         {
-            return new RoleDto[0];
+            return ExecuteHttpGet<RoleDto[]>("/api/userManagement/roles");
         }
 
         public RoleDto AddRole(RoleDto role)
@@ -36,7 +35,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public RightDto[] GetRights()
         {
-            throw new System.NotImplementedException();
+            return ExecuteHttpGet<RightDto[]>("/api/userManagement/rights");
         }
 
         public RightDto[] GetRightsByRole(int roleId)

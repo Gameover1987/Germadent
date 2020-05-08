@@ -11,15 +11,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class RolesManagerViewModel : ViewModelBase, IRolesManagerViewModel
     {
-        private readonly IUmcOperations _userManagementCenterOperations;
+        private readonly IUmcServiceClient _umcServiceClient;
         private readonly IUserManagementUIOperations _windowManager;
         private RoleViewModel _selectedRole;
 
         private ICollectionView _rightsView;
 
-        public RolesManagerViewModel(IUmcOperations userManagementCenterOperations, IUserManagementUIOperations windowManager)
+        public RolesManagerViewModel(IUmcServiceClient umcServiceClient, IUserManagementUIOperations windowManager)
         {
-            _userManagementCenterOperations = userManagementCenterOperations;
+            _umcServiceClient = umcServiceClient;
             _windowManager = windowManager;
 
             AddRoleCommand = new DelegateCommand(AddRoleCommandHandler, CanAddRoleCommandHandler);
@@ -55,7 +55,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public void Initialize()
         {
-            var roles = _userManagementCenterOperations.GetRoles();
+            var roles = _umcServiceClient.GetRoles();
 
             Roles.Clear();
             foreach (var role in roles)
@@ -78,7 +78,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (_selectedRole == null)
                 return;
 
-            var rightsByRole = _userManagementCenterOperations.GetRights();
+            var rightsByRole = _umcServiceClient.GetRights();
             foreach (var rightDto in rightsByRole)
             {
                 Rights.Add(new RightViewModel(rightDto));
@@ -96,7 +96,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (role == null)
                 return;
 
-            role = _userManagementCenterOperations.AddRole(role);
+            role = _umcServiceClient.AddRole(role);
             Roles.Add(new RoleViewModel(role));
         }
 

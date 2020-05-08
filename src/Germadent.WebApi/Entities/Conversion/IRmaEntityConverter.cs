@@ -2,7 +2,7 @@
 
 namespace Germadent.WebApi.Entities.Conversion
 {
-    public interface IEntityToDtoConverter
+    public interface IRmaEntityConverter
     {
         OrderDto ConvertToOrder(OrderEntity entity);
 
@@ -19,5 +19,6 @@ namespace Germadent.WebApi.Entities.Conversion
         CustomerDto ConvertToCustomer(CustomerEntity entity);
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
+      
     }
 }

@@ -8,13 +8,13 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class UsersManagerViewModel : ViewModelBase, IUsersManagerViewModel
     {
-        private readonly IUmcOperations _userManagementCenterOperations;
+        private readonly IUmcServiceClient _umcServiceClient;
         private readonly IUserManagementUIOperations _windowManager;
         private UserViewModel _selectedUser;
 
-        public UsersManagerViewModel(IUmcOperations userManagementCenterOperations, IUserManagementUIOperations windowManager)
+        public UsersManagerViewModel(IUmcServiceClient umcServiceClient, IUserManagementUIOperations windowManager)
         {
-            _userManagementCenterOperations = userManagementCenterOperations;
+            _umcServiceClient = umcServiceClient;
             _windowManager = windowManager;
 
             AddUserCommand = new DelegateCommand(x => AddUserCommandHandler(), x => CanAddUserCommandHandler());
@@ -44,7 +44,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public void Initialize()
         {
-            var users = _userManagementCenterOperations.GetUsers();
+            var users = _umcServiceClient.GetUsers();
             Users.Clear();
             foreach (var user in users)
             {

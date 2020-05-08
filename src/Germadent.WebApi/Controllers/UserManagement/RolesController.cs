@@ -15,6 +15,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
             _umcDbOperations = umcDbOperations;
         }
 
+
+        [HttpGet]
+        public RoleDto[] GetRoles()
+        {
+            return _umcDbOperations.GetRoles();
+        }
+
         [HttpPost]
         public RoleDto AddRole(RoleDto roleDto)
         {

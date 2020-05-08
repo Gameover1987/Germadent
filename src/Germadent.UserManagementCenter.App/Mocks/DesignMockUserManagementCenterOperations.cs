@@ -4,7 +4,7 @@ using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.Mocks
 {
-    public class DesignMockUserManagementCenterOperations : IUmcOperations
+    public class DesignMockUserManagementCenterOperations : IUmcServiceClient
     {
         public UserDto[] GetUsers()
         {

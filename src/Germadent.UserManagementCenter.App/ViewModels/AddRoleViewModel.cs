@@ -12,14 +12,14 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class AddRoleViewModel : ValidationSupportableViewModel, IAddRoleViewModel
     {
-        private readonly IUmcOperations _userManagementCenterOperations;
+        private readonly IUmcServiceClient _umcServiceClient;
         private string _roleName;
 
         private ICollectionView _rightsView;
 
-        public AddRoleViewModel(IUmcOperations userManagementCenterOperations)
+        public AddRoleViewModel(IUmcServiceClient umcServiceClient)
         {
-            _userManagementCenterOperations = userManagementCenterOperations;
+            _umcServiceClient = umcServiceClient;
 
             InitializeRightsView();
 
@@ -60,7 +60,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
             Rights.Clear();
 
-            var rights = _userManagementCenterOperations.GetRights();
+            var rights = _umcServiceClient.GetRights();
             foreach (var right in rights)
             {
                 var rightViewModel = new RightViewModel(right);
@@ -73,7 +73,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             return new RoleDto
             {
-                Name = RoleName
+                Name = RoleName,
+                Rights = Rights.Where(x => x.IsChecked).Select(x => x.ToDto()).ToArray()
             };
         }
 

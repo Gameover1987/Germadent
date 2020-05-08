@@ -10,16 +10,16 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
-        private readonly IUmcOperations _userManagementCenterOperations;
+        private readonly IUmcServiceClient _umcServiceClient;
         private string _fullName;
         private string _login;
         private string _password;
         private string _passwordOnceAgain;
         private string _description;
 
-        public AddUserViewModel(IUmcOperations userManagementCenterOperations)
+        public AddUserViewModel(IUmcServiceClient umcServiceClient)
         {
-            _userManagementCenterOperations = userManagementCenterOperations;
+            _umcServiceClient = umcServiceClient;
 
             AddValidationFor(() => FullName)
                 .When(() => string.IsNullOrWhiteSpace(FullName), () => "Укажите полное имя пользователя");
@@ -109,7 +109,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             Title = title;
 
-            var roles = _userManagementCenterOperations.GetRoles();
+            var roles = _umcServiceClient.GetRoles();
 
             foreach (var role in Roles)
             {

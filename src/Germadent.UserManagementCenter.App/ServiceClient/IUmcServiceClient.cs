@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     /// <summary>
     /// Операции ЦУП
     /// </summary>
-    public interface IUmcOperations
+    public interface IUmcServiceClient
     {
         /// <summary>
         /// Возвращает список пользователей

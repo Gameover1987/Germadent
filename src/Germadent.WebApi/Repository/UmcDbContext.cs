@@ -11,9 +11,16 @@ namespace Germadent.WebApi.Repository
         public UmcDbContext(IServiceConfiguration configuration)
         {
             _configuration = configuration;
+
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
         public DbSet<UserEntity> Users { get; set; }
+
+        public DbSet<RoleEntity> Roles { get; set; }
+
+        public DbSet<RightEntity> Rights { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

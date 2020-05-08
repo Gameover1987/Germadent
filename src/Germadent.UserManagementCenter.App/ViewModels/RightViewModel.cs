@@ -47,5 +47,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         }
 
         public event EventHandler<EventArgs> Checked;
+
+        public RightDto ToDto()
+        {
+            return _right;
+        }
     }
 }

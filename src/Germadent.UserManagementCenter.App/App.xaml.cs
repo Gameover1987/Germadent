@@ -26,7 +26,7 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IUmcConfiguration, UmcConfiguration>();
             _container.RegisterSingleton<IMainViewModel, MainViewModel>();
             _container.RegisterSingleton<IUsersManagerViewModel, UsersManagerViewModel>();
-            _container.RegisterSingleton<IUmcOperations, UmcOperations>();
+            _container.RegisterSingleton<IUmcServiceClient, UmcServiceClient>();
             _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
             _container.RegisterSingleton<IUserManagementUIOperations, UserManagementUIOperations>();

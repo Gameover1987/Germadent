@@ -25,7 +25,8 @@ namespace Germadent.WebApi
             services.AddSingleton<IServiceConfiguration, ServiceConfiguration>();
             services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
             services.AddSingleton<IUmcDbOperations, UmcDbOperations>();
-            services.AddSingleton<IEntityToDtoConverter, EntityToDtoConverter>();
+            services.AddSingleton<IRmaEntityConverter, RmaEntityConverter>();
+            services.AddSingleton<IUmcEntityConverter, UmcEntityConverter>();
             services.AddSingleton<IFileManager, FileManager>();
         }
 

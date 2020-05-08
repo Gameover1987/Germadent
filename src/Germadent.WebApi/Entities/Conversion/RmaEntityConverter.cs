@@ -1,8 +1,11 @@
-﻿using Germadent.Rma.Model;
+﻿using System.Linq;
+using Germadent.Rma.Model;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
-    public class EntityToDtoConverter : IEntityToDtoConverter
+    public class RmaEntityConverter : IRmaEntityConverter
     {
         public OrderDto ConvertToOrder(OrderEntity entity)
         {

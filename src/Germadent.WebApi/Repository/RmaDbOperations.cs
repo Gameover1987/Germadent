@@ -16,13 +16,13 @@ namespace Germadent.WebApi.Repository
 {
     public class RmaDbOperations : IRmaDbOperations
     {
-        private readonly IEntityToDtoConverter _converter;
+        private readonly IRmaEntityConverter _converter;
         private readonly IServiceConfiguration _configuration;
         private readonly IFileManager _fileManager;
 
         private readonly string _storageDirectory;
 
-        public RmaDbOperations(IEntityToDtoConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
+        public RmaDbOperations(IRmaEntityConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
         {
             _converter = converter;
             _configuration = configuration;
