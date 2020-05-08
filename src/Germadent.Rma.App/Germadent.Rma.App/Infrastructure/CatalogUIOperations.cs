@@ -47,13 +47,12 @@ namespace Germadent.Rma.App.Infrastructure
         {
             _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
             //TODO Nekrasov:инвертировать
-            if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) == true)
-            {
-                var newCustomer = _addCustomerViewModel.GetCustomer();
-                return _rmaOperations.AddCustomer(newCustomer);
-            }
+            if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) != true)
+                return null;
 
-            return null;
+            var newCustomer = _addCustomerViewModel.GetCustomer();
+            return _rmaOperations.AddCustomer(newCustomer);
+
         }
 
         public void ShowCustomerCart(CustomerDto customer)

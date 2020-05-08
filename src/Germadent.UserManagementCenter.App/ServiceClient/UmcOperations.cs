@@ -20,12 +20,13 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public UserDto[] GetUsers()
         {
-            return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
+            return new UserDto[0];
+            //return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
         }
 
         public RoleDto[] GetRoles()
         {
-            throw new System.NotImplementedException();
+            return new RoleDto[0];
         }
 
         public RoleDto AddRole(RoleDto role)

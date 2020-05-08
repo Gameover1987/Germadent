@@ -37,34 +37,30 @@ namespace Germadent.Rma.App.Infrastructure
 
         public OrderDto CreateLabOrder(OrderDto order, WizardMode mode)
         {
-            // TODO: Virtual method or factory
             var labWizard = CreateWizard(_labWizardProvider);
             labWizard.Initialize(mode, order);
-            //TODO Nekrasov: инвертировать
-            if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) == true)
+            
+            if (_dialogAgent.ShowDialog<WizardWindow>(labWizard) != true) 
+                return null;
+            var changedOrder = labWizard.GetOrder();
+            if (mode == WizardMode.Create)
             {
-                var changedOrder = labWizard.GetOrder();
-                if (mode == WizardMode.Create)
-                {
-                    changedOrder = _rmaOperations.AddOrder(changedOrder);
-                }
-                else
-                {
-                    changedOrder = _rmaOperations.UpdateOrder(changedOrder);
-                }
-
-                if (labWizard.PrintAfterSave)
-                    _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
-
-                return changedOrder;
+                changedOrder = _rmaOperations.AddOrder(changedOrder);
+            }
+            else
+            {
+                changedOrder = _rmaOperations.UpdateOrder(changedOrder);
             }
 
-            return null;
+            if (labWizard.PrintAfterSave)
+                _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
+
+            return changedOrder;
+
         }
 
         public OrderDto CreateMillingCenterOrder(OrderDto order, WizardMode mode)
         {
-            // TODO: Virtual method or factory
             var millingCenterWizard = CreateWizard(_millingCenterWizardStepsProvider);
             millingCenterWizard.Initialize(mode, order);
             if (_dialogAgent.ShowDialog<WizardWindow>(millingCenterWizard) != true) 
