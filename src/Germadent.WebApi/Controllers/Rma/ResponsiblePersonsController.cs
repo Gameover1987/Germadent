@@ -16,9 +16,10 @@ namespace Germadent.WebApi.Controllers.Rma
         }
 
         [HttpGet]
-        public CustomerDto[] GetResponsiblePersons(string mask)
+        public CustomerDto[] GetResponsiblePersons()
         {
-            return _rmaDbOperations.GetResponsiblePersons(mask);
+            return null;
+            //return _rmaDbOperations.GetResponsiblePersons();
         }
 
         [HttpPost]

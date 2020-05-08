@@ -72,7 +72,7 @@ namespace Germadent.WebApi.Repository
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        ResponsiblePersonDto[] GetResponsiblePersons(int customerId);
+        ResponsiblePersonDto[] GetResponsiblePersons();
 
         /// <summary>
         /// Добавляет заказчика
