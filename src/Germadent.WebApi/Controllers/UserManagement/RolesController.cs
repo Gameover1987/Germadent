@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.UserManagement
 {
-    [Route("api/userManagement/[controller]")]
+    [Route("api/userManagement/roles/{action=GetRoles}")]
     [ApiController]
     public class RolesController : ControllerBase
     {
@@ -21,11 +21,17 @@ namespace Germadent.WebApi.Controllers.UserManagement
         {
             return _umcDbOperations.GetRoles();
         }
-
+        
         [HttpPost]
         public RoleDto AddRole(RoleDto roleDto)
         {
             return _umcDbOperations.AddRole(roleDto);
+        }
+
+        [HttpPost]
+        public void EditRole(RoleDto roleDto)
+        {
+            _umcDbOperations.UpdateRole(roleDto);
         }
     }
 }

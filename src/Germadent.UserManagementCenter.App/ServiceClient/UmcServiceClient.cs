@@ -30,7 +30,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public RoleDto AddRole(RoleDto role)
         {
-            return ExecuteHttpPost<RoleDto>("/api/userManagement/roles", role);
+            return ExecuteHttpPost<RoleDto>("/api/userManagement/roles/addrole", role);
+        }
+
+        public RoleDto EditRole(RoleDto role)
+        {
+            return ExecuteHttpPost<RoleDto>("/api/userManagement/roles/editrole", role);
         }
 
         public RightDto[] GetRights()

@@ -12,6 +12,8 @@ namespace Germadent.WebApi.Entities.Conversion
 
         RightDto ConvertToRightDto(RightEntity entity);
 
+        RightInRoleEntity ConvertToRightInRoleEntity(int roleId, RightDto dto);
+
         RoleEntity ConvertToRoleEntity(RoleDto dto);
 
         RightEntity ConvertToRightEntity(RightDto dto);
@@ -38,7 +40,7 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = entity.RoleId,
                 Name = entity.Name,
-                Rights = entity.Rights.Select(ConvertToRightDto).ToArray()
+                Rights = entity.RightsInRole.Select(x=> ConvertToRightDto(x.RightEntity)).ToArray()
             };
         }
 
@@ -58,7 +60,16 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = dto.RoleId,
                 Name = dto.Name,
-                Rights = dto.Rights.Select(x => ConvertToRightEntity(x)).ToArray()
+                //Rights = dto.Rights.Select(x => ConvertToRightInRoleEntity(dto.RoleId, x)).ToArray()
+            };
+        }
+
+        public RightInRoleEntity ConvertToRightInRoleEntity(int roleId, RightDto dto)
+        {
+            return new RightInRoleEntity
+            {
+                RoleEntityId = roleId,
+                RightEntityId = dto.RightId
             };
         }
 

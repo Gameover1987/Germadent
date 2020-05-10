@@ -38,12 +38,19 @@ namespace Germadent.UserManagementCenter.App.UIOperations
         public RoleDto AddRole()
         {
             _addRoleViewModel.Initialize(new RoleDto(), "Добавление новой роли");
-            if (_dialogAgent.ShowDialog<AddRoleWindow>(_addRoleViewModel) == true)
-            {
-                return _addRoleViewModel.GetRole();
-            }
+            if (_dialogAgent.ShowDialog<AddRoleWindow>(_addRoleViewModel) == false)
+                return null;
 
-            return null;
+            return _addRoleViewModel.GetRole();
+        }
+
+        public RoleDto EditRole(RoleViewModel role)
+        {
+            _addRoleViewModel.Initialize(role.ToModel(), "Редактирование роли");
+            if (_dialogAgent.ShowDialog<AddRoleWindow>(_addRoleViewModel) == false)
+                return null;
+
+            return _addRoleViewModel.GetRole();
         }
     }
 }

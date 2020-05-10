@@ -27,6 +27,13 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         RoleDto AddRole(RoleDto role);
 
         /// <summary>
+        /// Редактирование роли
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        RoleDto EditRole(RoleDto role);
+
+        /// <summary>
         /// Возвращает список всех прав
         /// </summary>
         /// <returns></returns>

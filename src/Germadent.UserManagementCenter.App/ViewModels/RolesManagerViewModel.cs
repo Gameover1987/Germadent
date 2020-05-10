@@ -78,7 +78,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (_selectedRole == null)
                 return;
 
-            var rightsByRole = _umcServiceClient.GetRights();
+            var rightsByRole = SelectedRole.ToModel().Rights;
             foreach (var rightDto in rightsByRole)
             {
                 Rights.Add(new RightViewModel(rightDto));
@@ -107,7 +107,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditRoleCommandHandler()
         {
+            var role = _windowManager.EditRole(SelectedRole);
+            if (role == null)
+                return;
 
+            role = _umcServiceClient.EditRole(role);
         }
 
         private bool CanDeleteRoleCommandHandler()

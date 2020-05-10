@@ -94,6 +94,11 @@ namespace Germadent.UserManagementCenter.App.Mocks
             throw new System.NotImplementedException();
         }
 
+        public RoleDto EditRole(RoleDto role)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public RightDto[] GetRights()
         {
             var rights = UserRightsProvider.GetAllUserRights();

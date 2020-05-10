@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace Germadent.WebApi.Entities
@@ -16,7 +17,7 @@ namespace Germadent.WebApi.Entities
 
         public string Description { get; set; }
 
-        public RoleEntity[] Roles { get; set; }
+        public List<RoleEntity> Roles { get; set; }
     }
 
     public class RoleEntity
@@ -26,7 +27,21 @@ namespace Germadent.WebApi.Entities
 
         public string Name { get; set; }
 
-        public RightEntity[] Rights { get; set; }
+        public List<RightInRoleEntity> RightsInRole { get; set; }
+    }
+
+    public class RightInRoleEntity
+    {
+        [Key]
+        public int RightInRoleId { get; set; }
+
+        public int RoleEntityId { get; set; }
+
+        public RoleEntity RoleEntity { get; set; }
+
+        public int RightEntityId { get; set; }
+
+        public RightEntity RightEntity { get; set; }
     }
 
     public class RightEntity

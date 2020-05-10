@@ -14,6 +14,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     {
         private readonly IUmcServiceClient _umcServiceClient;
         private string _roleName;
+        private int _roleId;
 
         private ICollectionView _rightsView;
 
@@ -52,6 +53,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         public void Initialize(RoleDto role, string title)
         {
             Title = title;
+            _roleId = role.RoleId;
 
             foreach (var rightViewModel in Rights)
             {
@@ -73,6 +75,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             return new RoleDto
             {
+                RoleId = _roleId,
                 Name = RoleName,
                 Rights = Rights.Where(x => x.IsChecked).Select(x => x.ToDto()).ToArray()
             };

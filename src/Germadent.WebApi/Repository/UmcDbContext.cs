@@ -20,6 +20,8 @@ namespace Germadent.WebApi.Repository
 
         public DbSet<RoleEntity> Roles { get; set; }
 
+        public DbSet<RightInRoleEntity> RightInRoles { get; set; }
+
         public DbSet<RightEntity> Rights { get; set; }
 
 

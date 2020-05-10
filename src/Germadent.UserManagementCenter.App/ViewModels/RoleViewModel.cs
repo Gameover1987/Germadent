@@ -37,11 +37,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public RoleDto ToModel()
         {
-            return new RoleDto
-            {
-                Name = Name,
-                RoleId = RoleId
-            };
+            return _role;
         }
     }
 }

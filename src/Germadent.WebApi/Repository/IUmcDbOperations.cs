@@ -32,6 +32,12 @@ namespace Germadent.WebApi.Repository
         RoleDto AddRole(RoleDto roleDto);
 
         /// <summary>
+        /// Обновляет роль
+        /// </summary>
+        /// <param name="roleDto"></param>
+        void UpdateRole(RoleDto roleDto);
+
+        /// <summary>
         /// Возвращает список прав
         /// </summary>
         /// <returns></returns>

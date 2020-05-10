@@ -7,6 +7,7 @@ using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.Entities;
 using Germadent.WebApi.Entities.Conversion;
+using Microsoft.EntityFrameworkCore;
 
 namespace Germadent.WebApi.Repository
 {
@@ -36,7 +37,8 @@ namespace Germadent.WebApi.Repository
 
         public RoleDto[] GetRoles()
         {
-            var roles = _dbContext.Roles.Select(x => _converter.ConvertToRoleDto(x)).ToArray();
+            var rolesFromDb = _dbContext.Roles.Include(x => x.RightsInRole).ToArray();
+            var roles = rolesFromDb.Select(x => _converter.ConvertToRoleDto(x)).ToArray();
             return roles;
         }
 
@@ -48,7 +50,28 @@ namespace Germadent.WebApi.Repository
 
             roleDto.RoleId = role.RoleId;
 
+            if (!roleDto.Rights.Any())
+                return roleDto;
+
+            var rights = roleDto.Rights.Select(x => _converter.ConvertToRightInRoleEntity(role.RoleId, x)).ToArray();
+            _dbContext.RightInRoles.AddRange(rights);
+            _dbContext.SaveChanges();
+
             return roleDto;
+        }
+
+        public void UpdateRole(RoleDto roleDto)
+        {
+            var role = _dbContext.Roles.FirstOrDefault(x => x.RoleId == roleDto.RoleId);
+            if (role == null)
+                throw new ArgumentException("Роль не найдена!");
+
+            role.Name = roleDto.Name;
+            role.RightsInRole.Clear();
+            role.RightsInRole.AddRange(roleDto.Rights.Select(x => _converter.ConvertToRightInRoleEntity(role.RoleId, x)));
+
+            _dbContext.Roles.Update(role);
+            _dbContext.SaveChanges();
         }
 
         public RightDto[] GetRights()
@@ -72,7 +95,6 @@ namespace Germadent.WebApi.Repository
                 ApplicationName = x.ApplicationName,
                 RightName = x.RightName
             }).ToArray();
-
 
             var rightComparer = new RightComparer();
 

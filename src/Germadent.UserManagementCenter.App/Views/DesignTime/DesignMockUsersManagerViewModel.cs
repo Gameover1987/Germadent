@@ -32,5 +32,10 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         {
             throw new NotImplementedException();
         }
+
+        public RoleDto EditRole(RoleViewModel role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
