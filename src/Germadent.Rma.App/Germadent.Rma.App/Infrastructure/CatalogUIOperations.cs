@@ -12,11 +12,11 @@ namespace Germadent.Rma.App.Infrastructure
     {
         private readonly IShowDialogAgent _dialogAgent;
         private ICustomerCatalogViewModel _customerCatalogViewModel;
+        private IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
         private readonly IAddCustomerViewModel _addCustomerViewModel;
         private readonly IUnityContainer _unityContainer;
         private readonly IRmaServiceClient _rmaOperations;
-
-        //TODO Nekrasov: где проверки на null?
+        
         public CatalogUIOperations(IShowDialogAgent dialogAgent, IAddCustomerViewModel addCustomerViewModel, IUnityContainer unityContainer, IRmaServiceClient rmaOperations)
         {
             _dialogAgent = dialogAgent;
@@ -29,24 +29,24 @@ namespace Germadent.Rma.App.Infrastructure
         {
             //TODO Nekrasov:плохая практика пихать сюда DI контейнер, ничего страшного, но лучше избегать если есть возможность
             _customerCatalogViewModel = _unityContainer.Resolve<ICustomerCatalogViewModel>();
+            _responsiblePersonCatalogViewModel = _unityContainer.Resolve<IResponsiblePersonCatalogViewModel>();
         }
 
         public ICustomerViewModel SelectCustomer(string mask)
         {
             _customerCatalogViewModel.SearchString = mask;
-            //TODO Nekrasov: инвертировать
-            if (_dialogAgent.ShowDialog<CustomerCatalogWindow>(_customerCatalogViewModel) == true)
-            {
-                return _customerCatalogViewModel.SelectedCustomer;
-            }
 
-            return null;
+            if (_dialogAgent.ShowDialog<CustomerCatalogWindow>(_customerCatalogViewModel) != true)
+                return null;
+
+            return _customerCatalogViewModel.SelectedCustomer;
+
         }
 
         public CustomerDto AddCustomer(CustomerDto customer)
         {
             _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
-            //TODO Nekrasov:инвертировать
+            
             if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) != true)
                 return null;
 
@@ -64,6 +64,16 @@ namespace Germadent.Rma.App.Infrastructure
         public ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto)
         {
             throw new System.NotImplementedException();
+        }
+
+        public ResponsiblePersonDto SelectResponsiblePerson(string mask)
+        {
+            _responsiblePersonCatalogViewModel.SearchString = mask;
+
+            if (_dialogAgent.ShowDialog<ResponsiblePersonCatalogWindow>(_responsiblePersonCatalogViewModel) != true)
+                return null;
+
+            return _responsiblePersonCatalogViewModel.SelectedResponsiblePerson.ToDto();
         }
     }
 }

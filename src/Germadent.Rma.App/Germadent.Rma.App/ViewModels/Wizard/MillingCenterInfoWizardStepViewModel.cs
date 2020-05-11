@@ -15,10 +15,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICustomerRepository _customerRepository;
 
         private int _customerId;
+        private int _responsiblePersonId;
         private string _customer;
         private string _patient;
-        private string _technicFullName;
-        private string _technicPhone;
+        private string _responsiblePerson;
+        private string _responsiblePersonPhone;
         private DateTime _created;
         private string _dateComment;
 
@@ -35,6 +36,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             SelectCustomerCommand = new DelegateCommand(SelectCustomerCommandHandler);
             AddCustomerCommand = new DelegateCommand(AddCustomerCommandHandler, CanAddCustomerCommandHandler);
             ShowCustomerCartCommand = new DelegateCommand(ShowCustomerCartCommandHandler, CanShowCustomerCartCommandHandler);
+
+            SelectResponsiblePersonCommand = new DelegateCommand(SelectResponsiblePersonCommandHandler);
         }
 
         public override bool IsValid => !HasErrors && !Customer.IsNullOrWhiteSpace() && !IsNewCustomer;
@@ -81,16 +84,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             set { SetProperty(() => _patient, value); }
         }
 
-        public string TechnicFullName
+        public string ResponsiblePerson
         {
-            get { return _technicFullName; }
-            set { SetProperty(() => _technicFullName, value); }
+            get { return _responsiblePerson; }
+            set { SetProperty(() => _responsiblePerson, value); }
         }
 
-        public string TechnicPhone
+        public string ResponsiblePersonPhone
         {
-            get { return _technicPhone; }
-            set { SetProperty(() => _technicPhone, value); }
+            get { return _responsiblePersonPhone; }
+            set { SetProperty(() => _responsiblePersonPhone, value); }
         }
 
         public DateTime Created
@@ -117,13 +120,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public IDelegateCommand ShowCustomerCartCommand { get; }
 
+        public IDelegateCommand SelectResponsiblePersonCommand { get; }
+
         public override void Initialize(OrderDto order)
         {
+            _catalogUIOperations.Initialize();
+
             _customerId = order.CustomerId;
             _customer = order.Customer;
             _patient = order.Patient;
-            _technicFullName = order.ResponsiblePerson;
-            _technicPhone = order.ResponsiblePersonPhone;
+            _responsiblePerson = order.ResponsiblePerson;
+            _responsiblePersonPhone = order.ResponsiblePersonPhone;
             _created = order.Created;
             _dateComment = order.DateComment;
         }
@@ -133,8 +140,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.CustomerId = _customerId;
             order.Customer = Customer;
             order.Patient = Patient;
-            order.ResponsiblePerson = TechnicFullName;
-            order.ResponsiblePersonPhone = TechnicPhone;
+            order.ResponsiblePerson = ResponsiblePerson;
+            order.ResponsiblePersonPhone = ResponsiblePersonPhone;
             order.Created = Created;
             order.DateComment = DateComment;
         }
@@ -146,7 +153,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void SelectCustomerCommandHandler()
         {
-            _catalogUIOperations.Initialize();
             var customer = _catalogUIOperations.SelectCustomer(Customer);
             if (customer == null)
                 return;
@@ -184,6 +190,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private void ShowCustomerCartCommandHandler()
         {
             _catalogUIOperations.ShowCustomerCart(_customerRepository.Items.First(x => x.Name == Customer));
+        }
+
+        private void SelectResponsiblePersonCommandHandler()
+        {
+            var responsiblePerson = _catalogUIOperations.SelectResponsiblePerson(ResponsiblePerson);
+            if (responsiblePerson == null)
+                return;
+
+            _responsiblePersonId = responsiblePerson.Id;
+            ResponsiblePerson = responsiblePerson.FullName;
         }
     }
 }

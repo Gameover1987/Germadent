@@ -3,4 +3,14 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>

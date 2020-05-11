@@ -45,7 +45,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
                 return true;
 
             var responsiblePersonViewModel = (IResponsiblePersonViewModel)obj;
-            if (!responsiblePersonViewModel.DisplayName.ToLower().Contains(SearchString.ToLower()))
+            if (!responsiblePersonViewModel.FullName.ToLower().Contains(SearchString.ToLower()))
                 return false;
 
             return true;
@@ -109,7 +109,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
                 ResponsiblePersonDto[] responsiblePersons = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    responsiblePersons = _rmaOperations.GetResponsiblePersons(0);
+                    responsiblePersons = _rmaOperations.GetResponsiblePersons();
                 });
 
                 foreach (var responsiblePersonDto in responsiblePersons)

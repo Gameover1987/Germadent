@@ -59,7 +59,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            var api = string.Format("/api/orders/{0}", id);
+            var api = $"/api/orders/{id}";
             return ExecuteHttpDelete<OrderDto>(api);
         }
 
@@ -80,15 +80,9 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<CustomerDto[]>(string.Format("/api/Customers?mask={0}", mask));
         }
 
-        public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
+        public ResponsiblePersonDto[] GetResponsiblePersons()
         {
-            return null;
-            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/responsiblePersons/{0}", customerId);
-            //using (var response = _client.GetAsync(apiUrl).Result)
-            //{
-            //    var rpDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ResponsiblePersonDto[]>();
-            //    return rpDto;
-            //}
+            return ExecuteHttpGet<ResponsiblePersonDto[]>(string.Format("/api/Rma/responsiblePersons"));
         }
 
         public CustomerDto AddCustomer(CustomerDto сustomerDto)

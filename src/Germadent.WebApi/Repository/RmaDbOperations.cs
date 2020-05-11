@@ -815,7 +815,7 @@ namespace Germadent.WebApi.Repository
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
         {
-            var cmdText = string.Format("select * from GetResponsiblePersons(default, default, default)");
+            var cmdText = string.Format("select * from GetResponsiblePersons(default, default)");
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -827,7 +827,6 @@ namespace Germadent.WebApi.Repository
                     {
                         var rpEntity = new ResponsiblePersonEntity();
                         rpEntity.ResponsiblePersonId = int.Parse(reader[nameof(rpEntity.ResponsiblePersonId)].ToString());
-                        rpEntity.CustomerId = int.Parse(reader[nameof(rpEntity.CustomerId)].ToString());
                         rpEntity.ResponsiblePerson = reader[nameof(rpEntity.ResponsiblePerson)].ToString();
                         rpEntity.RP_Position = reader[nameof(rpEntity.RP_Position)].ToString();
                         rpEntity.RP_Phone = reader[nameof(rpEntity.RP_Phone)].ToString();

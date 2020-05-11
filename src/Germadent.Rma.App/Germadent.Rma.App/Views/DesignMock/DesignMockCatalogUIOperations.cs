@@ -30,5 +30,10 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             throw new System.NotImplementedException();
         }
+
+        public ResponsiblePersonDto SelectResponsiblePerson(string mask)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

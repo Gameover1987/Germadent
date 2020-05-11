@@ -139,8 +139,7 @@ namespace Germadent.WebApi.Entities.Conversion
             return new ResponsiblePersonDto
             {
                 Id = entity.ResponsiblePersonId,
-                CustomerId = entity.CustomerId,
-                Name = entity.ResponsiblePerson,
+                FullName = entity.ResponsiblePerson,
                 Position = entity.RP_Position,
                 Phone = entity.RP_Phone,
                 Email = entity.RP_Email,

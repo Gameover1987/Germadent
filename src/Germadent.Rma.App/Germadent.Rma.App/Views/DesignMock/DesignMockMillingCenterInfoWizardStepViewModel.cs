@@ -28,8 +28,8 @@ namespace Germadent.Rma.App.Views.DesignMock
         { 
             Customer = "Заказчик Заказчиков";
             Patient = "Пациент Пациентов";
-            TechnicFullName = "Техник Техникович";
-            TechnicPhone = "+7913 453 45 38";
+            ResponsiblePerson = "Техник Техникович";
+            ResponsiblePersonPhone = "+7913 453 45 38";
             DateComment = "Какой то комментарий к срокам";
             Created = DateTime.Now;
         }

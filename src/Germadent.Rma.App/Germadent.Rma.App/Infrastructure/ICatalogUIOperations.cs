@@ -14,5 +14,7 @@ namespace Germadent.Rma.App.Infrastructure
         void ShowCustomerCart(CustomerDto customer);
 
         ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto);
+
+        ResponsiblePersonDto SelectResponsiblePerson(string mask);
     }
 }

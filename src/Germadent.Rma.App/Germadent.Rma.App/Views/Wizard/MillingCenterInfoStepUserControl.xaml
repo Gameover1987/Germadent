@@ -73,14 +73,15 @@
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
                    HorizontalAlignment="Right" Margin="0,6,0,0" />
         <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
-                 Text="{Binding TechnicFullName, UpdateSourceTrigger=PropertyChanged}" />
-        <Button Grid.Row="3" Grid.Column="2" Margin="6,6,0,0" Content="..." />
+                 Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Row="3" Grid.Column="2" Margin="6,6,0,0" Content="..." 
+                Command="{Binding SelectResponsiblePersonCommand}"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Номер тел. техника" VerticalAlignment="Center"
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
                    HorizontalAlignment="Right" Margin="0,6,0,0" />
         <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="6,6,0,0" Width="150" HorizontalAlignment="Left"
-                 Text="{Binding TechnicPhone, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding ResponsiblePersonPhone, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Дата и время получения работы"/>
         <DatePicker Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"

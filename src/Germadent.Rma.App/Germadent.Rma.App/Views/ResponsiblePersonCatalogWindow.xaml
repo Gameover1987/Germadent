@@ -1,0 +1,73 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.ResponsiblePersonCatalogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        mc:Ignorable="d"
+        Title="ResponsiblePersonCatalogWindow" Height="450" Width="800"
+        DataContextChanged="ResponsiblePersonCatalogWindow_OnDataContextChanged"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockResponsiblePersonsCatalogViewModel}, IsDesignTimeCreatable=True}">
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0" Width="150"
+                                     LabelText="Поиск докторов, техников" 
+                                     SearchEventTimeDelay="00:00:3"
+                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Добавить" Margin="0,12,0,0"
+                    Command="{Binding AddResponsiblePersonCommand}"/>
+            <Button Content="Редактировать" Margin="0,6,0,0"
+                    Command="{Binding EditResponsiblePersonCommand}"/>
+            <Button Content="Удалить" Margin="0,6,0,0"
+                    Command="{Binding DeleteResponsiblePersonCommand}"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                  ItemsSource="{Binding ResponsiblePersons}"
+                  SelectedItem="{Binding SelectedResponsiblePerson}"
+                  AlternationCount="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding FullName}" Width="Auto"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="Auto"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding Position}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"
+                                    ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <controls:BusyIndicator Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+        <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Выбрать" Width="100" IsDefault="True"
+                    Command="{Binding SelectCustomerCommand}"
+                    helpers:WindowCloseHelper.DialogResult="True"/>
+            <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
+                    helpers:WindowCloseHelper.DialogResult="False"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

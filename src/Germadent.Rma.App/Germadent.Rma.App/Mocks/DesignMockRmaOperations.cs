@@ -172,7 +172,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public ResponsiblePersonDto[] GetResponsiblePersons(int customerId)
+        public ResponsiblePersonDto[] GetResponsiblePersons()
         {
             throw new NotImplementedException();
         }

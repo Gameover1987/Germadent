@@ -88,7 +88,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        ResponsiblePersonDto[] GetResponsiblePersons(int customerId);
+        ResponsiblePersonDto[] GetResponsiblePersons();
 
         /// <summary>
         /// Добавление заказчика
