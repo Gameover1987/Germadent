@@ -14,7 +14,6 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         public CustomerRepository(IRmaServiceClient rmaOperations)
         {
-            //TODO Nekrasov:нул
             _rmaOperations = rmaOperations;
             _rmaOperations.CustomerRepositoryChanged += RmaOperationsOnCustomerRepositoryChanged;
         }

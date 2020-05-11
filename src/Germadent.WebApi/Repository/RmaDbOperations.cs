@@ -598,9 +598,6 @@ namespace Germadent.WebApi.Repository
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
-            if (filter.IsEmpty())
-                return GetOrdersByEmptyFilter();
-
             return GetOrdersByFilter(filter);
         }
 
