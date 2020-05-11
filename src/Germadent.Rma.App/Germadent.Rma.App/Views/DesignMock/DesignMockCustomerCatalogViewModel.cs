@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockCustomerCatalogViewModel : CustomerCatalogViewModel
     {
         public DesignMockCustomerCatalogViewModel()
-            : base(new DesignMockRmaOperations(), new DesignMockCatalogUIOperations(), new MockLogger())
+            : base(new DesignMockRmaServiceClient(), new DesignMockCatalogUIOperations(), new MockLogger())
         {
             Initialize();
 

@@ -16,6 +16,8 @@ namespace Germadent.Rma.App.ViewModels
         string Phone { get; }
 
         string Description { get; }
+
+        CustomerDto ToDto();
     }
 
     public class CustomerViewModel : ViewModelBase, ICustomerViewModel

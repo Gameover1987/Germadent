@@ -72,7 +72,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public OrderLiteViewModel SelectedOrder
         {
-            get { return _selectedOrder; }
+            get => _selectedOrder;
             set
             {
                 if (_selectedOrder == value)
@@ -85,7 +85,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool IsBusy
         {
-            get { return _isBusy; }
+            get => _isBusy;
             set
             {
                 if (_isBusy == value)
@@ -111,7 +111,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public string SearchString
         {
-            get { return _searchString; }
+            get => _searchString;
             set
             {
                 if (_searchString == value)

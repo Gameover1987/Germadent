@@ -6,11 +6,11 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Mocks
 {
-    public class DesignMockRmaOperations : IRmaServiceClient
+    public class DesignMockRmaServiceClient : IRmaServiceClient
     {
         private readonly List<OrderDto> _orders = new List<OrderDto>();
 
-        public DesignMockRmaOperations()
+        public DesignMockRmaServiceClient()
         {
             _orders.Add(new OrderDto
             {
@@ -177,6 +177,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
+        {
+            throw new NotImplementedException();
+        }
+
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             throw new NotImplementedException();
@@ -207,6 +212,7 @@ namespace Germadent.Rma.App.Mocks
         }
         
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
+        public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
         private DictionaryItemDto[] GetProstheticConditions()
         {

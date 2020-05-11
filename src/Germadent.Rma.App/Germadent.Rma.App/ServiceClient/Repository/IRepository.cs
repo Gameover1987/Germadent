@@ -26,12 +26,8 @@ namespace Germadent.Rma.App.ServiceClient.Repository
     public abstract class Repository<T> : IRepository<T>
     {
         private T[] _items;
-        
 
-        public T[] Items
-        {
-            get { return _items; }
-        }
+        public T[] Items => _items;
 
         public void Initialize()
         {

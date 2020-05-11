@@ -22,54 +22,93 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override bool IsValid => !HasErrors && ToothCard.IsValid;
 
-        public override string DisplayName
-        {
-            get { return "Проект"; }
-        }
+        public override string DisplayName => "Проект";
 
         public string AdditionalMillingInfo
         {
-            get { return _additionalMillingInfo; }
-            set { SetProperty(() => _additionalMillingInfo, value); }
+            get => _additionalMillingInfo;
+            set
+            {
+                if (_additionalMillingInfo == value)
+                    return;
+                _additionalMillingInfo = value;
+                OnPropertyChanged(() => AdditionalMillingInfo);
+            }
         }
 
         public string ImplantSystem
         {
-            get { return _implantSystem; }
-            set { SetProperty(() => _implantSystem, value); }
+            get => _implantSystem;
+            set
+            {
+                if (_implantSystem == value)
+                    return;
+                _implantSystem = value;
+                OnPropertyChanged(() => ImplantSystem);
+            }
         }
 
         public string CarcassColor
         {
-            get { return _carcassColor; }
-            set { SetProperty(() => _carcassColor, value); }
+            get => _carcassColor;
+            set
+            {
+                if (_carcassColor == value)
+                    return;
+                _carcassColor = value;
+                OnPropertyChanged(() => CarcassColor);
+            }
         }
-       
+
         public string IndividualAbutmentProcessing
         {
-            get { return _individualAbutmentProcessing; }
-            set { SetProperty(() => _individualAbutmentProcessing, value); }
+            get => _individualAbutmentProcessing;
+            set
+            {
+                if (_individualAbutmentProcessing == value)
+                    return;
+                _individualAbutmentProcessing = value;
+                OnPropertyChanged(() => IndividualAbutmentProcessing);
+            }
         }
 
         public string Understaff
         {
-            get { return _understaff; }
-            set { SetProperty(() => _understaff, value); }
+            get => _understaff;
+            set
+            {
+                if (_understaff == value)
+                    return;
+                _understaff = value;
+                OnPropertyChanged(() => Understaff);
+            }
         }
 
         public bool WorkAccepted
         {
-            get { return _workAccepted; }
-            set { SetProperty(() => _workAccepted, value); }
+            get => _workAccepted;
+            set
+            {
+                if (_workAccepted == value)
+                    return;
+                _workAccepted = value;
+                OnPropertyChanged(() => WorkAccepted);
+            }
         }
 
         public string ProstheticArticul
         {
-            get { return _prostheticArticul; }
-            set { SetProperty(() => _prostheticArticul, value); }
+            get => _prostheticArticul;
+            set
+            {
+                if (_prostheticArticul == value)
+                    return;
+                _prostheticArticul = value;
+                OnPropertyChanged(() => ProstheticArticul);
+            }
         }
 
-        public IToothCardViewModel ToothCard { get; } 
+        public IToothCardViewModel ToothCard { get; }
 
         public IOrderFilesContainerViewModel FilesContainer { get; }
 

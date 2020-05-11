@@ -55,7 +55,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public ICustomerViewModel SelectedCustomer
         {
-            get { return _selectedCustomer; }
+            get => _selectedCustomer;
             set
             {
                 if (_selectedCustomer == value)
@@ -67,7 +67,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string SearchString
         {
-            get { return _searchString; }
+            get => _searchString;
             set
             {
                 if (_searchString == value)
@@ -89,7 +89,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public bool IsBusy
         {
-            get { return _isBusy; }
+            get => _isBusy;
             set
             {
                 if (_isBusy == value)

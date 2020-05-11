@@ -7,9 +7,15 @@
     <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Wizard\ResponsiblePersonUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\ResponsiblePersonUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

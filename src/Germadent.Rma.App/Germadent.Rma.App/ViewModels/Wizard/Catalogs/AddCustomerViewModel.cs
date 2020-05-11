@@ -25,7 +25,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (_name == value)
@@ -37,7 +37,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string Phone
         {
-            get { return _phone; }
+            get => _phone;
             set
             {
                 if (_phone == value)
@@ -50,7 +50,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string Email
         {
-            get { return _email; }
+            get => _email;
             set
             {
                 if (_email == value)
@@ -62,7 +62,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string WebSite
         {
-            get { return _webSite; }
+            get => _webSite;
             set
             {
                 if (_webSite == value)
@@ -74,7 +74,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public string Description
         {
-            get { return _description; }
+            get => _description;
             set
             {
                 if (_description == value)

@@ -16,6 +16,19 @@ namespace Germadent.Rma.App.ServiceClient
         public CustomerDto[] DeletedItems { get; }
     }
 
+    public class ResponsiblePersonRepositoryChangedEventArgs : EventArgs
+    {
+        public ResponsiblePersonRepositoryChangedEventArgs(ResponsiblePersonDto[] addedItems, ResponsiblePersonDto[] deletedItems)
+        {
+            AddedItems = addedItems;
+            DeletedItems = deletedItems;
+        }
+
+        public ResponsiblePersonDto[] AddedItems { get; }
+
+        public ResponsiblePersonDto[] DeletedItems { get; }
+    }
+
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -84,6 +97,11 @@ namespace Germadent.Rma.App.ServiceClient
         CustomerDto[] GetCustomers(string mask);
 
         /// <summary>
+        /// Добавление заказчика
+        /// </summary>
+        CustomerDto AddCustomer(CustomerDto сustomerDto);
+
+        /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
         /// </summary>
         /// <param name="customerId"></param>
@@ -91,9 +109,11 @@ namespace Germadent.Rma.App.ServiceClient
         ResponsiblePersonDto[] GetResponsiblePersons();
 
         /// <summary>
-        /// Добавление заказчика
+        /// Добавление ответственного лица
         /// </summary>
-        CustomerDto AddCustomer(CustomerDto сustomerDto);
+        /// <param name="responsiblePersonDto"></param>
+        /// <returns></returns>
+        ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto);
 
         /// <summary>
         /// Возвращает словарь по его названию
@@ -106,5 +126,10 @@ namespace Germadent.Rma.App.ServiceClient
         /// Собтие изменения репозитория заказчиков
         /// </summary>
         event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
+
+        /// <summary>
+        /// Событие изменения репозитория ответственных лиц
+        /// </summary>
+        event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
     }
 }

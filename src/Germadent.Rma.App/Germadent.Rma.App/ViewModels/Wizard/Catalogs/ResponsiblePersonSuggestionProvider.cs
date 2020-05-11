@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.UI.Controls;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
-    public class ResponsiblePersonSuggestionProvider : SuggestionsProviderBase
+    public interface IResponsiblePersonsSuggestionsProvider : ISuggestionProvider
     {
-        private readonly IRmaServiceClient _rmaOperations;
 
-        public ResponsiblePersonSuggestionProvider(IRmaServiceClient rmaOperations, IDispatcher dispatcher)
-            : base(dispatcher)
+    }
+
+    public class ResponsiblePersonSuggestionProvider : IResponsiblePersonsSuggestionsProvider
+    {
+        private readonly IResponsiblePersonRepository _responsiblePersonRepository;
+
+        public ResponsiblePersonSuggestionProvider(IResponsiblePersonRepository responsiblePersonRepository)
         {
-            _rmaOperations = rmaOperations;
+            _responsiblePersonRepository = responsiblePersonRepository;
         }
 
-        protected override IEnumerable GetSuggestionsImpl(string filter)
+        public IEnumerable GetSuggestions(string filter)
         {
-            throw new NotImplementedException();
+            return _responsiblePersonRepository.Items.Where(x => x.FullName.ToLower().Contains(filter.ToLower())).Select(x => new ResponsiblePersonViewModel(x)).ToArray();
         }
     }
 }

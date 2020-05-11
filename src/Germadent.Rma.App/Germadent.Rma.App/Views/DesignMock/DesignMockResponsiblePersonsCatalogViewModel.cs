@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockResponsiblePersonsCatalogViewModel : ResponsiblePersonsCatalogViewModel
     {
         public DesignMockResponsiblePersonsCatalogViewModel() 
-            : base(new DesignMockRmaOperations(), new DesignMockCatalogUIOperations(), new MockLogger())
+            : base(new DesignMockRmaServiceClient(), new DesignMockCatalogUIOperations(), new MockLogger())
         {
         }
     }

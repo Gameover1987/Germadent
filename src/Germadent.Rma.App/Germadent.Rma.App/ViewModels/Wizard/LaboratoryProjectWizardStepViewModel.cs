@@ -30,27 +30,44 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public string WorkDescription
         {
-            get { return _workDescription; }
-            set { SetProperty(() => _workDescription, value); }
+            get => _workDescription;
+            set
+            {
+                if (_workDescription == value)
+                    return;
+                _workDescription = value;
+                OnPropertyChanged(() => WorkDescription);
+            }
         }
 
         public string ColorAndFeatures
         {
-            get { return _colorAndFeatures; }
-            set { SetProperty(() => _colorAndFeatures, value); }
+            get => _colorAndFeatures;
+            set {
+                if (_colorAndFeatures == value)
+                    return;
+                _colorAndFeatures = value;
+                OnPropertyChanged(() => ColorAndFeatures);
+            }
         }
 
         public string ProstheticArticul
         {
-            get { return _prostheticArticul; }
-            set { SetProperty(() => _prostheticArticul, value); }
+            get => _prostheticArticul;
+            set
+            {
+                if (_prostheticArticul == value)
+                    return;
+                _prostheticArticul = value;
+                OnPropertyChanged(() => ProstheticArticul);
+            }
         }
 
         public ObservableCollection<DictionaryItemDto> Transparences { get; } = new ObservableCollection<DictionaryItemDto>();
 
         public DictionaryItemDto SelectedTransparency
         {
-            get { return _selectedTransparency; }
+            get => _selectedTransparency;
             set
             {
                 if (_selectedTransparency == value)

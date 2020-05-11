@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool IsBusy
         {
-            get { return _isBusy; }
+            get => _isBusy;
             private set
             {
                 if (_isBusy == value)

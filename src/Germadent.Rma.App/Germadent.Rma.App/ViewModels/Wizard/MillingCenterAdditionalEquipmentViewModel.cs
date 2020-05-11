@@ -16,15 +16,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _rmaOperations = rmaOperations;
         }
 
-        public override string DisplayName
-        {
-            get { return "Дополнительная оснастка"; }
-        }
+        public override string DisplayName => "Дополнительная оснастка";
 
-        public override bool IsValid
-        {
-            get { return !HasErrors; }
-        }        
+        public override bool IsValid => !HasErrors;
 
         public override void Initialize(OrderDto order)
         {

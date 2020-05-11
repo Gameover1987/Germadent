@@ -125,7 +125,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ToothViewModel[] SelectedTeeth
         {
-            get { return _selectedTeeth; }
+            get => _selectedTeeth;
             set
             {
                 _selectedTeeth = value;

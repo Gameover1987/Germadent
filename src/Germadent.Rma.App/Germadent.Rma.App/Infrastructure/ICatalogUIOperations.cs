@@ -5,16 +5,18 @@ namespace Germadent.Rma.App.Infrastructure
 {
     public interface ICatalogUIOperations
     {
-        void Initialize();
-
-        ICustomerViewModel SelectCustomer(string mask);
-
         CustomerDto AddCustomer(CustomerDto customer);
+
+        ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto);
+    }
+
+    public interface ICatalogSelectionOperations
+    {
+        CustomerDto SelectCustomer(string mask);
 
         void ShowCustomerCart(CustomerDto customer);
 
-        ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto);
-
         ResponsiblePersonDto SelectResponsiblePerson(string mask);
+
     }
 }

@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
-using Expression = System.Linq.Expressions.Expression;
 
 namespace Germadent.UI.ViewModels
 {
@@ -24,69 +23,7 @@ namespace Germadent.UI.ViewModels
         /// <summary>
         ///     Сообщает об изменении значения свойства.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;        
-
-        /// <summary>
-        ///     Обновляет свойство, вызывая <see cref="OnPropertyChanged()"/>.
-        /// </summary>
-        /// <typeparam name="TValue">Тип значения свойства.</typeparam>
-        /// <param name="propertyExpression">Лямбда для получения имени свойства</param>
-        protected void RefreshProperty<TValue>(Expression<Func<TValue>> propertyExpression)
-        {
-            var propertyName = GetPropertyName(propertyExpression);
-            var owner = GetContainer(propertyExpression);
-            var ownerType = owner.GetType();
-
-            var value = default (TValue);
-
-            var fieldInfo = GetFieldRecursively(ownerType, propertyName);
-            if (fieldInfo != null)
-                value = (TValue) fieldInfo.GetValue(owner);
-
-            var propertyInfo = ownerType.GetProperty(propertyName);
-            if (propertyInfo != null)
-                value = (TValue) propertyInfo.GetValue(owner);
-
-            SetProperty(propertyExpression, default(TValue));
-            SetProperty(propertyExpression, value);
-        }
-
-        /// <summary>
-        /// Задает значение свойству и сообщает о его изменении только если новое значение отличается.
-        /// </summary>
-        /// <typeparam name="TValue">Тип устанавливаемого значения</typeparam>
-        /// <param name="propertyExpression">Лямбда для получения имени свойства</param>
-        /// <param name="value">Устанавливаемое значение</param>
-        /// <param name="callerMemberName">Имя свойства</param>
-        /// <returns>Возвращает true если значение свойства было изменено</returns>
-        protected bool SetProperty<TValue>(Expression<Func<TValue>> propertyExpression, TValue value, bool throwNullException = true, [CallerMemberName] string callerMemberName = null)
-        {
-            var func = propertyExpression.Compile();
-            var funcValue = func();
-            if (Equals(funcValue, value))
-                return false;
-
-            var propertyName = GetPropertyName(propertyExpression);
-            var owner = GetContainer(propertyExpression);
-            var ownerType = owner.GetType();
-            var fieldInfo = GetFieldRecursively(ownerType, propertyName);
-            if (fieldInfo != null)
-            {
-                fieldInfo.SetValue(owner, value);
-                OnPropertyChanged(callerMemberName);
-                return true;
-            }
-
-            var propertyInfo = ownerType.GetProperty(propertyName);
-            if (propertyInfo != null)
-            {
-                propertyInfo.SetValue(owner, value);
-                OnPropertyChanged(callerMemberName);
-                return true;
-            }
-
-            throw new NotSupportedException(propertyExpression.ToString());
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private FieldInfo GetFieldRecursively(Type type, string fieldName)
         {
@@ -98,35 +35,6 @@ namespace Germadent.UI.ViewModels
                 return GetFieldRecursively(type.BaseType, fieldName);
 
             return fieldInfo;
-        }
-
-        private object GetContainer<TValue>(Expression<Func<TValue>> propertyLambdaExpression)
-        {
-            return Evaluate((propertyLambdaExpression.Body as MemberExpression).Expression);
-        }
-
-        private object Evaluate(Expression e)
-        {
-            switch (e.NodeType)
-            {
-                case ExpressionType.Constant:
-                    return (e as ConstantExpression).Value;
-                case ExpressionType.MemberAccess:
-                    {
-                        var propertyExpression = e as MemberExpression;
-                        var field = propertyExpression.Member as FieldInfo;
-                        var property = propertyExpression.Member as PropertyInfo;
-                        var container = propertyExpression.Expression == null ? null : Evaluate(propertyExpression.Expression);
-                        if (field != null)
-                            return field.GetValue(container);
-                        else if (property != null)
-                            return property.GetValue(container, null);
-                        else
-                            return null;
-                    }
-                default:
-                    return null;
-            }
         }
 
         /// <summary>

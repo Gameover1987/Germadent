@@ -5,10 +5,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockLaboratoryWizardStepsProvider : IWizardStepsProvider
     {
-        public BranchType BranchType
-        {
-            get { return BranchType.Laboratory; }
-        }
+        public BranchType BranchType => BranchType.Laboratory;
 
         public IWizardStepViewModel[] GetSteps()
         {

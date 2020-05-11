@@ -19,20 +19,28 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public bool IsChecked
         {
-            get { return _isChecked; }
+            get => _isChecked;
             set
             {
-                if (SetProperty(() => _isChecked, value))
-                {
-                    Checked?.Invoke(this, EventArgs.Empty);
-                };
+                if (_isChecked == value)
+                    return;
+                _isChecked = value;
+                OnPropertyChanged(() => IsChecked);
+
+                Checked?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public DictionaryItemDto Item
         {
-            get { return _item; }
-            set { SetProperty(() => _item, value); }
+            get => _item;
+            set
+            {
+                if (_item == value)
+                    return;
+                _item = value;
+                OnPropertyChanged(() => Item);
+            }
         }
 
         public event EventHandler<EventArgs> Checked;

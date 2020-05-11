@@ -50,7 +50,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public IWizardStepViewModel CurrentStep
         {
-            get { return _currentStep; }
+            get => _currentStep;
             private set
             {
                 if (_currentStep == value)
@@ -70,10 +70,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ICommand SaveCommand { get; }
 
-        public bool IsReadOnly
-        {
-            get { return WizardMode == WizardMode.View; }
-        }
+        public bool IsReadOnly => WizardMode == WizardMode.View;
 
         public bool PrintAfterSave { get; set; }
 

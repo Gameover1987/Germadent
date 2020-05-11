@@ -10,15 +10,15 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
     public class CustomerRepository : Repository<CustomerDto>, ICustomerRepository
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IRmaServiceClient _rmaServiceClient;
 
-        public CustomerRepository(IRmaServiceClient rmaOperations)
+        public CustomerRepository(IRmaServiceClient rmaServiceClient)
         {
-            _rmaOperations = rmaOperations;
-            _rmaOperations.CustomerRepositoryChanged += RmaOperationsOnCustomerRepositoryChanged;
+            _rmaServiceClient = rmaServiceClient;
+            _rmaServiceClient.CustomerRepositoryChanged += RmaServiceClientOnCustomerRepositoryChanged;
         }
 
-        private void RmaOperationsOnCustomerRepositoryChanged(object sender, CustomerRepositoryChangedEventArgs e)
+        private void RmaServiceClientOnCustomerRepositoryChanged(object sender, CustomerRepositoryChangedEventArgs e)
         {
             //TODO Nekrasov:ReLoad?)))
             ReLoad();
@@ -26,7 +26,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         protected override CustomerDto[] GetItems()
         {
-            return _rmaOperations.GetCustomers("").ToArray();
+            return _rmaServiceClient.GetCustomers("").ToArray();
         }
     }
 }

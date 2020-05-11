@@ -39,7 +39,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public bool IsChanged
         {
-            get { return _isChanged; }
+            get => _isChanged;
             set
             {
                 _isChanged = value;
@@ -51,7 +51,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public bool HasBridge
         {
-            get { return _hasBridge; }
+            get => _hasBridge;
             set
             {
                 if (_hasBridge == value)
@@ -88,10 +88,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get { return Materials.FirstOrDefault(x => x.IsChecked); }
         }
 
-        public bool HasDescription
-        {
-            get { return SelectedProstheticsType != null || SelectedMaterial != null || HasBridge; }
-        }
+        public bool HasDescription => SelectedProstheticsType != null || SelectedMaterial != null || HasBridge;
 
         public bool IsValid
         {
@@ -170,10 +167,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             };
         }
 
-        public bool CanClear
-        {
-            get { return HasBridge || SelectedProstheticCondition != null || SelectedMaterial != null || SelectedProstheticsType != null; }
-        }
+        public bool CanClear => HasBridge || SelectedProstheticCondition != null || SelectedMaterial != null || SelectedProstheticsType != null;
 
         public void Clear()
         {

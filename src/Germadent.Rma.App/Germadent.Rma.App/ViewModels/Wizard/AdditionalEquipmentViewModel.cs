@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public int Quantity
         {
-            get { return _quantity; }
+            get => _quantity;
             set
             {
                 if (_quantity == value)

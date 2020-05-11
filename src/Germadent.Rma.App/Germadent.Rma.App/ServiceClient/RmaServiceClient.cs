@@ -85,6 +85,13 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<ResponsiblePersonDto[]>(string.Format("/api/Rma/responsiblePersons"));
         }
 
+        public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
+        {
+            var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>("/api/Rma/responsiblePersons", responsiblePersonDto);
+            ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new []{addedResponsiblePerson}, null));
+            return addedResponsiblePerson;
+        }
+
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             var addedCustomer = ExecuteHttpPost<CustomerDto>("/api/customers", сustomerDto);
@@ -98,6 +105,8 @@ namespace Germadent.Rma.App.ServiceClient
         }
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
+
+        public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
         //TODO Nekrasov:клиент по хттп будет только 1? если нет, то стоит сделать базовый класс с этими методами
         private T ExecuteHttpGet<T>(string api)
