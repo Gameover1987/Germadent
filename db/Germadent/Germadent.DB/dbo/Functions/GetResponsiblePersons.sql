@@ -16,7 +16,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT ResponsiblePersonID, ResponsiblePerson, RP_Position, RP_Phone
+	SELECT ResponsiblePersonID, ResponsiblePerson, RP_Position, RP_Phone, RP_Email, RP_Description
 	FROM ResponsiblePersons
 	WHERE ResponsiblePersonID = ISNULL(@responsiblePersonId, ResponsiblePersonID)
 		AND ResponsiblePerson LIKE '%'+ISNULL(@responsiblePerson, '')+'%'
