@@ -5,13 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
-        Title="AddResponsiblePersonWindow" 
+        Title="{Binding Title}" 
         MinHeight="280"
         Height="280"
         MinWidth="600"
-        Width="600">
+        Width="600"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddResponsiblePersonViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=FullNameTextBox}">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewMode}" Value="{x:Static catalogs:CardViewMode.View}">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Margin="12" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -32,25 +49,39 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"/>
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}" HorizontalAlignment="Left">
+                <TextBlock Text="ФИО" VerticalAlignment="Center" />
+            </Border>
+            <TextBox x:Name="FullNameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                     Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Телефон" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}" Margin="-3,8,0,0" HorizontalAlignment="Left">
+                <TextBlock Text="Должность" VerticalAlignment="Center" />
+            </Border>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Эл. почта" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Телефон" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Описание" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" MinLines="3"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Эл. почта" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" MinLines="3"
+                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
         </Grid>
 
         <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="100" IsDefault="True"
+                    Command="{Binding OKCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
             <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
+                    Visibility="{Binding ViewMode, Converter={StaticResource EnumToInvisibilityConverter}, ConverterParameter={x:Static catalogs:CardViewMode.View}}"
                     helpers:WindowCloseHelper.DialogResult="False"/>
         </StackPanel>
     </Grid>

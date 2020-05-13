@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICustomerSuggestionProvider _customerSuggestionProvider;
         private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonSuggestionProvider;
         private readonly ICatalogUIOperations _catalogUIOperations;
-        private readonly ICatalogSelectionOperations _catalogSelectionOperations;
+        private readonly ICatalogSelectionUIOperations _catalogSelectionOperations;
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
 
@@ -29,7 +29,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonSuggestionProvider,
             ICatalogUIOperations catalogUIOperations,
-            ICatalogSelectionOperations catalogSelectionOperations,
+            ICatalogSelectionUIOperations catalogSelectionOperations,
             ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository)
         {

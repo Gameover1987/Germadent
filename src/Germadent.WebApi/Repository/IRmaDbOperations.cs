@@ -68,6 +68,12 @@ namespace Germadent.WebApi.Repository
         CustomerDto[] GetCustomers(string name);
 
         /// <summary>
+        /// Добавляет заказчика
+        /// </summary>
+        /// <param name="customer"></param>
+        CustomerDto AddCustomer(CustomerDto customer);
+
+        /// <summary>
         /// Возвращает спиок ответственных лиц по Id заказчика
         /// </summary>
         /// <param name="customerId"></param>
@@ -75,9 +81,9 @@ namespace Germadent.WebApi.Repository
         ResponsiblePersonDto[] GetResponsiblePersons();
 
         /// <summary>
-        /// Добавляет заказчика
+        /// Добавляет ответственное лицо
         /// </summary>
-        /// <param name="customer"></param>
-        CustomerDto AddCustomer(CustomerDto customer);
+        /// <returns></returns>
+        ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePerson);
     }
 }

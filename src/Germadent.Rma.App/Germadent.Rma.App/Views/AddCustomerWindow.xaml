@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
@@ -18,6 +19,16 @@
         ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddCustomerViewModel}, IsDesignTimeCreatable=True}"
         FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewMode}" Value="{x:Static catalogs:CardViewMode.View}">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Margin="12" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -38,8 +49,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}">
-                <TextBlock Text="Наименование" VerticalAlignment="Center"/>
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}" >
+                <TextBlock Text="Наименование" VerticalAlignment="Center" />
             </Border>
             <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
@@ -68,6 +79,7 @@
                     Command="{Binding OkCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
             <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
+                    Visibility="{Binding ViewMode, Converter={StaticResource EnumToInvisibilityConverter}, ConverterParameter={x:Static catalogs:CardViewMode.View}}"
                     helpers:WindowCloseHelper.DialogResult="False"/>
         </StackPanel>
     </Grid>

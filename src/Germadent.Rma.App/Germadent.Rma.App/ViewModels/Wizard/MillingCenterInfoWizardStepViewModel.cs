@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterInfoWizardStepViewModel : WizardStepViewModelBase
     {
-        private readonly ICatalogSelectionOperations _catalogSelectionOperations;
+        private readonly ICatalogSelectionUIOperations _catalogSelectionOperations;
         private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonsSuggestionsProvider;
         private readonly ICustomerRepository _customerRepository;
@@ -26,7 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private DateTime _created;
         private string _dateComment;
 
-        public MillingCenterInfoWizardStepViewModel(ICatalogSelectionOperations catalogSelectionOperations,
+        public MillingCenterInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
             ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonsSuggestionsProvider,
@@ -37,8 +37,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _catalogUIOperations = catalogUIOperations;
             _responsiblePersonsSuggestionsProvider = responsiblePersonsSuggestionsProvider;
             _customerRepository = customerRepository;
-            _responsiblePersonRepository = responsiblePersonRepository;
             _customerRepository.Changed += CustomerRepositoryOnChanged;
+            _responsiblePersonRepository = responsiblePersonRepository;
+            _responsiblePersonRepository.Changed += ResponsiblePersonRepositoryOnChanged;
             CustomerSuggestionProvider = customerSuggestionProvider;
             ResponsiblePersonsSuggestionsProvider = responsiblePersonsSuggestionsProvider;
 
@@ -54,7 +55,28 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ShowResponsiblePersonCardCommand = new DelegateCommand(ShowResponsiblePersonCardCommandHandler, CanShowResponsiblePersonCardCommandHandler);
         }
 
-        public override bool IsValid => !HasErrors && !Customer.IsNullOrWhiteSpace() && !IsNewCustomer;
+        public override bool IsValid
+        {
+            get
+            {
+                if (HasErrors)
+                    return false;
+
+                if (Customer.IsNullOrWhiteSpace())
+                    return false;
+
+                if (IsNewCustomer)
+                    return false;
+
+                if (ResponsiblePerson.IsNullOrWhiteSpace())
+                    return false;
+
+                if (IsNewResponsiblePerson)
+                    return false;
+
+                return true;
+            }
+        }
 
         public override string DisplayName => "Общие данные";
 
@@ -110,6 +132,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                     return;
                 _responsiblePerson = value;
                 OnPropertyChanged(() => ResponsiblePerson);
+                OnPropertyChanged(() => IsNewResponsiblePerson);
+
+                if (!IsNewResponsiblePerson && !ResponsiblePerson.IsNullOrWhiteSpace())
+                {
+                    _responsiblePersonId = _responsiblePersonRepository.Items.First(x => x.FullName == ResponsiblePerson).Id;
+                }
             }
         }
 
@@ -120,7 +148,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 if (ResponsiblePerson.IsNullOrWhiteSpace())
                     return false;
 
-                return _responsiblePersonRepository.Items.All(x => x.FullName != Customer);
+                return _responsiblePersonRepository.Items.All(x => x.FullName != ResponsiblePerson);
             }
         }
 
@@ -201,6 +229,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private void CustomerRepositoryOnChanged(object sender, EventArgs e)
         {
             OnPropertyChanged(() => IsNewCustomer);
+            DelegateCommand.NotifyCanExecuteChangedForAll();
+        }
+
+        private void ResponsiblePersonRepositoryOnChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged(() => IsNewResponsiblePerson);
+            DelegateCommand.NotifyCanExecuteChangedForAll();
         }
 
         private void SelectCustomerCommandHandler()
@@ -263,7 +298,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void AddResponsiblePersonCommandHandler()
         {
+            var responsiblePerson = _catalogUIOperations.AddResponsiblePerson(new ResponsiblePersonDto {FullName = ResponsiblePerson});
+            if (responsiblePerson==null)
+                return;
 
+            _responsiblePersonId = responsiblePerson.Id;
         }
 
         private bool CanShowResponsiblePersonCardCommandHandler()
@@ -276,7 +315,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void ShowResponsiblePersonCardCommandHandler()
         {
-
+            _catalogSelectionOperations.ShowResponsiblePersonCard(_responsiblePersonRepository.Items.First(x => x.FullName == ResponsiblePerson));
         }
     }
 }

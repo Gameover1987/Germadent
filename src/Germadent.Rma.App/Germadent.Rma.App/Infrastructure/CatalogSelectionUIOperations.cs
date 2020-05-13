@@ -5,22 +5,25 @@ using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Infrastructure
 {
-    public class CatalogSelectionOperations : ICatalogSelectionOperations
+    public class CatalogSelectionUIOperations : ICatalogSelectionUIOperations
     {
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IAddCustomerViewModel _addCustomerViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
+        private readonly IAddResponsiblePersonViewModel _addResponsiblePersonViewModel;
 
-        public CatalogSelectionOperations(IShowDialogAgent dialogAgent,
+        public CatalogSelectionUIOperations(IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
-            IAddCustomerViewModel addCustomerViewModel, 
-            IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel)
+            IAddCustomerViewModel addCustomerViewModel,
+            IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
+            IAddResponsiblePersonViewModel addResponsiblePersonViewModel)
         {
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _addCustomerViewModel = addCustomerViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
+            _addResponsiblePersonViewModel = addResponsiblePersonViewModel;
         }
 
         public CustomerDto SelectCustomer(string mask)
@@ -35,7 +38,7 @@ namespace Germadent.Rma.App.Infrastructure
 
         public void ShowCustomerCart(CustomerDto customer)
         {
-            _addCustomerViewModel.Initialize("Просмотр карточки заказчика", customer);
+            _addCustomerViewModel.Initialize(CardViewMode.View, customer);
             _dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel);
         }
 
@@ -47,6 +50,12 @@ namespace Germadent.Rma.App.Infrastructure
                 return null;
 
             return _responsiblePersonCatalogViewModel.SelectedResponsiblePerson.ToDto();
+        }
+
+        public void ShowResponsiblePersonCard(ResponsiblePersonDto responsiblePerson)
+        {
+            _addResponsiblePersonViewModel.Initialize(CardViewMode.View, responsiblePerson);
+            _dialogAgent.ShowDialog<AddResponsiblePersonWindow>(_addResponsiblePersonViewModel);
         }
     }
 }

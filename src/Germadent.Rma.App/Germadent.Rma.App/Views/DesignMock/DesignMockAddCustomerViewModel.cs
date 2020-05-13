@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+﻿using System.Runtime.InteropServices.ComTypes;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
@@ -15,8 +16,23 @@ namespace Germadent.Rma.App.Views.DesignMock
                 WebSite = "http://megasite.ru",
                 Description = "Lorem ipsum dolor sit amet"
             };
-            Initialize("Добавление", customer);
+            Initialize(CardViewMode.Add, customer);
+        }
+    }
+
+    public class DesignMockAddResponsiblePersonViewModel : AddResponsiblePersonViewModel
+    {
+        public DesignMockAddResponsiblePersonViewModel()
+        {
+            var responsiblePersonDto = new ResponsiblePersonDto()
+            {
+                FullName = "ООО Пошла родимая",
+                Phone = "222-333-444",
+                Email = "asdasd@gmail.com",
+                Position = "Мега доктор",
+                Description = "Lorem ipsum dolor sit amet"
+            };
+            Initialize(CardViewMode.View, responsiblePersonDto);
         }
     }
 }
-

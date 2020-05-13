@@ -28,7 +28,7 @@ namespace Germadent.Rma.App.Infrastructure
 
         public CustomerDto AddCustomer(CustomerDto customer)
         {
-            _addCustomerViewModel.Initialize("Добавление нового заказчика", customer);
+            _addCustomerViewModel.Initialize(CardViewMode.Add, customer);
             
             if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) != true)
                 return null;
@@ -37,9 +37,15 @@ namespace Germadent.Rma.App.Infrastructure
             return _rmaServiceClient.AddCustomer(newCustomer);
         }
 
-        public ResponsiblePersonDto AddResponsiblePersons(ResponsiblePersonDto customerDto)
+        public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
-            throw new System.NotImplementedException();
+            _addResponsiblePersonViewModel.Initialize(CardViewMode.Add, responsiblePersonDto);
+
+            if (_dialogAgent.ShowDialog<AddResponsiblePersonWindow>(_addResponsiblePersonViewModel) == false)
+                return null;
+
+            var newResponsiblePerson = _addResponsiblePersonViewModel.GetResponsiblePerson();
+            return _rmaServiceClient.AddResponsiblePerson(newResponsiblePerson);
         }
     }
 }

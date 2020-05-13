@@ -130,7 +130,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void AddResponsiblePersonCommandHandler()
         {
-            var responsiblePerson = _catalogUIOperations.AddResponsiblePersons(new ResponsiblePersonDto());
+            var responsiblePerson = _catalogUIOperations.AddResponsiblePerson(new ResponsiblePersonDto());
             if (responsiblePerson == null)
                 return;
 

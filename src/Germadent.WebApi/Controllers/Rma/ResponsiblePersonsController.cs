@@ -24,8 +24,7 @@ namespace Germadent.WebApi.Controllers.Rma
         [HttpPost]
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
-            return null;
-            //return _rmaDbOperations.add(customer);
+            return _rmaDbOperations.AddResponsiblePerson(responsiblePerson);
         }
     }
 }

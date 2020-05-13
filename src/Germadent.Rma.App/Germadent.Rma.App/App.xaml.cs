@@ -103,7 +103,7 @@ namespace Germadent.Rma.App
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrderUIOperations, OrderUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICatalogUIOperations, CatalogUIOperations>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ICatalogSelectionOperations, CatalogSelectionOperations>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICatalogSelectionUIOperations, CatalogSelectionUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILabWizardStepsProvider, LabWizardStepsProvider>(new ContainerControlledLifetimeManager());
 

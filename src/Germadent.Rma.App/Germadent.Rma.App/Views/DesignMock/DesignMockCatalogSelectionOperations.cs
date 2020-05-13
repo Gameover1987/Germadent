@@ -3,7 +3,7 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
-    public class DesignMockCatalogSelectionOperations : ICatalogSelectionOperations
+    public class DesignMockCatalogSelectionOperations : ICatalogSelectionUIOperations
     {
         public CustomerDto SelectCustomer(string mask)
         {
@@ -16,6 +16,11 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public ResponsiblePersonDto SelectResponsiblePerson(string mask)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowResponsiblePersonCard(ResponsiblePersonDto responsiblePerson)
         {
             throw new System.NotImplementedException();
         }

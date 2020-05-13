@@ -300,6 +300,8 @@ namespace Germadent.WebApi.Repository
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
+                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = order.CustomerId;
+                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId;
 
                 command.ExecuteNonQuery();
             }
@@ -487,6 +489,7 @@ namespace Germadent.WebApi.Repository
                         var orderEntity = new OrderEntity
                         {
                             WorkOrderId = reader["WorkOrderId"].ToInt(),
+                            CustomerId = reader["CustomerId"].ToInt(),
                             CustomerName = reader["CustomerName"].ToString(),
                             AdditionalInfo = reader["AdditionalInfo"].ToString(),
                             BranchTypeId = reader["BranchTypeId"].ToInt(),
@@ -501,6 +504,7 @@ namespace Germadent.WebApi.Repository
                             Understaff = reader["Understaff"].ToString(),
                             WorkDescription = reader["WorkDescription"].ToString(),
                             Status = reader["Status"].ToInt(),
+                            ResponsiblePersonId = reader["ResponsiblePersonId"].ToInt(),
                             DoctorFullName = reader["DoctorFullName"].ToString(),
                             TechnicFullName = reader["TechnicFullName"].ToString(),
                             TechnicPhone = reader["TechnicPhone"].ToString(),
@@ -834,6 +838,30 @@ namespace Germadent.WebApi.Repository
                     }
                     var responsiblePersons = responsiblePersonEntities.Select(x => _converter.ConvertToResponsiblePerson(x)).ToArray();
                     return responsiblePersons;
+                }
+            }
+        }
+
+        public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePerson)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("AddNewRespPerson", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@rp_position", SqlDbType.NVarChar)).Value = responsiblePerson.Position;
+                    command.Parameters.Add(new SqlParameter("@responsiblePerson", SqlDbType.NVarChar)).Value = responsiblePerson.FullName;
+                    command.Parameters.Add(new SqlParameter("@rp_phone", SqlDbType.NVarChar)).Value = responsiblePerson.Phone.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@rp_email", SqlDbType.NVarChar)).Value = responsiblePerson.Email.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@rp_description", SqlDbType.NVarChar)).Value = responsiblePerson.Description.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    responsiblePerson.Id = command.Parameters["@responsiblePersonId"].Value.ToInt();
+
+                    return responsiblePerson;
                 }
             }
         }

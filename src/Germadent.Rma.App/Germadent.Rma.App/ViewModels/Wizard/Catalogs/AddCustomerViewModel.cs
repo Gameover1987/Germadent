@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 
@@ -21,7 +22,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
         }
 
-        public string Title { get; private set; }
+        public string Title => GetTitle(ViewMode);
+
+        public CardViewMode ViewMode { get; private set; }
 
         public string Name
         {
@@ -86,16 +89,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         public IDelegateCommand OkCommand { get; }
 
-        public void Initialize(string title, CustomerDto customer)
+        public void Initialize(CardViewMode viewMode, CustomerDto customer)
         {
-            Title = title;
+            ResetValidation();
+            ViewMode = viewMode;
 
             _id = customer.Id;
-            Name = customer.Name;
-            Phone = customer.Phone;
-            Email = customer.Email;
-            WebSite = customer.WebSite;
-            Description = customer.Description;
+            _name = customer.Name;
+            _phone = customer.Phone;
+            _email = customer.Email;
+            _webSite = customer.WebSite;
+            _description = customer.Description;
         }
 
         public CustomerDto GetCustomer()
@@ -114,6 +118,24 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         private bool CanOkCommandHandler()
         {
             return !HasErrors && !string.IsNullOrWhiteSpace(Name);
+        }
+
+        private string GetTitle(CardViewMode cardViewMode)
+        {
+            switch (cardViewMode)
+            {
+                case CardViewMode.Add:
+                    return "Добавление заказчика";
+
+                case CardViewMode.Edit:
+                    return "Редактирование данных заказчика";
+
+                case CardViewMode.View:
+                    return "Просмотр данных заказчика";
+
+                default:
+                    throw new NotImplementedException("Неизвестный режим представления");
+            }
         }
     }
 }
