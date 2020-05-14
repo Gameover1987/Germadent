@@ -2,6 +2,7 @@
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;

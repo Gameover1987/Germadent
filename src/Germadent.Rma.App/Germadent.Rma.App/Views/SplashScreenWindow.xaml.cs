@@ -29,11 +29,17 @@ namespace Germadent.Rma.App.Views
         {
             var splashScreenViewModel = (ISplashScreenViewModel) e.NewValue;
             splashScreenViewModel.InitializationCompleted += SplashScreenViewModelOnInitializationCompleted;
+            splashScreenViewModel.InitializationFailed += SplashScreenViewModelOnInitializationFailed;
         }
 
         private void SplashScreenViewModelOnInitializationCompleted(object sender, EventArgs e)
         {
-            Close();
+            DialogResult = true;
+        }
+
+        private void SplashScreenViewModelOnInitializationFailed(object sender, EventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

@@ -3,7 +3,7 @@ using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
-namespace Germadent.Rma.App.Infrastructure
+namespace Germadent.Rma.App.Operations
 {
     public class CatalogSelectionUIOperations : ICatalogSelectionUIOperations
     {

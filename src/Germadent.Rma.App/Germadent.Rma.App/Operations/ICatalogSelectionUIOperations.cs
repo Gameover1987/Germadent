@@ -1,6 +1,6 @@
 ﻿using Germadent.Rma.Model;
 
-namespace Germadent.Rma.App.Infrastructure
+namespace Germadent.Rma.App.Operations
 {
     public interface ICatalogSelectionUIOperations
     {

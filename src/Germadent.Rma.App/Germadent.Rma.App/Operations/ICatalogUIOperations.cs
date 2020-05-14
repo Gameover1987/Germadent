@@ -1,7 +1,6 @@
-﻿using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 
-namespace Germadent.Rma.App.Infrastructure
+namespace Germadent.Rma.App.Operations
 {
     public interface ICatalogUIOperations
     {

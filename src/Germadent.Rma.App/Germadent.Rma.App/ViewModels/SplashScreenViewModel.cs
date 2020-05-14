@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.UI.ViewModels;
@@ -12,6 +13,8 @@ namespace Germadent.Rma.App.ViewModels
         string Text { get; }
 
         event EventHandler InitializationCompleted;
+
+        event EventHandler InitializationFailed;
     }
 
     public class SplashScreenViewModel : ViewModelBase, ISplashScreenViewModel
@@ -22,6 +25,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             appInitializer.InitializationProgress += AppInitializerOnInitializationProgress;
             appInitializer.InitializationCompleted += AppInitializerOnInitializationCompleted;
+            appInitializer.InitializationFailed += AppInitializerOnInitializationFailed;
             ThreadTaskExtensions.Run(appInitializer.Initialize);
         }
 
@@ -36,6 +40,15 @@ namespace Germadent.Rma.App.ViewModels
         }
 
         public event EventHandler InitializationCompleted;
+        public event EventHandler InitializationFailed;
+
+        private void AppInitializerOnInitializationFailed(object sender, EventArgs e)
+        {
+            ExecuteInUIThread(() =>
+            {
+                InitializationFailed?.Invoke(this, EventArgs.Empty);
+            });
+        }
 
         private void AppInitializerOnInitializationCompleted(object sender, EventArgs e)
         {

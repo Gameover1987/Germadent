@@ -20,7 +20,6 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void RmaServiceClientOnCustomerRepositoryChanged(object sender, CustomerRepositoryChangedEventArgs e)
         {
-            //TODO Nekrasov:ReLoad?)))
             ReLoad();
         }
 

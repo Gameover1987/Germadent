@@ -16,7 +16,6 @@ namespace Germadent.Rma.App.Views.DesignMock
 
         public string Text { get; }
         public event EventHandler InitializationCompleted;
+        public event EventHandler InitializationFailed;
     }
-
-    
 }

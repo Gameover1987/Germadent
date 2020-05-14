@@ -7,7 +7,7 @@ using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
-namespace Germadent.Rma.App.Infrastructure
+namespace Germadent.Rma.App.Operations
 {
     public class OrderUIOperations : IOrderUIOperations
     {

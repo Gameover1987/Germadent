@@ -1,12 +1,10 @@
 ﻿using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
-using Unity;
 
-namespace Germadent.Rma.App.Infrastructure
+namespace Germadent.Rma.App.Operations
 {
     public class CatalogUIOperations : ICatalogUIOperations
     {

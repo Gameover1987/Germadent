@@ -2,6 +2,7 @@
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
