@@ -1,4 +1,6 @@
-﻿namespace Germadent.WebApi.Entities
+﻿using Germadent.Rma.Model;
+
+namespace Germadent.WebApi.Entities
 {
     public class DictionaryItemEntity
     {
@@ -7,5 +9,7 @@
         public string Name { get; set; }
 
         public string DictionaryName { get; set; }
+
+        public DictionaryType DictionaryType { get; set; }
     }
 }

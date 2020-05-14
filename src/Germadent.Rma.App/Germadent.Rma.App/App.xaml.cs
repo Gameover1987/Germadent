@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Configuration;
@@ -56,7 +57,9 @@ namespace Germadent.Rma.App
             if (authorized == false)
                 Current.Shutdown(0);
 
-            InitializeRepositories();
+            var splashScreenWindow = new SplashScreenWindow();
+            splashScreenWindow.DataContext = _container.Resolve<ISplashScreenViewModel>();
+            splashScreenWindow.ShowDialog();
 
             MainWindow = new MainWindow();
             MainWindow.Closed += MainWindowOnClosed;
@@ -64,14 +67,6 @@ namespace Germadent.Rma.App
             MainWindow.Show();
         }
 
-        private void InitializeRepositories()
-        {
-            var customerRepository = _container.Resolve<ICustomerRepository>();
-            customerRepository.Initialize();
-
-            var responsiblePersonsRepository = _container.Resolve<IResponsiblePersonRepository>();
-            responsiblePersonsRepository.Initialize();
-        }
 
         private void FillContainer()
         {
@@ -82,6 +77,8 @@ namespace Germadent.Rma.App
 
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
+            _container.RegisterType<IAppInitializer, AppInitializer>();
+            _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();
 
             if (_configuration.WorkMode == WorkMode.Server)
             {
@@ -135,6 +132,8 @@ namespace Germadent.Rma.App
             _container.RegisterType<IRmaServiceClient, RmaServiceClient>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICustomerRepository, CustomerRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IResponsiblePersonRepository, ResponsiblePersonRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRepositoryContainer, RepositoryContainer>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterPrintModule()

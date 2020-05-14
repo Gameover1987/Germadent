@@ -253,34 +253,6 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        public DictionaryItemDto[] GetProstheticConditions()
-        {
-            var cmdText = "select * from GetConditionsOfProsthetics()";
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var prostheticConditionEntities = new List<DictionaryItemEntity>();
-                    while (reader.Read())
-                    {
-                        var prostheticConditionEntity = new DictionaryItemEntity();
-                        prostheticConditionEntity.Id = int.Parse(reader["ConditionId"].ToString());
-                        prostheticConditionEntity.Name = reader["ConditionName"].ToString().Trim();
-                        prostheticConditionEntity.DictionaryName = DictionaryType.ProstheticCondition.GetDescription();
-
-                        prostheticConditionEntities.Add(prostheticConditionEntity);
-                    }
-                    reader.Close();
-
-                    return prostheticConditionEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                }
-            }
-        }
-
         private static void UpdateWorkOrderMC(OrderDto order, SqlConnection connection)
         {
             using (var command = new SqlCommand("UpdateWorkOrderMC", connection))
@@ -351,67 +323,6 @@ namespace Germadent.WebApi.Repository
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = order.DateOfCompletion.GetValueOrDbNull();
 
                 command.ExecuteNonQuery();
-            }
-        }
-
-        public DictionaryItemDto[] GetMaterials()
-        {
-            var cmdText = "select * from GetMaterialsList()";
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var materials = new List<DictionaryItemEntity>();
-                    while (reader.Read())
-                    {
-                        var materialEntity = new DictionaryItemEntity();
-                        materialEntity.Id = int.Parse(reader["MaterialId"].ToString());
-                        materialEntity.Name = reader["MaterialName"].ToString().Trim();
-                        materialEntity.DictionaryName = DictionaryType.Material.GetDescription();
-
-                        //if (bool.TryParse(reader[nameof(materialEntity.FlagUnused)].ToString(), out bool flagUnused))
-                        //{
-                        //    materialEntity.FlagUnused = flagUnused;
-                        //}
-
-                        materials.Add(materialEntity);
-                    }
-                    reader.Close();
-
-                    return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                }
-            }
-        }
-
-        public DictionaryItemDto[] GetProstheticTypes()
-        {
-            var cmdText = "select * from GetTypesOfProsthetics()";
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var prostheticTypeEntities = new List<DictionaryItemEntity>();
-                    while (reader.Read())
-                    {
-                        var prostheticTypeEntity = new DictionaryItemEntity();
-                        prostheticTypeEntity.Id = int.Parse(reader["ProstheticsId"].ToString());
-                        prostheticTypeEntity.Name = reader["ProstheticsName"].ToString().Trim();
-                        prostheticTypeEntity.DictionaryName = DictionaryType.ProstheticType.GetDescription();
-
-                        prostheticTypeEntities.Add(prostheticTypeEntity);
-                    }
-                    reader.Close();
-
-                    return prostheticTypeEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                }
             }
         }
 
@@ -655,21 +566,6 @@ namespace Germadent.WebApi.Repository
             return cmdTextDefault + cmdTextAdditional;
         }
 
-        private OrderLiteDto[] GetOrdersByEmptyFilter()
-        {
-            var cmdText = "select * from GetWorkOrdersList(default, default, default, default, default, default, default, default, default, default, default)";
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    return GetOrderLiteCollectionFromReader(command);
-                }
-            }
-        }
-
         private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command)
         {
             using (var reader = command.ExecuteReader())
@@ -697,6 +593,35 @@ namespace Germadent.WebApi.Repository
                 return orders;
             }
         }
+        public DictionaryItemDto[] GetMaterials()
+        {
+            var cmdText = "select * from GetMaterialsList()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var materials = new List<DictionaryItemEntity>();
+                    while (reader.Read())
+                    {
+                        var materialEntity = new DictionaryItemEntity();
+                        materialEntity.Id = int.Parse(reader["MaterialId"].ToString());
+                        materialEntity.Name = reader["MaterialName"].ToString().Trim();
+                        materialEntity.DictionaryName = DictionaryType.Material.GetDescription();
+                        materialEntity.DictionaryType = DictionaryType.Material;
+
+                        materials.Add(materialEntity);
+                    }
+                    reader.Close();
+
+                    return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
+                }
+            }
+        }
+
         public DictionaryItemDto[] GetTransparences()
         {
             var cmdText = "select * from GetTransparencesList()";
@@ -713,6 +638,7 @@ namespace Germadent.WebApi.Repository
                         transparenceEntity.Id = int.Parse(reader["TransparenceId"].ToString());
                         transparenceEntity.Name = reader["TransparenceName"].ToString();
                         transparenceEntity.DictionaryName = DictionaryType.Transparency.GetDescription();
+                        transparenceEntity.DictionaryType = DictionaryType.Transparency;
 
                         transparencesEntities.Add(transparenceEntity);
                     }
@@ -721,6 +647,7 @@ namespace Germadent.WebApi.Repository
                 }
             }
         }
+
         public DictionaryItemDto[] GetEquipment()
         {
             var cmdText = "select * from GetEquipmentsList()";
@@ -737,11 +664,70 @@ namespace Germadent.WebApi.Repository
                         equipmentEntity.Id = int.Parse(reader["EquipmentId"].ToString());
                         equipmentEntity.Name = reader["EquipmentName"].ToString();
                         equipmentEntity.DictionaryName = DictionaryType.Equipment.GetDescription();
+                        equipmentEntity.DictionaryType = DictionaryType.Equipment;
 
                         equipmentEntities.Add(equipmentEntity);
                     }
                     var equipment = equipmentEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                     return equipment;
+                }
+            }
+        }
+
+        public DictionaryItemDto[] GetProstheticTypes()
+        {
+            var cmdText = "select * from GetTypesOfProsthetics()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var prostheticTypeEntities = new List<DictionaryItemEntity>();
+                    while (reader.Read())
+                    {
+                        var prostheticTypeEntity = new DictionaryItemEntity();
+                        prostheticTypeEntity.Id = int.Parse(reader["ProstheticsId"].ToString());
+                        prostheticTypeEntity.Name = reader["ProstheticsName"].ToString().Trim();
+                        prostheticTypeEntity.DictionaryName = DictionaryType.ProstheticType.GetDescription();
+                        prostheticTypeEntity.DictionaryType = DictionaryType.ProstheticType;
+
+                        prostheticTypeEntities.Add(prostheticTypeEntity);
+                    }
+                    reader.Close();
+
+                    return prostheticTypeEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
+                }
+            }
+        }
+
+        public DictionaryItemDto[] GetProstheticConditions()
+        {
+            var cmdText = "select * from GetConditionsOfProsthetics()";
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var prostheticConditionEntities = new List<DictionaryItemEntity>();
+                    while (reader.Read())
+                    {
+                        var prostheticConditionEntity = new DictionaryItemEntity();
+                        prostheticConditionEntity.Id = int.Parse(reader["ConditionId"].ToString());
+                        prostheticConditionEntity.Name = reader["ConditionName"].ToString().Trim();
+                        prostheticConditionEntity.DictionaryName = DictionaryType.ProstheticCondition.GetDescription();
+                        prostheticConditionEntity.DictionaryType = DictionaryType.ProstheticCondition;
+
+                        prostheticConditionEntities.Add(prostheticConditionEntity);
+                    }
+                    reader.Close();
+
+                    return prostheticConditionEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
                 }
             }
         }

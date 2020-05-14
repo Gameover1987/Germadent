@@ -11,9 +11,11 @@
 
         public string DictionaryName { get; set; }
 
+        public DictionaryType Dictionary { get; set; }
+
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Id, Name, DictionaryName);
+            return string.Format("{0} {1} {2}", Dictionary, Id, Name);
         }
     }
 }

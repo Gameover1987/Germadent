@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using Germadent.Rma.Model;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
+﻿using Germadent.Rma.Model;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -89,7 +86,8 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                DictionaryName = entity.DictionaryName
+                DictionaryName = entity.DictionaryName,
+                Dictionary = entity.DictionaryType
             };
         }
 
