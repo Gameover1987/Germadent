@@ -1,4 +1,6 @@
 ﻿using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Moq;
 using NUnit.Framework;
@@ -20,10 +22,12 @@ namespace Germadent.Rma.App.Test
         {
             // Given
             var mockClipboard = new Mock<IClipboardHelper>();
-            var reporter = new ClipboardReporter(mockClipboard.Object);
+            var mockServiceClient = new Mock<IRmaServiceClient>();
+            mockServiceClient.Setup(x => x.GetWorkReport(2)).Returns(testData.Reports);
+            var reporter = new ClipboardReporter(mockClipboard.Object, mockServiceClient.Object);
              
             // When
-            reporter.CreateReport(testData.Reports);
+            reporter.CreateReport(2);
 
             // Then
             mockClipboard.Verify(x => x.CopyToClipboard(testData.ExpectedData));

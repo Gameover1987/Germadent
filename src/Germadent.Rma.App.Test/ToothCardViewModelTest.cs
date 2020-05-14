@@ -5,6 +5,7 @@ using Germadent.Rma.Model;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
+using Germadent.Rma.App.ServiceClient.Repository;
 
 namespace Germadent.Rma.App.Test
 {
@@ -32,23 +33,23 @@ namespace Germadent.Rma.App.Test
 
         private ToothCardViewModel CreateTarget()
         {
-            var rmaOperationsMock = new Mock<IRmaServiceClient>();
-            rmaOperationsMock
-                .Setup(x => x.GetDictionary(DictionaryType.Material))
+            var mockDictionaryRepository = new Mock<IDictionaryRepository>();
+            mockDictionaryRepository
+                .Setup(x => x.GetItems(DictionaryType.Material))
                 .Returns(new[]
                 {
                     new DictionaryItemDto {Name = "ZrO", Id = 1},
                 });
 
-            rmaOperationsMock
-                .Setup(x => x.GetDictionary(DictionaryType.ProstheticType))
+            mockDictionaryRepository
+                .Setup(x => x.GetItems(DictionaryType.ProstheticType))
                 .Returns(new DictionaryItemDto[]
                 {
                     new DictionaryItemDto {Name = "Каркас", Id = 1},
 
                 });
 
-            return new ToothCardViewModel(rmaOperationsMock.Object, Mock.Of<IClipboardHelper>());
+            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IClipboardHelper>());
         }
 
         private static ToothDto[] CreateToothCard()
