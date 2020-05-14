@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Germadent.Common.Logging;
+using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Infrastructure
 {
@@ -11,9 +13,19 @@ namespace Germadent.Rma.App.Infrastructure
 
     public class CommandExceptionHandler : ICommandExceptionHandler
     {
+        private readonly IShowDialogAgent _dialogAgent;
+        private readonly ILogger _logger;
+
+        public CommandExceptionHandler(IShowDialogAgent dialogAgent, ILogger logger)
+        {
+            _dialogAgent = dialogAgent;
+            _logger = logger;
+        }
+
         public void HandleCommandException(Exception exception)
         {
-            throw new NotImplementedException();
+            _logger.Error(exception);
+            _dialogAgent.ShowErrorMessageDialog(exception.Message, exception.StackTrace);
         }
     }
 }

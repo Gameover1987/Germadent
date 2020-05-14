@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         public DictionaryItemDto[] GetItems(DictionaryType dictionary)
         {
-            return GetItems().Where(x => x.Dictionary == dictionary).OrderBy(x => x.Name).ToArray();
+            return Items.Where(x => x.Dictionary == dictionary).OrderBy(x => x.Name).ToArray();
         }
     }
 }

@@ -15,12 +15,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class LabWizardStepsProvider : ILabWizardStepsProvider
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private readonly IOrderFilesContainerViewModel _filesContainer;
 
-        public LabWizardStepsProvider(IRmaServiceClient rmaOperations, IOrderFilesContainerViewModel filesContainer)
+        public LabWizardStepsProvider(IDictionaryRepository dictionaryRepository, IOrderFilesContainerViewModel filesContainer)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             _filesContainer = filesContainer;
         }
 
@@ -31,7 +31,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(),
-                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(new DesignMockDictionaryRepository(), new ClipboardHelper()), _filesContainer, new DesignMockDictionaryRepository()),
+                new LaboratoryProjectWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, new ClipboardHelper()), _filesContainer, _dictionaryRepository),
             };
         }
     }
