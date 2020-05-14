@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -14,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels
 {
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private readonly ILogger _logger;
 
         private bool _millingCenter;
@@ -22,24 +23,20 @@ namespace Germadent.Rma.App.ViewModels
         private DateTime _periodBegin;
         private DateTime _periodEnd;
         private string _customer;
-        private string _employee;
+        private string _doctor;
         private string _patient;
 
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
         private bool _isBusy;
 
-        public OrdersFilterViewModel(IRmaServiceClient rmaOperations, ILogger logger)
+        public OrdersFilterViewModel(IDictionaryRepository dictionaryRepository, ILogger logger)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             _logger = logger;
 
             _millingCenter = true;
             _laboratory = true;
-
-            var now = DateTime.Now.Date;
-            _periodBegin = now.AddDays(-30);
-            _periodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             OKCommand = new DelegateCommand(x => { }, x => CanOkCommandHandler());
         }
@@ -110,15 +107,15 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
-        public string Employee
+        public string Doctor
         {
-            get => _employee;
+            get => _doctor;
             set
             {
-                if (_employee == value)
+                if (_doctor == value)
                     return;
-                _employee = value;
-                OnPropertyChanged(() => Employee);
+                _doctor = value;
+                OnPropertyChanged(() => Doctor);
             }
         }
 
@@ -202,29 +199,35 @@ namespace Germadent.Rma.App.ViewModels
                 PeriodBegin = PeriodBegin,
                 PeriodEnd = PeriodEnd,
                 Customer = Customer,
-                Doctor = Employee,
+                Doctor = Doctor,
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray()
             };
             return filter;
         }
 
-        public async void Initialize()
+        public void Initialize(OrdersFilter filter)
         {
             try
             {
                 IsBusy = true;
+
+                Laboratory = filter.Laboratory;
+                MillingCenter = filter.MillingCenter;
+                PeriodBegin = filter.PeriodBegin;
+                PeriodEnd = filter.PeriodEnd;
+                Customer = filter.Customer;
+                Doctor = filter.Doctor;
+                Patient = filter.Patient;
+
+                var selectedMaterialIds = filter.Materials.Select(x => x.Id).ToArray();
+
                 Materials.Clear();
-
-                DictionaryItemDto[] materials = null;
-                await ThreadTaskExtensions.Run(() =>
+                foreach (var material in _dictionaryRepository.GetItems(DictionaryType.Material))
                 {
-                    materials = _rmaOperations.GetDictionary(DictionaryType.Material);
-                });
-
-                foreach (var material in materials)
-                {
-                    Materials.Add(new CheckableDictionaryItemViewModel(material));
+                    var checkableDictionaryItemViewModel = new CheckableDictionaryItemViewModel(material);
+                    checkableDictionaryItemViewModel.IsChecked = selectedMaterialIds.Contains(material.Id);
+                    Materials.Add(checkableDictionaryItemViewModel);
                 }
             }
             catch (Exception e)

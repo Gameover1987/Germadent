@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Text;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
 {
     public interface IReporter
     {
-        void CreateReport(ReportListDto[] reports);
+        void CreateReport(int workOrderId);
     }
 
     public class ClipboardReporter : IReporter
     {
         private readonly IClipboardHelper _clipboard;
+        private readonly IRmaServiceClient _rmaServiceClient;
 
-        public ClipboardReporter(IClipboardHelper clipboard)
+        public ClipboardReporter(IClipboardHelper clipboard, IRmaServiceClient rmaServiceClient)
         {
             //TODO Nekrasov:нул
             _clipboard = clipboard;
+            _rmaServiceClient = rmaServiceClient;
         }
 
-        public void CreateReport(ReportListDto[] reports)
+        public void CreateReport(int workOrderId)
         {
+            var reports = _rmaServiceClient.GetWorkReport(workOrderId);
+
             var builder = new StringBuilder();
 
             foreach (var report in reports)

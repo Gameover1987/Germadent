@@ -7,6 +7,7 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -15,7 +16,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class CustomerCatalogViewModel : ViewModelBase, ICustomerCatalogViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly ICustomerRepository _сustomerRepository;
         private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly ILogger _logger;
 
@@ -25,9 +26,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private ICollectionView _customersView;
 
-        public CustomerCatalogViewModel(IRmaServiceClient rmaOperations, ICatalogUIOperations catalogUIOperations, ILogger logger)
+        public CustomerCatalogViewModel(ICustomerRepository сustomerRepository, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {
-            _rmaOperations = rmaOperations;
+            _сustomerRepository = сustomerRepository;
             _catalogUIOperations = catalogUIOperations;
             _logger = logger;
 
@@ -100,20 +101,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             }
         }
 
-        public async void Initialize()
+        public void Initialize()
         {
             try
             {
                 IsBusy = true;
                 Customers.Clear();
 
-                CustomerDto[] customers = null;
-                await ThreadTaskExtensions.Run(() =>
-                {
-                    customers = _rmaOperations.GetCustomers("");
-                });
-
-                foreach (var customer in customers)
+                foreach (var customer in _сustomerRepository.Items)
                 {
                     Customers.Add(new CustomerViewModel(customer));
                 }

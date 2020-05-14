@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockLaboratoryProjectWizardStepViewModel : LaboratoryProjectWizardStepViewModel
     {
         public DesignMockLaboratoryProjectWizardStepViewModel()
-            : base(new ToothCardViewModel(new DesignMockRmaServiceClient(), new ClipboardHelper()), new DesignMockOrderFilesContainerViewModel(), new DesignMockRmaServiceClient())
+            : base(new ToothCardViewModel(new DesignMockDictionaryRepository(), new ClipboardHelper()), new DesignMockOrderFilesContainerViewModel(), new DesignMockDictionaryRepository())
         {
             var order = new OrderDto()
             {

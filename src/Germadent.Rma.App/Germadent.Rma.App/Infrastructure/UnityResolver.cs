@@ -118,7 +118,6 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<ICustomerRepository, CustomerRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IResponsiblePersonRepository, ResponsiblePersonRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IRepositoryContainer, RepositoryContainer>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterPrintModule()

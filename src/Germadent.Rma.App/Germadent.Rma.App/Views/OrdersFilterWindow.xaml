@@ -17,8 +17,7 @@
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designMock:DesignMockOrdersFilterViewModel, IsDesignTimeCreatable=True}"
-        helpers:WindowCloseHelper.CloseKey="Escape"
-        DataContextChanged="OrdersFilterWindow_OnDataContextChanged">
+        helpers:WindowCloseHelper.CloseKey="Escape">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -70,7 +69,7 @@
 
             <TextBlock Grid.Row="3" Text="Сотрудник"/>
             <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" 
-                     Text="{Binding Employee}"/>
+                     Text="{Binding Doctor}"/>
 
             <TextBlock Grid.Row="4" Text="Пациент"/>
             <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 

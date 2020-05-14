@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
@@ -31,6 +30,8 @@ namespace Germadent.Rma.App.ViewModels
         private string _searchString;
 
         private readonly ICollectionView _collectionView;
+
+        private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
         public MainViewModel(IRmaServiceClient rmaOperations,
             IOrderUIOperations windowManager,
@@ -131,14 +132,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public void Initialize()
         {
-            var ordersFilter = new OrdersFilter
-            {
-                PeriodBegin = DateTime.Now.AddMonths(-2),
-                PeriodEnd = DateTime.Now,
-                MillingCenter = true,
-                Laboratory = true
-            };
-            FillOrders(ordersFilter);
+            FillOrders();
         }
 
         private void CreateLabOrderCommandHandler()
@@ -167,14 +161,15 @@ namespace Germadent.Rma.App.ViewModels
 
         private void FilterOrdersCommandHandler()
         {
-            var filter = _windowManager.CreateOrdersFilter();
+            var filter = _windowManager.CreateOrdersFilter(_ordersFilter);
             if (filter == null)
                 return;
 
-            FillOrders(filter);
+            _ordersFilter = filter;
+            FillOrders();
         }
 
-        private async void FillOrders(OrdersFilter filter = null)
+        private async void FillOrders()
         {
             IsBusy = true;
             try
@@ -183,7 +178,7 @@ namespace Germadent.Rma.App.ViewModels
                 OrderLiteDto[] orders = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    orders = _rmaOperations.GetOrders(filter);
+                    orders = _rmaOperations.GetOrders(_ordersFilter);
                 });
 
                 foreach (var order in orders)
@@ -254,8 +249,7 @@ namespace Germadent.Rma.App.ViewModels
         private void CopyOrderToClipboardCommandHandler()
         {
             var orderId = SelectedOrder.Model.WorkOrderId;
-            var reports = _rmaOperations.GetWorkReport(orderId);
-            _reporter.CreateReport(reports);
+            _reporter.CreateReport(orderId);
         }
     }
 }

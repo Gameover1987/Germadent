@@ -6,7 +6,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockMillingCenterAdditionalEquipmentViewModel : MillingCenterAdditionalEquipmentViewModel
     {
         public DesignMockMillingCenterAdditionalEquipmentViewModel()
-            : base(new DesignMockRmaServiceClient())
+            : base(new DesignMockDictionaryRepository())
         {
         }
     }

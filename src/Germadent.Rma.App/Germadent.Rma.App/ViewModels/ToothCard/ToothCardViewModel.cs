@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -14,23 +15,23 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 {
     public class ToothCardViewModel : ViewModelBase, IToothCardViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private readonly IClipboardHelper _clipboard;
         private ToothViewModel[] _selectedTeeth;
 
-        public ToothCardViewModel(IRmaServiceClient rmaOperations, IClipboardHelper clipboard)
+        public ToothCardViewModel(IDictionaryRepository dictionaryRepository, IClipboardHelper clipboard)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             _clipboard = clipboard;
 
             Teeth = new ObservableCollection<ToothViewModel>();
             Materials = new ObservableCollection<CheckableDictionaryItemViewModel>();
             Prosthetics = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
-            SelectPtostheticsConditionCommand = new DelegateCommand(x => SelectProstheticConditionsCommandHandler(x), x => CanSelectProstheticConditionCommandHandler());
-            SelectPtostheticsTypeCommand = new DelegateCommand(x => SelectProstheticsTypeCommandHandler(x), x => CanSelectTypeOfProstheticsCommandHandler());
-            SelectMaterialCommand = new DelegateCommand(x => SelectMaterialCommandHandler(x), x => CanSelectMaterialCommandHandler());
-            SelectBridgeCommand = new DelegateCommand(x => SelectBridgeCommandHandler(x), x => CanSelectBridgeCommandHandler());
+            SelectPtostheticsConditionCommand = new DelegateCommand(SelectProstheticConditionsCommandHandler, x => CanSelectProstheticConditionCommandHandler());
+            SelectPtostheticsTypeCommand = new DelegateCommand(SelectProstheticsTypeCommandHandler, x => CanSelectTypeOfProstheticsCommandHandler());
+            SelectMaterialCommand = new DelegateCommand(SelectMaterialCommandHandler, x => CanSelectMaterialCommandHandler());
+            SelectBridgeCommand = new DelegateCommand(SelectBridgeCommandHandler, x => CanSelectBridgeCommandHandler());
             ClearCommand = new DelegateCommand(x => ClearCommandHandler(), x => CanClearCommandHandler());
             CopyDescriptionCommand = new DelegateCommand(x => CopyDescriptionCommandHandler(), x => CanCopyDescriptionCommandHandler());
         }
@@ -60,9 +61,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public void Initialize(ToothDto[] toothCard)
         {
-            var prostheticConditions = _rmaOperations.GetDictionary(DictionaryType.ProstheticCondition);
-            var materials = _rmaOperations.GetDictionary(DictionaryType.Material);
-            var prosteticTypes = _rmaOperations.GetDictionary(DictionaryType.ProstheticType);
+            var prostheticConditions = _dictionaryRepository.GetItems(DictionaryType.ProstheticCondition);
+            var materials = _dictionaryRepository.GetItems(DictionaryType.Material);
+            var prosteticTypes = _dictionaryRepository.GetItems(DictionaryType.ProstheticType);
 
             foreach (var toothViewModel in Teeth)
             {

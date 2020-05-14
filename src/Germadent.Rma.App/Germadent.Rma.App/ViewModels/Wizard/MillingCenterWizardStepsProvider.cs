@@ -1,10 +1,12 @@
 ﻿using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+using Germadent.Rma.App.Views.DesignMock;
 using Germadent.Rma.Model;
 using Germadent.UI.Controls;
 
@@ -24,6 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICatalogSelectionUIOperations _catalogSelectionOperations;
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
+        private readonly IDictionaryRepository _dictionaryRepository;
 
         public MillingCenterWizardStepsProvider(IRmaServiceClient rmaServiceClient,
             IOrderFilesContainerViewModel filesContainer,
@@ -32,7 +35,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ICatalogUIOperations catalogUIOperations,
             ICatalogSelectionUIOperations catalogSelectionOperations,
             ICustomerRepository customerRepository,
-            IResponsiblePersonRepository responsiblePersonRepository)
+            IResponsiblePersonRepository responsiblePersonRepository,
+            IDictionaryRepository dictionaryRepository)
         {
             _rmaServiceClient = rmaServiceClient;
             _filesContainer = filesContainer;
@@ -42,6 +46,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _catalogSelectionOperations = catalogSelectionOperations;
             _customerRepository = customerRepository;
             _responsiblePersonRepository = responsiblePersonRepository;
+            _dictionaryRepository = dictionaryRepository;
         }
 
         public BranchType BranchType => BranchType.MillingCenter;
@@ -51,8 +56,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository),
-                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_rmaServiceClient, new ClipboardHelper()), _filesContainer),
-                new MillingCenterAdditionalEquipmentViewModel(_rmaServiceClient),
+                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, new ClipboardHelper()), _filesContainer),
+                new MillingCenterAdditionalEquipmentViewModel(_dictionaryRepository),
             };
         }
     }

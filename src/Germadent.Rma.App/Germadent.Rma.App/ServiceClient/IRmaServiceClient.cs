@@ -3,32 +3,6 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
-    public class CustomerRepositoryChangedEventArgs : EventArgs
-    {
-        public CustomerRepositoryChangedEventArgs(CustomerDto[] addedItems, CustomerDto[] deletedItems)
-        {
-            AddedItems = addedItems;
-            DeletedItems = deletedItems;
-        }
-
-        public CustomerDto[] AddedItems { get; }
-
-        public CustomerDto[] DeletedItems { get; }
-    }
-
-    public class ResponsiblePersonRepositoryChangedEventArgs : EventArgs
-    {
-        public ResponsiblePersonRepositoryChangedEventArgs(ResponsiblePersonDto[] addedItems, ResponsiblePersonDto[] deletedItems)
-        {
-            AddedItems = addedItems;
-            DeletedItems = deletedItems;
-        }
-
-        public ResponsiblePersonDto[] AddedItems { get; }
-
-        public ResponsiblePersonDto[] DeletedItems { get; }
-    }
-
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>

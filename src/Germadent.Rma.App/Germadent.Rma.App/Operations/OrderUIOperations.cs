@@ -25,7 +25,6 @@ namespace Germadent.Rma.App.Operations
             IOrdersFilterViewModel ordersFilterViewModel,
             IPrintModule printModule)
         {
-            //TODO Nekrasov: проверки на нул
             _dialogAgent = dialogAgent;
             _rmaOperations = rmaOperations;
             _labWizardProvider = labWizardStepsProvider;
@@ -67,7 +66,6 @@ namespace Germadent.Rma.App.Operations
                 return null;
 
             var changedOrder = millingCenterWizard.GetOrder();
-            //TODO Nekrasov:а если мод view?
             if (mode == WizardMode.Create)
             {
                 changedOrder = _rmaOperations.AddOrder(changedOrder);
@@ -83,21 +81,19 @@ namespace Germadent.Rma.App.Operations
             return changedOrder;
 
         }
-        //TODO Nekrasov:в конец класса
+
+        public OrdersFilter CreateOrdersFilter(OrdersFilter filter)
+        {
+            _ordersFilterViewModel.Initialize(filter);
+            if (_dialogAgent.ShowDialog<OrdersFilterWindow>(_ordersFilterViewModel) != true) 
+                return null;
+
+            return _ordersFilterViewModel.GetFilter();
+        }
+
         protected virtual IWizardViewModel CreateWizard(IWizardStepsProvider stepsProvider)
         {
             return new WizardViewModel(stepsProvider, _printModule);
-        }
-
-        public OrdersFilter CreateOrdersFilter()
-        {
-            //TODO Nekrasov: инверти ровать
-            if (_dialogAgent.ShowDialog<OrdersFilterWindow>(_ordersFilterViewModel) == true)
-            {
-                return _ordersFilterViewModel.GetFilter();
-            }
-
-            return null;
         }
     }
 }

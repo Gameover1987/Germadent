@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.ServiceClient.Repository;
 
@@ -9,12 +6,19 @@ namespace Germadent.Rma.App.Infrastructure
 {
     public class AppInitializer : IAppInitializer
     {
-        private readonly IRepositoryContainer _repositoryContainer;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IResponsiblePersonRepository _responsiblePersonRepository;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private readonly ILogger _logger;
 
-        public AppInitializer(IRepositoryContainer repositoryContainer, ILogger logger)
+        public AppInitializer(ICustomerRepository customerRepository,
+            IResponsiblePersonRepository responsiblePersonRepository,
+            IDictionaryRepository dictionaryRepository,
+            ILogger logger)
         {
-            _repositoryContainer = repositoryContainer;
+            _customerRepository = customerRepository;
+            _responsiblePersonRepository = responsiblePersonRepository;
+            _dictionaryRepository = dictionaryRepository;
             _logger = logger;
         }
 
@@ -23,13 +27,13 @@ namespace Germadent.Rma.App.Infrastructure
             try
             {
                 SendMessage("Инициализация репозитория заказчиков ...");
-                _repositoryContainer.CustomerRepository.Initialize();
+                _customerRepository.Initialize();
 
                 SendMessage("Инициализация репозитория ответственных лиц ...");
-                _repositoryContainer.ResponsiblePersonRepository.Initialize();
+                _responsiblePersonRepository.Initialize();
 
                 SendMessage("Инициализация репозитория словарей ...");
-                _repositoryContainer.DictionaryRepository.Initialize();
+                _dictionaryRepository.Initialize();
 
                 InitializationCompleted?.Invoke(this, EventArgs.Empty);
             }

@@ -34,6 +34,21 @@ namespace Germadent.Rma.App.Views.DesignMock
         public ResponsiblePersonDto[] Items { get; }
     }
 
+    public class DesignMockDictionaryRepository :IDictionaryRepository
+    {
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public event EventHandler<EventArgs> Changed;
+        public DictionaryItemDto[] Items { get; }
+        public DictionaryItemDto[] GetItems(DictionaryType dictionary)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class DesignMockMillingCenterInfoWizardStepViewModel : MillingCenterInfoWizardStepViewModel
     {
         public DesignMockMillingCenterInfoWizardStepViewModel() 

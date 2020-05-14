@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
@@ -14,12 +15,11 @@ namespace Germadent.Rma.App.Reporting
 
     public class PrintableOrderConverter : IPrintableOrderConverter
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
 
-        public PrintableOrderConverter(IRmaServiceClient rmaOperations)
+        public PrintableOrderConverter(IDictionaryRepository dictionaryRepository)
         {
-            //TODO Nekrasov: проверка на нул
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
         }
 
         public PrintableOrder ConvertFrom(OrderDto order)
@@ -104,7 +104,7 @@ namespace Germadent.Rma.App.Reporting
 
         private string GetTransparenceName(int transparenceId)
         {
-            var transparences = _rmaOperations.GetDictionary(DictionaryType.Transparency);
+            var transparences = _dictionaryRepository.GetItems(DictionaryType.Transparency);
             return transparences.First(x => x.Id == transparenceId).Name;
         }
     }

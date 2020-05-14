@@ -6,14 +6,14 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockOrdersFilterViewModel : OrdersFilterViewModel
     {
-        public DesignMockOrdersFilterViewModel() : base(new DesignMockRmaServiceClient(), new MockLogger())
+        public DesignMockOrdersFilterViewModel() : base(new DesignMockDictionaryRepository(), new MockLogger())
         {
             MillingCenter = true;
             Laboratory = true;
             PeriodBegin = DateTime.Now.AddDays(-30);
             PeriodEnd = DateTime.Now;
             Customer = "Какой то заказчик";
-            Employee = "Какой то сотрудник";
+            Doctor = "Какой то сотрудник";
             Patient = "Какой то пациент";
         }
     }

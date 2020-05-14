@@ -6,6 +6,6 @@ namespace Germadent.Rma.App.ViewModels
     {
         OrdersFilter GetFilter();
 
-        void Initialize();
+        void Initialize(OrdersFilter filter);
     }
 }

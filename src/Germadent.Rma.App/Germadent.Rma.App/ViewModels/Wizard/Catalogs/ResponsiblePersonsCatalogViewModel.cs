@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
     public class ResponsiblePersonsCatalogViewModel : ViewModelBase, IResponsiblePersonCatalogViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly ILogger _logger;
 
@@ -25,9 +25,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private ICollectionView _customersView;
 
-        public ResponsiblePersonsCatalogViewModel(IRmaServiceClient rmaOperations, ICatalogUIOperations catalogUIOperations, ILogger logger)
+        public ResponsiblePersonsCatalogViewModel(IResponsiblePersonRepository responsiblePersonRepository, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {
-            _rmaOperations = rmaOperations;
+            _responsiblePersonRepository = responsiblePersonRepository;
             _catalogUIOperations = catalogUIOperations;
             _logger = logger;
 
@@ -100,20 +100,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             }
         }
 
-        public async void Initialize()
+        public void Initialize()
         {
             try
             {
                 IsBusy = true;
                 ResponsiblePersons.Clear();
 
-                ResponsiblePersonDto[] responsiblePersons = null;
-                await ThreadTaskExtensions.Run(() =>
-                {
-                    responsiblePersons = _rmaOperations.GetResponsiblePersons();
-                });
-
-                foreach (var responsiblePersonDto in responsiblePersons)
+                foreach (var responsiblePersonDto in _responsiblePersonRepository.Items)
                 {
                     ResponsiblePersons.Add(new ResponsiblePersonViewModel(responsiblePersonDto));
                 }

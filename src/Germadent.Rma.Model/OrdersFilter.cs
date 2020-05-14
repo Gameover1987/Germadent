@@ -35,5 +35,18 @@ namespace Germadent.Rma.Model
         public string Patient { get; set; }
 
         public DictionaryItemDto[] Materials { get; set; }
+
+        public static OrdersFilter CreateDefault()
+        {
+            var now = DateTime.Now;
+
+            return new OrdersFilter
+            {
+                PeriodBegin = now.AddDays(-30),
+                PeriodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59),
+                MillingCenter = true,
+                Laboratory = true
+            };
+        }
     }
 }

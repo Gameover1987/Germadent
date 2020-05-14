@@ -18,10 +18,11 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new System.NotImplementedException();
         }
 
-        public OrdersFilter CreateOrdersFilter()
+        public OrdersFilter CreateOrdersFilter(OrdersFilter filter)
         {
             throw new System.NotImplementedException();
         }
+
 
         public ICustomerViewModel SelectCustomer(string mask)
         {

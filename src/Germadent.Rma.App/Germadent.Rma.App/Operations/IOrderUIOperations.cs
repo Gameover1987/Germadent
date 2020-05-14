@@ -9,6 +9,6 @@ namespace Germadent.Rma.App.Operations
 
         OrderDto CreateMillingCenterOrder(OrderDto order, WizardMode mode);
 
-        OrdersFilter CreateOrdersFilter();
+        OrdersFilter CreateOrdersFilter(OrdersFilter filter);
     }
 }

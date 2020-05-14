@@ -2,6 +2,7 @@
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
@@ -9,17 +10,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private string _workDescription;
         private string _colorAndFeatures;
-        private int _transparency;
         private string _prostheticArticul;
 
         private DictionaryItemDto _selectedTransparency;
 
-        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaServiceClient rmaOperations)
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IDictionaryRepository dictionaryRepository)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             FilesContainer = orderFilesContainer;
             ToothCard = toothCard;
         }
@@ -85,11 +85,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             _workDescription = order.WorkDescription;
             _colorAndFeatures = order.ColorAndFeatures;
-            _transparency = order.Transparency;
             _prostheticArticul = order.ProstheticArticul;
 
             Transparences.Clear();
-            var transparences = _rmaOperations.GetDictionary(DictionaryType.Transparency);
+            var transparences = _dictionaryRepository.GetItems(DictionaryType.Transparency);
             transparences.ForEach(x => Transparences.Add(x));
 
             SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);
