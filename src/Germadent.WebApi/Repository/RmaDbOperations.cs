@@ -261,8 +261,7 @@ namespace Germadent.WebApi.Repository
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
                 command.Parameters.Add(new SqlParameter("@customerID", SqlDbType.Int)).Value = order.CustomerId;
-                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value =
-                    order.ResponsiblePersonId;
+                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@dateDelivery", SqlDbType.DateTime)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
@@ -874,6 +873,28 @@ namespace Germadent.WebApi.Repository
                     command.ExecuteNonQuery();
 
                     customer.Id = command.Parameters["@customerId"].Value.ToInt();
+
+                    return customer;
+                }
+            }
+        }
+
+        public CustomerDto UpdateCustomer(CustomerDto customer)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UpdateCustomer", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = customer.Id;
+                    command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = customer.Name;
+                    command.Parameters.Add(new SqlParameter("@customerPhone", SqlDbType.NVarChar)).Value = customer.Phone.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerEmail", SqlDbType.NVarChar)).Value = customer.Email.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerWebsite", SqlDbType.NVarChar)).Value = customer.WebSite.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@customerDescription", SqlDbType.NVarChar)).Value = customer.Description.GetValueOrDbNull();
+
+                    command.ExecuteNonQuery();
 
                     return customer;
                 }

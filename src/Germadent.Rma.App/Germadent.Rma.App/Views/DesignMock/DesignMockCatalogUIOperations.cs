@@ -12,6 +12,11 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new System.NotImplementedException();
         }
 
+        public CustomerDto UpdateCustomer(CustomerDto customer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
             throw new System.NotImplementedException();

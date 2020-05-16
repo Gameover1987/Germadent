@@ -9,7 +9,7 @@ namespace Germadent.Rma.App.ViewModels
 
         string DisplayName { get; }
 
-        string WebSite { get; set; }
+        string WebSite { get; }
 
         string Email { get;}
 
@@ -17,32 +17,37 @@ namespace Germadent.Rma.App.ViewModels
 
         string Description { get; }
 
+        void Update(CustomerDto customer);
+
         CustomerDto ToDto();
     }
 
     public class CustomerViewModel : ViewModelBase, ICustomerViewModel
     {
+        private CustomerDto _customer;
+
         public CustomerViewModel(CustomerDto customer)
         {
-            CustomerId = customer.Id;
-            DisplayName = customer.Name;
-            Phone = customer.Phone;
-            Description = customer.Description;
-            Email = customer.Email;
-            WebSite = customer.WebSite;
+            _customer = customer;
         }
 
-        public int CustomerId { get; }
+        public int CustomerId => _customer.Id;
 
-        public string WebSite { get; set; }
+        public string WebSite => _customer.WebSite;
 
-        public string DisplayName { get; }
+        public string DisplayName => _customer.Name;
 
-        public string Email { get; set; }
+        public string Email => _customer.Email;
 
-        public string Phone { get; }
+        public string Phone => _customer.Phone;
 
-        public string Description { get; }
+        public string Description => _customer.Description;
+
+        public void Update(CustomerDto customer)
+        {
+            _customer = customer;
+            OnPropertyChanged();
+        }
 
         public CustomerDto ToDto()
         {

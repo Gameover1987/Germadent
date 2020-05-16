@@ -76,6 +76,13 @@ namespace Germadent.Rma.App.ServiceClient
         CustomerDto AddCustomer(CustomerDto сustomerDto);
 
         /// <summary>
+        /// Обновляет данные заказчика
+        /// </summary>
+        /// <param name="customerDto"></param>
+        /// <returns></returns>
+        CustomerDto UpdateCustomer(CustomerDto customerDto);
+
+        /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
         /// </summary>
         /// <param name="customerId"></param>

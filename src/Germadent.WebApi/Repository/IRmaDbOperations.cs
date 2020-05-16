@@ -74,6 +74,13 @@ namespace Germadent.WebApi.Repository
         CustomerDto AddCustomer(CustomerDto customer);
 
         /// <summary>
+        /// Обновляет данные заказчика
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        CustomerDto UpdateCustomer(CustomerDto customer);
+
+        /// <summary>
         /// Возвращает спиок ответственных лиц по Id заказчика
         /// </summary>
         /// <param name="customerId"></param>

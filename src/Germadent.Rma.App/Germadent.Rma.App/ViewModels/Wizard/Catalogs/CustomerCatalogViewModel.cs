@@ -140,7 +140,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void EditCustomerCommandHandler()
         {
+            var updatedCustomer = _catalogUIOperations.UpdateCustomer(SelectedCustomer.ToDto());
+            if (updatedCustomer == null)
+                return;
 
+            SelectedCustomer.Update(updatedCustomer);
         }
 
         private bool CanDeleteCustomerCommandHandler()

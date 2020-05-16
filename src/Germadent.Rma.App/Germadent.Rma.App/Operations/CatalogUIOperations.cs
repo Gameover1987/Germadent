@@ -35,6 +35,17 @@ namespace Germadent.Rma.App.Operations
             return _rmaServiceClient.AddCustomer(newCustomer);
         }
 
+        public CustomerDto UpdateCustomer(CustomerDto customer)
+        {
+            _addCustomerViewModel.Initialize(CardViewMode.Edit, customer);
+
+            if (_dialogAgent.ShowDialog<AddCustomerWindow>(_addCustomerViewModel) != true)
+                return null;
+
+            var updatedCustomer = _addCustomerViewModel.GetCustomer();
+            return _rmaServiceClient.UpdateCustomer(updatedCustomer);
+        }
+
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
             _addResponsiblePersonViewModel.Initialize(CardViewMode.Add, responsiblePersonDto);

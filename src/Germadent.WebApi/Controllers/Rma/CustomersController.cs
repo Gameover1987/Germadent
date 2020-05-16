@@ -26,5 +26,10 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             return _rmaDbOperations.AddCustomer(customer);
         }
+
+        public CustomerDto UpdateCustomer(CustomerDto customer)
+        {
+            return _rmaDbOperations.UpdateCustomer(customer);
+        }
     }
 }

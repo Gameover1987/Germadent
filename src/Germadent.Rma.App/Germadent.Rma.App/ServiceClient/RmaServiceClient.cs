@@ -80,6 +80,13 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<CustomerDto[]>(string.Format("/api/Customers?mask={0}", mask));
         }
 
+        public CustomerDto UpdateCustomer(CustomerDto customerDto)
+        {
+            var updatedCustomer = ExecuteHttpPut<CustomerDto>("/api/customers", customerDto);
+            CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { updatedCustomer }, null));
+            return updatedCustomer;
+        }
+
         public ResponsiblePersonDto[] GetResponsiblePersons()
         {
             return ExecuteHttpGet<ResponsiblePersonDto[]>(string.Format("/api/Rma/responsiblePersons"));
