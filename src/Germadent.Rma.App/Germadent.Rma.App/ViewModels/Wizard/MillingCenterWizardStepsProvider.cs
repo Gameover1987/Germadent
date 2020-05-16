@@ -2,7 +2,6 @@
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -18,7 +17,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class MillingCenterWizardStepsProvider : IMillingCenterWizardStepsProvider
     {
-        private readonly IRmaServiceClient _rmaServiceClient;
         private readonly IOrderFilesContainerViewModel _filesContainer;
         private readonly ICustomerSuggestionProvider _customerSuggestionProvider;
         private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonSuggestionProvider;
@@ -28,8 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
 
-        public MillingCenterWizardStepsProvider(IRmaServiceClient rmaServiceClient,
-            IOrderFilesContainerViewModel filesContainer,
+        public MillingCenterWizardStepsProvider(IOrderFilesContainerViewModel filesContainer,
             ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonSuggestionProvider,
             ICatalogUIOperations catalogUIOperations,
@@ -38,7 +35,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             IResponsiblePersonRepository responsiblePersonRepository,
             IDictionaryRepository dictionaryRepository)
         {
-            _rmaServiceClient = rmaServiceClient;
             _filesContainer = filesContainer;
             _customerSuggestionProvider = customerSuggestionProvider;
             _responsiblePersonSuggestionProvider = responsiblePersonSuggestionProvider;

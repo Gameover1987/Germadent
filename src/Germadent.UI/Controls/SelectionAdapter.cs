@@ -34,27 +34,28 @@ namespace Germadent.UI.Controls
             get { return _selectorControl; }
             set { _selectorControl = value; }
         }
-       
 
         public void HandleKeyDown(KeyEventArgs key)
         {
-            Debug.WriteLine(key.Key);
             switch (key.Key)
             {
                 case Key.Down:
                     IncrementSelection();
                     break;
+
                 case Key.Up:
                     DecrementSelection();
                     break;
+
                 case Key.Enter:
                     Commit?.Invoke();
-
                     break;
+
                 case Key.Escape:
                     Cancel?.Invoke();
-
+                    key.Handled = true;
                     break;
+
                 case Key.Tab:
                     Commit?.Invoke();
                     break;

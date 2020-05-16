@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Germadent.Common.Extensions;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -14,7 +13,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         private readonly ICatalogSelectionUIOperations _catalogSelectionOperations;
         private readonly ICatalogUIOperations _catalogUIOperations;
-        private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonsSuggestionsProvider;
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
 
@@ -36,11 +34,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             _catalogSelectionOperations = catalogSelectionOperations;
             _catalogUIOperations = catalogUIOperations;
-            _responsiblePersonsSuggestionsProvider = responsiblePersonsSuggestionsProvider;
             _customerRepository = customerRepository;
             _customerRepository.Changed += CustomerRepositoryOnChanged;
             _responsiblePersonRepository = responsiblePersonRepository;
             _responsiblePersonRepository.Changed += ResponsiblePersonRepositoryOnChanged;
+
             CustomerSuggestionProvider = customerSuggestionProvider;
             ResponsiblePersonsSuggestionsProvider = responsiblePersonsSuggestionsProvider;
 

@@ -6,10 +6,11 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockLaboratoryInfoWizardStepViewModel : LaboratoryInfoWizardStepViewModel
     {
-        public DesignMockLaboratoryInfoWizardStepViewModel()
+        public DesignMockLaboratoryInfoWizardStepViewModel() 
+            : base(new DesignMockCatalogSelectionOperations(), new DesignMockCatalogUIOperations(), new DesignMockCustomerSuggestionProvider(), new DesignMockResponsiblePersonsSuggestionProvider(), new DesignMockCustomerRepository(), new DesignMockResponsiblePersonRepository())
         {
             Customer = "Какой то заказчик";
-            DoctorFio = "Какой то доктор";
+            ResponsiblePerson = "Какой то доктор";
             PatientFio = "Какой то пациент";
 
             Gender = Gender.Female;

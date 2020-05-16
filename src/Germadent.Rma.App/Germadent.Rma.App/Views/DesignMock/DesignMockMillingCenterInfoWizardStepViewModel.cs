@@ -55,7 +55,25 @@ namespace Germadent.Rma.App.Views.DesignMock
 
         public event EventHandler<EventArgs> Changed;
 
-        public ResponsiblePersonDto[] Items { get; }
+        public ResponsiblePersonDto[] Items
+        {
+            get
+            {
+                return new ResponsiblePersonDto[]
+                {
+                    new ResponsiblePersonDto
+                    {
+                        Id = 1,
+                        FullName = "Ivanov"
+                    },
+                    new ResponsiblePersonDto
+                    {
+                        Id = 2,
+                        FullName = "Petrov"
+                    },
+                };
+            }
+        }
     }
 
     public class DesignMockDictionaryRepository : IDictionaryRepository
