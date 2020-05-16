@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ServiceClient;
+﻿using System.Windows;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
@@ -44,6 +45,23 @@ namespace Germadent.Rma.App.Operations
 
             var updatedCustomer = _addCustomerViewModel.GetCustomer();
             return _rmaServiceClient.UpdateCustomer(updatedCustomer);
+        }
+
+        public CustomerDeleteResult DeleteCustomer(int customerId)
+        {
+            var questionMsg = "Действительно хотите удалить заказчика?";
+            if (_dialogAgent.ShowMessageDialog(questionMsg, Properties.Resources.AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return null;
+
+            var result =  _rmaServiceClient.DeleteCustomer(customerId);
+            if (result.Count == 0)
+            {
+                var resultMsg = "Нельзя удалить заказчика на которого назначены заказнаряды!";
+                _dialogAgent.ShowMessageDialog(resultMsg, Properties.Resources.AppTitle, MessageBoxButton.OK);
+                return null;
+            }
+
+            return result;
         }
 
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)

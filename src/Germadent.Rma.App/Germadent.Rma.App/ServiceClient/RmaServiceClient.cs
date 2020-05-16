@@ -77,7 +77,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public CustomerDto[] GetCustomers(string mask)
         {
-            return ExecuteHttpGet<CustomerDto[]>(string.Format("/api/Customers?mask={0}", mask));
+            return ExecuteHttpGet<CustomerDto[]>($"/api/Customers?mask={mask}");
         }
 
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
@@ -85,6 +85,11 @@ namespace Germadent.Rma.App.ServiceClient
             var updatedCustomer = ExecuteHttpPut<CustomerDto>("/api/customers", customerDto);
             CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { updatedCustomer }, null));
             return updatedCustomer;
+        }
+
+        public CustomerDeleteResult DeleteCustomer(int customerId)
+        {
+            return ExecuteHttpDelete<CustomerDeleteResult>($"/api/Customers/{customerId}");
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons()

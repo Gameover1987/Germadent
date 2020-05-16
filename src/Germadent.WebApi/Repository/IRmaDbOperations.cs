@@ -92,5 +92,12 @@ namespace Germadent.WebApi.Repository
         /// </summary>
         /// <returns></returns>
         ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePerson);
+
+        /// <summary>
+        /// Удаляет заказчика по его Id
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        CustomerDeleteResult DeleteCustomer(int customerId);
     }
 }

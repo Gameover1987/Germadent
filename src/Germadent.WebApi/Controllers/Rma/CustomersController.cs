@@ -27,9 +27,16 @@ namespace Germadent.WebApi.Controllers.Rma
             return _rmaDbOperations.AddCustomer(customer);
         }
 
+        [HttpPut]
         public CustomerDto UpdateCustomer(CustomerDto customer)
         {
             return _rmaDbOperations.UpdateCustomer(customer);
+        }
+
+        [HttpDelete("{id:int}")]
+        public CustomerDeleteResult DeleteCustomer(int id)
+        {
+            return _rmaDbOperations.DeleteCustomer(id);
         }
     }
 }

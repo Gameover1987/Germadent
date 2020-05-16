@@ -14,4 +14,11 @@
 
         public string Description { get; set; }
     }
+
+    public class CustomerDeleteResult
+    {
+        public int CustomerId { get; set; }
+
+        public int Count { get; set; }
+    }
 }

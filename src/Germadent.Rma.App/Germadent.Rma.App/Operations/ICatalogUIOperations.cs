@@ -17,6 +17,13 @@ namespace Germadent.Rma.App.Operations
         /// <param name="customer"></param>
         /// <returns></returns>
         CustomerDto UpdateCustomer(CustomerDto customer);
+        
+        /// <summary>
+        /// Id удаляемого заказчика
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        CustomerDeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Добавить ответственное лицо

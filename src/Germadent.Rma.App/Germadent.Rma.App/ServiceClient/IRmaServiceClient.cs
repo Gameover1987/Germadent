@@ -83,6 +83,13 @@ namespace Germadent.Rma.App.ServiceClient
         CustomerDto UpdateCustomer(CustomerDto customerDto);
 
         /// <summary>
+        /// Удаляет заказчика по его Id
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        CustomerDeleteResult DeleteCustomer(int customerId);
+
+        /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
         /// </summary>
         /// <param name="customerId"></param>

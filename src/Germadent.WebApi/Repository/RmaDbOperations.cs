@@ -855,6 +855,31 @@ namespace Germadent.WebApi.Repository
             }
         }
 
+        public CustomerDeleteResult DeleteCustomer(int customerId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UnionCustomers", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@oldCustomerId", SqlDbType.NVarChar)).Value = customerId;
+                    command.Parameters.Add(new SqlParameter("@newCustomerId", SqlDbType.NVarChar)).Value = DBNull.Value;
+                    command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var count = command.Parameters["@resultCount"].Value.ToInt();
+
+                    return new CustomerDeleteResult
+                    {
+                        CustomerId = customerId,
+                        Count = count
+                    };
+                }
+            }
+        }
+
         public CustomerDto AddCustomer(CustomerDto customer)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))

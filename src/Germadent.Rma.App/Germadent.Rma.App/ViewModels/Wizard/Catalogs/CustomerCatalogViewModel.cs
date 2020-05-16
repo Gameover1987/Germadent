@@ -154,7 +154,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void DeleteCustomerCommandHandler()
         {
+            var result = _catalogUIOperations.DeleteCustomer(SelectedCustomer.CustomerId);
+            if (result == null)
+                return;
 
+            Customers.Remove(SelectedCustomer);
         }
     }
 }
