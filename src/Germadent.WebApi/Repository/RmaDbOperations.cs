@@ -60,7 +60,7 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        private ToothDto[] AddOrUpdateToothCard(ToothDto[] toothCard, SqlConnection connection)
+        private void AddOrUpdateToothCard(ToothDto[] toothCard, SqlConnection connection)
         {
             var toothCardJson = toothCard.SerializeToJson(Formatting.Indented);
 
@@ -72,8 +72,6 @@ namespace Germadent.WebApi.Repository
                 command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = toothCardJson;
 
                 command.ExecuteNonQuery();
-
-                return toothCard;
             }
         }
 
@@ -143,31 +141,26 @@ namespace Germadent.WebApi.Repository
 
         public void UpdateOrder(OrderDto order, Stream stream)
         {
-            var cmdText = "";
-
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
-                using (var command = new SqlCommand(cmdText, connection))
+                switch (order.BranchType)
                 {
-                    switch (order.BranchType)
-                    {
-                        case BranchType.Laboratory:
-                            UpdateWorkOrderDL(order, connection);
-                            break;
+                    case BranchType.Laboratory:
+                        UpdateWorkOrderDL(order, connection);
+                        break;
 
-                        case BranchType.MillingCenter:
-                            UpdateWorkOrderMC(order, connection);
-                            break;
+                    case BranchType.MillingCenter:
+                        UpdateWorkOrderMC(order, connection);
+                        break;
 
-                        default:
-                            throw new NotSupportedException("Неизвестный тип филиала");
-                    }
-
-                    AddOrUpdateToothCard(order.ToothCard, connection);
-                    SaveOrderDataFile(order, connection, stream);
+                    default:
+                        throw new NotSupportedException("Неизвестный тип филиала");
                 }
+
+                AddOrUpdateToothCard(order.ToothCard, connection);
+                SaveOrderDataFile(order, connection, stream);
             }
         }
 
@@ -805,7 +798,7 @@ namespace Germadent.WebApi.Repository
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
         {
-            var cmdText = string.Format("select * from GetResponsiblePersons(default, default)");
+            var cmdText = "select * from GetResponsiblePersons(default, default)";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
