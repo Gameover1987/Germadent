@@ -49,6 +49,12 @@
                     Command="{Binding CloseOrderCommand}"/>
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
+
+            <TextBlock Text="Работа со справочниками" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
+            <Button Content="Заказчики" Margin="0,6,0,0"
+                    Command="{Binding ShowCustomersDictionaryCommand}"/>
+            <Button Content="Ответственные лица" Margin="0,6,0,0"
+                    Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
