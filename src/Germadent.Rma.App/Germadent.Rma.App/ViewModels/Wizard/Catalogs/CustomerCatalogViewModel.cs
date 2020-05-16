@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         private bool _isBusy;
         private string _searchString;
 
-        private ICollectionView _customersView;
+        private readonly ICollectionView _customersView;
 
         public CustomerCatalogViewModel(ICustomerRepository сustomerRepository, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {

@@ -7,18 +7,42 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockCustomerRepository : ICustomerRepository
     {
-        public CustomerDto[] Items { get; }
+        public CustomerDto[] Items
+        {
+            get
+            {
+                return new CustomerDto[]
+                {
+                    new CustomerDto
+                    {
+                        Name = "Vasya",
+                        Description = "Lorem ipsum dolat sit amet",
+                        Email = "asd@asd.com", Id = 1,
+                        Phone = "222-333",
+                        WebSite = "yandex.ru"
+                    },
+                    new CustomerDto
+                    {
+                        Name = "Petya",
+                        Description = "Lorem ipsum dolat sit amet",
+                        Email = "asd@asd.com", Id = 1,
+                        Phone = "222-333",
+                        WebSite = "yandex.ru"
+                    },
+                };
+            }
+        }
 
         public void Initialize()
         {
-            
+
         }
 
         public void ReLoad()
         {
             throw new NotImplementedException();
         }
-        
+
         public event EventHandler<EventArgs> Changed;
     }
 
@@ -34,7 +58,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         public ResponsiblePersonDto[] Items { get; }
     }
 
-    public class DesignMockDictionaryRepository :IDictionaryRepository
+    public class DesignMockDictionaryRepository : IDictionaryRepository
     {
         public void Initialize()
         {
@@ -51,9 +75,9 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockMillingCenterInfoWizardStepViewModel : MillingCenterInfoWizardStepViewModel
     {
-        public DesignMockMillingCenterInfoWizardStepViewModel() 
-            : base(new DesignMockCatalogSelectionOperations(), new DesignMockCatalogUIOperations(),  new DesignMockCustomerSuggestionProvider(), new DesignMockResponsiblePersonsSuggestionProvider(),  new DesignMockCustomerRepository(), new DesignMockResponsiblePersonRepository())
-        { 
+        public DesignMockMillingCenterInfoWizardStepViewModel()
+            : base(new DesignMockCatalogSelectionOperations(), new DesignMockCatalogUIOperations(), new DesignMockCustomerSuggestionProvider(), new DesignMockResponsiblePersonsSuggestionProvider(), new DesignMockCustomerRepository(), new DesignMockResponsiblePersonRepository())
+        {
             Customer = "Заказчик Заказчиков";
             Patient = "Пациент Пациентов";
             ResponsiblePerson = "Техник Техникович";
