@@ -25,6 +25,8 @@ namespace Germadent.Rma.App.Reporting
         public void CreateReport(int workOrderId)
         {
             var reports = _rmaServiceClient.GetWorkReport(workOrderId);
+            if (reports.Length == 0)
+                return;
 
             var builder = new StringBuilder();
 

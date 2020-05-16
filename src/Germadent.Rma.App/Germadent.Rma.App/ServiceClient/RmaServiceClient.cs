@@ -34,8 +34,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto GetOrderById(int id)
         {
-            var api = string.Format("/api/orders/{0}", id);
-            return ExecuteHttpGet<OrderDto>(api);
+            return ExecuteHttpGet<OrderDto>($"/api/orders/{id}");
         }
 
         public IFileResponse GetDataFileByWorkOrderId(int id)
@@ -65,14 +64,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public ReportListDto[] GetWorkReport(int id)
         {
-            return null;
-            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/excel/{0}", id);
-
-            //using (var response = _client.GetAsync(apiUrl).Result)
-            //{
-            //    var excelDto = response.Content.ReadAsStringAsync().Result.DeserializeFromJson<ReportListDto[]>();
-            //    return excelDto;
-            //}
+            return ExecuteHttpGet<ReportListDto[]>($"/api/rma/reports/{id}");
         }
 
         public CustomerDto[] GetCustomers(string mask)
