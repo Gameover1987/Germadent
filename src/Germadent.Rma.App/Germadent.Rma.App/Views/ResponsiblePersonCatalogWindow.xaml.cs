@@ -18,16 +18,28 @@ namespace Germadent.Rma.App.Views
     /// </summary>
     public partial class ResponsiblePersonCatalogWindow : Window
     {
+        public static readonly DependencyProperty IsOpenedFromMainWindowProperty = DependencyProperty.Register(
+            "IsOpenedFromMainWindow", typeof(bool), typeof(ResponsiblePersonCatalogWindow), new PropertyMetadata(default(bool)));
+
+        public bool IsOpenedFromMainWindow
+        {
+            get { return (bool)GetValue(IsOpenedFromMainWindowProperty); }
+            set { SetValue(IsOpenedFromMainWindowProperty, value); }
+        }
+
         public ResponsiblePersonCatalogWindow()
         {
             InitializeComponent();
             
             Loaded += OnLoaded;
+            DataContextChanged += ResponsiblePersonCatalogWindow_OnDataContextChanged;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             SearchComboBox.FocusTextBox();
+
+            IsOpenedFromMainWindow = Owner is MainWindow;
         }
 
         private void ResponsiblePersonCatalogWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

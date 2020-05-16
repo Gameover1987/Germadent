@@ -11,12 +11,12 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
+        x:Name="Window"
         Title="Справочник заказчиков" 
         MinHeight="500"
         Height="500" 
         MinWidth="800"
         Width="800"
-        DataContextChanged="CustomerCatalogWindow_OnDataContextChanged"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockCustomerCatalogViewModel}, IsDesignTimeCreatable=True}"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Grid Margin="12">
@@ -69,7 +69,12 @@
 
         <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,12,-12,12"/>
 
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Grid.Row="2" Grid.Column="1" Width="100" HorizontalAlignment="Right" IsCancel="True"
+                Visibility="{Binding ElementName=Window, Path=IsOpenedFromMainWindow, Converter={StaticResource BoolToVisibilityConverter}}"
+                Content="Закрыть" />
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Visibility="{Binding ElementName=Window, Path=IsOpenedFromMainWindow, Converter={StaticResource BoolToInvisibilityConverter}}">
             <Button Content="Выбрать" Width="100" IsDefault="True"
                     Command="{Binding SelectCustomerCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
