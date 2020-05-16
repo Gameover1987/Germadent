@@ -92,7 +92,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IAddResponsiblePersonViewModel, AddResponsiblePersonViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IResponsiblePersonCatalogViewModel, ResponsiblePersonsCatalogViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IResponsiblePersonCatalogViewModel, ResponsiblePersonCatalogViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IOrderFilesContainerViewModel, OrderFilesContainerViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICustomerSuggestionProvider, CustomerSuggestionProvider>(new ContainerControlledLifetimeManager());

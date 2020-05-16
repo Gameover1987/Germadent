@@ -31,5 +31,19 @@ namespace Germadent.Rma.App.Operations
         /// <param name="responsiblePersonDto"></param>
         /// <returns></returns>
         ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto);
+
+        /// <summary>
+        /// Обновляет данные ответственного лица
+        /// </summary>
+        /// <param name="responsiblePersonDto"></param>
+        /// <returns></returns>
+        ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto);
+
+        /// <summary>
+        /// Удаляет ответственное лицо
+        /// </summary>
+        /// <param name="responsiblePersonId"></param>
+        /// <returns></returns>
+        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId);
     }
 }

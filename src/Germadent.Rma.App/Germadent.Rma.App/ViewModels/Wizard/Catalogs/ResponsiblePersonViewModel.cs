@@ -1,16 +1,19 @@
 ﻿using System;
 using Germadent.Rma.Model;
+using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
-    public class ResponsiblePersonViewModel : IResponsiblePersonViewModel
+    public class ResponsiblePersonViewModel : ViewModelBase, IResponsiblePersonViewModel
     {
-        private readonly ResponsiblePersonDto _responsiblePersonDto;
+        private ResponsiblePersonDto _responsiblePersonDto;
 
         public ResponsiblePersonViewModel(ResponsiblePersonDto responsiblePersonDto)
         {
             _responsiblePersonDto = responsiblePersonDto;
         }
+
+        public int ResponsiblePersonId => _responsiblePersonDto.Id;
 
         public string FullName => _responsiblePersonDto.FullName;
 
@@ -25,6 +28,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         public ResponsiblePersonDto ToDto()
         {
             return _responsiblePersonDto;
+        }
+
+        public void Update(ResponsiblePersonDto responsiblePersonDto)
+        {
+            _responsiblePersonDto = responsiblePersonDto;
+            OnPropertyChanged();
         }
     }
 }

@@ -13,7 +13,7 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {
-    public class ResponsiblePersonsCatalogViewModel : ViewModelBase, IResponsiblePersonCatalogViewModel
+    public class ResponsiblePersonCatalogViewModel : ViewModelBase, IResponsiblePersonCatalogViewModel
     {
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly ICatalogUIOperations _catalogUIOperations;
@@ -23,9 +23,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         private bool _isBusy;
         private string _searchString;
 
-        private ICollectionView _customersView;
+        private readonly ICollectionView _customersView;
 
-        public ResponsiblePersonsCatalogViewModel(IResponsiblePersonRepository responsiblePersonRepository, ICatalogUIOperations catalogUIOperations, ILogger logger)
+        public ResponsiblePersonCatalogViewModel(IResponsiblePersonRepository responsiblePersonRepository, ICatalogUIOperations catalogUIOperations, ILogger logger)
         {
             _responsiblePersonRepository = responsiblePersonRepository;
             _catalogUIOperations = catalogUIOperations;
@@ -139,7 +139,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void EditResponsiblePersonCommandHandler()
         {
+            var updatedResponsiblePerson = _catalogUIOperations.UpdateResponsiblePerson(SelectedResponsiblePerson.ToDto());
+            if (updatedResponsiblePerson == null)
+                return;
 
+            SelectedResponsiblePerson.Update(updatedResponsiblePerson);
         }
 
         private bool CanDeleteResponsiblePersonCommandHandler()
@@ -149,7 +153,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         private void DeleteResponsiblePersonCommandHandler()
         {
+            var result = _catalogUIOperations.DeleteResponsiblePerson(SelectedResponsiblePerson.ResponsiblePersonId);
+            if (result == null)
+                return;
 
+            ResponsiblePersons.Remove(SelectedResponsiblePerson);
         }
     }
 }

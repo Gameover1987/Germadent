@@ -113,7 +113,7 @@ namespace Germadent.WebApi.Repository
             using (var command = new SqlCommand("AddNewWorkOrderMC", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = order.CustomerId; 
+                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = order.CustomerId;
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
@@ -855,25 +855,47 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UnionCustomers", connection))
+                using (var command = new SqlCommand("UpdateResponsiblePerson", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@oldCustomerId", SqlDbType.NVarChar)).Value = customerId;
-                    command.Parameters.Add(new SqlParameter("@newCustomerId", SqlDbType.NVarChar)).Value = DBNull.Value;
+                    command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = responsiblePerson.Id;
+                    command.Parameters.Add(new SqlParameter("@rp_Position", SqlDbType.NVarChar)).Value = responsiblePerson.Position;
+                    command.Parameters.Add(new SqlParameter("@responsiblePerson", SqlDbType.NVarChar)).Value = responsiblePerson.FullName;
+                    command.Parameters.Add(new SqlParameter("@rp_phone", SqlDbType.NVarChar)).Value = responsiblePerson.Phone.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@rp_email", SqlDbType.NVarChar)).Value = responsiblePerson.Email.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@rp_description", SqlDbType.NVarChar)).Value = responsiblePerson.Description.GetValueOrDbNull();
+
+                    command.ExecuteNonQuery();
+
+                    return responsiblePerson;
+                }
+            }
+        }
+
+        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UnionResponsiblePersons", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@oldResponsiblePersonId", SqlDbType.NVarChar)).Value = responsiblePersonId;
+                    command.Parameters.Add(new SqlParameter("@newResponsiblePersonId", SqlDbType.NVarChar)).Value = DBNull.Value;
                     command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                     command.ExecuteNonQuery();
 
                     var count = command.Parameters["@resultCount"].Value.ToInt();
 
-                    return new CustomerDeleteResult
+                    return new ResponsiblePersonDeleteResult()
                     {
-                        CustomerId = customerId,
+                        ResponsiblePersonId = responsiblePersonId,
                         Count = count
                     };
                 }
@@ -922,6 +944,31 @@ namespace Germadent.WebApi.Repository
                     command.ExecuteNonQuery();
 
                     return customer;
+                }
+            }
+        }
+
+        public CustomerDeleteResult DeleteCustomer(int customerId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UnionCustomers", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@oldCustomerId", SqlDbType.NVarChar)).Value = customerId;
+                    command.Parameters.Add(new SqlParameter("@newCustomerId", SqlDbType.NVarChar)).Value = DBNull.Value;
+                    command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var count = command.Parameters["@resultCount"].Value.ToInt();
+
+                    return new CustomerDeleteResult
+                    {
+                        CustomerId = customerId,
+                        Count = count
+                    };
                 }
             }
         }

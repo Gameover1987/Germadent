@@ -26,5 +26,17 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             return _rmaDbOperations.AddResponsiblePerson(responsiblePerson);
         }
+
+        [HttpPut]
+        public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePerson)
+        {
+            return _rmaDbOperations.UpdateResponsiblePerson(responsiblePerson);
+        }
+
+        [HttpDelete("{id:int}")]
+        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id)
+        {
+            return _rmaDbOperations.DeleteResponsiblePerson(id);
+        }
     }
 }

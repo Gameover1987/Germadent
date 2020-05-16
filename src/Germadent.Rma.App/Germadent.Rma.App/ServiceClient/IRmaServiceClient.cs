@@ -104,6 +104,20 @@ namespace Germadent.Rma.App.ServiceClient
         ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto);
 
         /// <summary>
+        /// Обновляет данные ответственного лица
+        /// </summary>
+        /// <param name="responsiblePersonDto"></param>
+        /// <returns></returns>
+        ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto);
+
+        /// <summary>
+        /// Удаляет ответственное лицо по Id
+        /// </summary>
+        /// <param name="responsiblePersonId"></param>
+        /// <returns></returns>
+        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId);
+
+        /// <summary>
         /// Возвращает словарь по его названию
         /// </summary>
         /// <param name="dictionaryType"></param>

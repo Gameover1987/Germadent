@@ -16,6 +16,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
     public interface IResponsiblePersonViewModel
     {
+        int ResponsiblePersonId { get; }
+
         string FullName { get; }
 
         string Position { get; }
@@ -27,5 +29,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
         string Description { get; }
 
         ResponsiblePersonDto ToDto();
+
+        void Update(ResponsiblePersonDto responsiblePersonDto);
     }
 }

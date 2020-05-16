@@ -56,8 +56,8 @@ namespace Germadent.Rma.App.Operations
             var result =  _rmaServiceClient.DeleteCustomer(customerId);
             if (result.Count == 0)
             {
-                var resultMsg = "Нельзя удалить заказчика на которого назначены заказнаряды!";
-                _dialogAgent.ShowMessageDialog(resultMsg, Properties.Resources.AppTitle, MessageBoxButton.OK);
+                var resultMsg = "Нельзя удалить заказчика на которого назначены заказ-наряды!";
+                _dialogAgent.ShowMessageDialog(resultMsg, Properties.Resources.AppTitle);
                 return null;
             }
 
@@ -73,6 +73,34 @@ namespace Germadent.Rma.App.Operations
 
             var newResponsiblePerson = _addResponsiblePersonViewModel.GetResponsiblePerson();
             return _rmaServiceClient.AddResponsiblePerson(newResponsiblePerson);
+        }
+
+        public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
+        {
+            _addResponsiblePersonViewModel.Initialize(CardViewMode.Edit, responsiblePersonDto);
+
+            if (_dialogAgent.ShowDialog<AddResponsiblePersonWindow>(_addResponsiblePersonViewModel) == false)
+                return null;
+
+            var updatedResponsblePerson = _addResponsiblePersonViewModel.GetResponsiblePerson();
+            return _rmaServiceClient.UpdateResponsiblePerson(updatedResponsblePerson);
+        }
+
+        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        {
+            var questionMsg = "Действительно хотите удалить ответственное лицо?";
+            if (_dialogAgent.ShowMessageDialog(questionMsg, Properties.Resources.AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return null;
+
+            var result = _rmaServiceClient.DeleteResponsiblePerson(responsiblePersonId);
+            if (result.Count == 0)
+            {
+                var resultMsg = "Нельзя удалить доктора или техника указанного в заказ-нарядах!";
+                _dialogAgent.ShowMessageDialog(resultMsg, Properties.Resources.AppTitle);
+                return null;
+            }
+
+            return result;
         }
     }
 }

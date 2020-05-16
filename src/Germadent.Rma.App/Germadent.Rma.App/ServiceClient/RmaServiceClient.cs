@@ -104,6 +104,18 @@ namespace Germadent.Rma.App.ServiceClient
             return addedResponsiblePerson;
         }
 
+        public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
+        {
+            var updatedResponsiblePerson = ExecuteHttpPut<ResponsiblePersonDto>("/api/Rma/responsiblePersons", responsiblePersonDto);
+            ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new[] { responsiblePersonDto }, null));
+            return updatedResponsiblePerson;
+        }
+
+        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        {
+            return ExecuteHttpDelete<ResponsiblePersonDeleteResult>($"/api/Rma/responsiblePersons/{responsiblePersonId}");
+        }
+
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             var addedCustomer = ExecuteHttpPost<CustomerDto>("/api/customers", сustomerDto);
