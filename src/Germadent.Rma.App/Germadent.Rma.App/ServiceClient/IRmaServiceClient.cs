@@ -34,7 +34,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        IFileResponse GetDataFileByWorkOrderId(int id);
+        byte[] GetDataFileByWorkOrderId(int id);
 
         /// <summary>
         /// Добавить заказнаряд

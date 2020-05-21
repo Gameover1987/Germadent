@@ -354,7 +354,7 @@ namespace Germadent.WebApi.Repository
             }
         }
 
-        public Stream GetFileByWorkOrder(int id)
+        public string GetFileByWorkOrder(int id)
         {
             var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", id);
 
@@ -376,7 +376,7 @@ namespace Germadent.WebApi.Repository
                         return null;
 
                     var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
-                    return _fileManager.OpenFile(fullPathToDataFile);
+                    return fullPathToDataFile;
                 }
             }
         }

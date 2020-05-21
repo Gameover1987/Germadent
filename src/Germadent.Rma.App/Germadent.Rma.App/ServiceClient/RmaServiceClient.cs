@@ -33,13 +33,10 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/orders/{id}");
         }
 
-        public IFileResponse GetDataFileByWorkOrderId(int id)
+        public byte[] GetDataFileByWorkOrderId(int id)
         {
-            return null;
-            //var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/files/{0}", id);
-            //var response = _client.GetAsync(apiUrl).Result;
-
-            //return new FileResponse(response);
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/orders/fileDownload/{0}", id);
+            return ExecuteFileDownload(apiUrl);
         }
 
         public OrderDto AddOrder(OrderDto order)

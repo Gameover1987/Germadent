@@ -13,13 +13,6 @@ namespace Germadent.WebApi.Repository
         OrderDto GetOrderDetails(int id);
 
         /// <summary>
-        /// Возвращает файл по заказ наряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Stream GetFileByWorkOrder(int id);
-
-        /// <summary>
         /// Возвращает список заказ нарядов по фильтру
         /// </summary>
         /// <param name="filter"></param>
@@ -37,6 +30,13 @@ namespace Germadent.WebApi.Repository
         /// Присоединяет файл к созданному заказнаряду
         /// </summary>
         void AttachDataFileToOrder(int id, string fileName, Stream stream);
+
+        /// <summary>
+        /// Возвращает путь к файлу привязанному к заказнаряду
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string GetFileByWorkOrder(int id);
 
         /// <summary>
         /// Обновляет заказ наряд

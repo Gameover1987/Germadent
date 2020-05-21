@@ -37,6 +37,13 @@ namespace Germadent.Common.Web
             var response = _client.Execute(restRequest, Method.POST);
         }
 
+        protected byte[] ExecuteFileDownload(string api)
+        {
+            var request = new RestRequest(api, Method.POST);
+            var fileBytes = _client.DownloadData(request);
+            return fileBytes;
+        }
+
         protected T ExecuteHttpPut<T>(string api, object body, byte[] file = null)
         {
             var restRequest = new RestRequest(api, Method.PUT);

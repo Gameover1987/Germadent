@@ -1,5 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Germadent.Common.FileSystem;
 using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +15,12 @@ namespace Germadent.WebApi.Controllers.Rma
     public class OrdersController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
+        private readonly IFileManager _fileManager;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations)
+        public OrdersController(IRmaDbOperations rmaDbOperations, IFileManager fileManager)
         {
             _rmaDbOperations = rmaDbOperations;
+            _fileManager = fileManager;
         }
 
         [HttpGet("{id:int}")]
@@ -36,6 +42,27 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
             _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
+        }
+
+        [HttpPost]
+        [Route("fileDownload/{id}")]
+        public HttpResponseMessage FileDownload(int id)
+        {
+            var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
+            if (fullFileName == null)
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
+            var fileName = _fileManager.GetShortFileName(fullFileName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            using (var fileStream = _fileManager.OpenFile(fullFileName))
+            {
+                response.Content = new StreamContent(fileStream);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                response.Content.Headers.ContentDisposition.FileName = fileName;
+                return response;
+            }
         }
 
         [HttpPut]

@@ -79,13 +79,8 @@ namespace Germadent.Rma.App.ViewModels
             {
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    using (var data = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId))
-                    {
-                        using (var fileStream = data.GetFileStream())
-                        {
-                            _fileManager.Save(fileStream, fileName);
-                        }
-                    }
+                    var data = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId);
+                    _fileManager.Save(data, fileName);
                 });
             }
             finally

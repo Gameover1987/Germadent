@@ -13,6 +13,8 @@ namespace Germadent.Common.FileSystem
 
         FileInfo Save(Stream stream, string filePath);
 
+        string GetShortFileName(string fullFileName);
+
         void OpenFileByOS(string fileName);
     }
 
@@ -44,6 +46,11 @@ namespace Germadent.Common.FileSystem
             }
 
             return new FileInfo(filePath);
+        }
+
+        public string GetShortFileName(string fullFileName)
+        {
+            return Path.GetFileName(fullFileName);
         }
 
         public void OpenFileByOS(string fileName)

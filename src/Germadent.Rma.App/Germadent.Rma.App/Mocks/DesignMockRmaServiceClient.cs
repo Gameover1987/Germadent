@@ -95,7 +95,7 @@ namespace Germadent.Rma.App.Mocks
             return _orders.First(x => x.WorkOrderId == id);
         }
 
-        public IFileResponse GetDataFileByWorkOrderId(int id)
+        public byte[] GetDataFileByWorkOrderId(int id)
         {
             throw new NotImplementedException();
         }
