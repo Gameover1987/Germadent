@@ -31,7 +31,12 @@ namespace Germadent.WebApi.Repository
         /// </summary>
         /// <param name="order"></param>
         /// <param name="stream"></param>
-        OrderDto AddOrder(OrderDto order, Stream stream);
+        OrderDto AddOrder(OrderDto order);
+
+        /// <summary>
+        /// Присоединяет файл к созданному заказнаряду
+        /// </summary>
+        void AttachDataFileToOrder(int id, string fileName, Stream stream);
 
         /// <summary>
         /// Обновляет заказ наряд

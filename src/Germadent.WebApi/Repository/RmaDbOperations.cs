@@ -31,7 +31,7 @@ namespace Germadent.WebApi.Repository
             _storageDirectory = GetFileTableFullPath();
         }
 
-        public OrderDto AddOrder(OrderDto order, Stream stream)
+        public OrderDto AddOrder(OrderDto order)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -54,9 +54,19 @@ namespace Germadent.WebApi.Repository
 
                 order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
                 AddOrUpdateToothCard(order.ToothCard, connection);
-                SaveOrderDataFile(order, connection, stream);
 
                 return outputOrder;
+            }
+        }
+
+        public void AttachDataFileToOrder(int id, string fileName, Stream stream)
+        {
+            var resultFileName = Path.Combine(_storageDirectory, fileName);
+            var fileInfo = _fileManager.Save(stream, resultFileName);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                LinkFileToWorkOrder(id, fileName, fileInfo.CreationTime, connection);
             }
         }
 
@@ -208,13 +218,7 @@ namespace Germadent.WebApi.Repository
 
         private void SaveOrderDataFile(OrderDto order, SqlConnection connection, Stream stream)
         {
-            if (stream == null)
-                return;
-
-            var fileName = Path.GetFileName(order.DataFileName);
-            var resultFileName = Path.Combine(_storageDirectory, fileName);
-            var fileInfo = _fileManager.Save(stream, resultFileName);
-            LinkFileToWorkOrder(order.WorkOrderId, fileName, fileInfo.CreationTime, connection);
+         
         }
 
         private void LinkFileToWorkOrder(int workOrderId, string fileName, DateTime creationTime, SqlConnection connection)

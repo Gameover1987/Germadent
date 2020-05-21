@@ -1,4 +1,5 @@
 ﻿using System;
+using DocumentFormat.OpenXml.Drawing;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
@@ -19,7 +20,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public void Authorize(string user, string password)
         {
-            
+
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
@@ -43,7 +44,14 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            return ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/orders", order, order.DataFileName == null ? null : _fileManager.ReadAllBytes(order.DataFileName));
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/orders", order);
+            if (order.DataFileName != null)
+            {
+                var api = string.Format("{0}/api/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, System.IO.Path.GetFileName(order.DataFileName));
+                ExecuteFileUpload(api, order.DataFileName);
+            }
+
+            return addedOrder;
         }
 
         public OrderDto UpdateOrder(OrderDto order)
