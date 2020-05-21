@@ -26,7 +26,7 @@ BEGIN
 
 			SET @resultCount = @@rowcount
 		END
-		ELSE IF @newResponsiblePersonId IS NULL AND NOT EXISTS (SELECT ResponsiblePersonID FROM WorkOrder WHERE CustomerID = @oldResponsiblePersonId)
+		ELSE IF @newResponsiblePersonId IS NULL AND NOT EXISTS (SELECT ResponsiblePersonID FROM WorkOrder WHERE ResponsiblePersonID = @oldResponsiblePersonId)
 			BEGIN
 				DELETE
 				FROM ResponsiblePersons
