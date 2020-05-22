@@ -1,4 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Mime;
 using Germadent.Common.Extensions;
 using RestSharp;
 
@@ -39,9 +44,14 @@ namespace Germadent.Common.Web
 
         protected byte[] ExecuteFileDownload(string api)
         {
-            var request = new RestRequest(api, Method.POST);
-            var fileBytes = _client.DownloadData(request);
-            return fileBytes;
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(api);
+
+            HttpResponseMessage responseParent = client.GetAsync(api).Result;
+
+            var respMessage = responseParent.Content.ReadAsByteArrayAsync().Result;
+
+            return respMessage;
         }
 
         protected T ExecuteHttpPut<T>(string api, object body, byte[] file = null)

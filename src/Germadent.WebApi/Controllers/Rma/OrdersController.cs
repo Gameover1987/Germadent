@@ -44,7 +44,7 @@ namespace Germadent.WebApi.Controllers.Rma
             _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("fileDownload/{id}")]
         public HttpResponseMessage FileDownload(int id)
         {
@@ -54,13 +54,11 @@ namespace Germadent.WebApi.Controllers.Rma
 
             var fileName = _fileManager.GetShortFileName(fullFileName);
 
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
             using (var fileStream = _fileManager.OpenFile(fullFileName))
             {
                 response.Content = new StreamContent(fileStream);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                response.Content.Headers.ContentDisposition.FileName = fileName;
+                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
                 return response;
             }
         }
