@@ -40,15 +40,15 @@ SELECT wo.WorkOrderID,
 			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
 			ISNULL(wmc.Understaff, '') AS Understaff,
 			ISNULL(rp.ResponsiblePerson, '') AS DoctorFullName,
-			wdl.PatientGender,
-			ISNULL(wdl.PatientAge, 0) AS PatientAge,
-			wdl.DateOfCompletion,
-			wdl.FittingDate,
+			wo.PatientGender,
+			ISNULL(wo.PatientAge, 0) AS PatientAge,
+			wo.DateOfCompletion,
+			wo.FittingDate,
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
 			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
-	FROM	WorkOrder wo 
+	FROM 	WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID

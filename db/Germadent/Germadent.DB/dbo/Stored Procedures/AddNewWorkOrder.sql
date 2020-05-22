@@ -3,8 +3,9 @@
 -- Create date: 30.11.2019
 -- Description:	Создание заказ-наряда зуботехнической лаборатории
 -- =============================================
-CREATE PROCEDURE [dbo].[AddNewWorkOrderDL] 
+CREATE PROCEDURE [dbo].[AddNewWorkOrder] 
 	
+	@branchTypeID int = 2,
 	@customerID int = NULL,
 	@responsiblePersonId int = NULL,
 	@patientFullName nvarchar(150) = NULL,
@@ -39,24 +40,29 @@ BEGIN
 	END
 
 	-- Генерируем номер документа для каждого филиалов свой:	
-	SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberDL) AS nvarchar(6)), '-DL', '~', YEAR(GETDATE())-2000)
+	IF @branchTypeID = 1 BEGIN
+		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-MC', '~', YEAR(GETDATE())-2000)
+			END
+	ELSE BEGIN
+		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberDL) AS nvarchar(6)), '-DL', '~', YEAR(GETDATE())-2000)
+			END
 
 	-- Собственно вставка:
 	INSERT INTO WorkOrder
-		(BranchTypeID, DocNumber, CustomerID, PatientFullName, ResponsiblePersonID, Created, DateDelivery, DateComment, ProstheticArticul, WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateDelivery,	DateComment, ProstheticArticul,		WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(2, @docNumber, @customerID, @patientFullName, @responsiblePersonId, GETDATE(), @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, GETDATE(), @fittingDate, @dateOfCompletion, @dateDelivery, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
 	INSERT INTO WorkOrderDL
-		(WorkOrderDLID, PatientGender, PatientAge, TransparenceID, FittingDate, DateOfCompletion, ColorAndFeatures)
+		(WorkOrderDLID, TransparenceID, ColorAndFeatures)
 	VALUES
-		(@workOrderID, @patientGender, @patientAge, @transparenceID, @fittingDate, @dateOfCompletion, @colorAndFeatures)
+		(@workOrderID, @transparenceID, @colorAndFeatures)
 
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddNewWorkOrderDL] TO [gdl_user]
+    ON OBJECT::[dbo].[AddNewWorkOrder] TO [gdl_user]
     AS [dbo];
 

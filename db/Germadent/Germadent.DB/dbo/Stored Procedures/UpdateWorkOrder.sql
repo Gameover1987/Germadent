@@ -3,7 +3,7 @@
 -- Create date: 16.12.2019
 -- Description:	Внесение изменений в заказ-наряд ЗТЛ
 -- =============================================
-CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
+CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	
 	@workOrderID int
 	, @docNumber nvarchar(10)
@@ -26,7 +26,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrderDL]
 	
 AS
 BEGIN
-	
+	-- Никаких изменений, если заказ-наряд закрыт
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
 		BEGIN
 			RETURN
@@ -36,7 +36,11 @@ BEGIN
 	SET  DocNumber = @docNumber
 		, CustomerID = @customerID
 		, PatientFullName = @patientFullName
+		, PatientGender = @patientGender
+		, PatientAge = @patientAge
 		, ResponsiblePersonID = @responsiblePersonId
+		, FittingDate = @fittingDate
+		, DateOfCompletion = @dateOfCompletion
 		, DateDelivery = @dateDelivery
 		, DateComment = @dateComment
 		, ProstheticArticul = @prostheticArticul
@@ -46,14 +50,9 @@ BEGIN
 		, OfficeAdminName = @officeAdminName
 	
 	WHERE WorkOrderID = @workOrderID
-
-
+	
 	UPDATE WorkOrderDL
-	SET TransparenceID = @transparenceID
-		, PatientGender = @patientGender
-		, PatientAge = @patientAge
-		, FittingDate = @fittingDate
-		, DateOfCompletion = @dateOfCompletion
+	SET TransparenceID = @transparenceID		
 		, ColorAndFeatures = @colorAndFeatures
 
 	WHERE WorkOrderDLID = @workOrderID
@@ -61,6 +60,6 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[UpdateWorkOrderDL] TO [gdl_user]
+    ON OBJECT::[dbo].[UpdateWorkOrder] TO [gdl_user]
     AS [dbo];
 

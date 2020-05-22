@@ -6,7 +6,11 @@
     [CustomerID]          INT            NOT NULL,
     [ResponsiblePersonID] INT            NULL,
     [PatientFullName]     NVARCHAR (150) NULL,
+    [PatientGender]       BIT            NULL,
+    [PatientAge]          TINYINT        NULL,
     [Created]             DATETIME       NOT NULL,
+    [FittingDate]         DATETIME       NULL,
+    [DateOfCompletion]    DATETIME       NULL,
     [DateDelivery]        DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
@@ -20,6 +24,8 @@
     CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID])
 );
+
+
 
 
 
@@ -87,6 +93,9 @@ BEGIN
 		AND ISNULL(i.OfficeAdminID, -19999) = ISNULL(d.OfficeAdminID, -19999)
 		AND ISNULL(i.OfficeAdminName, 'empty') = ISNULL(d.OfficeAdminName, 'empty')
 		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
+		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
+		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')
+		AND ISNULL(i.PatientAge, 0) = ISNULL(d.PatientAge, 0)
 		AND ISNULL(i.ResponsiblePersonID, -19999) = ISNULL(d.ResponsiblePersonID, -19999)
 		AND i.Status = d.Status
 		AND ISNULL(i.WorkDescription, 'empty') = ISNULL(d.WorkDescription, 'empty')
