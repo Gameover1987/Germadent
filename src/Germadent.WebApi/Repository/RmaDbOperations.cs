@@ -87,7 +87,7 @@ namespace Germadent.WebApi.Repository
 
         private static OrderDto AddWorkOrderDL(OrderDto order, SqlConnection connection)
         {
-            using (var command = new SqlCommand("AddNewWorkOrderDL", connection))
+            using (var command = new SqlCommand("AddNewWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = order.CustomerId;
@@ -294,7 +294,7 @@ namespace Germadent.WebApi.Repository
 
         private static void UpdateWorkOrderDL(OrderDto order, SqlConnection connection)
         {
-            using (var command = new SqlCommand("UpdateWorkOrderDL", connection))
+            using (var command = new SqlCommand("UpdateWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
@@ -310,11 +310,11 @@ namespace Germadent.WebApi.Repository
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
                 command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
-                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.NVarChar)).Value = order.DateOfCompletion.GetValueOrDbNull();
-
+                
                 command.ExecuteNonQuery();
             }
         }
