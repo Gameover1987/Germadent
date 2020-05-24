@@ -7,7 +7,7 @@ namespace Germadent.Common.FileSystem
     {
         byte[] ReadAllBytes(string filePath);
 
-        Stream OpenFile(string path);
+        Stream OpenFileAsStream(string path);
 
         FileInfo Save(byte[] data, string filePath);
 
@@ -26,7 +26,7 @@ namespace Germadent.Common.FileSystem
             return bytes;
         }
 
-        public Stream OpenFile(string path)
+        public Stream OpenFileAsStream(string path)
         {
             return File.OpenRead(path);
         }

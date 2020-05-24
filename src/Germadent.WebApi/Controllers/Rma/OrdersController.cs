@@ -46,21 +46,16 @@ namespace Germadent.WebApi.Controllers.Rma
 
         [HttpGet]
         [Route("fileDownload/{id}")]
-        public HttpResponseMessage FileDownload(int id)
+        public FileStreamResult FileDownload(int id)
         {
             var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
             if (fullFileName == null)
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return null;
 
-            var fileName = _fileManager.GetShortFileName(fullFileName);
+            var stream = _fileManager.OpenFileAsStream(fullFileName);
 
-            var response = new HttpResponseMessage(HttpStatusCode.OK);
-            using (var fileStream = _fileManager.OpenFile(fullFileName))
-            {
-                response.Content = new StreamContent(fileStream);
-                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                return response;
-            }
+            var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
+            return fileStreamResult;
         }
 
         [HttpPut]
