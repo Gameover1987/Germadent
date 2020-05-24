@@ -19,6 +19,10 @@
         Width="800"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockCustomerCatalogViewModel}, IsDesignTimeCreatable=True}"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control"
+                    Command="{Binding AddCustomerCommand}"/>
+    </Window.InputBindings>
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -48,6 +52,29 @@
                   ItemsSource="{Binding Customers}"
                   SelectedItem="{Binding SelectedCustomer}"
                   AlternationCount="2">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding EditCustomerCommand}"/>
+                <KeyBinding Key="Delete" Command="{Binding DeleteCustomerCommand}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="MouseDoubleClick" Handler="CustomerRowMouseDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Добавить" InputGestureText="Ctrl+N"
+                                          Command="{Binding AddCustomerCommand}"/>
+                                <MenuItem Header="Редактировать" InputGestureText="Enter"
+                                          Command="{Binding EditCustomerCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="Удалить" InputGestureText="Delete"
+                                          Command="{Binding DeleteCustomerCommand}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Наименование" Binding="{Binding DisplayName}" Width="Auto"
                                     ElementStyle="{StaticResource DataGridTextBlockStyle}"/>

@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.Reporting
 
         public PrintableOrder ConvertFrom(OrderDto order)
         {
-            return new PrintableOrder
+            var printableOrder = new PrintableOrder
             {
                 AdditionalInfo = order.AdditionalInfo,
                 BranchType = GetBranchTypeName(order.BranchType),
@@ -43,7 +43,6 @@ namespace Germadent.Rma.App.Reporting
                 ImplantSystem = order.ImplantSystem,
                 FlagWorkAccept = order.WorkAccepted.ToYesNo(),
                 OfficeAdmin = order.OfficeAdminName,
-                PatientAge = order.Age,
                 PatientFullName = order.Patient,
                 PatientGender = GetGenderName(order.Gender),
                 TechnicPhone = order.ResponsiblePersonPhone,
@@ -55,6 +54,14 @@ namespace Germadent.Rma.App.Reporting
                 ToothCardDescription = GetToothCardDescription(order),
                 AdditionalEquipment = OrderDescriptionBuilder.GetAdditionalEquipmentDescription(order)
             };
+
+            if (order.Patient != null)
+            {
+                printableOrder.PatientAge = order.Age;
+                printableOrder.PatientGender = GetGenderName(order.Gender);
+            }
+
+            return printableOrder;
         }
 
         private string GetToothCardDescription(OrderDto order)

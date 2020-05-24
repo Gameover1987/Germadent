@@ -55,7 +55,14 @@ namespace Germadent.Common.FileSystem
 
         public void OpenFileByOS(string fileName)
         {
-            Process.Start(fileName);
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(fileName)
+                {
+                    UseShellExecute = true
+                }
+            };
+            process.Start();
         }
     }
 }

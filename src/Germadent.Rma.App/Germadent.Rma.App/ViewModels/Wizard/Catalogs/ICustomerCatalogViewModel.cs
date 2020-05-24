@@ -8,7 +8,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 
         ICustomerViewModel SelectedCustomer { get; }
 
-        IDelegateCommand AddCustomerCommand { get; }        
+        IDelegateCommand AddCustomerCommand { get; }
+
+        IDelegateCommand EditCustomerCommand { get; }
 
         void Initialize();
     }

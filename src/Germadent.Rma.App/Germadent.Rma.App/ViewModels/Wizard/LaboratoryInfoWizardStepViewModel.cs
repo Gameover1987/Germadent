@@ -49,8 +49,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 .When(() => Customer.IsNullOrWhiteSpace(), () => "Укажите заказчика");
             AddValidationFor(() => ResponsiblePerson)
                 .When(() => ResponsiblePerson.IsNullOrWhiteSpace(), () => "Укажите фамилию доктора");
-            AddValidationFor(() => PatientFio)
-                .When(() => PatientFio.IsNullOrWhiteSpace(), () => "Укажите фамилию пациента");
             AddValidationFor(() => Age)
                 .When(() => Age < 0 || Age > 150, () => "Возраст должен быть в диапазоне от 0 до 150");
 

@@ -26,7 +26,6 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         protected override CustomerDto[] GetItems()
         {
-            Thread.Sleep(3000);
             return _rmaServiceClient.GetCustomers("").ToArray();
         }
     }

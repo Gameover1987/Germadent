@@ -12,8 +12,8 @@ namespace Germadent.Rma.App.Reporting
         public string BranchType { get; set; }
         public string CustomerName { get; set; }
         public string PatientFullName { get; set; }
-        public int PatientAge { get; set; }
-        public string PatientGender { get; set; }
+        public int? PatientAge { get; set; }
+        public string? PatientGender { get; set; }
         public string ResponsiblePerson { get; set; }
         public string TechnicPhone { get; set; }
         public DateTime Created { get; set; }
