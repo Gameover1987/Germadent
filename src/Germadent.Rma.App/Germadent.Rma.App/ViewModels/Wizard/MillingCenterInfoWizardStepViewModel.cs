@@ -67,9 +67,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 if (IsNewCustomer)
                     return false;
 
-                if (ResponsiblePerson.IsNullOrWhiteSpace())
-                    return false;
-
                 if (IsNewResponsiblePerson)
                     return false;
 
