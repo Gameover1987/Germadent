@@ -57,6 +57,12 @@
                 <KeyBinding Key="Enter" Command="{Binding EditResponsiblePersonCommand}"/>
                 <KeyBinding Key="Delete" Command="{Binding DeleteResponsiblePersonCommand}"/>
             </DataGrid.InputBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" InputGestureText="Ctrl+N"
+                              Command="{Binding AddResponsiblePersonCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="MouseDoubleClick" Handler="ResponsiblePersonRowMouseDoubleClick"/>

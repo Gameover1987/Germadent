@@ -56,6 +56,12 @@
                 <KeyBinding Key="Enter" Command="{Binding EditCustomerCommand}"/>
                 <KeyBinding Key="Delete" Command="{Binding DeleteCustomerCommand}"/>
             </DataGrid.InputBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" InputGestureText="Ctrl+N"
+                              Command="{Binding AddCustomerCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="MouseDoubleClick" Handler="CustomerRowMouseDoubleClick"/>
