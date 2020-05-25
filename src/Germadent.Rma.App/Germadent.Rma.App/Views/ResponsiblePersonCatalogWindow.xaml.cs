@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 
 namespace Germadent.Rma.App.Views
@@ -8,6 +9,8 @@ namespace Germadent.Rma.App.Views
     /// </summary>
     public partial class ResponsiblePersonCatalogWindow : Window
     {
+        private IResponsiblePersonCatalogViewModel _responsiblePerson;
+
         public static readonly DependencyProperty IsOpenedFromMainWindowProperty = DependencyProperty.Register(
             "IsOpenedFromMainWindow", typeof(bool), typeof(ResponsiblePersonCatalogWindow), new PropertyMetadata(default(bool)));
 
@@ -34,8 +37,18 @@ namespace Germadent.Rma.App.Views
 
         private void ResponsiblePersonCatalogWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var responsiblePersonCatalog = (IResponsiblePersonCatalogViewModel)DataContext;
-            responsiblePersonCatalog.Initialize();
+            //var responsiblePersonCatalog = (IResponsiblePersonCatalogViewModel)DataContext;
+            //responsiblePersonCatalog.Initialize();
+            _responsiblePerson = (IResponsiblePersonCatalogViewModel)DataContext;
+            _responsiblePerson?.Initialize();
+        }
+
+        private void ResponsiblePersonRowMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (IsOpenedFromMainWindow)
+                return;
+
+            DialogResult = true;
         }
     }
 }

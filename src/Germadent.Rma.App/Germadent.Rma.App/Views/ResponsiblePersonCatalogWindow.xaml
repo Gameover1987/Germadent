@@ -17,7 +17,13 @@
         Height="500" 
         MinWidth="800"
         Width="800"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockResponsiblePersonsCatalogViewModel}, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockResponsiblePersonsCatalogViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control"
+                    Command="{Binding AddResponsiblePersonCommand}"/>
+    </Window.InputBindings>
+    
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -47,6 +53,29 @@
                   ItemsSource="{Binding ResponsiblePersons}"
                   SelectedItem="{Binding SelectedResponsiblePerson}"
                   AlternationCount="2">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding EditResponsiblePersonCommand}"/>
+                <KeyBinding Key="Delete" Command="{Binding DeleteResponsiblePersonCommand}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ResponsiblePersonRowMouseDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Добавить" InputGestureText="Ctrl+N"
+                                          Command="{Binding AddResponsiblePersonCommand}"/>
+                                <MenuItem Header="Редактировать" InputGestureText="Enter"
+                                          Command="{Binding EditResponsiblePersonCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="Удалить" InputGestureText="Delete"
+                                          Command="{Binding DeleteResponsiblePersonCommand}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Наименование" Binding="{Binding FullName}" Width="Auto"
                                     ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
