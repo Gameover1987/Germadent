@@ -2,7 +2,7 @@
 AS
 SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
 FROM      dbo.Attributes AS a INNER JOIN
-                dbo.AttributesValues AS v ON a.AttributeID = v.AttributeID
+                dbo.AttrValues AS v ON a.AttributeID = v.AttributeID
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
 
@@ -93,7 +93,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 276
-               Bottom = 128
+               Bottom = 147
                Right = 457
             End
             DisplayFlags = 280
@@ -137,4 +137,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
+
+
 

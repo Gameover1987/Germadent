@@ -5,18 +5,14 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetAttributesAndValues]
 (	
-	@attributeId int = NULL,
-	@attrValueId int = NULL,
-	@attributeKeyName varchar(50) = NULL
+	
 )
 RETURNS TABLE 
 AS
 RETURN 
 (
 	
-	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
-	FROM Attributes a INNER JOIN AttributesValues v ON a.AttributeID = v.AttributeID
-	WHERE a.AttributeID = ISNULL(@attributeId, a.AttributeID)
-		AND v.AttrValueID = ISNULL(@attrValueId, v.AttrValueID)
-		AND a.AttributeKeyName LIKE '%'+ ISNULL(@attributeKeyName, '') + '%'
+	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, a.FlagObsolete, v.AttrValueID, v.AttributeValue
+	FROM Attributes a INNER JOIN AttrValues v ON a.AttributeID = v.AttributeID
+	
 )
