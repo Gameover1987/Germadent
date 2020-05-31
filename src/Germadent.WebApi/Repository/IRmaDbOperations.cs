@@ -42,8 +42,7 @@ namespace Germadent.WebApi.Repository
         /// Обновляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        /// <param name="stream"></param>
-        void UpdateOrder(OrderDto order, Stream stream);
+        void UpdateOrder(OrderDto order);
 
         /// <summary>
         /// Закрывает заказ-наряд по id

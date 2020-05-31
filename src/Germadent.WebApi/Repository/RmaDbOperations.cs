@@ -149,7 +149,7 @@ namespace Germadent.WebApi.Repository
             return order;
         }
 
-        public void UpdateOrder(OrderDto order, Stream stream)
+        public void UpdateOrder(OrderDto order)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -170,7 +170,6 @@ namespace Germadent.WebApi.Repository
                 }
 
                 AddOrUpdateToothCard(order.ToothCard, connection);
-                SaveOrderDataFile(order, connection, stream);
             }
         }
 
@@ -214,11 +213,6 @@ namespace Germadent.WebApi.Repository
                 default:
                     throw new NotImplementedException("Неизвестный тип словаря");
             }
-        }
-
-        private void SaveOrderDataFile(OrderDto order, SqlConnection connection, Stream stream)
-        {
-         
         }
 
         private void LinkFileToWorkOrder(int workOrderId, string fileName, DateTime creationTime, SqlConnection connection)

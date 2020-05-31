@@ -1,23 +1,25 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
 using Germadent.Common.Extensions;
 using RestSharp;
 
 namespace Germadent.Common.Web
 {
-    public class ServiceClientBase
+    public abstract class ServiceClientBase
     {
         private readonly RestClient _client = new RestClient();
+
+        public ServiceClientBase()
+        {
+            _client.ThrowOnAnyError = true;
+        }
 
         protected T ExecuteHttpGet<T>(string api)
         {
             var restRequest = new RestRequest(api, Method.GET);
             restRequest.RequestFormat = DataFormat.Json;
             var response = _client.Execute(restRequest, Method.GET);
+            ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
 
@@ -28,6 +30,7 @@ namespace Germadent.Common.Web
             restRequest.AddHeader("Accept", "application/json");
             restRequest.AddJsonBody(body);
             var response = _client.Execute(restRequest, Method.POST);
+            ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
 
@@ -40,6 +43,7 @@ namespace Germadent.Common.Web
             restRequest.AddFile("DataFile", filePath, "DataFile");
 
             var response = _client.Execute(restRequest, Method.POST);
+            ThrowIfError(response);
         }
 
         protected byte[] ExecuteFileDownload(string api)
@@ -54,7 +58,7 @@ namespace Germadent.Common.Web
             return respMessage;
         }
 
-        protected T ExecuteHttpPut<T>(string api, object body, byte[] file = null)
+        protected T ExecuteHttpPut<T>(string api, object body)
         {
             var restRequest = new RestRequest(api, Method.PUT);
 
@@ -63,13 +67,8 @@ namespace Germadent.Common.Web
 
             restRequest.AddJsonBody(body);
 
-            if (file != null)
-            {
-                restRequest.AddHeader("Content-Type", "multipart/form-data");
-                restRequest.AddFile("DataFile", file, "DataFile");
-            }
-
             var response = _client.Execute(restRequest, Method.PUT);
+            ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
 
@@ -78,7 +77,18 @@ namespace Germadent.Common.Web
             var restRequest = new RestRequest(api, Method.DELETE);
             restRequest.RequestFormat = DataFormat.Json;
             var response = _client.Execute(restRequest, Method.DELETE);
+            ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
+
+        private void ThrowIfError(IRestResponse response)
+        {
+            if (response.IsSuccessful)
+                return;
+
+            HandleError(response);
+        }
+
+        protected abstract void HandleError(IRestResponse response);
     }
 }

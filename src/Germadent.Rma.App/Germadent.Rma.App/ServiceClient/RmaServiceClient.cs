@@ -4,6 +4,7 @@ using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
+using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
 {
@@ -44,7 +45,7 @@ namespace Germadent.Rma.App.ServiceClient
             var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
             if (order.DataFileName != null)
             {
-                var api = string.Format("{0}/api/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
+                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
                 ExecuteFileUpload(api, order.DataFileName);
             }
 
@@ -56,7 +57,7 @@ namespace Germadent.Rma.App.ServiceClient
             var updatedOrder =  ExecuteHttpPut<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
             if (order.DataFileName != null)
             {
-                var api = string.Format("{0}/api/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
+                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
                 ExecuteFileUpload(api, order.DataFileName);
             }
 
@@ -127,7 +128,12 @@ namespace Germadent.Rma.App.ServiceClient
         }
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
-
+        
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
+
+        protected override void HandleError(IRestResponse response)
+        {
+            throw new ServerSideException(response);
+        }
     }
 }

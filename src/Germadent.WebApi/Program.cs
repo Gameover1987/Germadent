@@ -1,4 +1,5 @@
 ﻿using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.Entities.Conversion;
 using Germadent.WebApi.Repository;
@@ -28,6 +29,7 @@ namespace Germadent.WebApi
             services.AddSingleton<IRmaEntityConverter, RmaEntityConverter>();
             services.AddSingleton<IUmcEntityConverter, UmcEntityConverter>();
             services.AddSingleton<IFileManager, FileManager>();
+            services.AddSingleton<ILogger, Logger>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

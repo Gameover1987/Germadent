@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
+using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +15,13 @@ namespace Germadent.WebApi.Controllers.Rma
     {
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly IFileManager _fileManager;
+        private readonly ILogger _logger;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations, IFileManager fileManager)
+        public OrdersController(IRmaDbOperations rmaDbOperations, IFileManager fileManager, ILogger logger)
         {
             _rmaDbOperations = rmaDbOperations;
             _fileManager = fileManager;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -35,59 +35,109 @@ namespace Germadent.WebApi.Controllers.Rma
             }
             catch (Exception exception)
             {
+                _logger.Error(exception);
                 return BadRequest(exception);
             }
         }
 
         [HttpGet("{id:int}")]
-        public OrderDto GetWorkOrderById(int id)
+        public IActionResult GetWorkOrderById(int id)
         {
-            return _rmaDbOperations.GetOrderDetails(id);
+            try
+            {
+                var order = _rmaDbOperations.GetOrderDetails(id);
+                return Ok(order);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
 
         [HttpPost]
-        public OrderDto AddOrder([FromBody] OrderDto orderDto)
+        public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
-            return _rmaDbOperations.AddOrder(orderDto);
+            try
+            {
+                var order = _rmaDbOperations.AddOrder(orderDto);
+                return Ok(order);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
         [Route("fileUpload/{id}/{fileName}")]
-        public void FileUpload(int id, string fileName)
+        public IActionResult FileUpload(int id, string fileName)
         {
-            var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
-            _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
+            try
+            {
+                var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
+                _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
+                return Ok();
+            }
+            catch(Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpGet]
         [Route("fileDownload/{id}")]
-        public FileStreamResult FileDownload(int id)
+        public IActionResult FileDownload(int id)
         {
-            var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
-            if (fullFileName == null)
-                return null;
+            try
+            {
+                var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
+                if (fullFileName == null)
+                    return null;
 
-            var stream = _fileManager.OpenFileAsStream(fullFileName);
+                var stream = _fileManager.OpenFileAsStream(fullFileName);
 
-            var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
-            return fileStreamResult;
+                var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
+                return fileStreamResult;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPut]
-        public OrderDto UpdateOrder([FromBody] OrderDto orderDto)
+        public IActionResult UpdateOrder([FromBody] OrderDto orderDto)
         {
-            Stream stream = null;
-
-            _rmaDbOperations.UpdateOrder(orderDto, stream);
-
-            return orderDto;
+            try
+            {
+                _rmaDbOperations.UpdateOrder(orderDto);
+                return Ok(orderDto);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpDelete("{id:int}")]
-        public OrderDto CloseOrder(int id)
+        public IActionResult CloseOrder(int id)
         {
-            return _rmaDbOperations.CloseOrder(id);
+            try
+            {
+                var order = _rmaDbOperations.CloseOrder(id);
+                return Ok(order);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }
