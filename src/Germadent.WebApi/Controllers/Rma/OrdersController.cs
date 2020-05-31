@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/[controller]")]
+    [Route("api/Rma/Orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -21,6 +22,21 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             _rmaDbOperations = rmaDbOperations;
             _fileManager = fileManager;
+        }
+
+        [HttpPost]
+        [Route("getByFilter")]
+        public IActionResult GetOrders(OrdersFilter filter)
+        {
+            try
+            {
+                var orders = _rmaDbOperations.GetOrders(filter);
+                return Ok(orders);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception);
+            }
         }
 
         [HttpGet("{id:int}")]

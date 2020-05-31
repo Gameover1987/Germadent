@@ -25,23 +25,23 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            return ExecuteHttpPost<OrderLiteDto[]>(_configuration.DataServiceUrl + "/api/OrdersList", ordersFilter);
+            return ExecuteHttpPost<OrderLiteDto[]>(_configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter", ordersFilter);
         }
 
         public OrderDto GetOrderById(int id)
         {
-            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/orders/{id}");
+            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{id}");
         }
 
         public byte[] GetDataFileByWorkOrderId(int id)
         {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/orders/fileDownload/{0}", id);
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/fileDownload/{0}", id);
             return ExecuteFileDownload(apiUrl);
         }
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/orders", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
             if (order.DataFileName != null)
             {
                 var api = string.Format("{0}/api/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
@@ -53,7 +53,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder =  ExecuteHttpPut<OrderDto>(_configuration.DataServiceUrl + "/api/orders", order);
+            var updatedOrder =  ExecuteHttpPut<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
             if (order.DataFileName != null)
             {
                 var api = string.Format("{0}/api/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
@@ -65,29 +65,29 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/orders/{id}");
+            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{id}");
         }
 
         public ReportListDto[] GetWorkReport(int id)
         {
-            return ExecuteHttpGet<ReportListDto[]>(_configuration.DataServiceUrl + $"/api/rma/reports/{id}");
+            return ExecuteHttpGet<ReportListDto[]>(_configuration.DataServiceUrl + $"/api/Rma/reports/{id}");
         }
 
         public CustomerDto[] GetCustomers(string mask)
         {
-            return ExecuteHttpGet<CustomerDto[]>(_configuration.DataServiceUrl + $"/api/Customers?mask={mask}");
+            return ExecuteHttpGet<CustomerDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Customers?mask={mask}");
         }
 
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
         {
-            var updatedCustomer = ExecuteHttpPut<CustomerDto>(_configuration.DataServiceUrl + "/api/customers", customerDto);
+            var updatedCustomer = ExecuteHttpPut<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers", customerDto);
             CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { updatedCustomer }, null));
             return updatedCustomer;
         }
 
         public CustomerDeleteResult DeleteCustomer(int customerId)
         {
-            return ExecuteHttpDelete<CustomerDeleteResult>(_configuration.DataServiceUrl + $"/api/Customers/{customerId}");
+            return ExecuteHttpDelete<CustomerDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Customers/{customerId}");
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
@@ -116,14 +116,14 @@ namespace Germadent.Rma.App.ServiceClient
 
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
-            var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/customers", сustomerDto);
+            var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers", сustomerDto);
             CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { addedCustomer }, null));
             return addedCustomer;
         }
 
         public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
         {
-            return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Dictionaries/{dictionaryType}");
+            return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
         }
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;

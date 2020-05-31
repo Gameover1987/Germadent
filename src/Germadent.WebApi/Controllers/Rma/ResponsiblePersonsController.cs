@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/rma/responsiblePersons")]
+    [Route("api/Rma/ResponsiblePersons")]
     [ApiController]
     public class ResponsiblePersonsController : ControllerBase
     {

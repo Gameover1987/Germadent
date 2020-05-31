@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/rma/reports")]
+    [Route("api/Rma/Reports")]
     [ApiController]
     public class ReportsController : ControllerBase
     {

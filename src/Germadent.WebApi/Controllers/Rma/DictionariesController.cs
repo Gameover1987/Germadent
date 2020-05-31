@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/[controller]")]
+    [Route("api/Rma/[controller]")]
     [ApiController]
     public class DictionariesController : ControllerBase
     {
