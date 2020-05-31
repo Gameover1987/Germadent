@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Germadent.Rma.Model;
+using Germadent.Common.Logging;
 using Germadent.WebApi.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
@@ -14,16 +10,26 @@ namespace Germadent.WebApi.Controllers.Rma
     public class ReportsController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
+        private readonly ILogger _logger;
 
-        public ReportsController(IRmaDbOperations rmaDbOperations)
+        public ReportsController(IRmaDbOperations rmaDbOperations, ILogger logger)
         {
             _rmaDbOperations = rmaDbOperations;
+            _logger = logger;
         }
 
         [HttpGet("{id:int}")]
-        public ReportListDto[] GetReports(int id)
+        public IActionResult GetReports(int id)
         {
-            return _rmaDbOperations.GetWorkReport(id);
+            try
+            {
+                return Ok(_rmaDbOperations.GetWorkReport(id));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }

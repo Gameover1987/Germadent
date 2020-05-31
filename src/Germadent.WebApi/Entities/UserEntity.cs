@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace Germadent.WebApi.Entities
 {

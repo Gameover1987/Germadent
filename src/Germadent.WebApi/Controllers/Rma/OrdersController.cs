@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Rma.Model;

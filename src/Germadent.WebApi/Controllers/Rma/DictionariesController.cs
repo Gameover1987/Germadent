@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -10,23 +11,31 @@ namespace Germadent.WebApi.Controllers.Rma
     public class DictionariesController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
+        private readonly ILogger _logger;
 
-        public DictionariesController(IRmaDbOperations rmaDbOperations)
+        public DictionariesController(IRmaDbOperations rmaDbOperations, ILogger logger)
         {
             _rmaDbOperations = rmaDbOperations;
+            _logger = logger;
         }
 
         [HttpGet("{dictionaryTypeStr}")]
-        public DictionaryItemDto[] GetDictionary(string dictionaryTypeStr)
+        public IActionResult GetDictionary(string dictionaryTypeStr)
         {
-            object dictionaryType;
-
-            if (Enum.TryParse(typeof(DictionaryType), dictionaryTypeStr, out dictionaryType))
+            try
             {
-                return _rmaDbOperations.GetDictionary((DictionaryType)dictionaryType);
-            }
+                if (!Enum.TryParse(typeof(DictionaryType), dictionaryTypeStr, out var dictionaryType))
+                {
+                    throw new ArgumentException("Неизвестный тип словаря");
+                }
 
-            throw new ArgumentException("");
+                return Ok(_rmaDbOperations.GetDictionary((DictionaryType) dictionaryType));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }

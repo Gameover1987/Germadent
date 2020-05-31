@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,34 +11,69 @@ namespace Germadent.WebApi.Controllers.Rma
     public class CustomersController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
+        private readonly ILogger _logger;
 
-        public CustomersController(IRmaDbOperations rmaDbOperations)
+        public CustomersController(IRmaDbOperations rmaDbOperations, ILogger logger)
         {
             _rmaDbOperations = rmaDbOperations;
+            _logger = logger;
         }
 
         [HttpGet]
-        public CustomerDto[] GetCustomers(string mask)
+        public IActionResult GetCustomers(string mask)
         {
-            return _rmaDbOperations.GetCustomers(mask);
+            try
+            {
+                var customers = _rmaDbOperations.GetCustomers(mask);
+                return Ok(customers);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
-        public CustomerDto AddCustomer(CustomerDto customer)
+        public IActionResult AddCustomer(CustomerDto customer)
         {
-            return _rmaDbOperations.AddCustomer(customer);
+            try
+            {
+                return Ok(_rmaDbOperations.AddCustomer(customer));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPut]
-        public CustomerDto UpdateCustomer(CustomerDto customer)
+        public IActionResult UpdateCustomer(CustomerDto customer)
         {
-            return _rmaDbOperations.UpdateCustomer(customer);
+            try
+            {
+                return Ok(_rmaDbOperations.UpdateCustomer(customer));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpDelete("{id:int}")]
-        public CustomerDeleteResult DeleteCustomer(int id)
+        public IActionResult DeleteCustomer(int id)
         {
-            return _rmaDbOperations.DeleteCustomer(id);
+            try
+            {
+                return Ok(_rmaDbOperations.DeleteCustomer(id));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }

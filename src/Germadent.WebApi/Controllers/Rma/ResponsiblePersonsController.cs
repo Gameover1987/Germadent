@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.Rma.Model;
 using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,34 +11,68 @@ namespace Germadent.WebApi.Controllers.Rma
     public class ResponsiblePersonsController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
+        private readonly ILogger _logger;
 
-        public ResponsiblePersonsController(IRmaDbOperations rmaDbOperations)
+        public ResponsiblePersonsController(IRmaDbOperations rmaDbOperations, ILogger logger)
         {
             _rmaDbOperations = rmaDbOperations;
+            _logger = logger;
         }
 
         [HttpGet]
-        public ResponsiblePersonDto[] GetResponsiblePersons()
+        public IActionResult GetResponsiblePersons()
         {
-            return _rmaDbOperations.GetResponsiblePersons();
+            try
+            {
+                return Ok(_rmaDbOperations.GetResponsiblePersons());
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
-        public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePerson)
+        public IActionResult AddResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
-            return _rmaDbOperations.AddResponsiblePerson(responsiblePerson);
+            try
+            {
+                return Ok(_rmaDbOperations.AddResponsiblePerson(responsiblePerson));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPut]
-        public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePerson)
+        public IActionResult UpdateResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
-            return _rmaDbOperations.UpdateResponsiblePerson(responsiblePerson);
+            try
+            {
+                return Ok(_rmaDbOperations.UpdateResponsiblePerson(responsiblePerson));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpDelete("{id:int}")]
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id)
+        public IActionResult DeleteResponsiblePerson(int id)
         {
-            return _rmaDbOperations.DeleteResponsiblePerson(id);
+            try
+            {
+                return Ok(_rmaDbOperations.DeleteResponsiblePerson(id));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }
