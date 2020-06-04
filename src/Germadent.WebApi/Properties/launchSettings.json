@@ -17,6 +17,7 @@
     },
     "Germadent.WebApi": {
       "commandName": "Project",
+      "commandLineArgs": "c",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

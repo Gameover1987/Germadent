@@ -12,8 +12,8 @@ namespace Germadent.WebApi.Repository
         {
             _configuration = configuration;
 
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
 
         public DbSet<UserEntity> Users { get; set; }

@@ -53,6 +53,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         public void Initialize(RoleDto role, string title)
         {
             Title = title;
+            _roleName = role.Name;
             _roleId = role.RoleId;
 
             foreach (var rightViewModel in Rights)
@@ -68,6 +69,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 var rightViewModel = new RightViewModel(right);
                 rightViewModel.Checked += RightViewModelOnChecked;
                 Rights.Add(rightViewModel);
+            }
+
+            if (role.Rights == null)
+                return;
+
+            foreach (var roleRight in role.Rights)
+            {
+                var rightViewModel = Rights.First(x => x.Name == roleRight.RightName && x.Application == roleRight.ApplicationName);
+                rightViewModel.IsChecked = true;
             }
         }
 

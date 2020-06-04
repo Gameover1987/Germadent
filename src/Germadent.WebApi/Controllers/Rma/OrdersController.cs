@@ -28,6 +28,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info("Getting orders by filter");
                 var orders = _rmaDbOperations.GetOrders(filter);
                 return Ok(orders);
             }

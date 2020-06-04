@@ -1,60 +1,48 @@
-﻿using Germadent.Common.FileSystem;
-using Germadent.Common.Logging;
-using Germadent.WebApi.Configuration;
-using Germadent.WebApi.Entities.Conversion;
-using Germadent.WebApi.Repository;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Hosting;
 
 namespace Germadent.WebApi
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddSingleton<IServiceConfiguration, ServiceConfiguration>();
-            services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
-            services.AddSingleton<IUmcDbOperations, UmcDbOperations>();
-            services.AddSingleton<IRmaEntityConverter, RmaEntityConverter>();
-            services.AddSingleton<IUmcEntityConverter, UmcEntityConverter>();
-            services.AddSingleton<IFileManager, FileManager>();
-            services.AddSingleton<ILogger, Logger>();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
-
     class Program
     {
         public static void Main(string[] args)
         {
+            if (args.Contains("c"))
+            {
+                RunAsConsoleApp();
+            }
+            else
+            {
+                RunAsService();
+            }
+        }
+
+        private static void RunAsConsoleApp()
+        {
             CreateHostBuilder().Build().Run();
+        }
+
+        private static void RunAsService()
+        {
+            // получаем путь к файлу 
+            var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+
+            // путь к каталогу проекта
+            var pathToContentRoot = Path.GetDirectoryName(pathToExe);
+
+            // создаем хост
+            var host = WebHost.CreateDefaultBuilder()
+                .UseContentRoot(pathToContentRoot)
+                .UseStartup<Startup>()
+                .Build();
+
+            // запускаем в виде службы
+            host.RunAsService();
         }
 
         private static IHostBuilder CreateHostBuilder()

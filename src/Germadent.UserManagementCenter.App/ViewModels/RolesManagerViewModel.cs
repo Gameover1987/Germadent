@@ -112,6 +112,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 return;
 
             role = _umcServiceClient.EditRole(role);
+            SelectedRole.Update(role);
+            LoadRightsByRole();
         }
 
         private bool CanDeleteRoleCommandHandler()

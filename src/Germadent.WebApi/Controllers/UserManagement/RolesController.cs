@@ -29,9 +29,10 @@ namespace Germadent.WebApi.Controllers.UserManagement
         }
 
         [HttpPost]
-        public void EditRole(RoleDto roleDto)
+        public RoleDto EditRole(RoleDto roleDto)
         {
             _umcDbOperations.UpdateRole(roleDto);
+            return roleDto;
         }
     }
 }

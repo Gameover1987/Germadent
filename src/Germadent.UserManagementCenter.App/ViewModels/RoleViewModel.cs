@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 {
     public class RoleViewModel : ViewModelBase
     {
-        private readonly RoleDto _role;
+        private RoleDto _role;
         private bool _isChecked;
 
         public RoleViewModel(RoleDto role)
@@ -38,6 +38,12 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         public RoleDto ToModel()
         {
             return _role;
+        }
+
+        public void Update(RoleDto role)
+        {
+            _role = role;
+            OnPropertyChanged();
         }
     }
 }
