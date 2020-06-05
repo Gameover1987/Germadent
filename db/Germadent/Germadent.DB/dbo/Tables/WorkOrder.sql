@@ -11,7 +11,6 @@
     [Created]             DATETIME       NOT NULL,
     [FittingDate]         DATETIME       NULL,
     [DateOfCompletion]    DATETIME       NULL,
-    [DateDelivery]        DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
@@ -24,6 +23,8 @@
     CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID])
 );
+
+
 
 
 
@@ -86,7 +87,6 @@ BEGIN
 		AND ISNULL(i.Closed, '99991231') = ISNULL(d.Closed, '99991231')
 		AND ISNULL(i.Created, '17530101') = ISNULL(d.Created, '17530101')
 		AND ISNULL(i.CustomerID, -19999) = ISNULL(d.CustomerID, -19999)
-		AND ISNULL(i.DateDelivery, '99991231') = ISNULL(d.DateDelivery, '99991231')
 		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
 		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND i.FlagWorkAccept = d.FlagWorkAccept

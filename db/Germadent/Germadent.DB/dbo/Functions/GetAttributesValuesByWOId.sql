@@ -5,7 +5,7 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetAttributesValuesByWOId]
 (	
-	@worklOrderId int = NULL
+	@worklOrderId int
 )
 RETURNS TABLE 
 AS

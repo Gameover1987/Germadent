@@ -14,7 +14,6 @@
     [Created]             DATETIME       NULL,
     [FittingDate]         DATETIME       NULL,
     [DateOfCompletion]    DATETIME       NULL,
-    [DateDelivery]        DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
@@ -23,6 +22,8 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL
 );
+
+
 
 
 
