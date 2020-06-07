@@ -1,7 +1,7 @@
 ﻿using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 
-namespace Germadent.WebApi.Repository
+namespace Germadent.WebApi.DataAccess
 {
     public interface IUmcDbOperations
     {

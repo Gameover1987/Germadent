@@ -1,8 +1,9 @@
 ﻿using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.WebApi.Configuration;
+using Germadent.WebApi.DataAccess;
+using Germadent.WebApi.DataAccess.Rma;
 using Germadent.WebApi.Entities.Conversion;
-using Germadent.WebApi.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,7 @@ namespace Germadent.WebApi
             services.AddControllers();
             services.AddSingleton<IServiceConfiguration, ServiceConfiguration>();
             services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
+            services.AddSingleton<IAddWorOrderCommand, AddWorkOrderCommand>();
             services.AddSingleton<IUmcDbOperations, UmcDbOperations>();
             services.AddSingleton<IRmaEntityConverter, RmaEntityConverter>();
             services.AddSingleton<IUmcEntityConverter, UmcEntityConverter>();

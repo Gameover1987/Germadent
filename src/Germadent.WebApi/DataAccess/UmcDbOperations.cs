@@ -8,7 +8,7 @@ using Germadent.WebApi.Entities;
 using Germadent.WebApi.Entities.Conversion;
 using Microsoft.EntityFrameworkCore;
 
-namespace Germadent.WebApi.Repository
+namespace Germadent.WebApi.DataAccess
 {
     public class UmcDbOperations : IUmcDbOperations, IDisposable
     {

@@ -12,18 +12,20 @@ using Germadent.WebApi.Entities;
 using Germadent.WebApi.Entities.Conversion;
 using Newtonsoft.Json;
 
-namespace Germadent.WebApi.Repository
+namespace Germadent.WebApi.DataAccess.Rma
 {
     public class RmaDbOperations : IRmaDbOperations
     {
+        private readonly IAddWorOrderCommand _addWorOrderCommand;
         private readonly IRmaEntityConverter _converter;
         private readonly IServiceConfiguration _configuration;
         private readonly IFileManager _fileManager;
 
         private readonly string _storageDirectory;
 
-        public RmaDbOperations(IRmaEntityConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
+        public RmaDbOperations(IAddWorOrderCommand addWorOrderCommand, IRmaEntityConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
         {
+            _addWorOrderCommand = addWorOrderCommand;
             _converter = converter;
             _configuration = configuration;
             _fileManager = fileManager;
@@ -33,17 +35,7 @@ namespace Germadent.WebApi.Repository
 
         public OrderDto AddOrder(OrderDto order)
         {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                OrderDto outputOrder;
-                connection.Open();
-                outputOrder = AddWorkOrder(order, connection);
-              
-                order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-                AddOrUpdateToothCard(order.ToothCard, connection);
-
-                return outputOrder;
-            }
+           return _addWorOrderCommand.Execute(order);
         }
 
         public void AttachDataFileToOrder(int id, string fileName, Stream stream)
@@ -70,45 +62,6 @@ namespace Germadent.WebApi.Repository
 
                 command.ExecuteNonQuery();
             }
-        }
-
-        private static OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
-        {
-            using (var command = new SqlCommand("AddNewWorkOrder", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)order.BranchType;
-                command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = order.CustomerId;
-                command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId == 0 ? (object)DBNull.Value : order.ResponsiblePersonId;
-                command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
-                command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.TinyInt)).Value = (int)order.Gender;
-                command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.TinyInt)).Value = order.Age;
-                command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
-                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
-                command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
-                command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
-                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = DBNull.Value;
-                command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
-                command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
-                command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo;
-                command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor;
-                command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem;
-                command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
-                command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
-                command.Parameters.Add(new SqlParameter("@transparenceId", SqlDbType.Int)).Value = order.Transparency;                
-                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
-                
-                command.ExecuteNonQuery();
-
-                order.WorkOrderId = command.Parameters["@workOrderId"].Value.ToInt();
-                order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
-            }
-            order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-            AddOrUpdateAdditionalEquipmentInWO(order, connection);
-
-            return order;
         }
 
         public void UpdateOrder(OrderDto order)

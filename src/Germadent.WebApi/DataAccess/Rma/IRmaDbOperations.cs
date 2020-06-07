@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Germadent.Rma.Model;
 
-namespace Germadent.WebApi.Repository
+namespace Germadent.WebApi.DataAccess.Rma
 {
     public interface IRmaDbOperations
     {

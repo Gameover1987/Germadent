@@ -2,7 +2,8 @@
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Rma.Model;
-using Germadent.WebApi.Repository;
+using Germadent.WebApi.DataAccess;
+using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma

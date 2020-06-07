@@ -2,7 +2,7 @@
 using Germadent.WebApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Germadent.WebApi.Repository
+namespace Germadent.WebApi.DataAccess
 {
     public class UmcDbContext : DbContext
     {

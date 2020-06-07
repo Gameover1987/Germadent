@@ -1,5 +1,5 @@
 ﻿using Germadent.UserManagementCenter.Model.Rights;
-using Germadent.WebApi.Repository;
+using Germadent.WebApi.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.UserManagement
