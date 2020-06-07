@@ -28,11 +28,10 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
-            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0"
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,0,0,0"
                                      LabelText="Поиск заказ-нарядов" 
                                      SearchEventTimeDelay="00:00:3"
                                      SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
 
             <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
