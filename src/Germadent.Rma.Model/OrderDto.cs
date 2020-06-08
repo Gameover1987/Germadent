@@ -9,6 +9,7 @@ namespace Germadent.Rma.Model
     {
         public OrderDto()
         {
+            Created = DateTime.Now;
             Gender = Gender.Male;
             OfficeAdminName = " ";
             ToothCard = new ToothDto[0];
