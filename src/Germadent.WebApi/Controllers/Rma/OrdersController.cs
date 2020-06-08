@@ -45,6 +45,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(GetWorkOrderById));
                 var order = _rmaDbOperations.GetOrderDetails(id);
                 return Ok(order);
             }
@@ -61,6 +62,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(AddOrder));
                 var order = _rmaDbOperations.AddOrder(orderDto);
                 return Ok(order);
             }
@@ -77,6 +79,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(FileUpload));
                 var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
                 _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
                 return Ok();
@@ -94,6 +97,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(FileDownload));
                 var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
                 if (fullFileName == null)
                     return null;
@@ -115,6 +119,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(UpdateOrder));
                 _rmaDbOperations.UpdateOrder(orderDto);
                 return Ok(orderDto);
             }
@@ -130,6 +135,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(CloseOrder));
                 var order = _rmaDbOperations.CloseOrder(id);
                 return Ok(order);
             }

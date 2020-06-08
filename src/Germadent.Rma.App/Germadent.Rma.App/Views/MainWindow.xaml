@@ -63,7 +63,7 @@
                   EnableRowVirtualization="True"
                   CanUserDeleteRows="False"
                   CanUserAddRows="False"
-                  CanUserReorderColumns="False"
+                  CanUserReorderColumns="True"
                   CanUserResizeColumns="True"
                   CanUserResizeRows="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
