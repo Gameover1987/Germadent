@@ -16,7 +16,6 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.10.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.0" />
-    <PackageReference Include="NLog.Config" Version="4.7.0" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Unity" Version="5.11.6" />
   </ItemGroup>
@@ -38,6 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Templates\GermadentLab_MC.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
