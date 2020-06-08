@@ -25,6 +25,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(GetCustomers));
                 var customers = _rmaDbOperations.GetCustomers(mask);
                 return Ok(customers);
             }
@@ -40,6 +41,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(AddCustomer));
                 return Ok(_rmaDbOperations.AddCustomer(customer));
             }
             catch (Exception exception)
@@ -54,6 +56,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(UpdateCustomer));
                 return Ok(_rmaDbOperations.UpdateCustomer(customer));
             }
             catch (Exception exception)
@@ -68,6 +71,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(DeleteCustomer));
                 return Ok(_rmaDbOperations.DeleteCustomer(id));
             }
             catch (Exception exception)

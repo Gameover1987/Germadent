@@ -25,6 +25,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(GetDictionary));
                 if (!Enum.TryParse(typeof(DictionaryType), dictionaryTypeStr, out var dictionaryType))
                 {
                     throw new ArgumentException("Неизвестный тип словаря");

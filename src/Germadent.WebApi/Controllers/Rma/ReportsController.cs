@@ -24,6 +24,7 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
+                _logger.Info(nameof(GetReports));
                 return Ok(_rmaDbOperations.GetWorkReport(id));
             }
             catch (Exception exception)
