@@ -64,11 +64,13 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
+                command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();
 
                 order.WorkOrderId = command.Parameters["@workOrderId"].Value.ToInt();
                 order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
+                order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
             order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
             AddOrUpdateAdditionalEquipmentInWO(order, connection);

@@ -186,9 +186,12 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing == null ? (object)DBNull.Value : order.IndividualAbutmentProcessing;
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff == null ? (object)DBNull.Value : order.Understaff;
                 command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;                
-                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures == null ? (object)DBNull.Value : order.ColorAndFeatures; 
-                
+                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures == null ? (object)DBNull.Value : order.ColorAndFeatures;
+                command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
+
                 command.ExecuteNonQuery();
+
+                order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
 
             AddOrUpdateAdditionalEquipmentInWO(order, connection);
