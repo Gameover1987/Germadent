@@ -41,7 +41,10 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}">
-            <TextBlock Text="Заказчик" Margin="0,1,0,0"/>
+            <!--<TextBlock Text="Заказчик" Margin="0,1,0,0"/>-->
+            <Button Content="Заказчик" Margin="-3,-3,-3,-3"
+                ToolTip="Открыть справочник заказчиков"
+                Command="{Binding SelectCustomerCommand}"/>
         </Border>
         <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                                       Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
@@ -71,7 +74,10 @@
         </StackPanel>
 
         <Border Grid.Row="2" Grid.Column="0" Margin="0,6,0,0" Style="{StaticResource InfoTextBorderStyle}">
-            <TextBlock Text="ФИО доктора" Margin="0,1,0,0"/>
+            <!--<TextBlock Text="ФИО доктора" Margin="0,1,0,0"/>-->
+            <Button  Content="ФИО доктора" Margin="-3,-3,-3,-3"
+                ToolTip="Открыть справочник ответственных лиц"
+                Command="{Binding SelectResponsiblePersonCommand}"/>
         </Border>
         <controls:AutoCompleteTextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
                                       Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" 

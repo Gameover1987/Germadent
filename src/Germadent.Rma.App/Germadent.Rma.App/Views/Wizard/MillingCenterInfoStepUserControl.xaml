@@ -38,7 +38,10 @@
 
         <Border Grid.Row="0" Grid.Column="0"
                 Style="{StaticResource InfoTextBorderStyle}">
-            <TextBlock Text="Заказчик" Margin="0,1,0,0"/>
+            <!--<TextBlock Text="Заказчик" Margin="0,1,0,0"/>-->
+            <Button Content="Заказчик" Margin="-3,-1,-3,-3"
+                ToolTip="Открыть справочник заказчиков"
+                Command="{Binding SelectCustomerCommand}"/>
         </Border>
         <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                                       Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
@@ -72,9 +75,13 @@
         <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
                  Text="{Binding Patient, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
+        <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
-                   HorizontalAlignment="Right" Margin="0,6,0,0" />
+                   HorizontalAlignment="Right" Margin="0,6,0,0" />-->
+        <Button  Grid.Row="3" Grid.Column="0" Content="ФИО техника" 
+                ToolTip="Открыть справочник ответственных лиц"
+                 HorizontalAlignment="Right" Margin="0,6,0,0"
+                Command="{Binding SelectResponsiblePersonCommand}"/>
         <controls:AutoCompleteTextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
                                       Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" 
                                       DisplayMember="FullName"
