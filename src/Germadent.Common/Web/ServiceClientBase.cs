@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using Germadent.Common.Extensions;
+using Germadent.Common.Web;
 using RestSharp;
+using RestSharp.Deserializers;
 
 namespace Germadent.Common.Web
 {
@@ -12,8 +14,8 @@ namespace Germadent.Common.Web
         public ServiceClientBase()
         {
             _client.ThrowOnAnyError = true;
+            _client.AddHandler("application/json", () => NewtonsoftJsonSerializer.Default);
         }
-
         protected T ExecuteHttpGet<T>(string api)
         {
             var restRequest = new RestRequest(api, Method.GET);
@@ -25,11 +27,11 @@ namespace Germadent.Common.Web
 
         protected T ExecuteHttpPost<T>(string api, object body)
         {
-            var restRequest = new RestRequest(api, Method.POST);
-            restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddHeader("Accept", "application/json");
-            restRequest.AddJsonBody(body);
-            var response = _client.Execute(restRequest, Method.POST);
+            var request = new RestRequest(api, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = NewtonsoftJsonSerializer.Default;
+            request.AddJsonBody(body);
+            var response = _client.Execute(request, Method.POST);
             ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
