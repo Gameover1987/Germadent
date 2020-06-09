@@ -26,7 +26,8 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrder]
 	@transparenceID int = NULL,
 	@colorAndFeatures nvarchar(100) = NULL,
 	@workOrderID int output,
-	@docNumber nvarchar(10) output
+	@docNumber nvarchar(10) output,
+	@created datetime output
 	
 AS
 BEGIN
@@ -44,17 +45,19 @@ BEGIN
 
 	-- Генерируем номер документа, для каждого типа филиала свой:	
 	IF @branchTypeID = 1 BEGIN
-		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberMC) AS nvarchar(6)), '-MC', '~', YEAR(GETDATE())-2000)
+		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-MC', '~', YEAR(GETDATE())-2000)
 			END
 	ELSE IF @branchTypeID = 2 BEGIN
-		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceNumberDL) AS nvarchar(6)), '-DL', '~', YEAR(GETDATE())-2000)
+		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-DL', '~', YEAR(GETDATE())-2000)
 			END
 
 	-- Собственно вставка, сначала в основную таблицу:
+	SET	@created = GETDATE()
+
 	INSERT INTO WorkOrder
 		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, OfficeAdminID, OfficeAdminName)
 	VALUES 
-		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, GETDATE(), @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 

@@ -28,6 +28,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @understaff nvarchar(100)
 	, @transparenceID int
 	, @colorAndFeatures nvarchar(100)
+	, @created datetime output
 	
 AS
 BEGIN
@@ -71,6 +72,9 @@ BEGIN
 			, ColorAndFeatures = @colorAndFeatures
 		WHERE WorkOrderDLID = @workOrderID
 	END
+	
+	-- Напоминаем программе дату и время создания заказ-наряда
+	SELECT @created = Created FROM WorkOrder WHERE WorkOrderID = @workOrderID
 
 END
 GO

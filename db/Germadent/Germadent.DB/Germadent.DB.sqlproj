@@ -265,7 +265,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Sequences\SequenceNumberDL.sql" />
     <Build Include="dbo\Sequences\SequenceNumberMC.sql" />
     <Build Include="dbo\Tables\ConditionsOfProsthetics.sql" />
     <Build Include="Security\ofm.sql" />
@@ -435,5 +434,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Sequences\SequenceWorkOrderNumber.sql" />
   </ItemGroup>
 </Project>
