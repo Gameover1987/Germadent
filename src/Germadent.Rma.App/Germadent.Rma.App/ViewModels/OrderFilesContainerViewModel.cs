@@ -14,13 +14,13 @@ namespace Germadent.Rma.App.ViewModels
     {
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IFileManager _fileManager;
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IRmaServiceClient _rmaOperations;
 
         private OrderDto _order;
         private string _fileName;
         private bool _isBusy;
 
-        public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IRmaOperations rmaOperations)
+        public OrderFilesContainerViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IRmaServiceClient rmaOperations)
         {
             _dialogAgent = dialogAgent;
             _fileManager = fileManager;
@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.ViewModels
 
         public bool IsBusy
         {
-            get { return _isBusy; }
+            get => _isBusy;
             private set
             {
                 if (_isBusy == value)
@@ -79,13 +79,8 @@ namespace Germadent.Rma.App.ViewModels
             {
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    using (var data = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId))
-                    {
-                        using (var fileStream = data.GetFileStream())
-                        {
-                            _fileManager.Save(fileStream, fileName);
-                        }
-                    }
+                    var data = _rmaOperations.GetDataFileByWorkOrderId(_order.WorkOrderId);
+                    _fileManager.Save(data, fileName);
                 });
             }
             finally

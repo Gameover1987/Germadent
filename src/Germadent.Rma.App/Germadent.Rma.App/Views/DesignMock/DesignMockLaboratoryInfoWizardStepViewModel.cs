@@ -6,11 +6,12 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockLaboratoryInfoWizardStepViewModel : LaboratoryInfoWizardStepViewModel
     {
-        public DesignMockLaboratoryInfoWizardStepViewModel()
+        public DesignMockLaboratoryInfoWizardStepViewModel() 
+            : base(new DesignMockCatalogSelectionOperations(), new DesignMockCatalogUIOperations(), new DesignMockCustomerSuggestionProvider(), new DesignMockResponsiblePersonsSuggestionProvider(), new DesignMockCustomerRepository(), new DesignMockResponsiblePersonRepository())
         {
-            Customer = "Customer";
-            DoctorFio = "DoctorFullName";
-            PatientFio = "Patient";
+            Customer = "Какой то заказчик";
+            ResponsiblePerson = "Какой то доктор";
+            PatientFio = "Какой то пациент";
 
             Gender = Gender.Female;
             Age = 22;
@@ -18,6 +19,8 @@ namespace Germadent.Rma.App.Views.DesignMock
             Created = DateTime.Now;
             FittingDate = DateTime.Now;
             DateOfCompletion = DateTime.Now;
+
+            DateComment = "Какой то комментарий к срокам выполнения";
         }
     }
 }

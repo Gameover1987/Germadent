@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using NLog;
 
 namespace Germadent.Common.Logging
@@ -13,6 +12,7 @@ namespace Germadent.Common.Logging
         void Fatal(Exception exception);
     }
 
+    
     public class Logger : ILogger
     {
         private readonly NLog.Logger _logger = LogManager.GetCurrentClassLogger();

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Germadent.Common.CopyAndPaste;
+﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+using System.Linq;
+using Germadent.Rma.App.ServiceClient.Repository;
 
 namespace Germadent.Rma.App.Test
 {
@@ -37,23 +33,23 @@ namespace Germadent.Rma.App.Test
 
         private ToothCardViewModel CreateTarget()
         {
-            var rmaOperationsMock = new Mock<IRmaOperations>();
-            rmaOperationsMock
-                .Setup(x => x.GetMaterials())
+            var mockDictionaryRepository = new Mock<IDictionaryRepository>();
+            mockDictionaryRepository
+                .Setup(x => x.GetItems(DictionaryType.Material))
                 .Returns(new[]
                 {
-                    new MaterialDto {MaterialName = "ZrO", Id = 1},
+                    new DictionaryItemDto {Name = "ZrO", Id = 1},
                 });
 
-            rmaOperationsMock
-                .Setup(x => x.GetProstheticTypes())
-                .Returns(new ProstheticsTypeDto[]
+            mockDictionaryRepository
+                .Setup(x => x.GetItems(DictionaryType.ProstheticType))
+                .Returns(new DictionaryItemDto[]
                 {
-                    new ProstheticsTypeDto {Name = "Каркас", Id = 1},
+                    new DictionaryItemDto {Name = "Каркас", Id = 1},
 
                 });
 
-            return new ToothCardViewModel(rmaOperationsMock.Object, Mock.Of<IClipboardHelper>());
+            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IClipboardHelper>());
         }
 
         private static ToothDto[] CreateToothCard()

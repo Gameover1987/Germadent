@@ -13,10 +13,7 @@ namespace Germadent.Rma.App.ViewModels
             _model = model;
         }
 
-        public OrderLiteDto Model
-        {
-            get { return _model; }
-        }
+        public OrderLiteDto Model => _model;
 
         public void Update(OrderLiteDto order)
         {

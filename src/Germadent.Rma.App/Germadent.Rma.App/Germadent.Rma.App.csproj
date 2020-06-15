@@ -1,266 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D30A163A-E335-4829-B539-7DD8476B6E1D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Germadent.Rma.App</RootNamespace>
-    <AssemblyName>Germadent.Rma.App</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestSharp.106.10.1\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.11.1\lib\net46\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.11.1\lib\net46\Unity.Container.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <None Remove="logo.png" />
+    <None Remove="packages.config" />
   </ItemGroup>
+
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Configuration\RmaConfiguration.cs" />
-    <Compile Include="Converters\BranchTypeToStringConverter.cs" />
-    <Compile Include="Printing\IPrintableOrderConverter.cs" />
-    <Compile Include="Printing\PrintableOrder.cs" />
-    <Compile Include="Printing\TemplateProcessing\IWordAssembler.cs" />
-    <Compile Include="Printing\TemplateProcessing\MetaNames.cs" />
-    <Compile Include="Printing\TemplateProcessing\WordJsonAssembler.cs" />
-    <Compile Include="Printing\TemplateProcessing\WordXmlPartAssembler.cs" />
-    <Compile Include="Printing\TemplateProcessing\Wrd.cs" />
-    <Compile Include="Printing\TemplateProcessing\XElementExtensions.cs" />
-    <Compile Include="Printing\TemplateProcessing\XElementFactory.cs" />
-    <Compile Include="Printing\IPrintModule.cs" />
-    <Compile Include="Printing\PrintModule.cs" />
-    <Compile Include="ServiceClient\IFileResponse.cs" />
-    <Compile Include="ServiceClient\IRmaAuthorizer.cs" />
-    <Compile Include="ServiceClient\IRmaOperations.cs" />
-    <Compile Include="ServiceClient\RmaOperations.cs" />
-    <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\IOrderFilesContainerViewModel.cs" />
-    <Compile Include="ViewModels\OrderFilesContainerViewModel.cs" />
-    <Compile Include="ViewModels\ToothCard\MaterialViewModel.cs" />
-    <Compile Include="ViewModels\IOrderViewModel.cs" />
-    <Compile Include="ViewModels\OrderLightViewModel.cs" />
-    <Compile Include="ViewModels\OrdersFilterViewModel.cs" />
-    <Compile Include="ViewModels\ToothCard\ProstheticConditionViewModel.cs" />
-    <Compile Include="ViewModels\ToothCard\ProstheticsTypeViewModel.cs" />
-    <Compile Include="ViewModels\ToothCard\ToothChangedEventArgs.cs" />
-    <Compile Include="ViewModels\ToothCard\ToothViewModel.cs" />
-    <Compile Include="ViewModels\ToothCard\IToothCardViewModel.cs" />
-    <Compile Include="Mocks\DesignMockOrderFilesContainerViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\AdditionalEquipmentViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\IWizardStepsProvider.cs" />
-    <Compile Include="ViewModels\Wizard\IWizardStepViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\LaboratoryInfoWizardStepViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\LaboratoryProjectWizardStepViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\LabWizardStepsProvider.cs" />
-    <Compile Include="ViewModels\Wizard\MillingCenterAdditionalEquipmentViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\MillingCenterInfoWizardStepViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\MillingCenterProjectWizardStepViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\MillingCenterWizardStepsProvider.cs" />
-    <Compile Include="ViewModels\ToothCard\ToothCardViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\WizardStepViewModelBase.cs" />
-    <Compile Include="ViewModels\Wizard\WizardViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockDialogAgent.cs" />
-    <Compile Include="Views\DesignMock\DesignMockLaboratoryInfoWizardStepViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockLaboratoryProjectWizardStepViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockLaboratoryWizardStepsProvider.cs" />
-    <Compile Include="Views\DesignMock\DesignMockMainViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockMillingCenterAdditionalEquipmentViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockMillingCenterInfoWizardStepViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockOrdersFilterViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesignMockWindowManager.cs" />
-    <Compile Include="Views\DesignMock\DesignMockWizardViewModel.cs" />
-    <Compile Include="Views\DesignMock\DesingMockMillingCenterProjectWizardStepViewModel.cs" />
-    <Compile Include="Views\IWindowManager.cs" />
-    <Compile Include="Views\OrdersFilterWindow.xaml.cs">
-      <DependentUpon>OrdersFilterWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\LabInfoStepUserControl.xaml.cs">
-      <DependentUpon>LabInfoStepUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\LabProjectStepUserControl.xaml.cs">
-      <DependentUpon>LabProjectStepUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml.cs">
-      <DependentUpon>MillingCenterAdditionalEquipmentUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml.cs">
-      <DependentUpon>MillingCenterInfoStepUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml.cs">
-      <DependentUpon>MillingCenterProjectStepUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\MouthUserControl.xaml.cs">
-      <DependentUpon>MouthUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WindowManager.cs" />
-    <Compile Include="Views\WizardMode.cs" />
-    <Compile Include="Views\WizardWindow.xaml.cs">
-      <DependentUpon>WizardWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mocks\DesignMockRmaAuthorizer.cs" />
-    <Compile Include="Mocks\DesignMockRmaOperations.cs" />
-    <Compile Include="ViewModels\AuthorizationViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Views\OrdersFilterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\LabInfoStepUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\LabProjectStepUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\MillingCenterAdditionalEquipmentUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\MillingCenterInfoStepUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\MillingCenterProjectStepUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControls\MouthUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WizardWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.10.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.7.0" />
+    <PackageReference Include="RestSharp" Version="106.10.1" />
+    <PackageReference Include="Unity" Version="5.11.6" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Templates\GermadentLab_MC.docx">
+    <ProjectReference Include="..\..\Germadent.Common\Germadent.Common.csproj" />
+    <ProjectReference Include="..\..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
+    <ProjectReference Include="..\..\Germadent.UI\Germadent.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\GermadentLab_ZTL.docx">
+    <None Update="Templates\GermadentLab_MC.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\GermadentLab_ZTL.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Germadent.Common\Germadent.Common.csproj">
-      <Project>{A73F2837-286E-4DF2-95A7-6A383B67A66B}</Project>
-      <Name>Germadent.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Germadent.Rma.Model\Germadent.Rma.Model.csproj">
-      <Project>{20C51207-C072-4C58-B653-5BC624B00CC3}</Project>
-      <Name>Germadent.Rma.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Germadent.UI\Germadent.UI.csproj">
-      <Project>{E3944E28-D2B6-471B-ACC7-316315C602A1}</Project>
-      <Name>Germadent.UI</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="logo.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

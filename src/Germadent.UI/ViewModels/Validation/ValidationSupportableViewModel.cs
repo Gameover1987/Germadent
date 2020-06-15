@@ -62,6 +62,12 @@ namespace Germadent.UI.ViewModels.Validation
             OnPropertyChanged(() => HasErrors);
         }
 
+        protected void ResetValidation()
+        {
+            _errorMessages.Clear();
+            OnPropertyChanged(() => HasErrors);
+        }
+
         protected void ValidateProperty<T>(Expression<Func<T>> propertyExpression)
         {
             var propertyName = GetPropertyName(propertyExpression);

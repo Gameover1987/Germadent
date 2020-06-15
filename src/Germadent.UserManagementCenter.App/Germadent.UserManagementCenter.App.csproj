@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="106.10.1" />
+    <PackageReference Include="Unity" Version="5.11.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
+    <ProjectReference Include="..\Germadent.UI\Germadent.UI.csproj" />
+    <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
+  </ItemGroup>
+  
+</Project>

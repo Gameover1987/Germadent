@@ -7,12 +7,13 @@
     [Status]              INT            NULL,
     [DocNumber]           NVARCHAR (10)  NULL,
     [CustomerID]          INT            NULL,
-    [CustomerName]        NVARCHAR (100) NULL,
     [ResponsiblePersonID] INT            NULL,
-    [PatientID]           INT            NULL,
     [PatientFullName]     NVARCHAR (150) NULL,
+    [PatientGender]       BIT            NULL,
+    [PatientAge]          TINYINT        NULL,
     [Created]             DATETIME       NULL,
-    [DateDelivery]        DATETIME       NULL,
+    [FittingDate]         DATETIME       NULL,
+    [DateOfCompletion]    DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
@@ -21,6 +22,12 @@
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL
 );
+
+
+
+
+
+
 
 
 

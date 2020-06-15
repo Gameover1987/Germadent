@@ -5,10 +5,11 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddNewRespPerson] 
 	
-	@customerID int, 
-	@rp_Position nvarchar(30),
-	@responsiblePerson nvarchar(50),
-	@rp_phone varchar(15),
+	@rp_position nvarchar(30),
+	@responsiblePerson nvarchar(150),
+	@rp_phone nvarchar(150) = NULL,
+	@rp_email nvarchar(150) = NULL,
+	@rp_description nvarchar(250) = NULL,
 	@responsiblePersonId int output
 
 AS
@@ -29,9 +30,9 @@ BEGIN
 	-- Собственно вставка:
 	
 	INSERT INTO ResponsiblePersons
-	(CustomerID, ResponsiblePerson, RP_Position, RP_Phone)
+	(ResponsiblePerson, RP_Position, RP_Phone, RP_Email, RP_Description)
 	values
-	(@customerID, @responsiblePerson, @rp_Position, @rp_phone)
+	(@responsiblePerson, @rp_Position, @rp_phone, @rp_email, @rp_description)
 
 	SET @responsiblePersonId = SCOPE_IDENTITY()
 

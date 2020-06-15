@@ -12,11 +12,5 @@ namespace Germadent.Rma.App.Views
         {
             InitializeComponent();
         }
-
-        private void OrdersFilterWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var filter = (IOrdersFilterViewModel) DataContext;
-            filter.Initialize();
-        }
     }
 }

@@ -17,14 +17,6 @@
         d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
-    <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="DataGridTextStyle" TargetType="{x:Type TextBlock}">
-                <Setter Property="Margin" Value="3,3,3,3"/>
-                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -36,11 +28,10 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
-            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,3,0,0"
+            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,0,0,0"
                                      LabelText="Поиск заказ-нарядов" 
                                      SearchEventTimeDelay="00:00:3"
                                      SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
 
             <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
             <Button Content="Лаборатория" Margin="0,6,0,0"
@@ -57,6 +48,12 @@
                     Command="{Binding CloseOrderCommand}"/>
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
+
+            <TextBlock Text="Работа со справочниками" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
+            <Button Content="Заказчики" Margin="0,6,0,0"
+                    Command="{Binding ShowCustomersDictionaryCommand}"/>
+            <Button Content="Ответственные лица" Margin="0,6,0,0"
+                    Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
@@ -66,7 +63,7 @@
                   EnableRowVirtualization="True"
                   CanUserDeleteRows="False"
                   CanUserAddRows="False"
-                  CanUserReorderColumns="False"
+                  CanUserReorderColumns="True"
                   CanUserResizeColumns="True"
                   CanUserResizeRows="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -95,6 +92,7 @@
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
                                           InputGestureText="Ctrl+P"/>
+                                <MenuItem Header="Копировать в Excel" Command="{Binding CopyOrderToClipboardCommand}"/>
                                 <Separator/>
                                 <MenuItem Header="Закрыть" Command="{Binding CloseOrderCommand}"/>
                             </ContextMenu>
@@ -103,19 +101,19 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto" 
+                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
                                     Binding="{Binding Model.DocNumber}"/>
-                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
                                     Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
-                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextStyle}"  Width="Auto"
+                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
                                     Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
-                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     Binding="{Binding Model.CustomerName}"/>
-                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     Binding="{Binding Model.PatientFnp}"/>
-                <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextStyle}"  Width="*"
+                <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     Binding="{Binding Model.DoctorFullName}"/>
-                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextStyle}" Width="Auto"
+                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>

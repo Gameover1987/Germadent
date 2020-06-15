@@ -12,7 +12,7 @@ namespace Germadent.Rma.Model
     {
         VitaClassical, Opak, Translucen
     }
-
+    
     public enum BranchType
     {
         [Description("Фрезерный центр")]

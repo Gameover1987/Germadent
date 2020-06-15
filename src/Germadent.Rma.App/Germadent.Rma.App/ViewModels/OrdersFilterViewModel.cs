@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -12,16 +13,9 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public interface IOrdersFilterViewModel
-    {
-        OrdersFilter GetFilter();
-
-        void Initialize();
-    }
-
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private readonly ILogger _logger;
 
         private bool _millingCenter;
@@ -29,113 +23,133 @@ namespace Germadent.Rma.App.ViewModels
         private DateTime _periodBegin;
         private DateTime _periodEnd;
         private string _customer;
-        private string _employee;
+        private string _doctor;
         private string _patient;
 
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
         private bool _isBusy;
 
-        public OrdersFilterViewModel(IRmaOperations rmaOperations, ILogger logger)
+        public OrdersFilterViewModel(IDictionaryRepository dictionaryRepository, ILogger logger)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             _logger = logger;
 
             _millingCenter = true;
             _laboratory = true;
-
-            var now = DateTime.Now.Date;
-            _periodBegin = now.AddDays(-30);
-            _periodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             OKCommand = new DelegateCommand(x => { }, x => CanOkCommandHandler());
         }
 
         public bool MillingCenter
         {
-            get { return _millingCenter; }
+            get => _millingCenter;
             set
             {
-                if (SetProperty(() => _millingCenter, value))
-                {
-                    ValidateDepartments();
-                }
+                if (_millingCenter == value)
+                    return;
+                _millingCenter = value;
+                OnPropertyChanged(() => MillingCenter);
+
+                ValidateDepartments();
             }
         }
 
         public bool Laboratory
         {
-            get { return _laboratory; }
+            get => _laboratory;
             set
             {
-                if (SetProperty(() => _laboratory, value))
-                {
-                    ValidateDepartments();
-                }
+                if (_laboratory == value)
+                    return;
+                _laboratory = value;
+                OnPropertyChanged(() => Laboratory);
+
+                ValidateDepartments();
             }
         }
 
         public DateTime PeriodBegin
         {
-            get { return _periodBegin; }
+            get => _periodBegin;
             set
             {
-                if (SetProperty(() => _periodBegin, value))
-                {
-                    ValidateDates();
-                }
+                if (_periodBegin == value)
+                    return;
+                _periodBegin = value;
+                OnPropertyChanged(() => PeriodBegin);
+                ValidateDates();
             }
         }
 
         public DateTime PeriodEnd
         {
-            get { return _periodEnd; }
+            get => _periodEnd;
             set
             {
-                if (SetProperty(() => _periodEnd, value))
-                {
-                    ValidateDates();
-                }
+                if (_periodEnd == value)
+                    return;
+                _periodEnd = value;
+                OnPropertyChanged(() => PeriodEnd);
+                ValidateDates();
             }
         }
 
         public string Customer
         {
-            get { return _customer; }
-            set { SetProperty(() => _customer, value); }
+            get => _customer;
+            set
+            {
+                if (_customer == value)
+                    return;
+                _customer = value;
+                OnPropertyChanged(() => Customer);
+            }
         }
 
-        public string Employee
+        public string Doctor
         {
-            get { return _employee; }
-            set { SetProperty(() => _employee, value); }
+            get => _doctor;
+            set
+            {
+                if (_doctor == value)
+                    return;
+                _doctor = value;
+                OnPropertyChanged(() => Doctor);
+            }
         }
 
         public string Patient
         {
-            get { return _patient; }
-            set { SetProperty(() => _patient, value); }
+            get => _patient;
+            set
+            {
+                if (_patient == value)
+                    return;
+                _patient = value;
+                OnPropertyChanged(() => Patient);
+            }
         }
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
         public ObservableCollection<string> ValidationErrors { get; } = new ObservableCollection<string>();
 
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(() => _isBusy, value); }
+            get => _isBusy;
+            set
+            {
+                if (_isBusy == value)
+                    return;
+                _isBusy = value;
+                OnPropertyChanged(() => IsBusy);
+            }
         }
 
-        public bool IsValid
-        {
-            get { return ValidationErrors.Count == 0; }
-        }
+        public bool IsValid => ValidationErrors.Count == 0;
 
-        public string LastError
-        {
-            get { return ValidationErrors.LastOrDefault(); }
-        }
+        public string LastError => ValidationErrors.LastOrDefault();
 
         public ICommand OKCommand { get; }
 
@@ -185,29 +199,35 @@ namespace Germadent.Rma.App.ViewModels
                 PeriodBegin = PeriodBegin,
                 PeriodEnd = PeriodEnd,
                 Customer = Customer,
-                Doctor = Employee,
+                Doctor = Doctor,
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray()
             };
             return filter;
         }
 
-        public async void Initialize()
+        public void Initialize(OrdersFilter filter)
         {
             try
             {
                 IsBusy = true;
+
+                Laboratory = filter.Laboratory;
+                MillingCenter = filter.MillingCenter;
+                PeriodBegin = filter.PeriodBegin;
+                PeriodEnd = filter.PeriodEnd;
+                Customer = filter.Customer;
+                Doctor = filter.Doctor;
+                Patient = filter.Patient;
+
+                var selectedMaterialIds = filter.Materials.Select(x => x.Id).ToArray();
+
                 Materials.Clear();
-
-                MaterialDto[] materials = null;
-                await ThreadTaskExtensions.Run(() =>
+                foreach (var material in _dictionaryRepository.GetItems(DictionaryType.Material))
                 {
-                    materials = _rmaOperations.GetMaterials();
-                });
-
-                foreach (var material in materials)
-                {
-                    Materials.Add(new MaterialViewModel(material));
+                    var checkableDictionaryItemViewModel = new CheckableDictionaryItemViewModel(material);
+                    checkableDictionaryItemViewModel.IsChecked = selectedMaterialIds.Contains(material.Id);
+                    Materials.Add(checkableDictionaryItemViewModel);
                 }
             }
             catch (Exception e)
@@ -218,7 +238,6 @@ namespace Germadent.Rma.App.ViewModels
             {
                 IsBusy = false;
             }
-            
         }
     }
 }

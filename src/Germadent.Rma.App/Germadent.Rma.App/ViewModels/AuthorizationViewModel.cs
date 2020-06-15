@@ -10,12 +10,12 @@ namespace Germadent.Rma.App.ViewModels
 {
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
-        private readonly IRmaAuthorizer _authorizer;
+        private readonly IRmaServiceClient _serviceClient;
 
-        public AuthorizationViewModel(IShowDialogAgent agent, IRmaAuthorizer authorizer)
+        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient)
             : base(agent)
         {
-            _authorizer = authorizer;
+            _serviceClient = serviceClient;
             
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
@@ -25,9 +25,10 @@ namespace Germadent.Rma.App.ViewModels
         {
             try
             {
-                return new BitmapImage(new Uri(
-                    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
-                    UriKind.Absolute));
+                return null;
+                //return new BitmapImage(new Uri(
+                //    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
+                //    UriKind.Absolute));
             }
             catch
             {
@@ -39,7 +40,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             try
             {
-                _authorizer.Authorize(UserName, Password);
+                _serviceClient.Authorize(UserName, Password);
             }
             catch (Exception e)
             {

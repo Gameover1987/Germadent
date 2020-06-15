@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Germadent.Rma.App.Views.Wizard.MillingCenterInfoStepUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+             xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
+             xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
+             xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterInfoWizardStepViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="0,6,0,0"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="210" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0"
+                Style="{StaticResource InfoTextBorderStyle}">
+            <TextBlock Text="Заказчик" Margin="0,1,0,0"/>
+        </Border>
+        <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                                      Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMember="DisplayName"
+                                      Provider="{Binding CustomerSuggestionProvider}">
+            <controls:AutoCompleteTextBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModels:CustomerViewModel}">
+                    <wizard:CustomerUserControl />
+                </DataTemplate>
+            </controls:AutoCompleteTextBox.ItemTemplate>
+        </controls:AutoCompleteTextBox>
+
+        <Button Grid.Column="2" Grid.Row="0" Margin="6,0,0,0" Content="..."
+                ToolTip="Открыть справочник заказчиков"
+                Command="{Binding SelectCustomerCommand}"/>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <Button Content="Добавить заказчика"
+                    Command="{Binding AddCustomerCommand}"/>
+            <Button Content="Карточка заказчика" Margin="6,0,0,0"
+                    Command="{Binding ShowCustomerCardCommand}"/>
+            <StackPanel Orientation="Horizontal" Margin="12,0,0,0"
+                        Visibility="{Binding IsNewCustomer, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Path Style="{StaticResource InfoIconPathStyle}"/>
+                <TextBlock Text="Отсутствует в справочнике" VerticalAlignment="Center" Margin="3,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="ФИО пациента" Margin="0,6,0,0"/>
+
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
+                 Text="{Binding Patient, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
+                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
+                   HorizontalAlignment="Right" Margin="0,6,0,0" />
+       
+        <controls:AutoCompleteTextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
+                                      Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMember="FullName"
+                                      Provider="{Binding ResponsiblePersonsSuggestionsProvider}">
+            <controls:AutoCompleteTextBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type catalogs:ResponsiblePersonViewModel}">
+                    <wizard:ResponsiblePersonUserControl />
+                </DataTemplate>
+            </controls:AutoCompleteTextBox.ItemTemplate>
+        </controls:AutoCompleteTextBox>
+
+        <Button Grid.Row="3" Grid.Column="2" Margin="6,6,0,0" Content="..." 
+                ToolTip="Открыть справочник ответственных лиц"
+                Command="{Binding SelectResponsiblePersonCommand}"/>
+
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" Margin="6,6,0,0">
+            <Button Content="Добавить техника"
+                    Command="{Binding AddResponsiblePersonCommand}"/>
+            <Button Content="Карточка техника" Margin="6,0,0,0"
+                    Command="{Binding ShowResponsiblePersonCardCommand}"/>
+            <StackPanel Orientation="Horizontal" Margin="12,0,0,0"
+                        Visibility="{Binding IsNewCustomer, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Path Style="{StaticResource InfoIconPathStyle}"/>
+                <TextBlock Text="Отсутствует в справочнике" VerticalAlignment="Center" Margin="3,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Номер тел. техника" VerticalAlignment="Center"
+                   ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
+                   HorizontalAlignment="Right" Margin="0,6,0,0" />
+        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="6,6,0,0" Width="150" HorizontalAlignment="Left"
+                 Text="{Binding ResponsiblePersonPhone, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Дата и время получения работы"/>
+        <DatePicker Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Margin="6,6,0,0" Width="150"
+                    SelectedDate="{Binding Created}" SelectedDateFormat="Short" />
+
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="Комментарий по времени"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</UserControl>

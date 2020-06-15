@@ -15,6 +15,11 @@ namespace Germadent.Rma.Model
 
     public class OrdersFilter
     {
+        public OrdersFilter()
+        {
+            Materials = new DictionaryItemDto[0];
+        }
+
         public bool MillingCenter { get; set; }
 
         public bool Laboratory { get; set; }
@@ -29,6 +34,19 @@ namespace Germadent.Rma.Model
 
         public string Patient { get; set; }
 
-        public MaterialDto[] Materials { get; set; }
+        public DictionaryItemDto[] Materials { get; set; }
+
+        public static OrdersFilter CreateDefault()
+        {
+            var now = DateTime.Now;
+
+            return new OrdersFilter
+            {
+                PeriodBegin = now.AddDays(-30),
+                PeriodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59),
+                MillingCenter = true,
+                Laboratory = true
+            };
+        }
     }
 }

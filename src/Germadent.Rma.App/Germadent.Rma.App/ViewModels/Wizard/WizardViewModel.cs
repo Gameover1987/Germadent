@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Germadent.Rma.App.Printing;
-using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
@@ -12,6 +12,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public interface IWizardViewModel
     {
+        void Initialize(WizardMode wizardMode, OrderDto order);
+
+        OrderDto GetOrder();
+
         bool PrintAfterSave { get; set; }
     }
 
@@ -26,17 +30,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public WizardViewModel(IWizardStepsProvider stepsProvider, IPrintModule printModule)
         {
             _printModule = printModule;
-            if (stepsProvider is ILabWizardStepsProvider)
-                _branchType = BranchType.Laboratory;
-            else
-                _branchType = BranchType.MillingCenter;
+            _branchType = stepsProvider.BranchType;
 
             Steps = new ObservableCollection<IWizardStepViewModel>(stepsProvider.GetSteps());
             CurrentStep = Steps.First();
 
             BackCommand = new DelegateCommand(x => BackCommandHandler(), x => CanBackCommandHandler());
             NextCommand = new DelegateCommand(x => NextCommandHandler(), x => CanNextCommandHandler());
-
             PrintCommand = new DelegateCommand(x => PrintCommandHandler(), x => CanPrintCommandHandler());
             SaveCommand = new DelegateCommand(x => SaveCommandHandler(), x => CanSaveCommandHandler());
             SaveAndPrintCommand = new DelegateCommand(x => SaveAndPrintCommandHandler(x), x => CanSaveAndPrintCommandHandler());
@@ -50,7 +50,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public IWizardStepViewModel CurrentStep
         {
-            get { return _currentStep; }
+            get => _currentStep;
             private set
             {
                 if (_currentStep == value)
@@ -70,10 +70,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public ICommand SaveCommand { get; }
 
-        public bool IsReadOnly
-        {
-            get { return WizardMode == WizardMode.View; }
-        }
+        public bool IsReadOnly => WizardMode == WizardMode.View;
 
         public bool PrintAfterSave { get; set; }
 
@@ -173,19 +170,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public OrderDto GetOrder()
         {
             var order = new OrderDto();
+
+            order.WorkOrderId = _order.WorkOrderId;
+            order.BranchType = _order.BranchType;
+            order.DocNumber = _order.DocNumber;
+            order.Closed = _order.Closed;
+
             foreach (var step in Steps)
             {
                 step.AssemblyOrder(order);
-
-                order.WorkOrderId = _order.WorkOrderId;
-                order.BranchType = _order.BranchType;
-                order.DocNumber = _order.DocNumber;
-                order.Closed = _order.Closed;
             }
 
             return order;
         }
-
-      
     }
 }

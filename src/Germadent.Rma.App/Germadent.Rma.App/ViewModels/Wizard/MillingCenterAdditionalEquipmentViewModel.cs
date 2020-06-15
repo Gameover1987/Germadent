@@ -2,6 +2,7 @@
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
@@ -9,27 +10,21 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class MillingCenterAdditionalEquipmentViewModel : WizardStepViewModelBase
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
 
-        public MillingCenterAdditionalEquipmentViewModel(IRmaOperations rmaOperations)
+        public MillingCenterAdditionalEquipmentViewModel(IDictionaryRepository dictionaryRepository)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
         }
 
-        public override string DisplayName
-        {
-            get { return "Дополнительная оснастка"; }
-        }
+        public override string DisplayName => "Дополнительная оснастка";
 
-        public override bool IsValid
-        {
-            get { return !HasErrors; }
-        }        
+        public override bool IsValid => !HasErrors;
 
         public override void Initialize(OrderDto order)
         {
             Equipments.Clear();
-            var equipments = _rmaOperations.GetEquipments();
+            var equipments = _dictionaryRepository.GetItems(DictionaryType.Equipment);
             foreach (var equipment in equipments)
             {
                 var equipmentViewModel = new AdditionalEquipmentViewModel(equipment);

@@ -5,26 +5,22 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[CloseWorkOrder] 
 	
-	@workOrderId int
-	
+	@workOrderId int	
 
 AS
 BEGIN
+
+	SET NOCOUNT ON;
 
 	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
 		BEGIN
 			RETURN
 		END
-
-	DECLARE
-	@CloseDate datetime = NULL
-
-	SET NOCOUNT ON;
-
+		
 	UPDATE WorkOrder
 	SET Status = 9,
-		Closed = ISNULL(@CloseDate, GETDATE())
+		Closed = GETDATE()
 	WHERE WorkOrderID = @workOrderId
 
 END

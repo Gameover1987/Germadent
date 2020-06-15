@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Germadent.TestUtils\Germadent.TestUtils.csproj" />
+    <ProjectReference Include="..\Germadent.UserManagementCenter.App\Germadent.UserManagementCenter.App.csproj" />
+  </ItemGroup>  
+
+</Project>

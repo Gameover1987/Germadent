@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using NUnit.Framework;
-using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.App.ViewModels.ToothCard;
+using System.Linq;
 
 namespace Germadent.Rma.App.Test
 {
@@ -101,10 +100,10 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
-        [TestCase("Культя", "Каркас", "ZrO", true, "Культя/Каркас/ZrO/Мост")]
-        [TestCase(null, "Каркас", "ZrO", true, "Каркас/ZrO/Мост")]
-        [TestCase(null, null, "ZrO", true, "ZrO/Мост")]
-        [TestCase(null, null, null, true, "Мост")]
+        [TestCase("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
+        [TestCase(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
+        [TestCase(null, null, "ZrO", true, "0 - ZrO/Мост")]
+        [TestCase(null, null, null, true, "0 - Мост")]
         public void ShouldGetCorrectDescription(string prostheticsCondition, string prosthetics, string material, bool hasBridge, string expectedDescription)
         {
             // Given
@@ -135,35 +134,35 @@ namespace Germadent.Rma.App.Test
             return new ToothViewModel(GetProstheticConditions(), GetProsthticTypes(), GetMaterials());
         }
 
-        private static ProstheticConditionDto[] GetProstheticConditions()
+        private static DictionaryItemDto[] GetProstheticConditions()
         {
             var conditions = new[]
             {
-                new ProstheticConditionDto{Name = "Культя", Id = 1},
-                new ProstheticConditionDto{Name = "Имплант", Id = 2},
+                new DictionaryItemDto{Name = "Культя", Id = 1},
+                new DictionaryItemDto{Name = "Имплант", Id = 2},
             };
             return conditions;
         }
 
-        private static MaterialDto[] GetMaterials()
+        private static DictionaryItemDto[] GetMaterials()
         {
             var materials = new[]
             {
-                new MaterialDto {MaterialName = "ZrO"},
-                new MaterialDto {MaterialName = "PMMA mono"},
-                new MaterialDto {MaterialName = "PMMA multi"},
-                new MaterialDto {MaterialName = "WAX"},
-                new MaterialDto {MaterialName = "MIK"},
-                new MaterialDto {MaterialName = "CAD-Temp mono"},
-                new MaterialDto {MaterialName = "CAD-Temp multi"},
-                new MaterialDto {MaterialName = "Enamik mono"},
-                new MaterialDto {MaterialName = "Enamik multi"},
-                new MaterialDto {MaterialName = "SUPRINITY"},
-                new MaterialDto {MaterialName = "Mark II"},
-                new MaterialDto {MaterialName = "WAX"},
-                new MaterialDto {MaterialName = "TriLuxe forte"},
-                new MaterialDto {MaterialName = "Ti"},
-                new MaterialDto {MaterialName = "E.MAX"},
+                new DictionaryItemDto {Name = "ZrO"},
+                new DictionaryItemDto {Name = "PMMA mono"},
+                new DictionaryItemDto {Name = "PMMA multi"},
+                new DictionaryItemDto {Name = "WAX"},
+                new DictionaryItemDto {Name = "MIK"},
+                new DictionaryItemDto {Name = "CAD-Temp mono"},
+                new DictionaryItemDto {Name = "CAD-Temp multi"},
+                new DictionaryItemDto {Name = "Enamik mono"},
+                new DictionaryItemDto {Name = "Enamik multi"},
+                new DictionaryItemDto {Name = "SUPRINITY"},
+                new DictionaryItemDto {Name = "Mark II"},
+                new DictionaryItemDto {Name = "WAX"},
+                new DictionaryItemDto {Name = "TriLuxe forte"},
+                new DictionaryItemDto {Name = "Ti"},
+                new DictionaryItemDto {Name = "E.MAX"},
             };
 
             for (int i = 0; i < materials.Length; i++)
@@ -174,16 +173,16 @@ namespace Germadent.Rma.App.Test
             return materials;
         }
 
-        private static ProstheticsTypeDto[] GetProsthticTypes()
+        private static DictionaryItemDto[] GetProsthticTypes()
         {
             var ptostheticTypes = new[]
             {
-                new ProstheticsTypeDto {Name = "Каркас", Id = 1},
-                new ProstheticsTypeDto {Name = "Каркас винт. фикс", Id = 2},
-                new ProstheticsTypeDto {Name = "Абатмент", Id = 3},
-                new ProstheticsTypeDto {Name = "Полная анатомия", Id = 4},
-                new ProstheticsTypeDto {Name = "Временная конструкция", Id = 5},
-                new ProstheticsTypeDto {Name = "другая конструкция", Id = 6},
+                new DictionaryItemDto {Name = "Каркас", Id = 1},
+                new DictionaryItemDto {Name = "Каркас винт. фикс", Id = 2},
+                new DictionaryItemDto {Name = "Абатмент", Id = 3},
+                new DictionaryItemDto {Name = "Полная анатомия", Id = 4},
+                new DictionaryItemDto {Name = "Временная конструкция", Id = 5},
+                new DictionaryItemDto {Name = "другая конструкция", Id = 6},
             };
 
             return ptostheticTypes;

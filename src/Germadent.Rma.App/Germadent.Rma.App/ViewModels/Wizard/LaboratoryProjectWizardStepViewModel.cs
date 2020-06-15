@@ -2,6 +2,7 @@
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
@@ -9,17 +10,16 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class LaboratoryProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private readonly IRmaOperations _rmaOperations;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private string _workDescription;
         private string _colorAndFeatures;
-        private int _transparency;
         private string _prostheticArticul;
 
-        private TransparencesDto _selectedTransparency;
+        private DictionaryItemDto _selectedTransparency;
 
-        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IRmaOperations rmaOperations)
+        public LaboratoryProjectWizardStepViewModel(IToothCardViewModel toothCard, IOrderFilesContainerViewModel orderFilesContainer, IDictionaryRepository dictionaryRepository)
         {
-            _rmaOperations = rmaOperations;
+            _dictionaryRepository = dictionaryRepository;
             FilesContainer = orderFilesContainer;
             ToothCard = toothCard;
         }
@@ -30,27 +30,44 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public string WorkDescription
         {
-            get { return _workDescription; }
-            set { SetProperty(() => _workDescription, value); }
+            get => _workDescription;
+            set
+            {
+                if (_workDescription == value)
+                    return;
+                _workDescription = value;
+                OnPropertyChanged(() => WorkDescription);
+            }
         }
 
         public string ColorAndFeatures
         {
-            get { return _colorAndFeatures; }
-            set { SetProperty(() => _colorAndFeatures, value); }
+            get => _colorAndFeatures;
+            set {
+                if (_colorAndFeatures == value)
+                    return;
+                _colorAndFeatures = value;
+                OnPropertyChanged(() => ColorAndFeatures);
+            }
         }
 
         public string ProstheticArticul
         {
-            get { return _prostheticArticul; }
-            set { SetProperty(() => _prostheticArticul, value); }
+            get => _prostheticArticul;
+            set
+            {
+                if (_prostheticArticul == value)
+                    return;
+                _prostheticArticul = value;
+                OnPropertyChanged(() => ProstheticArticul);
+            }
         }
 
-        public ObservableCollection<TransparencesDto> Transparences { get; } = new ObservableCollection<TransparencesDto>();
+        public ObservableCollection<DictionaryItemDto> Transparences { get; } = new ObservableCollection<DictionaryItemDto>();
 
-        public TransparencesDto SelectedTransparency
+        public DictionaryItemDto SelectedTransparency
         {
-            get { return _selectedTransparency; }
+            get => _selectedTransparency;
             set
             {
                 if (_selectedTransparency == value)
@@ -68,11 +85,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             _workDescription = order.WorkDescription;
             _colorAndFeatures = order.ColorAndFeatures;
-            _transparency = order.Transparency;
             _prostheticArticul = order.ProstheticArticul;
 
             Transparences.Clear();
-            var transparences = _rmaOperations.GetTransparences();
+            var transparences = _dictionaryRepository.GetItems(DictionaryType.Transparency);
             transparences.ForEach(x => Transparences.Add(x));
 
             SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);
