@@ -37,6 +37,7 @@ namespace Germadent.WebApi.Controllers.Rma
         }
 
         [HttpPost]
+        [Route("add")]
         public IActionResult AddCustomer(CustomerDto customer)
         {
             try
@@ -51,7 +52,8 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpPut]
+        [HttpPost]
+        [Route("update")]
         public IActionResult UpdateCustomer(CustomerDto customer)
         {
             try

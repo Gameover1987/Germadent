@@ -60,20 +60,6 @@ namespace Germadent.Common.Web
             return respMessage;
         }
 
-        protected T ExecuteHttpPut<T>(string api, object body)
-        {
-            var restRequest = new RestRequest(api, Method.PUT);
-
-            restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddHeader("Accept", "application/json");
-
-            restRequest.AddJsonBody(body);
-
-            var response = _client.Execute(restRequest, Method.PUT);
-            ThrowIfError(response);
-            return response.Content.DeserializeFromJson<T>();
-        }
-
         protected T ExecuteHttpDelete<T>(string api)
         {
             var restRequest = new RestRequest(api, Method.DELETE);

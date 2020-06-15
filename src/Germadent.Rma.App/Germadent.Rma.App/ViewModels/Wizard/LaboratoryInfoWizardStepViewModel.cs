@@ -264,7 +264,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.Gender = Gender;
             order.Age = Age;
             order.Patient = PatientFio;
-            order.Created = Created;
+            order.Created = Created; ;
             order.FittingDate = FittingDate;
             order.DateOfCompletion = DateOfCompletion;
             order.DateComment = DateComment;
