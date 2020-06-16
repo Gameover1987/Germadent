@@ -36,6 +36,7 @@ namespace Germadent.WebApi.Controllers.Rma
         }
 
         [HttpPost]
+        [Route("add")]
         public IActionResult AddResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
             try
@@ -50,7 +51,8 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpPut]
+        [HttpPost]
+        [Route("update")]
         public IActionResult UpdateResponsiblePerson(ResponsiblePersonDto responsiblePerson)
         {
             try

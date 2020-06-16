@@ -55,9 +55,9 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
-
-
+        
         [HttpPost]
+        [Route("add")]
         public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
             try
@@ -114,7 +114,8 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpPut]
+        [HttpPost]
+        [Route("update")]
         public IActionResult UpdateOrder([FromBody] OrderDto orderDto)
         {
             try

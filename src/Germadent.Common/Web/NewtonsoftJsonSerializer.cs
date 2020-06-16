@@ -56,10 +56,13 @@ namespace Germadent.Common.Web
         {
             get
             {
-                return new NewtonsoftJsonSerializer(new JsonSerializer()
+                var serializer = new NewtonsoftJsonSerializer(new JsonSerializer()
                 {
                     NullValueHandling = NullValueHandling.Ignore,
+                    DateTimeZoneHandling = DateTimeZoneHandling.Local
                 });
+
+                return serializer;
             }
         }
     }

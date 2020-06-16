@@ -42,7 +42,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
             if (order.DataFileName != null)
             {
                 var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
@@ -54,7 +54,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder =  ExecuteHttpPut<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders", order);
+            var updatedOrder =  ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
             if (order.DataFileName != null)
             {
                 var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
@@ -79,9 +79,16 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<CustomerDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Customers?mask={mask}");
         }
 
+        public CustomerDto AddCustomer(CustomerDto сustomerDto)
+        {
+            var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/add", сustomerDto);
+            CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { addedCustomer }, null));
+            return addedCustomer;
+        }
+
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
         {
-            var updatedCustomer = ExecuteHttpPut<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers", customerDto);
+            var updatedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/update", customerDto);
             CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { updatedCustomer }, null));
             return updatedCustomer;
         }
@@ -98,14 +105,14 @@ namespace Germadent.Rma.App.ServiceClient
 
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
-            var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons", responsiblePersonDto);
+            var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/add", responsiblePersonDto);
             ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new[] { addedResponsiblePerson }, null));
             return addedResponsiblePerson;
         }
 
         public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
-            var updatedResponsiblePerson = ExecuteHttpPut<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons", responsiblePersonDto);
+            var updatedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/update", responsiblePersonDto);
             ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new[] { responsiblePersonDto }, null));
             return updatedResponsiblePerson;
         }
@@ -113,13 +120,6 @@ namespace Germadent.Rma.App.ServiceClient
         public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             return ExecuteHttpDelete<ResponsiblePersonDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
-        }
-
-        public CustomerDto AddCustomer(CustomerDto сustomerDto)
-        {
-            var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers", сustomerDto);
-            CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { addedCustomer }, null));
-            return addedCustomer;
         }
 
         public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)

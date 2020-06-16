@@ -1,53 +1,99 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.ServiceProcess;
+using Germadent.Common.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace Germadent.WebApi
 {
+    internal class CustomWebHostService : WebHostService
+    {
+        private readonly ILogger _logger;
+
+        public CustomWebHostService(IWebHost host) 
+            : base(host)
+        {
+            _logger = (ILogger)host.Services.GetService(typeof(ILogger));
+        }
+
+        protected override void OnStarting(string[] args)
+        {
+            _logger.Info($"------- Запуск (версия {Assembly.GetExecutingAssembly().GetName().Version}) -------");
+            base.OnStarting(args);
+        }
+
+        protected override void OnStopping()
+        {
+            _logger.Info("------- Закрытие -------");
+            base.OnStopping();
+        }
+    }
+
+    public static class CustomWebHostWindowsServiceExtensions
+    {
+        public static void RunAsCustomService(this IWebHost host)
+        {
+            var webHostService = new CustomWebHostService(host);
+            ServiceBase.Run(webHostService);
+        }
+    }
+
     class Program
     {
         public static void Main(string[] args)
         {
-            if (args.Contains("c"))
+            var webHost = BuildWebHost(args);
+            var logger = (ILogger)webHost.Services.GetService(typeof(ILogger));
+            try
             {
-                RunAsConsoleApp();
+
+                var isService = !(Debugger.IsAttached || args.Contains("c"));
+                if (isService)
+                {
+                    webHost.RunAsCustomService();
+                }
+                else
+                {
+                    webHost.Run();
+                }
             }
-            else
+            catch (Exception exception)
             {
-                RunAsService();
+                logger.Error(exception);
             }
         }
 
-        private static void RunAsConsoleApp()
+        public static IWebHost BuildWebHost(string[] args)
         {
-            CreateHostBuilder().Build().Run();
-        }
+            var path = "";
+#if DEBUG
+            path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-        private static void RunAsService()
-        {
-            // получаем путь к файлу 
+#else
             var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+            path = Path.GetDirectoryName(pathToExe);
+            Directory.SetCurrentDirectory(path);
+#endif
 
-            // путь к каталогу проекта
-            var pathToContentRoot = Path.GetDirectoryName(pathToExe);
-
-            // создаем хост
-            var host = WebHost.CreateDefaultBuilder()
-                .UseContentRoot(pathToContentRoot)
-                .UseStartup<Startup>()
+            var appConfiguration = new ConfigurationBuilder()
+                .SetBasePath(path)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            // запускаем в виде службы
-            host.RunAsService();
-        }
-
-        private static IHostBuilder CreateHostBuilder()
-        {
-            return Host.CreateDefaultBuilder().ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            return new WebHostBuilder()
+                .UseConfiguration(appConfiguration)
+                .UseKestrel(options => options.Limits.KeepAliveTimeout = new TimeSpan(1, 0, 0))
+                .UseContentRoot(path)
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
         }
     }
 }
