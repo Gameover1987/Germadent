@@ -18,6 +18,8 @@ namespace Germadent.WebApi.DataAccess
 
         public DbSet<UserEntity> Users { get; set; }
 
+        public DbSet<RoleInUserEntity> RoleInUsers { get; set; }
+
         public DbSet<RoleEntity> Roles { get; set; }
 
         public DbSet<RightInRoleEntity> RightInRoles { get; set; }

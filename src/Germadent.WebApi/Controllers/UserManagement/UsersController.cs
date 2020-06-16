@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.UserManagement
 {
-    [Route("api/userManagement/[controller]")]
+    [Route("api/userManagement/users/{action=GetUsers}")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -25,6 +25,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
         public UserDto AddUser(UserDto user)
         {
             return _umcDbOperations.AddUser(user);
+        }
+
+        [HttpPost]
+        public UserDto EditUser(UserDto userDto)
+        {
+            _umcDbOperations.UpdateUser(userDto);
+            return userDto;
         }
     }
 }

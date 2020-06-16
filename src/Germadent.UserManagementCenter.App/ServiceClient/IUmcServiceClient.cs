@@ -15,6 +15,18 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         UserDto[] GetUsers();
 
         /// <summary>
+        /// Добавляет пользователя
+        /// </summary>
+        /// <returns></returns>
+        UserDto AddUser(UserDto userDto);
+
+        /// <summary>
+        /// Редактирование пользователя
+        /// </summary>
+        /// <returns></returns>
+        UserDto EditUser(UserDto userDto);
+
+        /// <summary>
         /// Возвращает список ролей
         /// </summary>
         /// <returns></returns>

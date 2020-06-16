@@ -97,7 +97,9 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 return;
 
             role = _umcServiceClient.AddRole(role);
-            Roles.Add(new RoleViewModel(role));
+            var roleViewModel = new RoleViewModel(role);
+            Roles.Add(roleViewModel);
+            SelectedRole = roleViewModel;
         }
 
         private bool CanEditRoleCommandHandler()

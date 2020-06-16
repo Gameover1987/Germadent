@@ -22,12 +22,10 @@ namespace Germadent.UserManagementCenter.App.UIOperations
         public UserDto AddUser()
         {
             _addUserViewModel.Initialize(new UserDto(), "Добавление нового пользователя");
-            if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == true)
-            {
-                return _addUserViewModel.GetUser();
-            }
+            if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == false)
+                return null;
 
-            return null;
+            return _addUserViewModel.GetUser();
         }
 
         public UserDto EditUser(UserViewModel user)

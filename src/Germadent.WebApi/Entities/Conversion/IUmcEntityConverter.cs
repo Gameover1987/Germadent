@@ -17,6 +17,10 @@ namespace Germadent.WebApi.Entities.Conversion
         RoleEntity ConvertToRoleEntity(RoleDto dto);
 
         RightEntity ConvertToRightEntity(RightDto dto);
+
+        UserEntity ConvertToUserEntity(UserDto userDto);
+
+        RoleInUserEntity ConvertToRoleInUserEntity(in int userId, RoleDto roleDto);
     }
 
     public class UmcEntityConverter : IUmcEntityConverter
@@ -30,7 +34,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 FullName = entity.FullName,
                 Login = entity.Login,
                 Password = entity.Password,
-                Roles = entity.Roles.Select(ConvertToRoleDto).ToArray()
+                Roles = entity.RolesInUser.Select(x => ConvertToRoleDto(x.RoleEntity)).ToArray()
             };
         }
 
@@ -40,7 +44,7 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = entity.RoleId,
                 Name = entity.Name,
-                Rights = entity.RightsInRole.Select(x=> ConvertToRightDto(x.RightEntity)).ToArray()
+                Rights = entity.RightsInRole.Select(x => ConvertToRightDto(x.RightEntity)).ToArray()
             };
         }
 
@@ -60,7 +64,6 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = dto.RoleId,
                 Name = dto.Name,
-                //Rights = dto.Rights.Select(x => ConvertToRightInRoleEntity(dto.RoleId, x)).ToArray()
             };
         }
 
@@ -80,6 +83,26 @@ namespace Germadent.WebApi.Entities.Conversion
                 RightId = dto.RightId,
                 ApplicationName = dto.ApplicationName,
                 RightName = dto.RightName
+            };
+        }
+
+        public UserEntity ConvertToUserEntity(UserDto userDto)
+        {
+            return new UserEntity
+            {
+                FullName = userDto.FullName,
+                Description = userDto.Description,
+                Login = userDto.Login,
+                Password = userDto.Password
+            };
+        }
+
+        public RoleInUserEntity ConvertToRoleInUserEntity(in int userId, RoleDto roleDto)
+        {
+            return new RoleInUserEntity
+            {
+                UserEntityId = userId,
+                RoleEntityId = roleDto.RoleId
             };
         }
     }

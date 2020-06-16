@@ -31,6 +31,24 @@ namespace Germadent.WebApi.DataAccess
 
         public UserDto AddUser(UserDto userDto)
         {
+            var user = _converter.ConvertToUserEntity(userDto);
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+
+            userDto.UserId = user.UserId;
+
+            if (!userDto.Roles.Any())
+                return userDto;
+
+            var roles = userDto.Roles.Select(x => _converter.ConvertToRoleInUserEntity(user.UserId, x)).ToArray();
+            _dbContext.RoleInUsers.AddRange(roles);
+            _dbContext.SaveChanges();
+
+            return userDto;
+        }
+
+        public void UpdateUser(UserDto userDto)
+        {
             throw new NotImplementedException();
         }
 

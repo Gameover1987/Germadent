@@ -63,6 +63,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (user == null)
                 return;
 
+            user = _umcServiceClient.AddUser(user);
             var userViewModel = new UserViewModel(user);
             Users.Add(userViewModel);
             SelectedUser = userViewModel;

@@ -16,7 +16,21 @@ namespace Germadent.WebApi.Entities
 
         public string Description { get; set; }
 
-        public List<RoleEntity> Roles { get; set; }
+        public List<RoleInUserEntity> RolesInUser { get; set; }
+    }
+
+    public class RoleInUserEntity
+    {
+        [Key]
+        public int RoleInUserId { get; set; }
+
+        public int UserEntityId { get; set; }
+
+        public UserEntity UserEntity { get; set; }
+
+        public int RoleEntityId { get; set; }
+
+        public RoleEntity RoleEntity { get; set; }
     }
 
     public class RoleEntity

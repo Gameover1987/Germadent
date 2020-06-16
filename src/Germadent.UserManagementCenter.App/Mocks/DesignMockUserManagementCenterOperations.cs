@@ -55,6 +55,17 @@ namespace Germadent.UserManagementCenter.App.Mocks
             return users;
         }
 
+        public UserDto AddUser(UserDto userDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UserDto EditUser(UserDto userDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
         public RoleDto[] GetRoles()
         {
             var roles = new RoleDto[]
@@ -98,6 +109,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
         {
             throw new System.NotImplementedException();
         }
+
 
         public RightDto[] GetRights()
         {

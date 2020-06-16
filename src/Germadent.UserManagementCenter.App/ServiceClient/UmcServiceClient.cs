@@ -23,6 +23,16 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
         }
 
+        public UserDto AddUser(UserDto userDto)
+        {
+            return ExecuteHttpPost<UserDto>("/api/userManagement/users/adduser", userDto);
+        }
+
+        public UserDto EditUser(UserDto userDto)
+        {
+            return ExecuteHttpPost<UserDto>("/api/userManagement/users/edituser", userDto);
+        }
+
         public RoleDto[] GetRoles()
         {
             return ExecuteHttpGet<RoleDto[]>("/api/userManagement/roles");
