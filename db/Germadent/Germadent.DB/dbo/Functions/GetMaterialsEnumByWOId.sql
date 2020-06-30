@@ -18,7 +18,8 @@ BEGIN
 	(
 		SELECT DISTINCT m.MaterialName
 		FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
-			INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
+			INNER JOIN Servicess s ON tc.ServiceID = s.ServiceID
+			INNER JOIN Materials m ON s.MaterialID = m.MaterialID
 		WHERE wo.WorkOrderID = @workOrderID)
 	
 	-- Агрегируем поле в строковое значение
@@ -28,6 +29,7 @@ BEGIN
 	RETURN @materialsEnum
 
 END
+
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetMaterialsEnumByWOId] TO [gdl_user]

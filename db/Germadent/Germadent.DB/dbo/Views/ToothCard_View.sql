@@ -1,12 +1,13 @@
 ﻿CREATE VIEW dbo.ToothCard_View
 AS
-SELECT        tc.WorkOrderID, tc.ToothNumber, tc.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName, wo.DocNumber
-FROM            dbo.ToothCard AS tc INNER JOIN
-                         dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
-                         dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID INNER JOIN
-                         dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID
-WHERE        (m.FlagUnused IS NULL) OR
-                         (m.FlagUnused <> 1)
+SELECT   tc.WorkOrderID, tc.ToothNumber, m.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName, wo.DocNumber
+FROM      dbo.ToothCard AS tc INNER JOIN
+                dbo.Servicess AS s ON tc.ServiceID = s.ServiceID INNER JOIN
+                dbo.Materials AS m ON s.MaterialID = m.MaterialID INNER JOIN
+                dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID INNER JOIN
+                dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID
+WHERE   (m.FlagUnused IS NULL) OR
+                (m.FlagUnused <> 1)
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
 
@@ -123,6 +124,16 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 1
          End
+         Begin Table = "s"
+            Begin Extent = 
+               Top = 6
+               Left = 779
+               Bottom = 147
+               Right = 960
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
       End
    End
    Begin SQLPane = 
@@ -133,16 +144,16 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 2340
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Column = 2338
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -150,6 +161,8 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 
 
 

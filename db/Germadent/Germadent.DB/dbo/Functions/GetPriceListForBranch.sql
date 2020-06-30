@@ -12,9 +12,9 @@ AS
 RETURN 
 (
 	SELECT sg.ServiceGroupName, s.SeviceName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
-	FROM Serv s INNER JOIN ServGroups sg ON s.ServiceGroupID = sg.ServiceGroupID
-		LEFT JOIN PricesDL pdl ON s.ServiceID = pdl.ServiceID
-		LEFT JOIN PricesMC pmc ON s.ServiceID = pmc.ServiceID
+	FROM Servicess s INNER JOIN ServicesGroups sg ON s.ServiceGroupID = sg.ServiceGroupID
+		LEFT JOIN PricesDL pdl ON s.ServiceID = pdl.PriceGroupID
+		LEFT JOIN PricesMC pmc ON s.ServiceID = pmc.PriceGroupID
 	WHERE sg.BranchTypeID = @branchTypeID
 		AND (LEN(pdl.DateEnd) = 0 OR LEN(pmc.DateEnd) = 0)
 )

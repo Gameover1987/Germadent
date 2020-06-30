@@ -11,6 +11,6 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT TransparenceID, TransparenceName
+	SELECT TransparencyID, TransparencyName
 	FROM Transparences
 )

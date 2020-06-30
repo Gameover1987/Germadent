@@ -1,11 +1,13 @@
 ﻿CREATE TABLE [dbo].[WorkOrderDL] (
     [WorkOrderDLID]    INT            NOT NULL,
-    [TransparenceID]   INT            NULL,
     [ColorAndFeatures] NVARCHAR (100) NULL,
     CONSTRAINT [PK_WorkOrderDL] PRIMARY KEY CLUSTERED ([WorkOrderDLID] ASC),
-    CONSTRAINT [FK_WorkOrderDL_Transparences] FOREIGN KEY ([TransparenceID]) REFERENCES [dbo].[Transparences] ([TransparenceID]),
     CONSTRAINT [FK_WorkOrderDL_WorkOrder] FOREIGN KEY ([WorkOrderDLID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
+
+
 
 
 
@@ -42,8 +44,7 @@ BEGIN
 
 	IF EXISTS 
 	(	SELECT * FROM inserted i, deleted d WHERE
-			ISNULL(i.ColorAndFeatures, 'empty') = ISNULL(d.ColorAndFeatures, 'empty')		
-		AND ISNULL(i.TransparenceID, 0) = ISNULL(d.TransparenceID, 0)
+			ISNULL(i.ColorAndFeatures, 'empty') = ISNULL(d.ColorAndFeatures, 'empty')
 		AND i.WorkOrderDLID = d.WorkOrderDLID
 	) BEGIN
 		RETURN

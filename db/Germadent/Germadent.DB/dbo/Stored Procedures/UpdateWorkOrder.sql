@@ -26,7 +26,6 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @implantSystem nvarchar(70)
 	, @individualAbutmentProcessing nvarchar(70)
 	, @understaff nvarchar(100)
-	, @transparenceID int
 	, @colorAndFeatures nvarchar(100)
 	, @created datetime output
 	
@@ -68,8 +67,7 @@ BEGIN
 	END
 	ELSE IF @branchTypeID = 2 BEGIN
 		UPDATE WorkOrderDL
-		SET TransparenceID = @transparenceID		
-			, ColorAndFeatures = @colorAndFeatures
+		SET ColorAndFeatures = @colorAndFeatures
 		WHERE WorkOrderDLID = @workOrderID
 	END
 	
