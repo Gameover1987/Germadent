@@ -1,10 +1,9 @@
 ﻿CREATE VIEW dbo.ToothCard_View
 AS
-SELECT   tc.WorkOrderID, tc.ToothNumber, m.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName, wo.DocNumber
+SELECT   tc.WorkOrderID, tc.ToothNumber, m.MaterialID, m.MaterialName, wo.DocNumber
 FROM      dbo.ToothCard AS tc INNER JOIN
                 dbo.Servicess AS s ON tc.ServiceID = s.ServiceID INNER JOIN
                 dbo.Materials AS m ON s.MaterialID = m.MaterialID INNER JOIN
-                dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID INNER JOIN
                 dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID
 WHERE   (m.FlagUnused IS NULL) OR
                 (m.FlagUnused <> 1)
@@ -94,22 +93,22 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
+         Begin Table = "s"
+            Begin Extent = 
+               Top = 6
+               Left = 779
+               Bottom = 249
+               Right = 960
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
          Begin Table = "m"
             Begin Extent = 
                Top = 31
                Left = 321
                Bottom = 153
                Right = 502
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "p"
-            Begin Extent = 
-               Top = 195
-               Left = 319
-               Bottom = 298
-               Right = 507
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -123,16 +122,6 @@ Begin DesignProperties =
             End
             DisplayFlags = 280
             TopColumn = 1
-         End
-         Begin Table = "s"
-            Begin Extent = 
-               Top = 6
-               Left = 779
-               Bottom = 147
-               Right = 960
-            End
-            DisplayFlags = 280
-            TopColumn = 0
          End
       End
    End
@@ -161,6 +150,8 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 
 
 

@@ -32,10 +32,10 @@ BEGIN
 
 	-- Наполняем набор новым содержимым, распарсив строку json
 	INSERT INTO AttributesSet
-		(WorkOrderID, AttributeID, AttrValueID)
-	SELECT WorkOrderID, AttributeID, AttrValueID
+		(WorkOrderID, ToothNumber, AttributeID, AttrValueID)
+	SELECT WorkOrderID, ToothNumber, AttributeID, AttrValueID
 		FROM OPENJSON (@jsonString)
-		WITH (WorkOrderID int, AttributeID int, AttrValueID int)
+		WITH (WorkOrderID int, ToothNumber tinyint, AttributeID int, AttrValueID int)
 
 	-- Удаляем незначащие записи
 	DELETE

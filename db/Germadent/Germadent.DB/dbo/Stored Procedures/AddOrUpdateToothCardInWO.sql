@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		 Алексей Колосенок
 -- Create date:  01.12.2019
--- Editing date: 27.06.2020
+-- Editing date: 01.07.2020
 -- Description:	 Добавление и редактирование зубной карты в заказ-наряде
 -- =============================================
 CREATE PROCEDURE [dbo].[AddOrUpdateToothCardInWO] 
@@ -31,19 +31,17 @@ BEGIN
 
 	-- Наполняем новым содержимым, распарсив строку json
 	INSERT INTO ToothCard
-		(WorkOrderID, ToothNumber, ServiceID, ContructionColorID, ConditionID, ProstheticsID, TrasparencyID, FlagBridge)
-	SELECT WorkOrderID, ToothNumber, ServiceID, ContructionColorID, ConditionID, ProstheticsID, TrasparencyID, HasBridge
+		(WorkOrderID, ToothNumber, ServiceID, Price, FlagBridge)
+	SELECT WorkOrderID, ToothNumber, ServiceID, Price, HasBridge
 	FROM OPENJSON (@jsonString)
-		WITH (WorkOrderId int, ToothNumber int, ServiceId int, ContructionColorId int, ConditionId int, ProstheticsId int, TrasparencyId int, HasBridge bit)
+		WITH (WorkOrderId int, ToothNumber int, ServiceId int, Price money, HasBridge bit)
 
 	-- Удаляем незначащие записи
 	DELETE
 	FROM ToothCard
 	WHERE WorkOrderID = @workOrderId
-	AND ConditionID IS NULL
-	AND ProstheticsID IS NULL
-	AND ServiceID IS NULL	
-
+	AND ServiceID IS NULL
+	
 END
 GO
 GRANT EXECUTE
