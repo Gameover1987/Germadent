@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
@@ -11,6 +12,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
         private readonly IUmcServiceClient _umcServiceClient;
+
+        private int _userId;
         private string _fullName;
         private string _login;
         private string _password;
@@ -109,6 +112,13 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             Title = title;
 
+            _userId = user.UserId;
+            _fullName = user.FullName;
+            _password = user.Password;
+            _passwordOnceAgain = user.Password;
+            _login = user.Login;
+            _description = user.Description;
+
             var roles = _umcServiceClient.GetRoles();
 
             foreach (var role in Roles)
@@ -116,13 +126,18 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 role.Checked -= RoleOnChecked;
             }
 
+            var selectedRoleIds = user.Roles?.Select(x => x.RoleId).ToArray();
             Roles.Clear();
             foreach (var role in roles)
             {
                 var roleViewModel = new RoleViewModel(role);
                 roleViewModel.Checked += RoleOnChecked;
+                if (selectedRoleIds != null)
+                    roleViewModel.IsChecked = selectedRoleIds.Contains(roleViewModel.RoleId);
                 Roles.Add(roleViewModel);
             }
+
+            OnPropertyChanged();
         }
 
         private void RoleOnChecked(object sender, EventArgs e)
@@ -134,16 +149,29 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             return new UserDto
             {
+                UserId = _userId,
                 FullName = FullName,
                 Login = Login,
                 Password = Password,
+                Description = Description,
                 Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray()
             };
         }
 
         private bool CanOkCommandHandler()
         {
-            return AtLeastOneRoleChecked && !HasErrors;
+            return IsValid();
+        }
+
+        private bool IsValid()
+        {
+            return !FullName.IsNullOrWhiteSpace() &&
+                   !Login.IsNullOrWhiteSpace() &&
+                   !Password.IsNullOrWhiteSpace() &&
+                   !PasswordOnceAgain.IsNullOrWhiteSpace() &&
+                   Password == PasswordOnceAgain &&
+                   AtLeastOneRoleChecked;
+
         }
     }
 }

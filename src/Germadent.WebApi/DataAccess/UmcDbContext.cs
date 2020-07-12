@@ -26,7 +26,6 @@ namespace Germadent.WebApi.DataAccess
 
         public DbSet<RightEntity> Rights { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.ConnectionString);

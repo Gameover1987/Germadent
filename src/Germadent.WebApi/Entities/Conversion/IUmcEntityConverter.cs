@@ -44,7 +44,7 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = entity.RoleId,
                 Name = entity.Name,
-                Rights = entity.RightsInRole.Select(x => ConvertToRightDto(x.RightEntity)).ToArray()
+                Rights = entity.RightsInRole?.Select(x => ConvertToRightDto(x.RightEntity)).ToArray()
             };
         }
 

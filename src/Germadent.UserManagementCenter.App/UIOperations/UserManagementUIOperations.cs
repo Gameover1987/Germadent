@@ -28,9 +28,13 @@ namespace Germadent.UserManagementCenter.App.UIOperations
             return _addUserViewModel.GetUser();
         }
 
-        public UserDto EditUser(UserViewModel user)
+        public UserDto EditUser(UserDto user)
         {
-            throw new NotImplementedException();
+            _addUserViewModel.Initialize(user, "Редактирование пользователя");
+            if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == false)
+                return null;
+
+            return _addUserViewModel.GetUser();
         }
 
         public RoleDto AddRole()

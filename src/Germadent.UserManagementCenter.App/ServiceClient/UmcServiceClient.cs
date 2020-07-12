@@ -20,7 +20,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public UserDto[] GetUsers()
         {
-            return ExecuteHttpGet<UserDto[]>("/api/userManagement/users");
+            return ExecuteHttpGet<UserDto[]>("/api/userManagement/users/GetUsers");
+        }
+
+        public UserDto GetUserById(int id)
+        {
+            return ExecuteHttpGet<UserDto>($"/api/userManagement/users/{id}");
         }
 
         public UserDto AddUser(UserDto userDto)

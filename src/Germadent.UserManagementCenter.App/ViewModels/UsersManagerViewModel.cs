@@ -76,7 +76,13 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditUserCommandHandler()
         {
-            var user = _windowManager.EditUser(SelectedUser);
+            var userFromDb = _umcServiceClient.GetUserById(SelectedUser.Id);
+            var user = _windowManager.EditUser(userFromDb);
+            if (user == null)
+                return;
+
+            _umcServiceClient.EditUser(user);
+            SelectedUser.Update(user);
         }
 
         private bool CanDeleteUserCommandHandler()

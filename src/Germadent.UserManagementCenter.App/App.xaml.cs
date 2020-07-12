@@ -8,6 +8,7 @@ using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
 using Unity;
+using Unity.Lifetime;
 
 namespace Germadent.UserManagementCenter.App
 {
@@ -30,9 +31,9 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
             _container.RegisterSingleton<IUserManagementUIOperations, UserManagementUIOperations>();
-            _container.RegisterSingleton<IAddUserViewModel, AddUserViewModel>();
+            _container.RegisterType<IAddUserViewModel, AddUserViewModel>(new TransientLifetimeManager());
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
-            _container.RegisterSingleton<IAddRoleViewModel, AddRoleViewModel>();
+            _container.RegisterType<IAddRoleViewModel, AddRoleViewModel>(new TransientLifetimeManager());
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

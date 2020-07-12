@@ -23,7 +23,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             throw new NotImplementedException();
         }
 
-        public UserDto EditUser(UserViewModel user)
+        public UserDto EditUser(UserDto user)
         {
             throw new NotImplementedException();
         }

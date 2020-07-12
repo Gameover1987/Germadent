@@ -12,6 +12,13 @@ namespace Germadent.WebApi.DataAccess
         UserDto[] GetUsers();
 
         /// <summary>
+        /// Возвращает пользователя по его Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        UserDto GetUserById(int id);
+
+        /// <summary>
         /// Добавляет пользователя
         /// </summary>
         /// <param name="userDto"></param>

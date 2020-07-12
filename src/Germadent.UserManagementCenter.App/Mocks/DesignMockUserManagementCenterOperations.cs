@@ -55,6 +55,11 @@ namespace Germadent.UserManagementCenter.App.Mocks
             return users;
         }
 
+        public UserDto GetUserById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public UserDto AddUser(UserDto userDto)
         {
             throw new System.NotImplementedException();

@@ -25,8 +25,20 @@ namespace Germadent.WebApi.DataAccess
 
         public UserDto[] GetUsers()
         {
+            var uuu = _dbContext.Users.ToArray();
+
+            var uru = _dbContext.RoleInUsers.ToArray();
+
+            var roles = _dbContext.Roles.ToArray();
+
             var users = _dbContext.Users.Select(x => _converter.ConvertToUserDto(x)).ToArray();
             return users;
+        }
+
+        public UserDto GetUserById(int id)
+        {
+            var userEntity = _dbContext.Users.First(x => x.UserId == id);
+            return _converter.ConvertToUserDto(userEntity);
         }
 
         public UserDto AddUser(UserDto userDto)
@@ -49,7 +61,19 @@ namespace Germadent.WebApi.DataAccess
 
         public void UpdateUser(UserDto userDto)
         {
-            throw new NotImplementedException();
+            var user = _dbContext.Users.FirstOrDefault(x => x.UserId == userDto.UserId);
+            if (user == null)
+                throw new ArgumentException("Пользователь не найден!");
+
+            user.FullName = userDto.FullName;
+            user.Login = userDto.Login;
+            user.Password = userDto.Password;
+            user.Description = userDto.Description;
+            user.RolesInUser.Clear();
+            user.RolesInUser.AddRange(userDto.Roles.Select(x => _converter.ConvertToRoleInUserEntity(user.UserId, x)));
+
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
         }
 
         public RoleDto[] GetRoles()
