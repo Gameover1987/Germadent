@@ -114,6 +114,8 @@ namespace Germadent.WebApi.Entities.Conversion
                 ProstheticSubstring = entity.ProstheticSubstring,
                 MaterialsStr = entity.MaterialsStr,
                 ColorAndFeatures = entity.ColorAndFeatures,
+                CarcassColor = entity.CarcassColor,
+                ImplantSystem = entity.ImplantSystem,
                 Quantity = entity.Quantity,
                 ProstheticArticul = entity.ProstheticArticul
             };

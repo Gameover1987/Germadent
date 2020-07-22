@@ -637,6 +637,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                     ProstheticSubstring = prosthetics.pName,
                     MaterialsStr = orderDto.MaterialsStr,
                     ColorAndFeatures = orderDto.ColorAndFeatures,
+                    CarcassColor = orderDto.CarcassColor,
+                    ImplantSystem = orderDto.ImplantSystem,
                     Quantity = prosthetics.quantity,
                     ProstheticArticul = orderDto.ProstheticArticul
                 };
