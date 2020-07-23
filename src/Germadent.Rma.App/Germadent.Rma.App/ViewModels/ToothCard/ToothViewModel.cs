@@ -101,7 +101,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
-        public string Description
+        public string[] Description
         {
             get
             {

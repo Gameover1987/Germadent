@@ -67,6 +67,7 @@ namespace Germadent.Rma.App.Reporting
         private string GetToothCardDescription(OrderDto order)
         {
             var descriptions = order.ToothCard.Select(OrderDescriptionBuilder.GetToothCardDescription).ToArray();
+            
             var builder = new StringBuilder();
             foreach (var description in descriptions)
             {

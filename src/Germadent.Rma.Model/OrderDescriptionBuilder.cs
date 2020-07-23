@@ -1,10 +1,11 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Germadent.Rma.Model
 {
     public static class OrderDescriptionBuilder
     {
-        public static string GetToothCardDescription(ToothDto tooth)
+        public static string[] GetToothCardDescription(ToothDto tooth)
         {
             var descriptionBuilder = new StringBuilder();
 
@@ -20,7 +21,13 @@ namespace Germadent.Rma.Model
             if (tooth.HasBridge)
                 descriptionBuilder.Append("Мост");
 
-            return string.Format("{0} - {1}", tooth.ToothNumber, descriptionBuilder.ToString().Trim(' ', '/'));
+            var toothDescription = descriptionBuilder.ToString().Trim(' ', '/');
+
+            string[] toothArray = new string[] { tooth.ToothNumber.ToString(), toothDescription };
+ 
+            return toothArray;
+
+            //return string.Format("{0} - {1}", tooth.ToothNumber, toothDescription);
         }
 
         public static string GetAdditionalEquipmentDescription(OrderDto order)
