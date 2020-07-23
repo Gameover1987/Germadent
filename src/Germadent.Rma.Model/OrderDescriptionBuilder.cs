@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Linq;
 using System.Text;
 
 namespace Germadent.Rma.Model
 {
     public static class OrderDescriptionBuilder
     {
-        public static string[] GetToothCardDescription(ToothDto tooth)
+        public static string GetToothDescription(ToothDto tooth)
+        {
+            return string.Format("{0} - {1}", tooth.ToothNumber, GetToothDescriptionWithoutNumber(tooth));
+        }
+
+        private static string GetToothDescriptionWithoutNumber(ToothDto tooth)
         {
             var descriptionBuilder = new StringBuilder();
 
@@ -23,11 +31,26 @@ namespace Germadent.Rma.Model
 
             var toothDescription = descriptionBuilder.ToString().Trim(' ', '/');
 
-            string[] toothArray = new string[] { tooth.ToothNumber.ToString(), toothDescription };
- 
-            return toothArray;
+            return toothDescription.ToString();
+        }
 
-            //return string.Format("{0} - {1}", tooth.ToothNumber, toothDescription);
+        public static string GetToothCardDescription(ToothDto[] toothCollection)
+        {
+            var groups = toothCollection.GroupBy(GetToothDescriptionWithoutNumber).ToArray();
+
+            var toothCardBuilder = new StringBuilder();
+            foreach (var grouping in groups)
+            {
+                var groupingBuilder = new StringBuilder();
+                foreach (var toothDto in grouping)
+                {
+                    groupingBuilder.Append($"{toothDto.ToothNumber},");
+                }
+
+                toothCardBuilder.AppendLine(groupingBuilder.ToString().Trim(',')+ $" - {grouping.Key}");
+            }
+
+            return toothCardBuilder.ToString().Trim();
         }
 
         public static string GetAdditionalEquipmentDescription(OrderDto order)

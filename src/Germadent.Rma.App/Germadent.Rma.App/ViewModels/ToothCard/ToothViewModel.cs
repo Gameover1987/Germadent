@@ -101,12 +101,12 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
-        public string[] Description
+        public string Description
         {
             get
             {
                 var dto = ToDto();
-                return OrderDescriptionBuilder.GetToothCardDescription(dto);
+                return OrderDescriptionBuilder.GetToothDescription(dto);
             }
         }
 

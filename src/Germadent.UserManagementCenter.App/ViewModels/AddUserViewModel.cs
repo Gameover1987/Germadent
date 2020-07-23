@@ -171,7 +171,6 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                    !PasswordOnceAgain.IsNullOrWhiteSpace() &&
                    Password == PasswordOnceAgain &&
                    AtLeastOneRoleChecked;
-
         }
     }
 }

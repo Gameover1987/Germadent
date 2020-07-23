@@ -51,7 +51,7 @@ namespace Germadent.Rma.App.Reporting
                 ProstheticArticul = order.ProstheticArticul,
                 WorkDescription = order.WorkDescription,
                 MaterialsStr = order.MaterialsStr,
-                ToothCardDescription = GetToothCardDescription(order),
+                ToothCardDescription = OrderDescriptionBuilder.GetToothCardDescription(order.ToothCard),
                 AdditionalEquipment = OrderDescriptionBuilder.GetAdditionalEquipmentDescription(order)
             };
 
@@ -62,20 +62,6 @@ namespace Germadent.Rma.App.Reporting
             }
 
             return printableOrder;
-        }
-
-        private string GetToothCardDescription(OrderDto order)
-        {
-            var descriptions = order.ToothCard.Select(OrderDescriptionBuilder.GetToothCardDescription).ToArray();
-            
-            var builder = new StringBuilder();
-            foreach (var description in descriptions)
-            {
-                builder.AppendLine(description + ";    ");
-            }
-
-            var result = builder.ToString();
-            return result;
         }
 
         private string GetBranchTypeName(BranchType branchType)
