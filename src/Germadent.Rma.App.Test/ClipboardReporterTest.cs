@@ -4,6 +4,7 @@ using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Moq;
 using NUnit.Framework;
+using System;
 
 namespace Germadent.Rma.App.Test
 {
@@ -49,9 +50,9 @@ namespace Germadent.Rma.App.Test
                 {
                     Reports = new ReportListDto[]
                     {
-                        new ReportListDto {Quantity = 18},
+                        new ReportListDto {DocNumber = "3030-MC~20", Customer = "ООО СК МЕЧКОВСКИХ", EquipmentSubstring = "1", Patient = "Воинцев", Quantity = 1},
                     },
-                    ExpectedData = "18\r\n"
+                    ExpectedData = "3030-MC~20\tООО СК МЕЧКОВСКИХ\t1\tВоинцев\t\t\t\t1\n"
                 }
             };
         }
