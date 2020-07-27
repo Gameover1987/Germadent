@@ -28,15 +28,16 @@ namespace Germadent.Rma.App.Test
             {
                 new[]
                 {
-                    CreateTooth( 1, "Абатмент", "Имплант", "CrO"),
-                    CreateTooth( 2, "Абатмент", "Имплант", "CrO"),
+                    CreateTooth(1, "Имплант", "Абатмент", "Ti"),
+                    CreateTooth(2, "Имплант", "Абатмент", "Ti"),
+                    CreateTooth(3, "Культя", "Каркас", "ZrO2"),
+                    CreateTooth(4, "Культя", "Каркас", "ZrO2"),
                 },
-                "1,2 - Имплант/Абатмент/CrO"
+                "1, 2 - Имплант/Абатмент/Ti;   \r\n3, 4 - Культя/Каркас/ZrO2"
             },
         };
-     
 
-        private static ToothDto CreateTooth(int number, string prostheticType, string prostheticCondition, string material)
+        private static ToothDto CreateTooth(int number, string prostheticCondition, string prostheticType, string material)
         {
             return new ToothDto
             {

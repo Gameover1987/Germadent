@@ -44,13 +44,13 @@ namespace Germadent.Rma.Model
                 var groupingBuilder = new StringBuilder();
                 foreach (var toothDto in grouping)
                 {
-                    groupingBuilder.Append($"{toothDto.ToothNumber},");
+                    groupingBuilder.Append($"{toothDto.ToothNumber}, ");
                 }
 
-                toothCardBuilder.AppendLine(groupingBuilder.ToString().Trim(',')+ $" - {grouping.Key}");
+                toothCardBuilder.AppendLine(groupingBuilder.ToString().Trim(',', ' ')+ $" - {grouping.Key};   ");
             }
-
-            return toothCardBuilder.ToString().Trim();
+            var groupedToothDescription = toothCardBuilder.ToString();
+            return groupedToothDescription = groupedToothDescription.Remove(groupedToothDescription.Length - 6, 6);
         }
 
         public static string GetAdditionalEquipmentDescription(OrderDto order)
