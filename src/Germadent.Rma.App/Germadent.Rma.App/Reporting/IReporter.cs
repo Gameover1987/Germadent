@@ -32,8 +32,6 @@ namespace Germadent.Rma.App.Reporting
 
             foreach (var report in reports)
             {
-                //TODO Nekrasov: че бля? $"" не, не слышал?
-                //TODO Nekrasov:адово длинная строка, легко накосячить, можно сделать многострочной
                 var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, report.CarcassColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ProstheticArticul, "\t", report.ImplantSystem + "\n").Trim();
                 builder.AppendLine(line);
             }

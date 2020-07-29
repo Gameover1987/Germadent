@@ -52,7 +52,7 @@ namespace Germadent.Rma.App.Test
                     {
                         new ReportListDto {DocNumber = "3030-MC~20", Customer = "ООО СК МЕЧКОВСКИХ", EquipmentSubstring = "1", Patient = "Воинцев", Quantity = 1},
                     },
-                    ExpectedData = "3030-MC~20\tООО СК МЕЧКОВСКИХ\t1\tВоинцев\t\t\t\t1\n"
+                    ExpectedData = "3030-MC~20\tООО СК МЕЧКОВСКИХ\t1\tВоинцев\t\t\t\t1\r\n"
                 }
             };
         }
