@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
--- Create date: 25.03.2020
+-- Create date: 29.06.2020
+-- Edit date:   17.09.2020
 -- Description:	Возвращает прайс-лист на услуги филиала на текущую дату
 -- =============================================
 CREATE FUNCTION [dbo].[GetPriceListForBranch] 
@@ -11,10 +12,11 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT sg.ServiceGroupName, s.SeviceName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
-	FROM Servicess s INNER JOIN ServicesGroups sg ON s.ServiceGroupID = sg.ServiceGroupID
-		LEFT JOIN PricesDL pdl ON s.ServiceID = pdl.PriceGroupID
-		LEFT JOIN PricesMC pmc ON s.ServiceID = pmc.PriceGroupID
+	SELECT sg.ServiceGroupName, pp.PricePositionCode, pp.PricePositionName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
+	FROM ServicesGroups sg 
+		INNER JOIN PricePositions pp ON sg.ServiceGroupID = pp.ServiceGroupID
+		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
+		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
 	WHERE sg.BranchTypeID = @branchTypeID
 		AND (LEN(pdl.DateEnd) = 0 OR LEN(pmc.DateEnd) = 0)
 )

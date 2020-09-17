@@ -12,8 +12,8 @@ AS
 RETURN 
 (
 	SELECT WorkOrderID
-	FROM ToothCard tc INNER JOIN Servicess s ON tc.ServiceID = s.ServiceID
-	WHERE s.MaterialID IN 
+	FROM ToothCard
+	WHERE MaterialID IN 
 	(SELECT Id
 		FROM OPENJSON(@materialSet) 
 		WITH (Id int))

@@ -14,7 +14,6 @@ RETURN
 (
 	SELECT DISTINCT m.MaterialName
 	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
-		INNER JOIN Servicess s ON tc.ServiceID = s.ServiceID
-		INNER JOIN Materials m ON s.MaterialID = m.MaterialID
+		INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
 	WHERE wo.WorkOrderID = @workOrderID
 )
