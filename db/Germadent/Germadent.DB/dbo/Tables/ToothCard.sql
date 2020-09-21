@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ToothCard] (
+CREATE TABLE [dbo].[ToothCard] (
     [WorkOrderID]     INT     NOT NULL,
     [ToothNumber]     TINYINT NOT NULL,
     [PricePositionID] INT     NULL,
@@ -48,6 +48,9 @@
 
 
 
-GO
 
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ToothCard_PricePositionID]
+    ON [dbo].[ToothCard]([PricePositionID] ASC);
 

@@ -1,7 +1,20 @@
 ﻿CREATE TABLE [dbo].[Works] (
-    [WorkID]   INT           IDENTITY (1, 1) NOT NULL,
-    [WorkName] NVARCHAR (50) NOT NULL,
-    [Position] NVARCHAR (30) NOT NULL,
-    CONSTRAINT [PK_Works] PRIMARY KEY CLUSTERED ([WorkID] ASC)
+    [WorkOrderID]           INT      NOT NULL,
+    [TechnologyOperationID] INT      NOT NULL,
+    [EmployeeID]            INT      NULL,
+    [OperationCost]         MONEY    NULL,
+    [Started]               DATETIME NULL,
+    [Ended]                 DATETIME NULL,
+    [IsChecked]             BIT      NULL,
+    CONSTRAINT [FK_Works_Employee] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Employee] ([EmployeeID]),
+    CONSTRAINT [FK_Works_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID]),
+    CONSTRAINT [FK_Works_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_WorkOperations]
+    ON [dbo].[Works]([WorkOrderID] ASC, [TechnologyOperationID] ASC);
 

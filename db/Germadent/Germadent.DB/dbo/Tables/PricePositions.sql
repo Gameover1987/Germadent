@@ -9,3 +9,15 @@
     CONSTRAINT [FK_PricePositions_ServicesGroups] FOREIGN KEY ([ServiceGroupID]) REFERENCES [dbo].[ServicesGroups] ([ServiceGroupID])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ServiceGroup]
+    ON [dbo].[PricePositions]([ServiceGroupID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Material]
+    ON [dbo].[PricePositions]([MaterialID] ASC);
+

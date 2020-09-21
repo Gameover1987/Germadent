@@ -5,3 +5,15 @@
     CONSTRAINT [FK_ProductSet_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[Product] ([ProductID])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ProductSet_ProductID]
+    ON [dbo].[ProductSet]([ProductID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ProductSet_PricePositionID]
+    ON [dbo].[ProductSet]([PricePositionID] ASC);
+
