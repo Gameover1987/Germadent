@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Works] (
     [WorkOrderID]           INT      NOT NULL,
+    [ToothNumber]           TINYINT  NULL,
     [TechnologyOperationID] INT      NOT NULL,
     [EmployeeID]            INT      NULL,
     [OperationCost]         MONEY    NULL,
@@ -10,6 +11,8 @@
     CONSTRAINT [FK_Works_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID]),
     CONSTRAINT [FK_Works_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
+
+
 
 
 
