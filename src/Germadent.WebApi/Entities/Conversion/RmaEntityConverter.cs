@@ -146,5 +146,22 @@ namespace Germadent.WebApi.Entities.Conversion
                 Description = entity.RP_Description
             };
         }
+
+        public PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity)
+        {
+            return new PriceListForBranchDto
+            {
+                PriceGroupId = entity.PriceGroupId,
+                PriceGroupName = entity.PriceGroupName,
+                PricePositionId = entity.PricePositionId,
+                PricePositionCode = entity.PricePositionCode,
+                PricePositionName = entity.PricePositionName,
+                MaterialId = entity.MaterialId,
+                MaterialName = entity.MaterialName,
+                Price = entity.Price,
+                PriceStl = entity.PriceStl,
+                PriceModel = entity.PriceModel
+            };
+        }
     }
 }
