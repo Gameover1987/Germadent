@@ -12,11 +12,12 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT sg.ServiceGroupName, pp.PricePositionCode, pp.PricePositionName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
-	FROM ServicesGroups sg 
-		INNER JOIN PricePositions pp ON sg.ServiceGroupID = pp.ServiceGroupID
+	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
+	FROM PriceGroups pg
+		INNER JOIN PricePositions pp ON pg.PriceGroupID = pp.PriceGroupID
+		INNER JOIN Materials m ON pp.MaterialID = m.MaterialID
 		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
 		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
-	WHERE sg.BranchTypeID = @branchTypeID
+	WHERE pg.BranchTypeID = @branchTypeId
 		AND (pdl.DateEnd IS NULL OR pmc.DateEnd IS NULL)
 )
