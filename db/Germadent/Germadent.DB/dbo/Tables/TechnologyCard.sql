@@ -1,9 +1,11 @@
 ﻿CREATE TABLE [dbo].[TechnologyCard] (
     [ProductID]             INT NOT NULL,
     [TechnologyOperationID] INT NOT NULL,
-    CONSTRAINT [FK_TechnologyCard_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[Product] ([ProductID]),
+    CONSTRAINT [FK_TechnologyCard_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[TypesOfProsthetics] ([ProstheticsID]),
     CONSTRAINT [FK_TechnologyCard_TechnologyOperations] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID])
 );
+
+
 
 
 GO

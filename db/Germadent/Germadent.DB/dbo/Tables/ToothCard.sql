@@ -1,17 +1,23 @@
-CREATE TABLE [dbo].[ToothCard] (
+﻿CREATE TABLE [dbo].[ToothCard] (
     [WorkOrderID]     INT     NOT NULL,
     [ToothNumber]     TINYINT NOT NULL,
     [PricePositionID] INT     NULL,
+    [ConditionID]     INT     NULL,
     [MaterialID]      INT     NULL,
-    [ProductID]       INT     NULL,
+    [ProstheticsID]   INT     NULL,
     [Price]           MONEY   NULL,
     [FlagBridge]      BIT     NULL,
+    CONSTRAINT [FK_ToothCard_ConditionsOfProsthetics] FOREIGN KEY ([ConditionID]) REFERENCES [dbo].[ConditionsOfProsthetics] ([ConditionID]),
     CONSTRAINT [FK_ToothCard_Materials] FOREIGN KEY ([MaterialID]) REFERENCES [dbo].[Materials] ([MaterialID]),
     CONSTRAINT [FK_ToothCard_PricePositions] FOREIGN KEY ([PricePositionID]) REFERENCES [dbo].[PricePositions] ([PricePositionID]),
-    CONSTRAINT [FK_ToothCard_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[Product] ([ProductID]),
+    CONSTRAINT [FK_ToothCard_Product] FOREIGN KEY ([ProstheticsID]) REFERENCES [dbo].[TypesOfProsthetics] ([ProstheticsID]),
     CONSTRAINT [FK_ToothCard_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE,
     CONSTRAINT [IX_ToothCard] UNIQUE CLUSTERED ([WorkOrderID] ASC, [ToothNumber] ASC)
 );
+
+
+
+
 
 
 
