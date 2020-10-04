@@ -45,16 +45,16 @@ namespace Germadent.WebApi.Entities
         /// <summary>
         /// Цена для лаборатории
         /// </summary>
-        public float Price { get; set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// Цена для ФЦ с stl-файла
         /// </summary>
-        public float PriceStl { get; set; }
+        public int PriceStl { get; set; }
 
         /// <summary>
         /// Цена для ФЦ с модели
         /// </summary>
-        public float PriceModel { get; set; }
+        public int PriceModel { get; set; }
     }
 }

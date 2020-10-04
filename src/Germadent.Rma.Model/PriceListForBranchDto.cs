@@ -21,10 +21,10 @@ namespace Germadent.Rma.Model
 
         public string MaterialName { get; set; }
 
-        public float Price { get; set; }
+        public int Price { get; set; }
         
-        public float PriceStl { get; set; }
+        public int PriceStl { get; set; }
 
-        public float PriceModel { get; set; }
+        public int PriceModel { get; set; }
     }
 }

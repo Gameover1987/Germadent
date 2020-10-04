@@ -376,6 +376,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                         toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
                         toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
+                        toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();
+                        toothEntity.Price = reader[nameof(toothEntity.Price)].ToInt();
                         toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
 
                         toothCollection.Add(_converter.ConvertToTooth(toothEntity));
@@ -384,6 +386,41 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return toothCollection.ToArray();
+                }
+            }
+        }
+
+        private PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId)
+        {
+            var cmdText = string.Format("select * from GetPriceListForBranch({0})", branchTypeId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var priceListCollection = new List<PriceListForBranchDto>();
+                    while (reader.Read())
+                    {
+                        var priceListEntity = new PriceListForBranchEntity();
+
+                        priceListEntity.PriceGroupId = reader[nameof(priceListEntity.PriceGroupId)].ToInt();
+                        priceListEntity.PriceGroupName = reader[nameof(priceListEntity.PriceGroupName)].ToString();
+                        priceListEntity.PricePositionId = reader[nameof(priceListEntity.PricePositionId)].ToInt();
+                        priceListEntity.PricePositionCode = reader[nameof(priceListEntity.PricePositionCode)].ToString();
+                        priceListEntity.PricePositionName = reader[nameof(priceListEntity.PricePositionName)].ToString();
+                        priceListEntity.MaterialId = reader[nameof(priceListEntity.MaterialId)].ToInt();
+                        priceListEntity.MaterialName = reader[nameof(priceListEntity.MaterialName)].ToString();
+                        priceListEntity.Price = reader[nameof(priceListEntity.Price)].ToInt();
+                        priceListEntity.PriceStl = reader[nameof(priceListEntity.PriceStl)].ToInt();
+                        priceListEntity.PriceModel = reader[nameof(priceListEntity.PriceModel)].ToInt();
+
+                        priceListCollection.Add(_converter.ConvertToPriceListForBranch(priceListEntity));
+                    }
+                    reader.Close();
+
+                    return priceListCollection.ToArray();
                 }
             }
         }

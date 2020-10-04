@@ -19,6 +19,9 @@ namespace Germadent.WebApi.Entities.Conversion
         CustomerDto ConvertToCustomer(CustomerEntity entity);
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
-      
+
+        PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity);
+
+
     }
 }

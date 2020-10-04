@@ -59,6 +59,9 @@ namespace Germadent.WebApi.Entities.Conversion
                 ConditionName = entity.ConditionName.Trim(),
                 MaterialName = entity.MaterialName.Trim(),
                 ProstheticsName = entity.ProstheticsName.Trim(),
+                PricePositionCode = entity.PricePositionCode,
+                PricePositionName = entity.PricePositionName,
+                Price = entity.Price,
                 HasBridge = entity.FlagBridge
             };
         }
