@@ -14,7 +14,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, p.ProstheticsID, p.ProstheticsName,
+	SELECT pp.PricePositionID, m.MaterialID, p.ProstheticsID, p.ProstheticsName,
 			CASE -- Соображаем, какую цену услуги выбрать в данном конкретном случае. Сначала определяемся с филиалом:
 				WHEN @branchTypeId = 2 THEN pdl.Price
 				WHEN @branchTypeId = 1 THEN CASE -- Затем для ФЦ смотрим, есть ли STL-файл и содержит ли услуга цену для STL-варианта:
