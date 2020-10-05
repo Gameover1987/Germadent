@@ -22,6 +22,6 @@ namespace Germadent.WebApi.Entities.Conversion
 
         PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity);
 
-
+        ProductSetForToothDto ConvertToProductSetForTooth(ProductSetForToothEntity entity);
     }
 }

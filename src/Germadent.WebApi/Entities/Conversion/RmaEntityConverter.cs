@@ -166,5 +166,17 @@ namespace Germadent.WebApi.Entities.Conversion
                 PriceModel = entity.PriceModel
             };
         }
+
+        public ProductSetForToothDto ConvertToProductSetForTooth(ProductSetForToothEntity entity)
+        {
+            return new ProductSetForToothDto
+            {
+                PricePositionId = entity.PricePositionId,
+                MaterialId = entity.MaterialId,
+                ProstheticsId = entity.ProstheticsId,
+                ProstheticsName = entity.ProstheticsName,
+                Price = entity.Price
+            };
+        }
     }
 }

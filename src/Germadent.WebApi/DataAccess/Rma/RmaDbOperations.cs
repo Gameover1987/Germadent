@@ -425,6 +425,36 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
+        private ProductSetForToothDto[] GetProductSetForToot(int branchTypeId, int pricePositionId, bool stlExist)
+        {
+            var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var productSetCollection = new List<ProductSetForToothDto>();
+                    while (reader.Read())
+                    {
+                        var productSetEntity = new ProductSetForToothEntity();
+
+                        productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
+                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToInt();
+                        productSetEntity.ProstheticsId = reader[nameof(productSetEntity.ProstheticsId)].ToInt();
+                        productSetEntity.ProstheticsName = reader[nameof(productSetEntity.ProstheticsName)].ToString();
+                        productSetEntity.Price = reader[nameof(productSetEntity.Price)].ToInt();
+
+                        productSetCollection.Add(_converter.ConvertToProductSetForTooth(productSetEntity));
+                    }
+                    reader.Close();
+
+                    return productSetCollection.ToArray();
+                }
+            }
+        }
+
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
             return GetOrdersByFilter(filter);
