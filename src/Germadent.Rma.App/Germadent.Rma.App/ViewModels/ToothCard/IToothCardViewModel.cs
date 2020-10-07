@@ -55,7 +55,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         ICommand SelectBridgeCommand { get; }
 
         /// <summary>
-        /// Возвращает true если в зубнгой карте все указано правильно
+        /// Возвращает true если в зубной карте все указано правильно
         /// </summary>
         bool IsValid { get; }
     }

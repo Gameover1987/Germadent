@@ -69,23 +69,25 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             {
                 toothViewModel.ToothChanged -= TeethViewModelOnToothChanged;
             }
+
             Teeth.Clear();
+
+            for (int i = 18; i >= 11; i--)
+            {
+                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+            }
+
             for (int i = 21; i <= 28; i++)
             {
                 Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }
 
-            for (int i = 31; i <= 38; i++)
+            for (int i = 38; i >= 31; i--)
             {
                 Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
-            {
-                Teeth.Add(new ToothViewModel(prostheticConditions,prosteticTypes, materials) { Number = i });
-            }
-
-            for (int i = 11; i <= 18; i++)
             {
                 Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
             }

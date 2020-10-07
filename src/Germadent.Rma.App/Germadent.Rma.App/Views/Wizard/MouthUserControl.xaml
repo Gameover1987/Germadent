@@ -55,7 +55,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type toothCard:ToothViewModel}">
-                    <Grid Background="Transparent"
+                    <Grid Background="Transparent" 
                           Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext}">
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
@@ -125,11 +125,11 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Viewbox Width="30">
+                        <Viewbox Width="30" Margin="-1,-1,0,0">
                             <Grid>
-                                <Ellipse StrokeThickness="1">
-                                    <Ellipse.Style>
-                                        <Style TargetType="{x:Type Ellipse}">
+                                <Rectangle StrokeThickness="1" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="{x:Type Rectangle}">
                                             <Setter Property="Fill" Value="White"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsChanged}" Value="True">
@@ -156,8 +156,8 @@
                                                 </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
+                                    </Rectangle.Style>
+                                </Rectangle>
 
                                 <TextBlock Grid.Row="0" Text="{Binding Number}" Margin="3" />
                             </Grid>
@@ -166,19 +166,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Описание работ" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="6,6,0,0" Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" MaxLines="5" MinLines="5" 
-                     VerticalScrollBarVisibility="Auto"
-                     VerticalContentAlignment="Top"/>
-            <Button Grid.Row="0" Grid.Column="2" Content="Копировать" Margin="6,6,0,0" VerticalAlignment="Top"
-                    Command="{Binding CopyDescriptionCommand}"/>
-        </Grid>
     </Grid>
 </UserControl>
