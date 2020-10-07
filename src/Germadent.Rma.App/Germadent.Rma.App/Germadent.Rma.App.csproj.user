@@ -13,6 +13,9 @@
     <Compile Update="Views\Wizard\PriceListStepUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Wizard\PriceListUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Wizard\ResponsiblePersonUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Wizard\PriceListStepUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\PriceListUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Wizard\ResponsiblePersonUserControl.xaml">

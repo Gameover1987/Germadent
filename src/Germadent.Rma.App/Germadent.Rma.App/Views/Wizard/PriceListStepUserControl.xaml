@@ -14,9 +14,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <local:MouthUserControl Height="100" Grid.Row="0"/>
+        <local:MouthUserControl Grid.Row="0" Height="110" />
 
-        
-
+        <local:PriceListUserControl Grid.Row="1" Margin="0,6,0,0"/>
     </Grid>
 </UserControl>
