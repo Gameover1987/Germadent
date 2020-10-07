@@ -390,7 +390,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId)
+        public PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId)
         {
             var cmdText = string.Format("select * from GetPriceListForBranch({0})", branchTypeId);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -425,7 +425,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private ProductSetForToothDto[] GetProductSetForToot(int branchTypeId, int pricePositionId, bool stlExist)
+        private ProductSetForToothDto[] GetProductSetForTooth(int branchTypeId, int pricePositionId, bool stlExist)
         {
             var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
             using (var connection = new SqlConnection(_configuration.ConnectionString))

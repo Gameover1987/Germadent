@@ -117,5 +117,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="id"></param>
         /// <returns></returns>
         ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id);
+
+        /// <summary>
+        /// Возвращает ценовые позиции по выбранному типу филиала
+        /// </summary>
+        /// <param name="branchTypeId"></param>
+        /// <returns></returns>
+        PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId);
     }
 }
