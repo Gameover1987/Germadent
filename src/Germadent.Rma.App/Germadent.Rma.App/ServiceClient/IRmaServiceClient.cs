@@ -125,6 +125,13 @@ namespace Germadent.Rma.App.ServiceClient
         DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
 
         /// <summary>
+        /// Возвращает прайс по выбранному типу филиала
+        /// </summary>
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PriceGroupDto[] GetPrice(BranchType branchType);
+
+        /// <summary>
         /// Собтие изменения репозитория заказчиков
         /// </summary>
         event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;

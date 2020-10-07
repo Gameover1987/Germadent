@@ -36,7 +36,7 @@ namespace Germadent.Rma.Model
 
     public class PricePositionDto
     {
-        public string Name { get; }
+        public string Name { get; set; }
 
         public ProductSetDto[] Products { get; set; }
     }

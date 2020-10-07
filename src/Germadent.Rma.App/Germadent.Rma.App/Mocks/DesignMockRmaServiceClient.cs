@@ -230,7 +230,151 @@ namespace Germadent.Rma.App.Mocks
                     throw new NotImplementedException("Неизвестный тип словаря");
             }
         }
-        
+
+        public PriceGroupDto[] GetPrice(BranchType branchType)
+        {
+            return new PriceGroupDto[]
+            {
+                GetPriceGroup1(), 
+                GetPriceGroup2(),
+                GetPriceGroup3(),
+                GetPriceGroup4(),
+                GetPriceGroup5(),
+                GetPriceGroup6(),
+                GetPriceGroup7(),
+                GetPriceGroup8(),
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup1()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Культевые вкладки",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Культевая вкладка CoCr"},
+                    new PricePositionDto {Name = "Культевая вкладка разборная CoCr"},
+                    new PricePositionDto {Name = "Культевая вкладка металлокерамическая"},
+                    new PricePositionDto {Name = "Культевая вкладка ZrO2 VITA"},
+                    new PricePositionDto {Name = "Культевая вкладка Ti"},
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup2()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Временные конструкции",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Временная коронка РММА"},
+                    new PricePositionDto {Name = "Временная коронка РММА multicolor"},
+                    new PricePositionDto {Name = "Временная коронка VITA CAD - Temp"},
+                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor"},
+                    new PricePositionDto {Name = "Временная коронка РММА на имплантате"},
+                    new PricePositionDto {Name = "Временная коронка РММА multicolor на имплантате"},
+                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp на имплантате"},
+                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor на имплантате"},
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup3()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Абатменты",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Ортос)"},
+                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace MEDENTiKA)"},
+                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Straumann)"},
+                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Ортос)"},
+                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase MEDENTiKA)"},
+                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Straumann)"},
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup4()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Металлокерамические конструкции",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Металлокерамическая коронка CAD CAM VITA VM 13"},
+                    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате CAD CAM VITA VM 13"},
+                    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате винтовая фиксация CAD CAM VITA VM 13"},
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup5()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Конструкции из ZrO2",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) VITA AKZENT PLUS"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) VITA"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) VITA"},
+                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте VITA AKZENT PLUS"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте VITA"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте VITA"},
+                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте винтовая фиксация VITA AKZENT PLUS"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте винтовая фиксация VITA"},
+                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте винтовая фиксация VITA"},
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup6()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Дисиликат лития",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (VITA SUPRINITY)"},
+                    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (VITA SUPRINITY)"},
+                    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (E-MAX)"},
+                    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (E-MAX)"}
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup7()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Полевошпатная керамика VITA",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, коронка/винир (окрашиваниe) MARK  II"},
+                    new PricePositionDto {Name = "Коронка/винир (редуцирование) MARK  II"},
+                    new PricePositionDto {Name = "Коронка/винир TriLuxe forte"},
+                    new PricePositionDto {Name = "Коронка/винир RealLife"}
+                }
+            };
+        }
+
+        private PriceGroupDto GetPriceGroup8()
+        {
+            return new PriceGroupDto
+            {
+                Name = "Полевошпатная керамика VITA",
+                Positions = new PricePositionDto[]
+                {
+                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC monocolor"},
+                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC multicolor"},
+                }
+            };
+        }
+
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
