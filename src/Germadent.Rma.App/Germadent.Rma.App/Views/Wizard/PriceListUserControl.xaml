@@ -24,10 +24,11 @@
             <TextBlock  Grid.Row="0" Text="Ценовые группы" FontSize="16"/>
             <ListBox Grid.Row="1" Width="300" Margin="0,6,0,0"
                      ItemsSource="{Binding PriceGroups}"
-                     SelectedItem="{Binding SelectedPriceGroup}">
+                     SelectedItem="{Binding SelectedPriceGroup}"
+                     ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
-                        <TextBlock Text="{Binding DisplayName}"/>
+                        <TextBlock Text="{Binding DisplayName}" Margin="3,0,0,0"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

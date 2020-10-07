@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Germadent.Rma.App.ViewModels.ToothCard;
 
@@ -37,9 +40,8 @@ namespace Germadent.Rma.App.Views.Wizard
             if (DataContext == null)
                 return;
 
-            _toothCard = ((IToothCardContainer)DataContext).ToothCard;
+            _toothCard = (IToothCardViewModel)DataContext;
             _toothCard.RenderRequest += ToothCardOnRenderRequest;
-
         }
 
         private void ToothCardOnRenderRequest(object sender, EventArgs e)
@@ -57,7 +59,11 @@ namespace Germadent.Rma.App.Views.Wizard
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            RenderMouth();
+            Task.Run(() =>
+            {
+                Thread.Sleep(25);
+                Dispatcher.BeginInvoke(new Action(() => { RenderMouth(); }));
+            });
         }
 
         private void RenderMouth()

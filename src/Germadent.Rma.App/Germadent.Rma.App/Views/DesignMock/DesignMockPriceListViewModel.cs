@@ -1,5 +1,6 @@
 ﻿using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -8,6 +9,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockPriceListViewModel()
             : base(new DesignMockRmaServiceClient())
         {
+            Initialize(BranchType.Laboratory);
         }
     }
 }

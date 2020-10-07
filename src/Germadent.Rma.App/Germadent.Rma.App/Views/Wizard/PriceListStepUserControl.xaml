@@ -14,7 +14,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <local:MouthUserControl Grid.Row="0" Height="110" />
+        <local:MouthUserControl Grid.Row="0" Height="110" 
+                                DataContext="{Binding ToothCard}"/>
 
         <local:PriceListUserControl Grid.Row="1" Margin="0,6,0,0"
                                     DataContext="{Binding PriceList}"/>

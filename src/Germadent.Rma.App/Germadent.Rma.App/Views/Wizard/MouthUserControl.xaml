@@ -13,7 +13,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid DataContext="{Binding ToothCard}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
