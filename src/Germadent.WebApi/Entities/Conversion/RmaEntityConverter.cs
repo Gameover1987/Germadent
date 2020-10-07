@@ -59,6 +59,9 @@ namespace Germadent.WebApi.Entities.Conversion
                 ConditionName = entity.ConditionName.Trim(),
                 MaterialName = entity.MaterialName.Trim(),
                 ProstheticsName = entity.ProstheticsName.Trim(),
+                PricePositionCode = entity.PricePositionCode,
+                PricePositionName = entity.PricePositionName,
+                Price = entity.Price,
                 HasBridge = entity.FlagBridge
             };
         }
@@ -144,6 +147,35 @@ namespace Germadent.WebApi.Entities.Conversion
                 Phone = entity.RP_Phone,
                 Email = entity.RP_Email,
                 Description = entity.RP_Description
+            };
+        }
+
+        public PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity)
+        {
+            return new PriceListForBranchDto
+            {
+                PriceGroupId = entity.PriceGroupId,
+                PriceGroupName = entity.PriceGroupName,
+                PricePositionId = entity.PricePositionId,
+                PricePositionCode = entity.PricePositionCode,
+                PricePositionName = entity.PricePositionName,
+                MaterialId = entity.MaterialId,
+                MaterialName = entity.MaterialName,
+                Price = entity.Price,
+                PriceStl = entity.PriceStl,
+                PriceModel = entity.PriceModel
+            };
+        }
+
+        public ProductSetForToothDto ConvertToProductSetForTooth(ProductSetForToothEntity entity)
+        {
+            return new ProductSetForToothDto
+            {
+                PricePositionId = entity.PricePositionId,
+                MaterialId = entity.MaterialId,
+                ProstheticsId = entity.ProstheticsId,
+                ProstheticsName = entity.ProstheticsName,
+                Price = entity.Price
             };
         }
     }

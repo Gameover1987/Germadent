@@ -12,10 +12,10 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialName, P.ProductName, tc.Price, tc.FlagBridge, pp.PricePositionCode, pp.PricePositionName
+	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialName, p.ProstheticsName, tc.Price, tc.FlagBridge, pp.PricePositionCode, pp.PricePositionName
 	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
 		INNER JOIN PricePositions pp ON tc.PricePositionID = pp.PricePositionID
-		LEFT JOIN Product p ON tc.ProductID = p.ProductID
+		LEFT JOIN TypesOfProsthetics p ON tc.ProstheticsID = p.ProstheticsID
 		LEFT JOIN Materials m ON tc.MaterialID = m.MaterialID
 	
 				

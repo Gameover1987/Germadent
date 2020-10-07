@@ -10,6 +10,12 @@
 
         public string ProstheticsName { get; set; }
 
+        public string PricePositionCode { get; set; }
+
+        public string PricePositionName { get; set; }
+
+        public int Price { get; set; }
+
         public bool FlagBridge { get; set; }
     }
 }

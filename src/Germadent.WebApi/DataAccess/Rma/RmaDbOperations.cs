@@ -376,6 +376,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                         toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
                         toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
+                        toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();
+                        toothEntity.Price = reader[nameof(toothEntity.Price)].ToInt();
                         toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
 
                         toothCollection.Add(_converter.ConvertToTooth(toothEntity));
@@ -384,6 +386,71 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return toothCollection.ToArray();
+                }
+            }
+        }
+
+        private PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId)
+        {
+            var cmdText = string.Format("select * from GetPriceListForBranch({0})", branchTypeId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var priceListCollection = new List<PriceListForBranchDto>();
+                    while (reader.Read())
+                    {
+                        var priceListEntity = new PriceListForBranchEntity();
+
+                        priceListEntity.PriceGroupId = reader[nameof(priceListEntity.PriceGroupId)].ToInt();
+                        priceListEntity.PriceGroupName = reader[nameof(priceListEntity.PriceGroupName)].ToString();
+                        priceListEntity.PricePositionId = reader[nameof(priceListEntity.PricePositionId)].ToInt();
+                        priceListEntity.PricePositionCode = reader[nameof(priceListEntity.PricePositionCode)].ToString();
+                        priceListEntity.PricePositionName = reader[nameof(priceListEntity.PricePositionName)].ToString();
+                        priceListEntity.MaterialId = reader[nameof(priceListEntity.MaterialId)].ToInt();
+                        priceListEntity.MaterialName = reader[nameof(priceListEntity.MaterialName)].ToString();
+                        priceListEntity.Price = reader[nameof(priceListEntity.Price)].ToInt();
+                        priceListEntity.PriceStl = reader[nameof(priceListEntity.PriceStl)].ToInt();
+                        priceListEntity.PriceModel = reader[nameof(priceListEntity.PriceModel)].ToInt();
+
+                        priceListCollection.Add(_converter.ConvertToPriceListForBranch(priceListEntity));
+                    }
+                    reader.Close();
+
+                    return priceListCollection.ToArray();
+                }
+            }
+        }
+
+        private ProductSetForToothDto[] GetProductSetForToot(int branchTypeId, int pricePositionId, bool stlExist)
+        {
+            var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var productSetCollection = new List<ProductSetForToothDto>();
+                    while (reader.Read())
+                    {
+                        var productSetEntity = new ProductSetForToothEntity();
+
+                        productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
+                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToInt();
+                        productSetEntity.ProstheticsId = reader[nameof(productSetEntity.ProstheticsId)].ToInt();
+                        productSetEntity.ProstheticsName = reader[nameof(productSetEntity.ProstheticsName)].ToString();
+                        productSetEntity.Price = reader[nameof(productSetEntity.Price)].ToInt();
+
+                        productSetCollection.Add(_converter.ConvertToProductSetForTooth(productSetEntity));
+                    }
+                    reader.Close();
+
+                    return productSetCollection.ToArray();
                 }
             }
         }

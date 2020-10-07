@@ -2,7 +2,7 @@
 -- Author:		 Алексей Колосенок
 -- Create date:  29.06.2020
 -- Editing date: 21.09.2020
--- Description:	 Возвращает цену изготовления, материал и набор изделий для зуба
+-- Description:	 Возвращает цену изготовления, материал и набор изделий для вставки в зубную карту для зуба
 -- =============================================
 CREATE FUNCTION [dbo].[GetPriceMaterialProductSetForTooth]
 (	
@@ -14,7 +14,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, p.ProductID, p.ProductName,
+	SELECT pp.PricePositionID, m.MaterialID, p.ProstheticsID, p.ProstheticsName,
 			CASE -- Соображаем, какую цену услуги выбрать в данном конкретном случае. Сначала определяемся с филиалом:
 				WHEN @branchTypeId = 2 THEN pdl.Price
 				WHEN @branchTypeId = 1 THEN CASE -- Затем для ФЦ смотрим, есть ли STL-файл и содержит ли услуга цену для STL-варианта:
@@ -26,7 +26,7 @@ RETURN
 	FROM PricePositions pp
 		LEFT JOIN Materials m ON pp.MaterialID = m.MaterialID
 		INNER JOIN ProductSet ps ON pp.PricePositionID = ps.PricePositionID
-		INNER JOIN Product p ON ps.ProductID = p.ProductID
+		INNER JOIN TypesOfProsthetics p ON ps.ProductID = p.ProstheticsID
 		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
 		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
 	WHERE pp.PricePositionID = @pricePositionId

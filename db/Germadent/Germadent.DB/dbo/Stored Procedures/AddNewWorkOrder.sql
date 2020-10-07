@@ -23,6 +23,7 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrder]
 	@implantSystem nvarchar(70) = NULL,
 	@individualAbutmentProcessing nvarchar(70) = NULL,
 	@understaff nvarchar(100) = NULL,
+	@transparenceID int = NULL,
 	@colorAndFeatures nvarchar(100) = NULL,
 	@workOrderID int output,
 	@docNumber nvarchar(10) output,
@@ -70,9 +71,9 @@ BEGIN
 
 	ELSE IF @branchTypeID = 2 BEGIN
 		INSERT INTO WorkOrderDL
-			(WorkOrderDLID, ColorAndFeatures)
+			(WorkOrderDLID, TransparenceID, ColorAndFeatures)
 		VALUES
-			(@workOrderID, @colorAndFeatures)
+			(@workOrderID, @transparenceID, @colorAndFeatures)
 	END
 
 END
