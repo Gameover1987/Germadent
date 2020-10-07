@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -24,18 +23,6 @@ namespace Germadent.UI.ViewModels
         ///     Сообщает об изменении значения свойства.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private FieldInfo GetFieldRecursively(Type type, string fieldName)
-        {
-            if (type == typeof(object))
-                return null;
-
-            var fieldInfo = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
-            if (fieldInfo == null)
-                return GetFieldRecursively(type.BaseType, fieldName);
-
-            return fieldInfo;
-        }
 
         /// <summary>
         ///     Сообщает об изменении значений всех свойств.
