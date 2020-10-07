@@ -9,6 +9,7 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Wizard;
@@ -26,6 +27,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
+        private readonly IPriceListEditorViewModel _priceListEditorViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
@@ -42,6 +44,7 @@ namespace Germadent.Rma.App.ViewModels
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
+            IPriceListEditorViewModel priceListEditorViewModel,
             IPrintModule printModule,
             ILogger logger,
             IReporter reporter)
@@ -51,6 +54,7 @@ namespace Germadent.Rma.App.ViewModels
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
+            _priceListEditorViewModel = priceListEditorViewModel;
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
@@ -66,6 +70,7 @@ namespace Germadent.Rma.App.ViewModels
             CopyOrderToClipboardCommand = new DelegateCommand(x => CopyOrderToClipboardCommandHandler());
             ShowCustomersDictionaryCommand = new DelegateCommand(ShowCustomersDictionaryCommandHandler);
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
+            ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
 
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
@@ -124,6 +129,8 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand ShowCustomersDictionaryCommand { get; }
 
         public IDelegateCommand ShowResponsiblePersonsDictionaryCommand { get; }
+
+        public IDelegateCommand ShowPriceListEditorCommand { get; }
 
         public string SearchString
         {
@@ -274,6 +281,16 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowResponsiblePersonsDictionaryCommandHandler()
         {
             _dialogAgent.ShowDialog<ResponsiblePersonCatalogWindow>(_responsiblePersonCatalogViewModel);
+        }
+
+        private bool CanShowPriceListEditorCommandHandler()
+        {
+            return true;
+        }
+
+        private void ShowPriceListEditorCommandHandler()
+        {
+            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorViewModel);
         }
     }
 }

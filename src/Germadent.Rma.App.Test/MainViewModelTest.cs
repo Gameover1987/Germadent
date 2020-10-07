@@ -6,6 +6,7 @@ using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
@@ -35,6 +36,7 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IShowDialogAgent>(),
                 Mock.Of<ICustomerCatalogViewModel>(),
                 Mock.Of<IResponsiblePersonCatalogViewModel>(),
+                Mock.Of<IPriceListEditorViewModel>(),
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
                 Mock.Of<IReporter>());

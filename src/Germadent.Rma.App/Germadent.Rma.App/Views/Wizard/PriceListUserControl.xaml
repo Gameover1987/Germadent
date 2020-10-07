@@ -21,7 +21,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock  Grid.Row="0" Text="Ценовые группы" FontSize="16"/>
+            <TextBlock  Grid.Row="0" Text="Ценовые группы" 
+                        Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Width="300" Margin="0,6,0,0"
                      ItemsSource="{Binding PriceGroups}"
                      SelectedItem="{Binding SelectedPriceGroup}"
@@ -40,7 +41,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock  Grid.Row="0" Text="Ценовые позиции" FontSize="16"/>
+            <TextBlock  Grid.Row="0" Text="Ценовые позиции" Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Margin="0,6,0,0"></ListBox>
         </Grid>
     </Grid>

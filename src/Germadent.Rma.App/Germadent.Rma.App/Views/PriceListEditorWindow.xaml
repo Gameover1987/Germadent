@@ -1,0 +1,31 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.PriceListEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        mc:Ignorable="d"
+        Title="Редактирование прайслистов" Height="450" Width="800"
+        Background="{x:Static SystemColors.ControlBrush}"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl BorderThickness="0">
+            <TabItem Header="Фрезерный центр">
+                <local:PriceListEditorControl Margin="12,6,12,0"/>
+            </TabItem>
+            <TabItem Header="Лаборатория">
+                <local:PriceListEditorControl Margin="12,6,12,0"/>
+            </TabItem>
+        </TabControl>
+
+        <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,12"/>
+
+        <Button Grid.Row="2" Width="100" Content="Закрыть" HorizontalAlignment="Right" IsCancel="True" Margin="0,0,12,12"/>
+    </Grid>
+</Window>

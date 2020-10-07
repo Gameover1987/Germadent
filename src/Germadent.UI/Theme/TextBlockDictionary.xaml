@@ -6,7 +6,6 @@
 	<Style x:Key="GroupNameStyle" TargetType="{x:Type TextBlock}">
 		<Setter Property="FontFamily" Value="Segoe UI" />
 		<Setter Property="FontSize" Value="10" />
-		<Setter Property="Foreground" Value="#FF666666" />
 	</Style>
 	
 	<Style x:Key="TooltipTextBlock" TargetType="TextBlock">

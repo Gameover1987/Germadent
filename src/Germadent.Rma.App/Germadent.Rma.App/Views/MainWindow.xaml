@@ -54,6 +54,8 @@
                     Command="{Binding ShowCustomersDictionaryCommand}"/>
             <Button Content="Ответственные лица" Margin="0,6,0,0"
                     Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
+            <Button Content="Прайслисты" Margin="0,6,0,0"
+                    Command="{Binding ShowPriceListEditorCommand}"/>
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"

@@ -3,14 +3,20 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
+    public class DesignMockIPriceListEditorViewModel : PriceListEditorViewModel
+    {
+
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockRmaServiceClient(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockCustomerCatalogViewModel(), new DesignMockResponsiblePersonsCatalogViewModel(),   new DesignMockPrintModule(), new MockLogger(), new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()))
+            : base(new DesignMockRmaServiceClient(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockCustomerCatalogViewModel(), new DesignMockResponsiblePersonsCatalogViewModel(), new DesignMockIPriceListEditorViewModel(),  new DesignMockPrintModule(), new MockLogger(), new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()))
         {
         }
     }
