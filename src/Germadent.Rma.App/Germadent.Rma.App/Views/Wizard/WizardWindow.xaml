@@ -9,7 +9,7 @@
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
         xmlns:views="clr-namespace:Germadent.Rma.App.Views"
-        xmlns:wizard1="clr-namespace:Germadent.Rma.App.Views.Wizard"
+        xmlns:wizardUi="clr-namespace:Germadent.Rma.App.Views.Wizard"
         mc:Ignorable="d"
         Title="{Binding Title}"
         ShowInTaskbar="False"
@@ -23,23 +23,27 @@
     <Window.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type wizard:LaboratoryInfoWizardStepViewModel}">
-                <wizard1:LabInfoStepUserControl/>
+                <wizardUi:LabInfoStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:LaboratoryProjectWizardStepViewModel}">
-                <wizard1:LabProjectStepUserControl/>
+                <wizardUi:LabProjectStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:MillingCenterInfoWizardStepViewModel}">
-                <wizard1:MillingCenterInfoStepUserControl/>
+                <wizardUi:MillingCenterInfoStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:MillingCenterProjectWizardStepViewModel}">
-                <wizard1:MillingCenterProjectStepUserControl/>
+                <wizardUi:MillingCenterProjectStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentViewModel}">
-                <wizard1:MillingCenterAdditionalEquipmentUserControl/>
+                <wizardUi:MillingCenterAdditionalEquipmentUserControl/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:PriceListWizardStepViewModel}">
+                <wizardUi:PriceListStepUserControl/>
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
@@ -59,7 +63,7 @@
             <ContentControl.Style>
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding WizardMode}" Value="{x:Static wizard1:WizardMode.View}">
+                        <DataTrigger Binding="{Binding WizardMode}" Value="{x:Static wizardUi:WizardMode.View}">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>

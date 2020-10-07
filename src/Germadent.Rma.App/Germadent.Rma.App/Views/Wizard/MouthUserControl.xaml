@@ -6,8 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-             xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
-             d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryProjectWizardStepViewModel, IsDesignTimeCreatable=True}">
+             xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
             <TextBlock Text="{Binding Item.Name}"/>

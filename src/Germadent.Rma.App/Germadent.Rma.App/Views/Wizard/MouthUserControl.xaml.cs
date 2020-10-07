@@ -67,8 +67,6 @@ namespace Germadent.Rma.App.Views.Wizard
 
             var canvasWidth = _mouthListBox.ActualWidth - 6;
 
-
-
             var stepByWidth = canvasWidth / 16;
             var horizontalMargin = 5;
             var verticalMargin = 10;

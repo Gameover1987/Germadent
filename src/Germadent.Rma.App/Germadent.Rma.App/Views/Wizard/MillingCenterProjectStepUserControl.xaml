@@ -64,6 +64,5 @@
                     Command="{Binding DownloadFileCommand}"/>
             <controls:BusyIndicator Width="23" Height="23" IsBusy="{Binding IsBusy}" Fill="#2D2D2D" Margin="6,0,0,0"/>
         </StackPanel>
-        <wizard:MouthUserControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>
 </UserControl>
