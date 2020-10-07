@@ -123,6 +123,6 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="branchTypeId"></param>
         /// <returns></returns>
-        PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId);
+        PricePositionDto[] GetPricePositions(int branchTypeId);
     }
 }

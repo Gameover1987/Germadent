@@ -8,22 +8,17 @@ namespace Germadent.WebApi.Entities
     public class ProductSetForToothEntity
     {
         /// <summary>
-        /// Идентификатор ценовой позиции
-        /// </summary>
-        public int PricePositionId { get; set; }
-
-        /// <summary>
-        /// Идентификатор материала, привязанного к ценовой позиции
-        /// </summary>
-        public int MaterialId { get; set; }
-
-        /// <summary>
         /// Идентификатор изделия
         /// </summary>
         public int ProstheticsId { get; set; }
 
         /// <summary>
-        /// Наименовние изделия
+        /// Идентификатор ценовой позиции
+        /// </summary>
+        public int PricePositionId { get; set; }
+
+        /// <summary>
+        /// Наименование изделия
         /// </summary>
         public string ProstheticsName { get; set; }
 

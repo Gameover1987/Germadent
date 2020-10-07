@@ -390,9 +390,9 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId)
+        public PriceGroupDto[] GetPriceGroups(int branchTypeId)
         {
-            var cmdText = string.Format("select * from GetPriceListForBranch({0})", branchTypeId);
+            var cmdText = string.Format("select  distinct PriceGroupID, PriceGroupName from GetPriceListForBranch({0})", branchTypeId);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -400,32 +400,54 @@ namespace Germadent.WebApi.DataAccess.Rma
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var priceListCollection = new List<PriceListForBranchDto>();
+                    var priceGroupCollection = new List<PriceGroupDto>();
                     while (reader.Read())
                     {
-                        var priceListEntity = new PriceListForBranchEntity();
+                        var priceGroupEntity = new PriceGroupEntity();
 
-                        priceListEntity.PriceGroupId = reader[nameof(priceListEntity.PriceGroupId)].ToInt();
-                        priceListEntity.PriceGroupName = reader[nameof(priceListEntity.PriceGroupName)].ToString();
-                        priceListEntity.PricePositionId = reader[nameof(priceListEntity.PricePositionId)].ToInt();
-                        priceListEntity.PricePositionCode = reader[nameof(priceListEntity.PricePositionCode)].ToString();
-                        priceListEntity.PricePositionName = reader[nameof(priceListEntity.PricePositionName)].ToString();
-                        priceListEntity.MaterialId = reader[nameof(priceListEntity.MaterialId)].ToInt();
-                        priceListEntity.MaterialName = reader[nameof(priceListEntity.MaterialName)].ToString();
-                        priceListEntity.Price = reader[nameof(priceListEntity.Price)].ToInt();
-                        priceListEntity.PriceStl = reader[nameof(priceListEntity.PriceStl)].ToInt();
-                        priceListEntity.PriceModel = reader[nameof(priceListEntity.PriceModel)].ToInt();
+                        priceGroupEntity.PriceGroupId = reader[nameof(priceGroupEntity.PriceGroupId)].ToInt();
+                        priceGroupEntity.PriceGroupName = reader[nameof(priceGroupEntity.PriceGroupName)].ToString();
 
-                        priceListCollection.Add(_converter.ConvertToPriceListForBranch(priceListEntity));
+                        priceGroupCollection.Add(_converter.ConvertToPriceGroup(priceGroupEntity));
                     }
                     reader.Close();
 
-                    return priceListCollection.ToArray();
+                    return priceGroupCollection.ToArray();
                 }
             }
         }
 
-        private ProductSetForToothDto[] GetProductSetForTooth(int branchTypeId, int pricePositionId, bool stlExist)
+        public PricePositionDto[] GetPricePositions(int branchTypeId)
+        {
+            var cmdText = string.Format("select PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", branchTypeId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var pricePositionCollection = new List<PricePositionDto>();
+                    while (reader.Read())
+                    {
+                        var pricePositionEntity = new PricePositionEntity();
+
+                        pricePositionEntity.PricePositionId = reader[nameof(pricePositionEntity.PricePositionId)].ToInt();
+                        pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();                       
+                        pricePositionEntity.PricePositionCode = reader[nameof(pricePositionEntity.PricePositionCode)].ToString();
+                        pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();
+                        pricePositionEntity.MaterialId = reader[nameof(pricePositionEntity.MaterialId)].ToInt();
+
+                        pricePositionCollection.Add(_converter.ConvertToPricePosition(pricePositionEntity));
+                    }
+                    reader.Close();
+
+                    return pricePositionCollection.ToArray();
+                }
+            }
+        }
+
+        private ProductSetDto[] GetProductSetForTooth(int branchTypeId, int pricePositionId, bool stlExist)
         {
             var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -435,13 +457,12 @@ namespace Germadent.WebApi.DataAccess.Rma
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var productSetCollection = new List<ProductSetForToothDto>();
+                    var productSetCollection = new List<ProductSetDto>();
                     while (reader.Read())
                     {
                         var productSetEntity = new ProductSetForToothEntity();
 
                         productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
-                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToInt();
                         productSetEntity.ProstheticsId = reader[nameof(productSetEntity.ProstheticsId)].ToInt();
                         productSetEntity.ProstheticsName = reader[nameof(productSetEntity.ProstheticsName)].ToString();
                         productSetEntity.Price = reader[nameof(productSetEntity.Price)].ToInt();
