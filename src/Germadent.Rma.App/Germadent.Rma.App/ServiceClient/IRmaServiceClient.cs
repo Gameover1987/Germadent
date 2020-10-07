@@ -1,5 +1,6 @@
 ﻿using System;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.ServiceClient
 {
@@ -129,7 +130,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="branchType"></param>
         /// <returns></returns>
-        PriceGroupDto[] GetPrice(BranchType branchType);
+        PriceGroupDto[] GetPriceGroups(BranchType branchType);
 
         /// <summary>
         /// Собтие изменения репозитория заказчиков

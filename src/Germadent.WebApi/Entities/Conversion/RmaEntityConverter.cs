@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -150,33 +151,39 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
-        public PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity)
+        public PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity)
         {
-            return new PriceListForBranchDto
+            return new PriceGroupDto
             {
-                PriceGroupId = entity.PriceGroupId,
-                PriceGroupName = entity.PriceGroupName,
-                PricePositionId = entity.PricePositionId,
-                PricePositionCode = entity.PricePositionCode,
-                PricePositionName = entity.PricePositionName,
-                MaterialId = entity.MaterialId,
-                MaterialName = entity.MaterialName,
-                Price = entity.Price,
-                PriceStl = entity.PriceStl,
-                PriceModel = entity.PriceModel
+                Id = entity.PriceGroupId,
+                Name = entity.PriceGroupName
             };
         }
 
-        public ProductSetForToothDto ConvertToProductSetForTooth(ProductSetForToothEntity entity)
+
+        public PricePositionDto ConvertToPricePosition(PricePositionEntity entity)
         {
-            return new ProductSetForToothDto
+            return new PricePositionDto
             {
+                Id = entity.PricePositionId,
+                PriceGroupId = entity.PriceGroupId,
+                UserCode = entity.PricePositionCode,
+                Name = entity.PricePositionName,
+                MaterialId = entity.MaterialId
+            };
+        }
+
+        public ProductSetDto ConvertToProductSetForTooth(ProductSetForToothEntity entity)
+        {
+            return new ProductSetDto
+            {
+                Id = entity.ProstheticsId,
                 PricePositionId = entity.PricePositionId,
-                MaterialId = entity.MaterialId,
-                ProstheticsId = entity.ProstheticsId,
-                ProstheticsName = entity.ProstheticsName,
+                Name = entity.ProstheticsName,
                 Price = entity.Price
             };
         }
+
+
     }
 }

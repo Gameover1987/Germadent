@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -119,10 +120,10 @@ namespace Germadent.WebApi.DataAccess.Rma
         ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id);
 
         /// <summary>
-        /// Возвращает ценовые позиции по выбранному типу филиала
+        /// Возвращает ценовые группы по типу филиала
         /// </summary>
-        /// <param name="branchTypeId"></param>
+        /// <param name="branchType"></param>
         /// <returns></returns>
-        PriceListForBranchDto[] GetPriceListForBranch(int branchTypeId);
+        PriceGroupDto[] GetPriceGroups(BranchType branchType);
     }
 }

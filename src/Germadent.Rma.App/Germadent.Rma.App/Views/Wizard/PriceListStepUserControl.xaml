@@ -16,6 +16,7 @@
 
         <local:MouthUserControl Grid.Row="0" Height="110" />
 
-        <local:PriceListUserControl Grid.Row="1" Margin="0,6,0,0"/>
+        <local:PriceListUserControl Grid.Row="1" Margin="0,6,0,0"
+                                    DataContext="{Binding PriceList}"/>
     </Grid>
 </UserControl>

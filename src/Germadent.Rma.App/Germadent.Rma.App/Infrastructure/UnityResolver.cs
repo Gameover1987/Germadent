@@ -12,6 +12,7 @@ using Germadent.Rma.App.Reporting.TemplateProcessing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -101,6 +102,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPriceListViewModel, PriceListViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()

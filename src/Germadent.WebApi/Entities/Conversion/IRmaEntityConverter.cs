@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -20,8 +21,10 @@ namespace Germadent.WebApi.Entities.Conversion
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
 
-        PriceListForBranchDto ConvertToPriceListForBranch(PriceListForBranchEntity entity);
+        PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity);
 
-        ProductSetForToothDto ConvertToProductSetForTooth(ProductSetForToothEntity entity);
+        PricePositionDto ConvertToPricePosition(PricePositionEntity entity);
+
+        ProductSetDto ConvertToProductSetForTooth(ProductSetForToothEntity entity);
     }
 }

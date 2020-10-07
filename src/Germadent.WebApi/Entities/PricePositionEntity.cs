@@ -5,22 +5,17 @@ using System.Threading.Tasks;
 
 namespace Germadent.WebApi.Entities
 {
-    public class PriceListForBranchEntity
+    public class PricePositionEntity
     {
-        /// <summary>
-        /// Идентификатор ценовой группы
-        /// </summary>
-        public int PriceGroupId { get; set; }
-
-        /// <summary>
-        /// Наименование ценовой группы
-        /// </summary>
-        public string PriceGroupName { get; set; }
-
         /// <summary>
         /// Идентификатор ценовой позиции
         /// </summary>
         public int PricePositionId { get; set; }
+
+        /// <summary>
+        /// Идентификатор ценовой группы
+        /// </summary>
+        public int PriceGroupId { get; set; }
 
         /// <summary>
         /// Пользовательский код ценовой позиции
@@ -36,7 +31,7 @@ namespace Germadent.WebApi.Entities
         /// Идентификатор материала, привязанного к ценовой позиции
         /// </summary>
         public int MaterialId { get; set; }
-
+/*
         /// <summary>
         /// Наименование материала, привязанного к ценовой позиции
         /// </summary>
@@ -56,5 +51,6 @@ namespace Germadent.WebApi.Entities
         /// Цена для ФЦ с модели
         /// </summary>
         public int PriceModel { get; set; }
+*/
     }
 }

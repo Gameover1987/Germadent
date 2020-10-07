@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.Mocks
 {
@@ -231,7 +232,7 @@ namespace Germadent.Rma.App.Mocks
             }
         }
 
-        public PriceGroupDto[] GetPrice(BranchType branchType)
+        public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
             return new PriceGroupDto[]
             {
