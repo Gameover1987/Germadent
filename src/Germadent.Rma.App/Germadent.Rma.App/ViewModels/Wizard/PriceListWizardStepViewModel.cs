@@ -20,7 +20,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             get { return "Детализация работ"; }
         }
 
-        public override bool IsValid { get; }
+        public override bool IsValid
+        {
+            get { return ToothCard.IsValid; }
+        }
 
         public IToothCardViewModel ToothCard { get; }
 
