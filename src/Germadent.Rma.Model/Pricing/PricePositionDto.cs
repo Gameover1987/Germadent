@@ -12,6 +12,8 @@
 
         public int MaterialId { get; set; }
 
+        public BranchType BranchType { get; set; }
+
         public ProductSetDto[] Products { get; set; }
 
         public override string ToString()

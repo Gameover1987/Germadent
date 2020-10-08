@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Germadent.Rma.App.Views.Wizard"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListViewModel}, IsDesignTimeCreatable=True}">
@@ -24,8 +25,8 @@
             <TextBlock  Grid.Row="0" Text="Ценовые группы" 
                         Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Width="300" Margin="0,6,0,0"
-                     ItemsSource="{Binding PriceGroups}"
-                     SelectedItem="{Binding SelectedPriceGroup}"
+                     ItemsSource="{Binding Groups}"
+                     SelectedItem="{Binding SelectedGroup}"
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
@@ -42,7 +43,25 @@
             </Grid.RowDefinitions>
 
             <TextBlock  Grid.Row="0" Text="Ценовые позиции" Style="{StaticResource GroupNameStyle}"/>
-            <ListBox Grid.Row="1" Margin="0,6,0,0"></ListBox>
+            <ListBox Grid.Row="1" Margin="0,6,0,0"
+                     ItemsSource="{Binding Positions}"
+                     SelectedItem="{Binding SelectedPosition}"
+                     ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type pricing:PricePositionViewModel}">
+                        <Grid Margin="3,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding UserCode}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"
+                                       helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </UserControl>

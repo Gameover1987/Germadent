@@ -6,6 +6,8 @@
 
         public string Name { get; set; }
 
+        public BranchType BranchType { get; set; }
+
         public PricePositionDto[] Positions { get; set; }
 
         public override string ToString()

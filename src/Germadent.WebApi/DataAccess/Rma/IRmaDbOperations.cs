@@ -125,5 +125,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="branchType"></param>
         /// <returns></returns>
         PriceGroupDto[] GetPriceGroups(BranchType branchType);
+
+        /// <summary>
+        /// Возвращает ценовые позиции по выбранному типу филиала
+        /// </summary>
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PricePositionDto[] GetPricePositions(BranchType branchType);
     }
 }

@@ -393,7 +393,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
-            var cmdText = string.Format("select  distinct PriceGroupID, PriceGroupName from GetPriceListForBranch({0})", (int)branchType);
+            var cmdText = string.Format("select distinct PriceGroupID, PriceGroupName from GetPriceListForBranch({0})", (int)branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -409,7 +409,9 @@ namespace Germadent.WebApi.DataAccess.Rma
                         priceGroupEntity.PriceGroupId = reader[nameof(priceGroupEntity.PriceGroupId)].ToInt();
                         priceGroupEntity.PriceGroupName = reader[nameof(priceGroupEntity.PriceGroupName)].ToString();
 
-                        priceGroupCollection.Add(_converter.ConvertToPriceGroup(priceGroupEntity));
+                        var priceGroupDto = _converter.ConvertToPriceGroup(priceGroupEntity);
+                        priceGroupDto.BranchType = branchType;
+                        priceGroupCollection.Add(priceGroupDto);
                     }
                     reader.Close();
 
@@ -418,9 +420,9 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public PricePositionDto[] GetPricePositions(int branchTypeId)
+        public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            var cmdText = string.Format("select PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", branchTypeId);
+            var cmdText = string.Format("select PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", (int)branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -439,7 +441,9 @@ namespace Germadent.WebApi.DataAccess.Rma
                         pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();
                         pricePositionEntity.MaterialId = reader[nameof(pricePositionEntity.MaterialId)].ToInt();
 
-                        pricePositionCollection.Add(_converter.ConvertToPricePosition(pricePositionEntity));
+                        var pricePositionDto = _converter.ConvertToPricePosition(pricePositionEntity);
+                        pricePositionDto.BranchType = branchType;
+                        pricePositionCollection.Add(pricePositionDto);
                     }
                     reader.Close();
 

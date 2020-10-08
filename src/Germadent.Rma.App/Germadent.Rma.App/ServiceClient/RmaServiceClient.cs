@@ -55,7 +55,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder =  ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
+            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
             if (order.DataFileName != null)
             {
                 var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
@@ -130,11 +130,16 @@ namespace Germadent.Rma.App.ServiceClient
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
-            return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/{(int)branchType}");
+            return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
+        }
+
+        public PricePositionDto[] GetPricePositions(BranchType branchType)
+        {
+            return ExecuteHttpGet<PricePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);
         }
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
-        
+
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
         protected override void HandleError(IRestResponse response)

@@ -247,6 +247,11 @@ namespace Germadent.Rma.App.Mocks
             };
         }
 
+        public PricePositionDto[] GetPricePositions(BranchType branchType)
+        {
+            throw new NotImplementedException();
+        }
+
         private PriceGroupDto GetPriceGroup1()
         {
             return new PriceGroupDto
