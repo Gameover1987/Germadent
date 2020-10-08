@@ -452,33 +452,57 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private ProductSetDto[] GetProductSetForTooth(int branchTypeId, int pricePositionId, bool stlExist)
+        public ProductDto[] GetProducts()
         {
-            var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            var cmdText = "SELECT * FROM GetProductCollection()";
+            using var connection = new SqlConnection(_configuration.ConnectionString);
+            connection.Open();
+
+            using var command = new SqlCommand(cmdText, connection);
+            using var reader = command.ExecuteReader();
+            var products = new List<ProductDto>();
+            while (reader.Read())
             {
-                connection.Open();
+                var productEntity = new ProductEntity();
 
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var productSetCollection = new List<ProductSetDto>();
-                    while (reader.Read())
-                    {
-                        var productSetEntity = new ProductSetForToothEntity();
+                productEntity.ProductId = reader[nameof(productEntity.ProductId)].ToInt();
+                productEntity.PricePositionId = reader[nameof(productEntity.PricePositionId)].ToInt();
+                productEntity.ProstheticsName = reader[nameof(productEntity.ProstheticsName)].ToString();
 
-                        productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
-                        productSetEntity.ProstheticsId = reader[nameof(productSetEntity.ProstheticsId)].ToInt();
-                        productSetEntity.ProstheticsName = reader[nameof(productSetEntity.ProstheticsName)].ToString();
-                        productSetEntity.Price = reader[nameof(productSetEntity.Price)].ToInt();
-
-                        productSetCollection.Add(_converter.ConvertToProductSetForTooth(productSetEntity));
-                    }
-                    reader.Close();
-
-                    return productSetCollection.ToArray();
-                }
+                products.Add(_converter.ConvertToProduct(productEntity));
             }
+
+            return products.ToArray();
+        }
+
+        private ProductDto[] GetProductSetForTooth(int branchTypeId, int pricePositionId, bool stlExist)
+        {
+            return null;
+            //var cmdText = string.Format("select * from GetProductSetForTooth({0}, {1}, {2})", branchTypeId, pricePositionId, stlExist);
+            //using (var connection = new SqlConnection(_configuration.ConnectionString))
+            //{
+            //    connection.Open();
+
+            //    using (var command = new SqlCommand(cmdText, connection))
+            //    {
+            //        var reader = command.ExecuteReader();
+            //        var productSetCollection = new List<ProductDto>();
+            //        while (reader.Read())
+            //        {
+            //            var productSetEntity = new ProductSetForToothEntity();
+
+            //            productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
+            //            productSetEntity.ProstheticsId = reader[nameof(productSetEntity.ProstheticsId)].ToInt();
+            //            productSetEntity.ProstheticsName = reader[nameof(productSetEntity.ProstheticsName)].ToString();
+            //            productSetEntity.Price = reader[nameof(productSetEntity.Price)].ToInt();
+
+            //            productSetCollection.Add(_converter.ConvertToProduct(productSetEntity));
+            //        }
+            //        reader.Close();
+
+            //        return productSetCollection.ToArray();
+            //    }
+            //}
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)

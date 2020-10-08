@@ -46,9 +46,27 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
-                _logger.Info(nameof(GetPriceGroups));
+                _logger.Info(nameof(GetPricePositions));
                 var priceGroups = _rmaDbOperations.GetPricePositions((BranchType)branchType);
                 return Ok(priceGroups);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("Products")]
+        public IActionResult GetProducts()
+        {
+            try
+            {
+                _logger.Info(nameof(GetProducts));
+                var products = _rmaDbOperations.GetProducts();
+                return Ok(products);
             }
             catch (Exception exception)
             {

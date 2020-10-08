@@ -14,7 +14,7 @@
 
         public BranchType BranchType { get; set; }
 
-        public ProductSetDto[] Products { get; set; }
+        public ProductDto[] Products { get; set; }
 
         public override string ToString()
         {

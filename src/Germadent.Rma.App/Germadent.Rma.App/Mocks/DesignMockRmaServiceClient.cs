@@ -252,6 +252,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public ProductDto[] GetProducts()
+        {
+            return new ProductDto[0];
+        }
+
         private PriceGroupDto GetPriceGroup1()
         {
             return new PriceGroupDto
