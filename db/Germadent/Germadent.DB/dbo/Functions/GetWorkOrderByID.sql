@@ -45,6 +45,7 @@ SELECT wo.WorkOrderID,
 			wo.DateOfCompletion,
 			wo.FittingDate,
 			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
+			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM 	WorkOrder wo 
