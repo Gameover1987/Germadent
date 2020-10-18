@@ -13,5 +13,10 @@
         /// Название подсистемы
         /// </summary>
         public string ApplicationName { get; set; }
+
+        /// <summary>
+        /// Признак что право устарело
+        /// </summary>
+        public bool IsObsolete { get; set; }
     }
 }

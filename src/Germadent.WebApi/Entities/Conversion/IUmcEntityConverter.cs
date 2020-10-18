@@ -12,15 +12,11 @@ namespace Germadent.WebApi.Entities.Conversion
 
         RightDto ConvertToRightDto(RightEntity entity);
 
-        RightInRoleEntity ConvertToRightInRoleEntity(int roleId, RightDto dto);
-
         RoleEntity ConvertToRoleEntity(RoleDto dto);
 
         RightEntity ConvertToRightEntity(RightDto dto);
 
         UserEntity ConvertToUserEntity(UserDto userDto);
-
-        RoleInUserEntity ConvertToRoleInUserEntity(in int userId, RoleDto roleDto);
     }
 
     public class UmcEntityConverter : IUmcEntityConverter
@@ -34,7 +30,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 FullName = entity.FullName,
                 Login = entity.Login,
                 Password = entity.Password,
-                Roles = entity.RolesInUser.Select(x => ConvertToRoleDto(x.RoleEntity)).ToArray()
+                
             };
         }
 
@@ -44,7 +40,6 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 RoleId = entity.RoleId,
                 Name = entity.Name,
-                Rights = entity.RightsInRole?.Select(x => ConvertToRightDto(x.RightEntity)).ToArray()
             };
         }
 
@@ -67,15 +62,6 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
-        public RightInRoleEntity ConvertToRightInRoleEntity(int roleId, RightDto dto)
-        {
-            return new RightInRoleEntity
-            {
-                RoleEntityId = roleId,
-                RightEntityId = dto.RightId
-            };
-        }
-
         public RightEntity ConvertToRightEntity(RightDto dto)
         {
             return new RightEntity
@@ -94,15 +80,6 @@ namespace Germadent.WebApi.Entities.Conversion
                 Description = userDto.Description,
                 Login = userDto.Login,
                 Password = userDto.Password
-            };
-        }
-
-        public RoleInUserEntity ConvertToRoleInUserEntity(in int userId, RoleDto roleDto)
-        {
-            return new RoleInUserEntity
-            {
-                UserEntityId = userId,
-                RoleEntityId = roleDto.RoleId
             };
         }
     }
