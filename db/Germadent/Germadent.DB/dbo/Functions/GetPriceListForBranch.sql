@@ -19,5 +19,6 @@ RETURN
 		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
 		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
 	WHERE pg.BranchTypeID = @branchTypeId
-		AND (pdl.DateEnd IS NULL OR pmc.DateEnd IS NULL)
+		AND ((GETDATE() BETWEEN pdl.DateBegin AND ISNULL(pdl.DateEnd, '99991231')) OR (GETDATE() BETWEEN pmc.DateBegin AND ISNULL(pmc.DateEnd, '99991231')))
+
 )
