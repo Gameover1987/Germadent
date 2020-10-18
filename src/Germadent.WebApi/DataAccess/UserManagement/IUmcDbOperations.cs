@@ -48,7 +48,13 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         /// Обновляет роль
         /// </summary>
         /// <param name="roleDto"></param>
-        void UpdateRole(RoleDto roleDto);
+        RoleDto UpdateRole(RoleDto roleDto);
+
+        /// <summary>
+        /// Удаляет роль
+        /// </summary>
+        /// <param name="roleId"></param>
+        void DeleteRole(int roleId);
 
         /// <summary>
         /// Возвращает список прав

@@ -1,4 +1,5 @@
 ﻿using Germadent.Common.Extensions;
+using Germadent.Common.Web;
 using Germadent.UserManagementCenter.App.Configuration;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
@@ -6,7 +7,7 @@ using RestSharp;
 
 namespace Germadent.UserManagementCenter.App.ServiceClient
 {
-    public class UmcServiceClient : IUmcServiceClient
+    public class UmcServiceClient : ServiceClientBase, IUmcServiceClient
     {
         private readonly IUmcConfiguration _configuration;
         private readonly RestClient _client;
@@ -20,42 +21,47 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public UserDto[] GetUsers()
         {
-            return ExecuteHttpGet<UserDto[]>("/api/userManagement/users/GetUsers");
+            return ExecuteHttpGet<UserDto[]>(_configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
         }
 
         public UserDto GetUserById(int id)
         {
-            return ExecuteHttpGet<UserDto>($"/api/userManagement/users/{id}");
+            return ExecuteHttpGet<UserDto>(_configuration.DataServiceUrl + $"/api/userManagement/users/{id}");
         }
 
         public UserDto AddUser(UserDto userDto)
         {
-            return ExecuteHttpPost<UserDto>("/api/userManagement/users/adduser", userDto);
+            return ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/adduser", userDto);
         }
 
         public UserDto EditUser(UserDto userDto)
         {
-            return ExecuteHttpPost<UserDto>("/api/userManagement/users/edituser", userDto);
+            return ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/edituser", userDto);
         }
 
         public RoleDto[] GetRoles()
         {
-            return ExecuteHttpGet<RoleDto[]>("/api/userManagement/roles");
+            return ExecuteHttpGet<RoleDto[]>(_configuration.DataServiceUrl + "/api/userManagement/roles");
         }
 
         public RoleDto AddRole(RoleDto role)
         {
-            return ExecuteHttpPost<RoleDto>("/api/userManagement/roles/addrole", role);
+            return ExecuteHttpPost<RoleDto>(_configuration.DataServiceUrl + "/api/userManagement/roles/addrole", role);
         }
 
         public RoleDto EditRole(RoleDto role)
         {
-            return ExecuteHttpPost<RoleDto>("/api/userManagement/roles/editrole", role);
+            return ExecuteHttpPost<RoleDto>(_configuration.DataServiceUrl + "/api/userManagement/roles/editrole", role);
+        }
+
+        public void DeleteRole(int roleId)
+        {
+            ExecuteHttpDelete(_configuration.DataServiceUrl + "/api/userManagement/roles/deleterole/" + roleId);
         }
 
         public RightDto[] GetRights()
         {
-            return ExecuteHttpGet<RightDto[]>("/api/userManagement/rights");
+            return ExecuteHttpGet<RightDto[]>(_configuration.DataServiceUrl + "/api/userManagement/rights");
         }
 
         public RightDto[] GetRightsByRole(int roleId)
@@ -63,31 +69,9 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             throw new System.NotImplementedException();
         }
 
-        private T ExecuteHttpGet<T>(string api)
+        protected override void HandleError(IRestResponse response)
         {
-            var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.GET);
-            restRequest.RequestFormat = DataFormat.Json;
-            var response = _client.Execute(restRequest, Method.GET);
-            return response.Content.DeserializeFromJson<T>();
-        }
-
-        private T ExecuteHttpPost<T>(string api, object body, byte[] file = null)
-        {
-            var restRequest = new RestRequest(_configuration.DataServiceUrl + api, Method.POST);
-
-            restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddHeader("Accept", "application/json");
-
-            restRequest.AddJsonBody(body);
-
-            if (file != null)
-            {
-                restRequest.AddHeader("Content-Type", "multipart/form-data");
-                restRequest.AddFile("DataFile", file, "DataFile");
-            }
-
-            var response = _client.Execute(restRequest, Method.POST);
-            return response.Content.DeserializeFromJson<T>();
+            throw new System.NotImplementedException();
         }
     }
 }

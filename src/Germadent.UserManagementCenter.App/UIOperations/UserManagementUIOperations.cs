@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
 using Germadent.UserManagementCenter.Model;
@@ -8,12 +10,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 {
     public sealed class UserManagementUIOperations : IUserManagementUIOperations
     {
+        private readonly IUmcServiceClient _umcServiceClient;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IAddUserViewModel _addUserViewModel;
         private readonly IAddRoleViewModel _addRoleViewModel;
 
-        public UserManagementUIOperations(IShowDialogAgent dialogAgent, IAddUserViewModel addUserViewModel, IAddRoleViewModel addRoleViewModel)
+        public UserManagementUIOperations(IUmcServiceClient umcServiceClient, IShowDialogAgent dialogAgent, IAddUserViewModel addUserViewModel, IAddRoleViewModel addRoleViewModel)
         {
+            _umcServiceClient = umcServiceClient;
             _dialogAgent = dialogAgent;
             _addUserViewModel = addUserViewModel;
             _addRoleViewModel = addRoleViewModel;
@@ -53,6 +57,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
                 return null;
 
             return _addRoleViewModel.GetRole();
+        }
+
+        public void DeleteRole(RoleViewModel role)
+        {
+            if(_dialogAgent.ShowMessageDialog(string.Format("Вы действительно хотите удалить роль '{0}'", role.Name), MessageBoxButton.YesNo, MessageBoxImage.Question)== MessageBoxResult.No)
+                return;
+
+            _umcServiceClient.DeleteRole(role.RoleId);
         }
     }
 }

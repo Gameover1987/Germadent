@@ -115,6 +115,11 @@ namespace Germadent.UserManagementCenter.App.Mocks
             throw new System.NotImplementedException();
         }
 
+        public void DeleteRole(int roleId)
+        {
+            throw new System.NotImplementedException();
+        }
+
 
         public RightDto[] GetRights()
         {

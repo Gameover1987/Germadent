@@ -11,7 +11,10 @@ namespace Germadent.UserManagementCenter.Model.Rights
         [Description("Запуск приложения")]
         public const string RunApplication = "Germadent.Rma.RunApplication";
 
-        [Description("Редактирование данных заказнаряда")]
+        [Description("Редактирование заказ-наряда")]
         public const string EditOrders = "Germadent.Rma.EditOrders";
+
+        [Description("Просмотр всех заказ-нарядов, а не только назначенных")]
+        public const string ViewAllOrders = "Germadent.Rma.EditOrders";
     }
 }

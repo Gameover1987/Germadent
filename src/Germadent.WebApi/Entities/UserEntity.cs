@@ -14,17 +14,19 @@ namespace Germadent.WebApi.Entities
         public string Password { get; set; }
 
         public string Description { get; set; }
-
-        public RoleEntity[] Roles { get; set; }
     }
 
-    public class RoleEntity
+    public class RoleAndRightEntity
     {
         public int RoleId { get; set; }
 
-        public string Name { get; set; }
+        public string RoleName { get; set; }
 
-        public RightEntity[] Rights { get; set; }
+        public int RightId { get; set; }
+
+        public string RightName { get; set; }
+
+        public string ApplicationName { get; set; }
     }
 
     public class RightEntity
@@ -40,5 +42,10 @@ namespace Germadent.WebApi.Entities
         /// Название подсистемы
         /// </summary>
         public string ApplicationName { get; set; }
+
+        /// <summary>
+        /// Описание подсистемы
+        /// </summary>
+        public string ApplicationDescription { get; set; }
     }
 }

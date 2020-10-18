@@ -53,6 +53,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         RoleDto EditRole(RoleDto role);
 
         /// <summary>
+        /// Удаление роли
+        /// </summary>
+        /// <param name="roleId"></param>
+        void DeleteRole(int roleId);
+
+        /// <summary>
         /// Возвращает список всех прав
         /// </summary>
         /// <returns></returns>

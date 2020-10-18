@@ -35,5 +35,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
             _umcDbOperations.UpdateRole(roleDto);
             return roleDto;
         }
+
+        [HttpDelete("{roleId:int}")]
+
+        public IActionResult DeleteRole(int roleId)
+        {
+            _umcDbOperations.DeleteRole(roleId);
+            return Ok();
+        }
     }
 }

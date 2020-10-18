@@ -37,5 +37,10 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteRole(RoleViewModel role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

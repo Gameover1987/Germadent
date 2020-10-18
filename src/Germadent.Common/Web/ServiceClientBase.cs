@@ -36,6 +36,23 @@ namespace Germadent.Common.Web
             return response.Content.DeserializeFromJson<T>();
         }
 
+        protected T ExecuteHttpDelete<T>(string api)
+        {
+            var restRequest = new RestRequest(api, Method.DELETE);
+            restRequest.RequestFormat = DataFormat.Json;
+            var response = _client.Execute(restRequest, Method.DELETE);
+            ThrowIfError(response);
+            return response.Content.DeserializeFromJson<T>();
+        }
+
+        protected void ExecuteHttpDelete(string api)
+        {
+            var restRequest = new RestRequest(api, Method.DELETE);
+            restRequest.RequestFormat = DataFormat.Json;
+            var response = _client.Execute(restRequest, Method.DELETE);
+            ThrowIfError(response);
+        }
+
         protected void ExecuteFileUpload(string api, string filePath)
         {
             var restRequest = new RestRequest(api, Method.POST);
@@ -58,15 +75,6 @@ namespace Germadent.Common.Web
             var respMessage = responseParent.Content.ReadAsByteArrayAsync().Result;
 
             return respMessage;
-        }
-
-        protected T ExecuteHttpDelete<T>(string api)
-        {
-            var restRequest = new RestRequest(api, Method.DELETE);
-            restRequest.RequestFormat = DataFormat.Json;
-            var response = _client.Execute(restRequest, Method.DELETE);
-            ThrowIfError(response);
-            return response.Content.DeserializeFromJson<T>();
         }
 
         private void ThrowIfError(IRestResponse response)
