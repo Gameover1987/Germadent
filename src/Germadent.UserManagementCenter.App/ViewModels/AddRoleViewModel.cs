@@ -32,6 +32,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public string Title { get; private set; }
 
+        public ViewMode ViewMode { get; private set; }
+
         public string RoleName
         {
             get { return _roleName; }
@@ -50,9 +52,18 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public IDelegateCommand OkCommand { get; }
 
-        public void Initialize(RoleDto role, string title)
+        public void Initialize(RoleDto role, ViewMode viewMode)
         {
-            Title = title;
+            ViewMode = viewMode;
+            if (ViewMode == ViewMode.Add)
+            {
+                Title = "Добавление роли";
+            }
+            else
+            {
+                Title = "Редактирование данных роли";
+            }
+
             _roleName = role.Name;
             _roleId = role.RoleId;
 

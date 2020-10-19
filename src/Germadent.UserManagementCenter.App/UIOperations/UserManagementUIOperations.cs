@@ -25,7 +25,7 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public UserDto AddUser()
         {
-            _addUserViewModel.Initialize(new UserDto(), "Добавление нового пользователя");
+            _addUserViewModel.Initialize(new UserDto(), ViewMode.Add);
             if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == false)
                 return null;
 
@@ -34,7 +34,7 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public UserDto EditUser(UserDto user)
         {
-            _addUserViewModel.Initialize(user, "Редактирование пользователя");
+            _addUserViewModel.Initialize(user, ViewMode.Edit);
             if (_dialogAgent.ShowDialog<AddUserWindow>(_addUserViewModel) == false)
                 return null;
 
@@ -43,7 +43,7 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public RoleDto AddRole()
         {
-            _addRoleViewModel.Initialize(new RoleDto(), "Добавление новой роли");
+            _addRoleViewModel.Initialize(new RoleDto(), ViewMode.Add);
             if (_dialogAgent.ShowDialog<AddRoleWindow>(_addRoleViewModel) == false)
                 return null;
 
@@ -52,7 +52,7 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public RoleDto EditRole(RoleViewModel role)
         {
-            _addRoleViewModel.Initialize(role.ToModel(), "Редактирование роли");
+            _addRoleViewModel.Initialize(role.ToModel(), ViewMode.Edit);
             if (_dialogAgent.ShowDialog<AddRoleWindow>(_addRoleViewModel) == false)
                 return null;
 

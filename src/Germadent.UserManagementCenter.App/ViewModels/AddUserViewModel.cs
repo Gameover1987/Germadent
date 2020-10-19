@@ -9,6 +9,11 @@ using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
+    public enum ViewMode
+    {
+        Add, Edit
+    }
+
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
         private readonly IUmcServiceClient _umcServiceClient;
@@ -38,6 +43,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         }
 
         public string Title { get; private set; }
+
+        public ViewMode ViewMode { get; private set; }
 
         public string FullName
         {
@@ -108,9 +115,17 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             get { return Roles.Any(x => x.IsChecked); }
         }
 
-        public void Initialize(UserDto user, string title)
+        public void Initialize(UserDto user, ViewMode viewMode)
         {
-            Title = title;
+            ViewMode = viewMode;
+            if (ViewMode == ViewMode.Add)
+            {
+                Title = "Добавление пользователя";
+            }
+            else
+            {
+                Title = "Редактирование данных пользователя";
+            }
 
             _userId = user.UserId;
             _fullName = user.FullName;
