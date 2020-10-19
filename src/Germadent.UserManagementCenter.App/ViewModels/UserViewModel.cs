@@ -28,7 +28,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 if (_user.Roles == null)
                     return null;
 
-                return string.Join(", ", _user.Roles.Select(x => x.Name).ToArray());
+                return string.Join(", ", _user.Roles.Select(x => x.RoleName).ToArray());
             }
         }
 

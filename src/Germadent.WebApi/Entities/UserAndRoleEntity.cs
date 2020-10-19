@@ -3,17 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Germadent.WebApi.Entities
 {
-    public class UserEntity
+    public class UserAndRoleEntity
     {
         public int UserId { get; set; }
-
-        public string FullName { get; set; }
 
         public string Login { get; set; }
 
         public string Password { get; set; }
 
         public string Description { get; set; }
+
+        public int RoleId { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class RoleAndRightEntity

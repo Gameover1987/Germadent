@@ -64,7 +64,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 Title = "Редактирование данных роли";
             }
 
-            _roleName = role.Name;
+            _roleName = role.RoleName;
             _roleId = role.RoleId;
 
             foreach (var rightViewModel in Rights)
@@ -97,7 +97,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             return new RoleDto
             {
                 RoleId = _roleId,
-                Name = RoleName,
+                RoleName = RoleName,
                 Rights = Rights.Where(x => x.IsChecked).Select(x => x.ToDto()).ToArray()
             };
         }

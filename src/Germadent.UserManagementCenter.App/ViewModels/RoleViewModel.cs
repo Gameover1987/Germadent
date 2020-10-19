@@ -30,7 +30,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public int RoleId => _role.RoleId;
 
-        public string Name => _role.Name;
+        public string Name => _role.RoleName;
 
 
         public event EventHandler<EventArgs> Checked;

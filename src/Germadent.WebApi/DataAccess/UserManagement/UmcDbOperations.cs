@@ -34,13 +34,47 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 var cmdText = "select * from umc_GetUsersRolesAndEmployees()";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
+                    var userAndRolesEntities = new List<UserAndRoleEntity>();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            
+                            var entity = new UserAndRoleEntity();
+                            entity.UserId = reader[nameof(entity.UserId)].ToInt();
+                            entity.Login = reader[nameof(entity.Login)].ToString();
+                            entity.Description = reader[nameof(entity.Description)].ToString();
+                            entity.Password = reader[nameof(entity.Password)].ToString();
+                            entity.RoleName = reader[nameof(entity.RoleName)].ToString();
+                            entity.RoleId = reader[nameof(entity.RoleId)].ToInt();
+
+                            userAndRolesEntities.Add(entity);
                         }
                     }
+
+                    var usersWithRoles = new List<UserDto>();
+                    var groupings = userAndRolesEntities.GroupBy(x => x.UserId);
+                    foreach (var grouping in groupings)
+                    {
+                        var userDto = new UserDto();
+                        userDto.UserId = grouping.First().RoleId;
+                        userDto.Description = grouping.First().Description;
+                        userDto.Login = grouping.First().Login;
+                        userDto.Password = grouping.First().Password;
+                        var roles = new List<RoleDto>();
+                        foreach (var userAndRoleEntity in grouping)
+                        {
+                            roles.Add(new RoleDto
+                            {
+                                RoleId = userAndRoleEntity.RoleId,
+                                RoleName = userAndRoleEntity.RoleName
+                            });
+                        }
+
+                        userDto.Roles = roles.ToArray();
+                        usersWithRoles.Add(userDto);
+                    }
+
+                    return usersWithRoles.ToArray();
                 }
             }
         }
@@ -52,12 +86,53 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto AddUser(UserDto userDto)
         {
-            return null;
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("umc_AddUser", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@login ", SqlDbType.NVarChar)).Value = userDto.Login;
+                    command.Parameters.Add(new SqlParameter("@password ", SqlDbType.NVarChar)).Value = userDto.Password;
+                    command.Parameters.Add(new SqlParameter("@description ", SqlDbType.NVarChar)).Value = userDto.Description;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    userDto.UserId = command.Parameters["@userId"].Value.ToInt();
+
+                    if (userDto.Roles.Any())
+                    {
+                        UpdateUserImpl(userDto, connection);
+                    }
+                }
+
+                return userDto;
+            }
+        }
+
+        private void UpdateUserImpl(UserDto userDto, SqlConnection connection)
+        {
+            var rightsJson = userDto.Roles
+                .Select(x => new { userDto.UserId, x.RoleId })
+                .ToArray()
+                .SerializeToJson(formatting: Formatting.Indented);
+
+            using (var command = new SqlCommand("umc_UpdateUser", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@userId ", SqlDbType.NVarChar)).Value = userDto.UserId;
+                command.Parameters.Add(new SqlParameter("@login ", SqlDbType.NVarChar)).Value = userDto.Login;
+                command.Parameters.Add(new SqlParameter("@password ", SqlDbType.NVarChar)).Value = userDto.Password;
+                command.Parameters.Add(new SqlParameter("@jsonString ", SqlDbType.VarChar)).Value = rightsJson;
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public void UpdateUser(UserDto userDto)
         {
-
+           
         }
 
         public RoleDto[] GetRoles()
@@ -91,7 +166,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     {
                         var roleDto = new RoleDto();
                         roleDto.RoleId = grouping.First().RoleId;
-                        roleDto.Name = grouping.First().RoleName;
+                        roleDto.RoleName = grouping.First().RoleName;
                         var rights = new List<RightDto>();
                         foreach (var roleAndRightEntity in grouping)
                         {
@@ -120,7 +195,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 using (var command = new SqlCommand("umc_AddRole", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@roleName ", SqlDbType.NVarChar)).Value = roleDto.Name;
+                    command.Parameters.Add(new SqlParameter("@roleName ", SqlDbType.NVarChar)).Value = roleDto.RoleName;
                     command.Parameters.Add(new SqlParameter("@roleID", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                     command.ExecuteNonQuery();
@@ -148,7 +223,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@roleID ", SqlDbType.NVarChar)).Value = roleDto.RoleId;
-                command.Parameters.Add(new SqlParameter("@roleName ", SqlDbType.NVarChar)).Value = roleDto.Name;
+                command.Parameters.Add(new SqlParameter("@roleName ", SqlDbType.NVarChar)).Value = roleDto.RoleName;
                 command.Parameters.Add(new SqlParameter("@jsonString ", SqlDbType.VarChar)).Value = rightsJson;
 
                 command.ExecuteNonQuery();
