@@ -27,7 +27,22 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto[] GetUsers()
         {
-            return new UserDto[0];
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "select * from umc_GetUsersRolesAndEmployees()";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            
+                        }
+                    }
+                }
+            }
         }
 
         public UserDto GetUserById(int id)
