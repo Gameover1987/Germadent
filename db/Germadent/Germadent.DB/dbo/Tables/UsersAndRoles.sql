@@ -2,7 +2,9 @@
     [UserID] INT NOT NULL,
     [RoleID] INT NOT NULL,
     CONSTRAINT [FK_UsersAndRoles_Roles] FOREIGN KEY ([RoleID]) REFERENCES [dbo].[Roles] ([RoleID]) ON DELETE CASCADE,
-    CONSTRAINT [FK_UsersAndRoles_Users] FOREIGN KEY ([UserID]) REFERENCES [dbo].[Users] ([UserID]),
+    CONSTRAINT [FK_UsersAndRoles_Users] FOREIGN KEY ([UserID]) REFERENCES [dbo].[Users] ([UserID]) ON DELETE CASCADE,
     CONSTRAINT [IX_UsersAndRoles] UNIQUE NONCLUSTERED ([UserID] ASC, [RoleID] ASC)
 );
+
+
 

@@ -3,7 +3,7 @@
 -- Create date: 18.10.2020
 -- Description:	Добавление роли
 -- =============================================
-CREATE PROCEDURE umc_AddRole 
+CREATE PROCEDURE [dbo].[umc_AddRole] 
 	
 	@roleName nvarchar(max),
 	@roleId int output
@@ -19,7 +19,7 @@ BEGIN
 		SELECT @max_Id = ISNULL(MAX(RoleID), 0)
 		FROM Roles
 
-		EXEC IdentifierAlignment Customers, @max_Id
+		EXEC IdentifierAlignment Roles, @max_Id
 	
 		REVERT
 	END
