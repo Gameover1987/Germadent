@@ -57,6 +57,8 @@
 
 
 
+
+
 GO
 
 
@@ -120,3 +122,12 @@ BEGIN
        END
 
 END
+GO
+CREATE NONCLUSTERED INDEX [IX_WorkOrder_ResponsiblePersonID]
+    ON [dbo].[WorkOrder]([ResponsiblePersonID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_WorkOrder_CustomerID]
+    ON [dbo].[WorkOrder]([CustomerID] ASC);
+

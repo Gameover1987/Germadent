@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ProductSet] (
+CREATE TABLE [dbo].[ProductSet] (
     [PricePositionID] INT NOT NULL,
     [ProductID]       INT NOT NULL,
     CONSTRAINT [FK_ProductSet_PricePositions] FOREIGN KEY ([PricePositionID]) REFERENCES [dbo].[PricePositions] ([PricePositionID]),
@@ -12,12 +12,13 @@
 
 
 
-GO
-CREATE NONCLUSTERED INDEX [IX_ProductSet_ProductID]
-    ON [dbo].[ProductSet]([ProductID] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_ProductSet_PricePositionID]
-    ON [dbo].[ProductSet]([PricePositionID] ASC);
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_ProductSet]
+    ON [dbo].[ProductSet]([PricePositionID] ASC, [ProductID] ASC);
 
