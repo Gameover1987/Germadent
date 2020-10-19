@@ -58,7 +58,19 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_ToothCard_PricePositionID]
     ON [dbo].[ToothCard]([PricePositionID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ToothCard_ProdictID]
+    ON [dbo].[ToothCard]([ProstheticsID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ToothCard_MaterialID]
+    ON [dbo].[ToothCard]([MaterialID] ASC);
 

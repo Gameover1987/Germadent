@@ -14,3 +14,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_PricesDL_PricePositionID]
+    ON [dbo].[PricesDL]([PricePositionID] ASC);
+
