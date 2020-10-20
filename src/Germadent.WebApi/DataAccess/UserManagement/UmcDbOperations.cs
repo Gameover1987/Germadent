@@ -31,7 +31,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             {
                 connection.Open();
 
-                var cmdText = "select * from umc_GetUsersRolesAndEmployees()";
+                var cmdText = "select * from umc_GetUsersAndRoles()";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var userAndRolesEntities = new List<UserAndRoleEntity>();
@@ -42,8 +42,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             var entity = new UserAndRoleEntity();
                             entity.UserId = reader[nameof(entity.UserId)].ToInt();
                             entity.FirstName = reader[nameof(entity.FirstName)].ToString();
-                            entity.Surname = reader[nameof(entity.FirstName)].ToString();
-                            entity.Patronymic = reader[nameof(entity.FirstName)].ToString();
+                            entity.Surname = reader["FamilyName"].ToString();
+                            entity.Patronymic = reader[nameof(entity.Patronymic)].ToString();
                             entity.Phone = reader[nameof(entity.Phone)].ToString();
                             entity.Login = reader[nameof(entity.Login)].ToString();
                             entity.Description = reader[nameof(entity.Description)].ToString();
@@ -60,7 +60,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     foreach (var grouping in groupings)
                     {
                         var userDto = new UserDto();
-                        userDto.UserId = grouping.First().RoleId;
+                        userDto.UserId = grouping.First().UserId;
                         userDto.Description = grouping.First().Description;
                         userDto.FirstName = grouping.First().FirstName;
                         userDto.Surname = grouping.First().Surname;
@@ -149,9 +149,15 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
-        public void UpdateUser(UserDto userDto)
+        public UserDto UpdateUser(UserDto userDto)
         {
-           
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                UpdateUserImpl(userDto, connection);
+
+                return userDto;
+            }
         }
 
         public RoleDto[] GetRoles()

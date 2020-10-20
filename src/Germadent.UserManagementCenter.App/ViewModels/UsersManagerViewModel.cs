@@ -76,12 +76,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditUserCommandHandler()
         {
-            var userFromDb = _umcServiceClient.GetUserById(SelectedUser.Id);
-            var user = _windowManager.EditUser(userFromDb);
+            var user = _windowManager.EditUser(SelectedUser.ToDto());
             if (user == null)
                 return;
 
-            _umcServiceClient.EditUser(user);
+            user = _umcServiceClient.EditUser(user);
             SelectedUser.Update(user);
         }
 

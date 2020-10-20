@@ -14,6 +14,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Admin",
                     FirstName = "Админ Админыч",
+                    Phone = "+5-222-333-4449",
                     Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
@@ -21,6 +22,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Dmitriy",
                     FirstName = "Дмитрий",
+                    Phone = "+5-222-333-4449",
                     Description = "Руководитель",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
@@ -28,6 +30,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Vyacheslav",
                     FirstName = "Некрасов Вячеслав",
+                    Phone = "+5-222-333-4449",
                     Description = "Программист 1",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
@@ -42,6 +45,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Vasya",
                     FirstName = "Василий Алибабаевич",
+                    Phone = "+5-222-333-4449",
                     Description = "Какой то Вася ))",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
@@ -49,6 +53,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Admin",
                     FirstName = "Админ Админыч",
+                    Phone = "+5-222-333-4449",
                     Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
@@ -56,6 +61,7 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 {
                     Login = "Dmitriy",
                     FirstName = "Дмитрий",
+                    Phone = "+5-222-333-4449",
                     Description = "Руководитель",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },

@@ -29,7 +29,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         /// Обновляет данные пользователя
         /// </summary>
         /// <param name="userDto"></param>
-        void UpdateUser(UserDto userDto);
+        UserDto UpdateUser(UserDto userDto);
 
         /// <summary>
         /// Вовзвращает список ролей
