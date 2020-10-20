@@ -1,5 +1,6 @@
 ﻿using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.DataAccess.UserManagement
 {
@@ -67,5 +68,13 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         /// </summary>
         /// <returns></returns>
         RightDto[] GetRights();
+
+        /// <summary>
+        /// Авторизация
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        AuthorizationInfoDto Authorize(string login, string password);
     }
 }

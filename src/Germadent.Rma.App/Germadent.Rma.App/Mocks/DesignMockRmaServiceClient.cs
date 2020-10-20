@@ -4,6 +4,8 @@ using System.Linq;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.Mocks
 {
@@ -83,6 +85,16 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
+
+        public RightDto[] GetRights(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public event EventHandler<UserAuthorizedEventArgs> Authorized;
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {

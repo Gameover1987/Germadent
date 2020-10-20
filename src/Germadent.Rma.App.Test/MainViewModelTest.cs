@@ -9,6 +9,7 @@ using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -38,7 +39,8 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IPriceListEditorViewModel>(),
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
-                Mock.Of<IReporter>());
+                Mock.Of<IReporter>(),
+                Mock.Of<IUserManager>());
 
             ThreadTaskExtensions.IsSyncRun = true;
 

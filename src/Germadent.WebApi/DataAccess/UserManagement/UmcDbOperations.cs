@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -320,6 +321,64 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     }
 
                     return rights.ToArray();
+                }
+            }
+        }
+
+        public AuthorizationInfoDto Authorize(string login, string password)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = string.Format("select * from umc_Authorization('{0}', '{1}')", login, password);
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var authorizationInfo = new AuthorizationInfoDto();
+                    var authorizartionEntities = new List<AuthorizationInfoEntity>();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var entity = new AuthorizationInfoEntity();
+                            entity.Login = reader["Login"].ToString();
+                            entity.UserId = reader["UserId"].ToInt();
+                            entity.IsLocked = reader["IsLocked"].ToBool();
+
+                            var firstName = reader["FirstName"].ToString();
+                            var familyName = reader["FamilyName"].ToString();
+                            var patronymic = reader["Patronymic"].ToString();
+
+                            entity.FullName = string.Format("{0} {1} {2}", familyName, firstName, patronymic);
+                            entity.RightId = reader["rightId"].ToInt();
+                            entity.RightName = reader["RightName"].ToString();
+                            entity.ApplicationName = reader["ApplicationName"].ToString();
+
+                            authorizartionEntities.Add(entity);
+                        }
+                    }
+
+                    var groupings = authorizartionEntities.GroupBy(x => x.UserId).ToArray();
+
+                    authorizationInfo.UserId = groupings.First().First().UserId;
+                    authorizationInfo.FullName = groupings.First().First().FullName;
+                    authorizationInfo.Login = groupings.First().First().Login;
+                    authorizationInfo.IsLocked = groupings.First().First().IsLocked;
+
+                    var rights = new List<RightDto>();
+                    foreach (var authorizationInfoEntity in groupings.First())
+                    {
+                        rights.Add(new RightDto
+                        {
+                            RightId = authorizationInfoEntity.RightId,
+                            ApplicationName = authorizationInfoEntity.ApplicationName,
+                            RightName = authorizationInfoEntity.RightName
+                        });
+                    }
+
+                    authorizationInfo.Rights = rights.ToArray();
+
+                    return authorizationInfo;
                 }
             }
         }

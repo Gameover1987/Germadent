@@ -18,6 +18,7 @@ using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.Model;
 using Unity;
 using Unity.Lifetime;
 
@@ -36,6 +37,11 @@ namespace Germadent.Rma.App.Infrastructure
         public ISplashScreenViewModel GetSplashScreenViewModel()
         {
             return _container.Resolve<ISplashScreenViewModel>();
+        }
+
+        public IAuthorizationViewModel GetAuthorizationViewModel()
+        {
+            return _container.Resolve<IAuthorizationViewModel>();
         }
 
         public IMainViewModel GetMainViewModel()
@@ -64,6 +70,8 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
             _container.RegisterType<IAppInitializer, AppInitializer>();
             _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();
+            _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
+            _container.RegisterType<IUserManager, RmaUserManager>();
 
             if (_configuration.WorkMode == WorkMode.Server)
             {

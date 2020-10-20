@@ -5,6 +5,8 @@ using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -20,10 +22,15 @@ namespace Germadent.Rma.App.ServiceClient
             _fileManager = fileManager;
         }
 
-        public void Authorize(string user, string password)
+        public void Authorize(string login, string password)
         {
+            var info = ExecuteHttpGet<AuthorizationInfoDto>(
+                _configuration.DataServiceUrl + string.Format("/api/userManagement/authorization/authorize/{0}/{1}", login, password));
 
+            AuthorizationInfo = info;
         }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; private set; }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
