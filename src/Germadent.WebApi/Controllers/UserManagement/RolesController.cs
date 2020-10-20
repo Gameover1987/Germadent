@@ -1,4 +1,6 @@
-﻿using Germadent.UserManagementCenter.Model;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.UserManagementCenter.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace Germadent.WebApi.Controllers.UserManagement
     public class RolesController : ControllerBase
     {
         private readonly IUmcDbOperations _umcDbOperations;
+        private readonly ILogger _logger;
 
-        public RolesController(IUmcDbOperations umcDbOperations)
+        public RolesController(IUmcDbOperations umcDbOperations, ILogger logger)
         {
             _umcDbOperations = umcDbOperations;
+            _logger = logger;
         }
 
 
@@ -40,8 +44,17 @@ namespace Germadent.WebApi.Controllers.UserManagement
 
         public IActionResult DeleteRole(int roleId)
         {
-            _umcDbOperations.DeleteRole(roleId);
-            return Ok();
+            try
+            {
+                _logger.Info(nameof(DeleteRole));
+                _umcDbOperations.DeleteRole(roleId);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }

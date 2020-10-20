@@ -76,7 +76,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         protected override void HandleError(IRestResponse response)
         {
-            throw new System.NotImplementedException();
+            throw new ServerSideException(response);
         }
     }
 }
