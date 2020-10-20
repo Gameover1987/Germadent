@@ -10,7 +10,7 @@ CREATE PROCEDURE [dbo].[umc_UpdateUser]
 	, @firstName nvarchar(MAX)
 	, @patronymic nvarchar(MAX)
 	, @phone nvarchar(MAX)
-	, @login nvarchar(MAX)
+	, @login nvarchar(100)
 	, @password nvarchar(MAX)
 	, @isLocked bit
 	, @description nvarchar(MAX)
@@ -47,3 +47,8 @@ BEGIN
 	WITH(UserId int, RoleId int)
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[umc_UpdateUser] TO [gdl_user]
+    AS [dbo];
+

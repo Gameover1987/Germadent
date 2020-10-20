@@ -9,7 +9,7 @@ CREATE PROCEDURE [dbo].[umc_AddUser]
 	@firstName nvarchar(MAX),
 	@patronymic nvarchar(MAX) = NULL,
 	@phone nvarchar(MAX) = NULL,
-	@login nvarchar(MAX),
+	@login nvarchar(100),
 	@password nvarchar(MAX),
 	@isLocked bit = NULL,
 	@description nvarchar(MAX) = NULL,
@@ -40,3 +40,8 @@ BEGIN
 	SET @userId = SCOPE_IDENTITY()
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[umc_AddUser] TO [gdl_user]
+    AS [dbo];
+

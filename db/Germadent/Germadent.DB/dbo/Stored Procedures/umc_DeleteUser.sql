@@ -5,8 +5,8 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[umc_DeleteUser] 
 	
-	@userId int,
-	@deletedRows int output
+	@userId int
+--	@deletedRows int output
 
 AS
 BEGIN
@@ -15,7 +15,12 @@ BEGIN
 
 	DELETE
 	FROM Users
-	WHERE UserID = userId
+	WHERE UserID = @userId
     
-	SET @deletedRows = @@rowcount
+--	SET @deletedRows = @@rowcount
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[umc_DeleteUser] TO [gdl_user]
+    AS [dbo];
+
