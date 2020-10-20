@@ -80,10 +80,22 @@
         <Separator Grid.Row="3" Margin="-12,6,-12,12"/>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Добавить" IsDefault="True"
+            <Button IsDefault="True" Width="100"
                     helpers:WindowCloseHelper.DialogResult="True"
-                    Command="{Binding OkCommand}"/>
-            <Button Content="Отмена" Margin="6,0,0,0" IsCancel="True"/>
+                    Command="{Binding OkCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Content" Value="Сохранить"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewMode}" Value="{x:Static viewModels:ViewMode.Add}">
+                                <Setter Property="Content" Value="Добавить"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Отмена" Margin="6,0,0,0" Width="100"
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>

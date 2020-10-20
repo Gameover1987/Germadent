@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
@@ -10,18 +9,18 @@ using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class MainViewModelTest
     {
         /// <summary>
         /// Должен проинициализировать вьюмодель главного окна
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldInitialize()
         {
             // Given

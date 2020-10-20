@@ -1,7 +1,7 @@
 ﻿using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 
-namespace Germadent.WebApi.DataAccess
+namespace Germadent.WebApi.DataAccess.UserManagement
 {
     public interface IUmcDbOperations
     {
@@ -48,7 +48,13 @@ namespace Germadent.WebApi.DataAccess
         /// Обновляет роль
         /// </summary>
         /// <param name="roleDto"></param>
-        void UpdateRole(RoleDto roleDto);
+        RoleDto UpdateRole(RoleDto roleDto);
+
+        /// <summary>
+        /// Удаляет роль
+        /// </summary>
+        /// <param name="roleId"></param>
+        void DeleteRole(int roleId);
 
         /// <summary>
         /// Возвращает список прав

@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		 Алексей Колосенок
 -- Create date:  29.06.2020
--- Editing date: 09.10.2020
--- Description:	 Возвращает цену изготовления для вставки в зубную карту для зуба
+-- Editing date: 10.10.2020
+-- Description:	 Возвращает актуальную цену изготовления для вставки в зубную карту для зуба
 -- =============================================
-CREATE FUNCTION [dbo].[GetPricesForTooth]
+CREATE FUNCTION [dbo].[GetActualPriceForTooth]
 (	
 	@branchTypeId int, 
 	@pricePositionId int,

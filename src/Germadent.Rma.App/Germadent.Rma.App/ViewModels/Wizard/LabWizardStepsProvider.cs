@@ -58,7 +58,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository),
-                new LaboratoryProjectWizardStepViewModel(_filesContainer, _dictionaryRepository),
                 new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, new ClipboardHelper()), _priceListViewModel), 
             };
         }

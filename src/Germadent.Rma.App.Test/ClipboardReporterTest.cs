@@ -1,10 +1,8 @@
 ﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
-using System;
 
 namespace Germadent.Rma.App.Test
 {
@@ -15,10 +13,10 @@ namespace Germadent.Rma.App.Test
         public string ExpectedData { get; set; }
     }
 
-    [TestFixture]
+    [TestClass]
     public class ClipboardReporterTest
     {
-        [TestCaseSource(nameof(GetTestData))]
+        [DataSource(nameof(GetTestData))]
         public void ShouldCopyReportdataToClipboard(ReporterTestData testData)
         {
             // Given

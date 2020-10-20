@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Germadent.TestUtils\Germadent.TestUtils.csproj" />
     <ProjectReference Include="..\Germadent.UserManagementCenter.App\Germadent.UserManagementCenter.App.csproj" />
   </ItemGroup>  

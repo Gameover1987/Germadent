@@ -6,7 +6,7 @@ namespace Germadent.UserManagementCenter.Model
     {
         public int RoleId { get; set; }
 
-        public string Name { get; set; }
+        public string RoleName { get; set; }
 
         public RightDto[] Rights { get; set; }
     }

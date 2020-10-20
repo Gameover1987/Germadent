@@ -1,12 +1,13 @@
 ﻿using Germadent.TestUtils;
 using Germadent.UserManagementCenter.App.ViewModels;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.UserManagementCenter.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class AddUserViewModelTest : AutoMockerTestsBase<AddUserViewModel>
     {
+        [TestMethod]
         public void ShouldInitilize()
         {
 

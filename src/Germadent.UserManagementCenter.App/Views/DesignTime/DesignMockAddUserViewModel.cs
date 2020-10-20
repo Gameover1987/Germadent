@@ -10,9 +10,11 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         public DesignMockAddUserViewModel() 
             : base(new DesignMockUserManagementCenterOperations())
         {
-            Initialize(new UserDto(), "Добавление нового пользователя");
+            Initialize(new UserDto(), ViewMode.Add);
 
-            FullName = "Василий Алибабаевич, Вася";
+            FirstName = "Еблантий";
+            Surname = "Конопаптов";
+            Patronymic = "Васисуалиевич";
             Login = "Vasya";
             Password = "123";
             PasswordOnceAgain = "123";

@@ -3,6 +3,7 @@ using Germadent.Common.Logging;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Germadent.WebApi.DataAccess.UserManagement;
 using Germadent.WebApi.Entities.Conversion;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

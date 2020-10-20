@@ -7,10 +7,12 @@
     [Started]               DATETIME NULL,
     [Ended]                 DATETIME NULL,
     [IsChecked]             BIT      NULL,
-    CONSTRAINT [FK_Works_Employee] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Employee] ([EmployeeID]),
     CONSTRAINT [FK_Works_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID]),
+    CONSTRAINT [FK_Works_Users] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Users] ([UserID]),
     CONSTRAINT [FK_Works_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
 );
+
+
 
 
 

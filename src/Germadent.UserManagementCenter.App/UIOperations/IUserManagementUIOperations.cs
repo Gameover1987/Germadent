@@ -12,5 +12,7 @@ namespace Germadent.UserManagementCenter.App.UIOperations
         RoleDto AddRole();
 
         RoleDto EditRole(RoleViewModel role);
+
+        void DeleteRole(RoleViewModel role);
     }
 }
