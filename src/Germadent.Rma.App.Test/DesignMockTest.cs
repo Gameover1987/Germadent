@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.Rma.App.Views.DesignMock;
-using NUnit.Framework;
+﻿using Germadent.Rma.App.Views.DesignMock;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class DesignMockTest
     {
-        [Test]
+        [TestMethod]
         public void ShouldCreateAllDesignMockViewModels()
         {
             var designMockMainViewModel = new DesignMockMainViewModel();

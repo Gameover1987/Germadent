@@ -148,22 +148,27 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 new RoleDto
                 {
                     RoleName = "Admin",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
                     RoleName = "Руководитель",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
                     RoleName = "Администратор",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
                     RoleName = "Оператор",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
                     RoleName = "Техник",
+                    Rights = new RightDto[0]
                 },
             };
 

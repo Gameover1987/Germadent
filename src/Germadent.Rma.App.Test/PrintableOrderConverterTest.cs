@@ -1,14 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
     /// <summary>
     /// Проверка конвертации заказ наряд в объект с данныит для печати
     /// </summary>
-    [TestFixture]
+    [TestClass]
     public class PrintableOrderConverterTest
     {
-        [Test]
+        [TestMethod]
         public void ShouldConvertOrderToPrintableOrder()
         {
             //// Given
