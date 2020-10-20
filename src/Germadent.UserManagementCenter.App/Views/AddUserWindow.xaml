@@ -50,10 +50,10 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Контактные данные" Margin="0,0,0,6" FontSize="10" HorizontalAlignment="Center"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Фамилия" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <TextBox x:Name="fullNameTextBox" Grid.Row="1" Grid.Column="1" Margin="6,0,0,0"
-                         Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Имя" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
-                         Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Отчество" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
                          Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"/>

@@ -1,21 +1,20 @@
 ﻿using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 using Moq;
-using NUnit.Framework;
 using System.Linq;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class ToothCardViewModelTest
     {
         /// <summary>
         /// Должен перерисовать мост когда меняется флаг для соответствующего зуба
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldRaiseRenderRequestEventWhenHasBridgeChanged()
         {
             // Given

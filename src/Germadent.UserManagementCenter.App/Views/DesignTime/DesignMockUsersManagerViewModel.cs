@@ -28,6 +28,11 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             throw new NotImplementedException();
         }
 
+        public bool DeleteUser(UserViewModel user)
+        {
+            throw new NotImplementedException();
+        }
+
         public RoleDto AddRole()
         {
             throw new NotImplementedException();
@@ -38,7 +43,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             throw new NotImplementedException();
         }
 
-        public void DeleteRole(RoleViewModel role)
+        public bool DeleteRole(RoleViewModel role)
         {
             throw new NotImplementedException();
         }

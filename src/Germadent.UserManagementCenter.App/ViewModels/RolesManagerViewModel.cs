@@ -125,7 +125,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void DeleteRoleCommandHandler()
         {
-           _userManagementUIOperations.DeleteRole(SelectedRole);
+           if (_userManagementUIOperations.DeleteRole(SelectedRole) == false)
+               return;
 
            Roles.Remove(SelectedRole);
         }

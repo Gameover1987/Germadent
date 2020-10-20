@@ -41,6 +41,17 @@ namespace Germadent.UserManagementCenter.App.UIOperations
             return _addUserViewModel.GetUser();
         }
 
+        public bool DeleteUser(UserViewModel user)
+        {
+            if (_dialogAgent.ShowMessageDialog(
+                    string.Format("Вы действительно хотите удалить пользователя '{0}'", user.FullName),
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return false;
+
+            _umcServiceClient.DeleteUser(user.Id);
+            return true;
+        }
+
         public RoleDto AddRole()
         {
             _addRoleViewModel.Initialize(new RoleDto(), ViewMode.Add);
@@ -59,12 +70,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
             return _addRoleViewModel.GetRole();
         }
 
-        public void DeleteRole(RoleViewModel role)
+        public bool DeleteRole(RoleViewModel role)
         {
-            if(_dialogAgent.ShowMessageDialog(string.Format("Вы действительно хотите удалить роль '{0}'", role.Name), MessageBoxButton.YesNo, MessageBoxImage.Question)== MessageBoxResult.No)
-                return;
+            if (_dialogAgent.ShowMessageDialog(string.Format("Вы действительно хотите удалить роль '{0}'", role.Name),
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return false;
 
             _umcServiceClient.DeleteRole(role.RoleId);
+            return true;
         }
     }
 }

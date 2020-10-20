@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.Rma.Model;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
+﻿using Germadent.Rma.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class OrderDescriptionBuilderTest
     {
-        [TestCaseSource(nameof(_testCase1))]
+        [DataSource(nameof(_testCase1))]
         public void ShouldGetToothCardDescription(ToothDto[] toothCollection, string expectedDescription)
         {
             // Given

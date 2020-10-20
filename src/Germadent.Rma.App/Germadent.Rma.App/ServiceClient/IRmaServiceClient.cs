@@ -1,9 +1,21 @@
 ﻿using System;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ServiceClient
 {
+    public class UserAuthorizedEventArgs : EventArgs
+    {
+        public UserAuthorizedEventArgs(AuthorizationInfoDto info)
+        {
+            AuthorizationInfo = info;
+        }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
+    }
+
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -15,6 +27,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="user"></param>
         /// <param name="password"></param>
         void Authorize(string user, string password);
+
+        /// <summary>
+        /// Данные авторизации
+        /// </summary>
+        AuthorizationInfoDto AuthorizationInfo { get; }
 
         /// <summary>
         /// Получить список заказнарядов

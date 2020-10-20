@@ -18,7 +18,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             _windowManager = windowManager;
 
             AddUserCommand = new DelegateCommand(x => AddUserCommandHandler(), x => CanAddUserCommandHandler());
-            EditUSerCommand = new DelegateCommand(x => EditUserCommandHandler(), x=> CanEditUserCommandHandler());
+            EditUSerCommand = new DelegateCommand(x => EditUserCommandHandler(), x => CanEditUserCommandHandler());
             DeleteUserCommand = new DelegateCommand(x => DeleteUserCommandHandler(), x => CanDeleteUserCommandHandler());
         }
 
@@ -40,7 +40,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public IDelegateCommand EditUSerCommand { get; }
 
-        public IDelegateCommand DeleteUserCommand { get;}
+        public IDelegateCommand DeleteUserCommand { get; }
 
         public void Initialize()
         {
@@ -76,12 +76,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditUserCommandHandler()
         {
-            var userFromDb = _umcServiceClient.GetUserById(SelectedUser.Id);
-            var user = _windowManager.EditUser(userFromDb);
+            var user = _windowManager.EditUser(SelectedUser.ToDto());
             if (user == null)
                 return;
 
-            _umcServiceClient.EditUser(user);
+            user = _umcServiceClient.EditUser(user);
             SelectedUser.Update(user);
         }
 
@@ -92,7 +91,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void DeleteUserCommandHandler()
         {
+            if (_windowManager.DeleteUser(SelectedUser) == false)
+                return;
 
+            Users.Remove(SelectedUser);
         }
     }
 }

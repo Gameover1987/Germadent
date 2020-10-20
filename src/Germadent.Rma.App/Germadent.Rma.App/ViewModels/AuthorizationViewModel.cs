@@ -8,7 +8,10 @@ using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class AuthorizationViewModel : AuthorizationViewModelBase
+    public interface IAuthorizationViewModel
+    { }
+
+    public class AuthorizationViewModel : AuthorizationViewModelBase, IAuthorizationViewModel
     {
         private readonly IRmaServiceClient _serviceClient;
 

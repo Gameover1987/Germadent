@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.UserManagementCenter.App.Views.DesignTime;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
+﻿using Germadent.UserManagementCenter.App.Views.DesignTime;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.UserManagementCenter.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class DesignMockTest
     {
-        [Test]
+        [TestMethod]
         public void ShouldCreateAllDesignMockViewModels()
         {
             var designMockRolesManagerViewModel = new DesignMockRolesManagerViewModel();

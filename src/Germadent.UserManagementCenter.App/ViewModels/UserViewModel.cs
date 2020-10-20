@@ -17,6 +17,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public string FullName => string.Format("{0} {1} {2}", _user.Surname, _user.FirstName, _user.Patronymic);
 
+        public string Phone => _user.Phone;
+
         public string Login => _user.Login;
 
         public string Description => _user.Description;

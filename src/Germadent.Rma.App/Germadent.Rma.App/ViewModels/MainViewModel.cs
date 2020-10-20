@@ -17,6 +17,8 @@ using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
@@ -47,7 +49,8 @@ namespace Germadent.Rma.App.ViewModels
             IPriceListEditorViewModel priceListEditorViewModel,
             IPrintModule printModule,
             ILogger logger,
-            IReporter reporter)
+            IReporter reporter, 
+            IUserManager userManager)
         {
             _rmaOperations = rmaOperations;
             _orderUIOperations = orderUIOperations;
@@ -74,6 +77,8 @@ namespace Germadent.Rma.App.ViewModels
 
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
+
+            var canViewAll = userManager.HasRight(RmaUserRights.ViewAllOrders);
         }
 
         private bool Filter(object obj)

@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
-using Germadent.Rma.App.ViewModels.ToothCard;
+﻿using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
-using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class ToothViewModelTest
     {
         /// <summary>
@@ -15,8 +15,8 @@ namespace Germadent.Rma.App.Test
         /// <param name="hasBridge"></param>
         /// <param name="material"></param>
         /// <param name="prostheticType"></param>
-        [TestCase(true, "ZrO", "Каркас")]
-        [TestCase(false, "E.MAX", "другая конструкция")]
+        [DataRow(true, "ZrO", "Каркас")]
+        [DataRow(false, "E.MAX", "другая конструкция")]
         public void ShouldInitializeFromDto(bool hasBridge, string material, string prostheticType)
         {
             // Given
@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.Test
             Assert.AreEqual(prostheticType, target.SelectedProstheticsType.DisplayName);
         }
 
-        [TestCase(10, 1, "ZrO", 1, "Каркас", true)]
+        [DataRow(10, 1, "ZrO", 1, "Каркас", true)]
         public void ShouldGetDto(int toothNumber, int materialId, string materialName, int prostheticsId, string prosthtics, bool hasBridge)
         {
             // Given
@@ -62,7 +62,7 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// При выборе должен отмечаться только один материал, и зуб должен становиться отмеченным
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldCheckOnlyOneMaterial()
         {
             // Given
@@ -81,7 +81,7 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// При выборе должен отмечаться только один тип протезирования, и зуб должен становиться отмеченным
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldCheckOnlyOneProstheticsType()
         {
             // Given
@@ -100,10 +100,10 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
-        [TestCase("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
-        [TestCase(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
-        [TestCase(null, null, "ZrO", true, "0 - ZrO/Мост")]
-        [TestCase(null, null, null, true, "0 - Мост")]
+        [DataRow("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
+        [DataRow(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
+        [DataRow(null, null, "ZrO", true, "0 - ZrO/Мост")]
+        [DataRow(null, null, null, true, "0 - Мост")]
         public void ShouldGetCorrectDescription(string prostheticsCondition, string prosthetics, string material, bool hasBridge, string expectedDescription)
         {
             // Given

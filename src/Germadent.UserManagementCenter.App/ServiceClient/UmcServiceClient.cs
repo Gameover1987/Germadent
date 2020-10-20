@@ -39,6 +39,11 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             return ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/edituser", userDto);
         }
 
+        public void DeleteUser(int userId)
+        {
+            ExecuteHttpDelete(_configuration.DataServiceUrl + "/api/userManagement/users/deleteuser/" + userId);
+        }
+
         public RoleDto[] GetRoles()
         {
             return ExecuteHttpGet<RoleDto[]>(_configuration.DataServiceUrl + "/api/userManagement/roles");
@@ -71,7 +76,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         protected override void HandleError(IRestResponse response)
         {
-            throw new System.NotImplementedException();
+            throw new ServerSideException(response);
         }
     }
 }

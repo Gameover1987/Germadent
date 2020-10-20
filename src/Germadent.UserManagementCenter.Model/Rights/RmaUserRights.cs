@@ -15,6 +15,6 @@ namespace Germadent.UserManagementCenter.Model.Rights
         public const string EditOrders = "Germadent.Rma.EditOrders";
 
         [Description("Просмотр всех заказ-нарядов, а не только назначенных")]
-        public const string ViewAllOrders = "Germadent.Rma.EditOrders";
+        public const string ViewAllOrders = "Просмотр всех заказ-нарядов, а не только назначенных";
     }
 }

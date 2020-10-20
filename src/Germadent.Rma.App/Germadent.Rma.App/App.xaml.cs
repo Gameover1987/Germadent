@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Infrastructure;
+using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.Views;
 using Germadent.UI.Commands;
+using Germadent.UI.Windows;
 
 namespace Germadent.Rma.App
 {
@@ -21,6 +24,15 @@ namespace Germadent.Rma.App
             DelegateCommand.CommandException += CommandException;
             Current.DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException+= CurrentDomainOnUnhandledException;
+
+            var authorizationViewModel = _resolver.GetAuthorizationViewModel();
+            var authorizationWindow = new AuthorizationWindow();
+            authorizationWindow.DataContext = authorizationViewModel;
+            if (authorizationWindow.ShowDialog() == false)
+            {
+                Current.Shutdown(-1);
+                return;
+            }
 
             var splashScreenWindow = new SplashScreenWindow();
             splashScreenWindow.DataContext = _resolver.GetSplashScreenViewModel();

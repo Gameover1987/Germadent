@@ -1,5 +1,20 @@
-﻿namespace Germadent.UserManagementCenter.Model
+﻿using Germadent.UserManagementCenter.Model.Rights;
+
+namespace Germadent.UserManagementCenter.Model
 {
+    public class AuthorizationInfoDto
+    {
+        public int UserId { get; set; }
+
+        public string Login { get; set; }
+
+        public string FullName { get; set; }
+
+        public bool IsLocked { get; set; }
+
+        public RightDto[] Rights { get; set; }
+    }
+
     public class UserDto
     {
 
