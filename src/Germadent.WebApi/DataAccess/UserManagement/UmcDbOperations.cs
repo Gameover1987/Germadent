@@ -160,6 +160,21 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
+        public void DeleteUser(int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("umc_DeleteUser", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@userId ", SqlDbType.NVarChar)).Value = userId;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public RoleDto[] GetRoles()
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))

@@ -9,10 +9,12 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         UserDto EditUser(UserDto user);
 
+        bool DeleteUser(UserViewModel user);
+
         RoleDto AddRole();
 
         RoleDto EditRole(RoleViewModel role);
 
-        void DeleteRole(RoleViewModel role);
+        bool DeleteRole(RoleViewModel role);
     }
 }

@@ -32,6 +32,12 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         UserDto UpdateUser(UserDto userDto);
 
         /// <summary>
+        /// Удаляет пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        void DeleteUser(int userId);
+
+        /// <summary>
         /// Вовзвращает список ролей
         /// </summary>
         /// <returns></returns>

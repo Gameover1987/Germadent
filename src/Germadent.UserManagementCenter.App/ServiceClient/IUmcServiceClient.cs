@@ -15,13 +15,6 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         UserDto[] GetUsers();
 
         /// <summary>
-        /// Возвращает пользователя по его Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        UserDto GetUserById(int  id);
-
-        /// <summary>
         /// Добавляет пользователя
         /// </summary>
         /// <returns></returns>
@@ -32,6 +25,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         UserDto EditUser(UserDto userDto);
+
+        /// <summary>
+        /// Удаление пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        void DeleteUser(int userId);
 
         /// <summary>
         /// Возвращает список ролей

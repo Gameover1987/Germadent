@@ -44,5 +44,14 @@ namespace Germadent.WebApi.Controllers.UserManagement
             _umcDbOperations.UpdateUser(userDto);
             return userDto;
         }
+
+        [HttpDelete]
+        [Route("DeleteUser/{userId}")]
+
+        public IActionResult DeleteUser(int userId)
+        {
+            _umcDbOperations.DeleteUser(userId);
+            return Ok();
+        }
     }
 }
