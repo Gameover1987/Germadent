@@ -12,7 +12,9 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         {
             Initialize(new UserDto(), ViewMode.Add);
 
-            FullName = "Василий Алибабаевич, Вася";
+            FirstName = "Еблантий";
+            Surname = "Конопаптов";
+            Patronymic = "Васисуалиевич";
             Login = "Vasya";
             Password = "123";
             PasswordOnceAgain = "123";

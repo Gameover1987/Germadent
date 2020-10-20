@@ -19,18 +19,22 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private readonly IUmcServiceClient _umcServiceClient;
 
         private int _userId;
-        private string _fullName;
+        private string _firstName;
+        private string _surName;
+        private string _patronymic;
         private string _login;
         private string _password;
         private string _passwordOnceAgain;
         private string _description;
+        private bool _isLocked;
+        private string _phone;
 
         public AddUserViewModel(IUmcServiceClient umcServiceClient)
         {
             _umcServiceClient = umcServiceClient;
 
-            AddValidationFor(() => FullName)
-                .When(() => string.IsNullOrWhiteSpace(FullName), () => "Укажите полное имя пользователя");
+            AddValidationFor(() => FirstName)
+                .When(() => string.IsNullOrWhiteSpace(FirstName), () => "Укажите полное имя пользователя");
             AddValidationFor(() => Login)
                 .When(() => string.IsNullOrWhiteSpace(Login), () => "Укажите логин");
             AddValidationFor(() => Password)
@@ -46,15 +50,51 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public ViewMode ViewMode { get; private set; }
 
-        public string FullName
+        public string FirstName
         {
-            get { return _fullName; }
+            get { return _firstName; }
             set
             {
-                if (_fullName == value)
+                if (_firstName == value)
                     return;
-                _fullName = value;
-                OnPropertyChanged(() => FullName);
+                _firstName = value;
+                OnPropertyChanged(() => FirstName);
+            }
+        }
+
+        public string Surname
+        {
+            get { return _surName; }
+            set
+            {
+                if (_surName == value)
+                    return;
+                _surName = value;
+                OnPropertyChanged(() => Surname);
+            }
+        }
+
+        public string Patronymic
+        {
+            get { return _patronymic; }
+            set
+            {
+                if (_patronymic == value)
+                    return;
+                _patronymic = value;
+                OnPropertyChanged(() => Patronymic);
+            }
+        }
+
+        public string Phone
+        {
+            get { return _phone; }
+            set
+            {
+                if (_phone == value)
+                    return;
+                _phone = value;
+                OnPropertyChanged(() => Phone);
             }
         }
 
@@ -94,6 +134,18 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
+        public bool IsLocked
+        {
+            get { return _isLocked; }
+            set
+            {
+                if (_isLocked == value)
+                    return;
+                _isLocked = value;
+                OnPropertyChanged(() => IsLocked);
+            }
+        }
+
         public string Description
         {
             get { return _description; }
@@ -128,10 +180,14 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
 
             _userId = user.UserId;
-            _fullName = user.FullName;
+            _firstName = user.FirstName;
+            _surName = user.Surname;
+            _patronymic = user.Patronymic;
+            _phone = user.Phone;
             _password = user.Password;
             _passwordOnceAgain = user.Password;
             _login = user.Login;
+            _isLocked = user.IsLocked;
             _description = user.Description;
 
             var roles = _umcServiceClient.GetRoles();
@@ -165,9 +221,13 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             return new UserDto
             {
                 UserId = _userId,
-                FullName = FullName,
+                FirstName = FirstName,
+                Surname = Surname,
+                Patronymic = Patronymic,
+                Phone = Phone,
                 Login = Login,
                 Password = Password,
+                IsLocked = IsLocked,
                 Description = Description,
                 Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray()
             };
@@ -180,7 +240,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private bool IsValid()
         {
-            return !FullName.IsNullOrWhiteSpace() &&
+            return !FirstName.IsNullOrWhiteSpace() &&
                    !Login.IsNullOrWhiteSpace() &&
                    !Password.IsNullOrWhiteSpace() &&
                    !PasswordOnceAgain.IsNullOrWhiteSpace() &&

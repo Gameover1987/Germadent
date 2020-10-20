@@ -11,8 +11,8 @@
         Title="{Binding Title}"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        MinHeight="500"
-        Height="500"
+        MinHeight="600"
+        Height="600"
         MinWidth="600"
         Width="600"
         Background="{x:Static SystemColors.ControlBrush}"
@@ -25,53 +25,100 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Grid IsSharedSizeScope="True">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <TextBox x:Name="fullNameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
-                     Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
-                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
-                         helpers:PasswordHelper.Attach="True"
-                         helpers:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
-                         helpers:PasswordHelper.Attach="True"
-                         helpers:PasswordHelper.Password="{Binding PasswordOnceAgain, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
-                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Роли" VerticalAlignment="Top" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-            <ListBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
-                     ItemsSource="{Binding Roles}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
-                        <Grid>
-                            <CheckBox Content="{Binding Name}" Margin="3,0,0,0"
-                                      IsChecked="{Binding IsChecked}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Контактные данные" Margin="0,0,0,6" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Фамилия" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBox x:Name="fullNameTextBox" Grid.Row="1" Grid.Column="1" Margin="6,0,0,0"
+                         Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Имя" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
+                         Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Отчество" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
+                         Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Телефон" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" HorizontalAlignment="Left" Width="200"
+                         Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
 
-            <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal" Margin="6,6,0,0"
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Учетная запись" Margin="0,12,0,6" FontSize="10" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,0,0,0" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="6,0,0,0" Width="250" HorizontalAlignment="Left"
+                         Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                             helpers:PasswordHelper.Attach="True"
+                             helpers:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
+                             helpers:PasswordHelper.Attach="True"
+                             helpers:PasswordHelper.Password="{Binding PasswordOnceAgain, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+                         Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <CheckBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0"
+                          IsChecked="{Binding IsLocked}"
+                          Content="Заблокировать учетную запись"/>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,6,0,0">
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                   <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Роли" Margin="0,0,0,6" HorizontalAlignment="Right"/>
+                <ListBox Grid.Column="1" Margin="6,0,0,0" 
+                         ItemsSource="{Binding Roles}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
+                            <Grid>
+                                <CheckBox Content="{Binding Name}" Margin="3,0,0,0"
+                              IsChecked="{Binding IsChecked}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="6,6,0,0"
                         Visibility="{Binding AtLeastOneRoleChecked, Converter={StaticResource BoolToInvisibilityConverter}, ConverterParameter='Hidden'}">
                 <Path Data="{StaticResource InfoButtonGeometry}" Stretch="Fill" Fill="#ADADAD"/>
                 <TextBlock Text="Необходимо назначить хотя бы одну роль" Margin="6,0,0,0"/>

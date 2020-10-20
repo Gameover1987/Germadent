@@ -13,35 +13,105 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 new UserDto
                 {
                     Login = "Admin",
-                    FullName = "Админ Админыч",
+                    FirstName = "Админ Админыч",
                     Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Dmitriy",
-                    FullName = "Дмитрий",
+                    FirstName = "Дмитрий",
                     Description = "Руководитель",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vyacheslav",
-                    FullName = "Некрасов Вячеслав",
+                    FirstName = "Некрасов Вячеслав",
                     Description = "Программист 1",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Alexey",
-                    FullName = "Колосенок Алексей",
+                    FirstName = "Колосенок Алексей",
                     Description = "Программист 2",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vasya",
-                    FullName = "Василий Алибабаевич",
+                    FirstName = "Василий Алибабаевич",
+                    Description = "Какой то Вася ))",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Admin",
+                    FirstName = "Админ Админыч",
+                    Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Dmitriy",
+                    FirstName = "Дмитрий",
+                    Description = "Руководитель",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vyacheslav",
+                    FirstName = "Некрасов Вячеслав",
+                    Description = "Программист 1",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Alexey",
+                    FirstName = "Колосенок Алексей",
+                    Description = "Программист 2",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vasya",
+                    FirstName = "Василий Алибабаевич",
+                    Description = "Какой то Вася ))",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Admin",
+                    FirstName = "Админ Админыч",
+                    Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Dmitriy",
+                    FirstName = "Дмитрий",
+                    Description = "Руководитель",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vyacheslav",
+                    FirstName = "Некрасов Вячеслав",
+                    Description = "Программист 1",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Alexey",
+                    FirstName = "Колосенок Алексей",
+                    Description = "Программист 2",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vasya",
+                    FirstName = "Василий Алибабаевич",
                     Description = "Какой то Вася ))",
                     Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },

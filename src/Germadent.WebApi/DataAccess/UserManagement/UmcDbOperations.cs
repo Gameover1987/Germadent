@@ -41,6 +41,10 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                         {
                             var entity = new UserAndRoleEntity();
                             entity.UserId = reader[nameof(entity.UserId)].ToInt();
+                            entity.FirstName = reader[nameof(entity.FirstName)].ToString();
+                            entity.Surname = reader[nameof(entity.FirstName)].ToString();
+                            entity.Patronymic = reader[nameof(entity.FirstName)].ToString();
+                            entity.Phone = reader[nameof(entity.Phone)].ToString();
                             entity.Login = reader[nameof(entity.Login)].ToString();
                             entity.Description = reader[nameof(entity.Description)].ToString();
                             entity.Password = reader[nameof(entity.Password)].ToString();
@@ -58,6 +62,10 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                         var userDto = new UserDto();
                         userDto.UserId = grouping.First().RoleId;
                         userDto.Description = grouping.First().Description;
+                        userDto.FirstName = grouping.First().FirstName;
+                        userDto.Surname = grouping.First().Surname;
+                        userDto.Patronymic = grouping.First().Patronymic;
+                        userDto.Phone = grouping.First().Phone;
                         userDto.Login = grouping.First().Login;
                         userDto.Password = grouping.First().Password;
                         var roles = new List<RoleDto>();
@@ -92,9 +100,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 using (var command = new SqlCommand("umc_AddUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@login ", SqlDbType.NVarChar)).Value = userDto.Login;
-                    command.Parameters.Add(new SqlParameter("@password ", SqlDbType.NVarChar)).Value = userDto.Password;
-                    command.Parameters.Add(new SqlParameter("@description ", SqlDbType.NVarChar)).Value = userDto.Description;
+                    command.Parameters.Add(new SqlParameter("@familyName", SqlDbType.NVarChar)).Value = userDto.Surname;
+                    command.Parameters.Add(new SqlParameter("@firstName", SqlDbType.NVarChar)).Value = userDto.FirstName;
+                    command.Parameters.Add(new SqlParameter("@patronymic", SqlDbType.NVarChar)).Value = userDto.Patronymic;
+                    command.Parameters.Add(new SqlParameter("@phone", SqlDbType.NVarChar)).Value = userDto.Phone;
+                    command.Parameters.Add(new SqlParameter("@login", SqlDbType.NVarChar)).Value = userDto.Login;
+                    command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
+                    command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
+                    command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                     command.ExecuteNonQuery();
@@ -113,7 +126,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         private void UpdateUserImpl(UserDto userDto, SqlConnection connection)
         {
-            var rightsJson = userDto.Roles
+            var rolesJson = userDto.Roles
                 .Select(x => new { userDto.UserId, x.RoleId })
                 .ToArray()
                 .SerializeToJson(formatting: Formatting.Indented);
@@ -121,10 +134,16 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             using (var command = new SqlCommand("umc_UpdateUser", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@userId ", SqlDbType.NVarChar)).Value = userDto.UserId;
-                command.Parameters.Add(new SqlParameter("@login ", SqlDbType.NVarChar)).Value = userDto.Login;
-                command.Parameters.Add(new SqlParameter("@password ", SqlDbType.NVarChar)).Value = userDto.Password;
-                command.Parameters.Add(new SqlParameter("@jsonString ", SqlDbType.VarChar)).Value = rightsJson;
+                command.Parameters.Add(new SqlParameter("@userId ", SqlDbType.Int)).Value = userDto.UserId;
+                command.Parameters.Add(new SqlParameter("@familyName", SqlDbType.NVarChar)).Value = userDto.Surname;
+                command.Parameters.Add(new SqlParameter("@firstName", SqlDbType.NVarChar)).Value = userDto.FirstName;
+                command.Parameters.Add(new SqlParameter("@patronymic", SqlDbType.NVarChar)).Value = userDto.Patronymic;
+                command.Parameters.Add(new SqlParameter("@phone", SqlDbType.NVarChar)).Value = userDto.Phone;
+                command.Parameters.Add(new SqlParameter("@login", SqlDbType.NVarChar)).Value = userDto.Login;
+                command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
+                command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
+                command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
+                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
 
                 command.ExecuteNonQuery();
             }
@@ -222,7 +241,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             using (var command = new SqlCommand("umc_UpdateRole", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@roleID ", SqlDbType.NVarChar)).Value = roleDto.RoleId;
+                command.Parameters.Add(new SqlParameter("@roleID ", SqlDbType.Int)).Value = roleDto.RoleId;
                 command.Parameters.Add(new SqlParameter("@roleName ", SqlDbType.NVarChar)).Value = roleDto.RoleName;
                 command.Parameters.Add(new SqlParameter("@jsonString ", SqlDbType.VarChar)).Value = rightsJson;
 
