@@ -92,7 +92,7 @@
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Data="M 0,7.87402L 4.72441,14.1733L 14.1732,4.72443L 14.1732,0L 4.72441,11.0237L 0,4.72443L 0,7.87402 Z" Fill="Green" Width="10" Height="10" Stretch="Uniform" />
 
-                            <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="3,0,0,0"/>
+                            <TextBlock Grid.Column="1" Text="{Binding RightDescription}" Margin="3,0,0,0"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

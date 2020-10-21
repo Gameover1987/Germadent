@@ -22,6 +22,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters1:ApplicationModuleToStringConverter x:Key="ApplicationModuleToStringConverter"/>
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
 
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
             <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StlnRadioButtonStyle}"/>

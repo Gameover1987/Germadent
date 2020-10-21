@@ -16,8 +16,5 @@ namespace Germadent.UserManagementCenter.Model.Rights
 
         [ApplicationRight("Просмотр всех заказ-нарядов, а не только назначенных")]
         public const string ViewAllOrders = "Germadent.Rma.ViewAllOrders";
-
-        [ApplicationRight("Право ебать гусей")]
-        public const string FuckGusi = "Germadent.Rma.FuckGusi";
-    }
+     }
 }

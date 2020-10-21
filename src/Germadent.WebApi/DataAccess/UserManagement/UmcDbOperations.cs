@@ -195,6 +195,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             roleAndRightEntity.RoleName = reader[nameof(roleAndRightEntity.RoleName)].ToString();
                             roleAndRightEntity.RightId = reader[nameof(roleAndRightEntity.RightId)].ToInt();
                             roleAndRightEntity.RightName = reader[nameof(roleAndRightEntity.RightName)].ToString();
+                            roleAndRightEntity.RightDescription = reader[nameof(roleAndRightEntity.RightDescription)].ToString();
                             roleAndRightEntity.ApplicationName = reader[nameof(roleAndRightEntity.ApplicationName)].ToString();
                             roleAndRightEntity.ApplicationModule = (ApplicationModule)reader["ApplicationId"].ToInt();
 
@@ -216,7 +217,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             {
                                 RightId = roleAndRightEntity.RightId,
                                 ApplicationModule = roleAndRightEntity.ApplicationModule,
-                                RightName = roleAndRightEntity.RightName
+                                RightName = roleAndRightEntity.RightName,
+                                RightDescription = roleAndRightEntity.RightDescription
                             });
                         }
 

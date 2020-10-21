@@ -56,6 +56,8 @@ namespace Germadent.WebApi.Entities
 
         public string RightName { get; set; }
 
+        public string RightDescription { get; set; }
+
         public string ApplicationName { get; set; }
 
         public ApplicationModule ApplicationModule { get; set; }

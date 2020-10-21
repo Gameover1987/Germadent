@@ -65,7 +65,8 @@
             </ListBox.GroupStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:RightViewModel}">
-                    <CheckBox Content="{Binding Name}"
+                    <CheckBox Content="{Binding RightDescription}"
+                              IsEnabled="{Binding IsObsolete, Converter={StaticResource InvertBoolConverter}}"
                               IsChecked="{Binding IsChecked}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
