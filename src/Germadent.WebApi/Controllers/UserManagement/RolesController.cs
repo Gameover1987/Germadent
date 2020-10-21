@@ -20,28 +20,54 @@ namespace Germadent.WebApi.Controllers.UserManagement
             _logger = logger;
         }
 
-
         [HttpGet]
-        public RoleDto[] GetRoles()
+        public IActionResult GetRoles()
         {
-            return _umcDbOperations.GetRoles();
+            try
+            {
+                _logger.Info(nameof(GetRoles));
+                var roles = _umcDbOperations.GetRoles();
+                return Ok(roles);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
         
         [HttpPost]
-        public RoleDto AddRole(RoleDto roleDto)
+        public IActionResult AddRole(RoleDto roleDto)
         {
-            return _umcDbOperations.AddRole(roleDto);
+            try
+            {
+                _logger.Info(nameof(EditRole));
+                return Ok(_umcDbOperations.AddRole(roleDto));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
-        public RoleDto EditRole(RoleDto roleDto)
+        public IActionResult EditRole(RoleDto roleDto)
         {
-            _umcDbOperations.UpdateRole(roleDto);
-            return roleDto;
+            try
+            {
+                _logger.Info(nameof(EditRole));
+                return Ok(_umcDbOperations.UpdateRole(roleDto));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+           
         }
 
         [HttpDelete("{roleId:int}")]
-
         public IActionResult DeleteRole(int roleId)
         {
             try

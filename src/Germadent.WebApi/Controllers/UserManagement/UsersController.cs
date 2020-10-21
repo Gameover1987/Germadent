@@ -1,5 +1,6 @@
-﻿using Germadent.UserManagementCenter.Model;
-using Germadent.WebApi.DataAccess;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.UserManagementCenter.Model;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,39 +11,77 @@ namespace Germadent.WebApi.Controllers.UserManagement
     public class UsersController : ControllerBase
     {
         private readonly IUmcDbOperations _umcDbOperations;
+        private readonly ILogger _logger;
 
-        public UsersController(IUmcDbOperations umcDbOperations)
+        public UsersController(IUmcDbOperations umcDbOperations, ILogger logger)
         {
             _umcDbOperations = umcDbOperations;
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("GetUsers")]
-        public UserDto[] GetUsers()
+        public IActionResult GetUsers()
         {
-            return _umcDbOperations.GetUsers();
+            try
+            {
+                _logger.Info(nameof(GetUsers));
+                var users = _umcDbOperations.GetUsers();
+                return Ok(users);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpGet("{id:int}")]
         [Route("GetById")]
-        public UserDto GetUserById(int id)
+        public IActionResult GetUserById(int id)
         {
-            return _umcDbOperations.GetUserById(id);
+            try
+            {
+                _logger.Info(nameof(GetUserById));
+                return Ok(_umcDbOperations.GetUserById(id));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
         [Route("AddUser")]
-        public UserDto AddUser(UserDto user)
+        public IActionResult AddUser(UserDto user)
         {
-            return _umcDbOperations.AddUser(user);
+            try
+            {
+                _logger.Info(nameof(AddUser));
+                return Ok(_umcDbOperations.AddUser(user));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpPost]
         [Route("EditUser")]
-        public UserDto EditUser(UserDto userDto)
+        public IActionResult EditUser(UserDto userDto)
         {
-            _umcDbOperations.UpdateUser(userDto);
-            return userDto;
+            try
+            {
+                _logger.Info(nameof(EditUser));
+                return Ok(_umcDbOperations.UpdateUser(userDto));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
 
         [HttpDelete]
@@ -50,8 +89,17 @@ namespace Germadent.WebApi.Controllers.UserManagement
 
         public IActionResult DeleteUser(int userId)
         {
-            _umcDbOperations.DeleteUser(userId);
-            return Ok();
+            try
+            {
+                _logger.Info(nameof(DeleteUser));
+                _umcDbOperations.DeleteUser(userId);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }
