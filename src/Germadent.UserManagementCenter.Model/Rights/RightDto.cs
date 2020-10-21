@@ -1,4 +1,6 @@
-﻿namespace Germadent.UserManagementCenter.Model.Rights
+﻿using System.Security;
+
+namespace Germadent.UserManagementCenter.Model.Rights
 {
     public class RightDto
     {
@@ -10,9 +12,14 @@
         public string RightName { get; set; }
 
         /// <summary>
+        /// Описание права
+        /// </summary>
+        public string RightDescription { get; set; }
+
+        /// <summary>
         /// Название подсистемы
         /// </summary>
-        public string ApplicationName { get; set; }
+        public ApplicationModule ApplicationModule { get; set; }
 
         /// <summary>
         /// Признак что право устарело

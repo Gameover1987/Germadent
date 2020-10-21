@@ -18,7 +18,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public string Name => _right.RightName;
 
-        public string Application => _right.ApplicationName;
+        public ApplicationModule ApplicationModule => _right.ApplicationModule;
 
         public bool IsEnabled
         {

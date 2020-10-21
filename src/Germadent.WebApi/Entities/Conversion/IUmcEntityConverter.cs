@@ -6,42 +6,21 @@ namespace Germadent.WebApi.Entities.Conversion
 {
     public interface IUmcEntityConverter
     {
-
-       
-
         RightDto ConvertToRightDto(RightEntity entity);
-
-     
-
-        RightEntity ConvertToRightEntity(RightDto dto);
     }
 
     public class UmcEntityConverter : IUmcEntityConverter
     {
-        
-
-
         public RightDto ConvertToRightDto(RightEntity entity)
         {
             return new RightDto
             {
                 RightId = entity.RightId,
-                ApplicationName = entity.ApplicationName,
-                RightName = entity.RightName
+                RightName = entity.RightName,
+                RightDescription = entity.RightDescription,
+                ApplicationModule = (ApplicationModule)entity.ApplicationId,
+                IsObsolete = entity.IsObsolete
             };
         }
-
-
-        public RightEntity ConvertToRightEntity(RightDto dto)
-        {
-            return new RightEntity
-            {
-                RightId = dto.RightId,
-                ApplicationName = dto.ApplicationName,
-                RightName = dto.RightName
-            };
-        }
-
-       
     }
 }

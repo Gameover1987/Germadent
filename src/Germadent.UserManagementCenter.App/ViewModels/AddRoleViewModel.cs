@@ -87,7 +87,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
             foreach (var roleRight in role.Rights)
             {
-                var rightViewModel = Rights.First(x => x.Name == roleRight.RightName && x.Application == roleRight.ApplicationName);
+                var rightViewModel = Rights.First(x => x.Name == roleRight.RightName && x.ApplicationModule == roleRight.ApplicationModule);
                 rightViewModel.IsChecked = true;
             }
         }
@@ -111,7 +111,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             RightViewModel rightViewModel;
             _rightsView = CollectionViewSource.GetDefaultView(Rights);
-            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.Application)));
+            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.ApplicationModule)));
         }
 
         private bool CanOkCommandHandler()

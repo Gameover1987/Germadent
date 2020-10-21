@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.WebApi.Entities
 {
@@ -18,6 +19,8 @@ namespace Germadent.WebApi.Entities
         public string RightName { get; set; }
 
         public string ApplicationName { get; set; }
+
+        public ApplicationModule ApplicationModule { get; set; }
     }
 
     public class UserAndRoleEntity
@@ -54,6 +57,8 @@ namespace Germadent.WebApi.Entities
         public string RightName { get; set; }
 
         public string ApplicationName { get; set; }
+
+        public ApplicationModule ApplicationModule { get; set; }
     }
 
     public class RightEntity
@@ -66,13 +71,23 @@ namespace Germadent.WebApi.Entities
         public string RightName { get; set; }
 
         /// <summary>
+        /// Описание права
+        /// </summary>
+        public string RightDescription { get; set; }
+
+        /// <summary>
         /// Название подсистемы
         /// </summary>
         public string ApplicationName { get; set; }
 
         /// <summary>
-        /// Описание подсистемы
+        /// Идентификатор подсистемы
         /// </summary>
-        public string ApplicationDescription { get; set; }
+        public int ApplicationId { get; set; }
+
+        /// <summary>
+        /// Признак того что право устарело и использовать его больше нельзя
+        /// </summary>
+        public bool IsObsolete { get; set; }
     }
 }

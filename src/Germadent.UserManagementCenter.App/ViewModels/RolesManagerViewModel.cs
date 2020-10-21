@@ -68,7 +68,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             var rightViewModel = new RightViewModel(new RightDto());
             _rightsView = CollectionViewSource.GetDefaultView(Rights);
-            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.Application)));
+            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.ApplicationModule)));
         }
 
         private void LoadRightsByRole()

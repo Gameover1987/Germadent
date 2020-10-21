@@ -22,11 +22,11 @@ namespace Germadent.UserManagementCenter.Model.Rights
                     .Where(x => x.IsLiteral)
                     .Select(x =>
                     {
-                        var rightDescription = (DescriptionAttribute)x.GetCustomAttributes(typeof(DescriptionAttribute)).First();
+                        var rightDescription = (ApplicationRightAttribute)x.GetCustomAttributes(typeof(ApplicationRightAttribute)).First();
                         return new RightDto
                         {
-                            ApplicationName = moduleDescription.Description,
-                            RightName = rightDescription.Description
+                            ApplicationModule = rightDescription.ApplicationModule,
+                            RightDescription = rightDescription.RightDescription,
                         };
                     })
                     .ToArray();

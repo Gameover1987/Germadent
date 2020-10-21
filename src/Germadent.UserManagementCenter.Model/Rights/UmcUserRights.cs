@@ -8,10 +8,10 @@ namespace Germadent.UserManagementCenter.Model.Rights
     [Description("Центр управления пользователями")]
     public class UmcUserRights : UserRightsBase
     {
-        [Description("Запуск приложения")]
+        [ApplicationRight("Запуск приложения", ApplicationModule.Umc)]
         public const string RunApplication = "Germadent.UserManagementCenter.RunApplication";
-
-        [Description("Редактирование ролей и пользователей")]
+        
+        [ApplicationRight("Редактирование ролей и пользователей", ApplicationModule.Umc)]
         public const string EditRolesAndUsers = "Germadent.UserManagementCenter.EditRolesAndUsers";
     }
 }

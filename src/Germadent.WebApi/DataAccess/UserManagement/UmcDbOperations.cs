@@ -196,6 +196,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             roleAndRightEntity.RightId = reader[nameof(roleAndRightEntity.RightId)].ToInt();
                             roleAndRightEntity.RightName = reader[nameof(roleAndRightEntity.RightName)].ToString();
                             roleAndRightEntity.ApplicationName = reader[nameof(roleAndRightEntity.ApplicationName)].ToString();
+                            roleAndRightEntity.ApplicationModule = (ApplicationModule)reader["ApplicationId"].ToInt();
 
                             rolesAndRights.Add(roleAndRightEntity);
                         }
@@ -214,7 +215,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             rights.Add(new RightDto
                             {
                                 RightId = roleAndRightEntity.RightId,
-                                ApplicationName = roleAndRightEntity.ApplicationName,
+                                ApplicationModule = roleAndRightEntity.ApplicationModule,
                                 RightName = roleAndRightEntity.RightName
                             });
                         }
@@ -314,7 +315,10 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             var rightEntity = new RightEntity();
                             rightEntity.RightId = reader[nameof(rightEntity.RightId)].ToInt();
                             rightEntity.RightName = reader[nameof(rightEntity.RightName)].ToString();
+                            rightEntity.RightDescription = reader[nameof(rightEntity.RightDescription)].ToString();
                             rightEntity.ApplicationName = reader[nameof(rightEntity.ApplicationName)].ToString();
+                            rightEntity.ApplicationId = reader[nameof(rightEntity.ApplicationId)].ToInt();
+                            rightEntity.IsObsolete = reader[nameof(rightEntity.IsObsolete)].ToBool();
 
                             rights.Add(_converter.ConvertToRightDto(rightEntity));
                         }
@@ -353,6 +357,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             entity.RightId = reader["rightId"].ToInt();
                             entity.RightName = reader["RightName"].ToString();
                             entity.ApplicationName = reader["ApplicationName"].ToString();
+                            entity.ApplicationModule = (ApplicationModule)reader["ApplicationId"].ToInt();
 
                             authorizartionEntities.Add(entity);
                         }
@@ -371,7 +376,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                         rights.Add(new RightDto
                         {
                             RightId = authorizationInfoEntity.RightId,
-                            ApplicationName = authorizationInfoEntity.ApplicationName,
+                            ApplicationModule = authorizationInfoEntity.ApplicationModule,
                             RightName = authorizationInfoEntity.RightName
                         });
                     }
@@ -385,6 +390,10 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         private void ActualizeRights()
         {
+            var currrentRightsSet = GetRights();
+
+            var actualRightsSet = UserRightsProvider.GetAllUserRights().ToArray();
+
             //var oldRights = _dbContext.Rights.ToArray();
 
             //var newRights = UserRightsProvider.GetAllUserRights().Select(x => new RightEntity
