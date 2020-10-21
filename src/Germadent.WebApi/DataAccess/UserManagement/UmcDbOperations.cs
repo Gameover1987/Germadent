@@ -439,7 +439,6 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     changedRights.Add(rightToRename);
             }
 
-
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();

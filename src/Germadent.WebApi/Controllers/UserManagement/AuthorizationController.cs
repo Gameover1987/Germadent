@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Logging;
+using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +30,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
             try
             {
                 _logger.Info(nameof(Authorize));
-                var user =_umcDbOperations.Authorize(login, password);
-                return Ok(user);
+                var authorizationInfoDto = _umcDbOperations.Authorize(login, password);
+                return Ok(authorizationInfoDto);
             }
             catch (Exception exception)
             {
-               _logger.Error(exception);
-               return BadRequest(exception);
+                _logger.Error(exception);
+                return BadRequest(exception);
             }
         }
     }
