@@ -5,13 +5,13 @@ namespace Germadent.UserManagementCenter.Model.Rights
     /// <summary>
     /// Права для ЦУП
     /// </summary>
-    [Description("Центр управления пользователями")]
+    [RightGroup(ApplicationModule.Umc)]
     public class UmcUserRights : UserRightsBase
     {
-        [ApplicationRight("Запуск приложения", ApplicationModule.Umc)]
+        [ApplicationRight("Запуск приложения")]
         public const string RunApplication = "Germadent.UserManagementCenter.RunApplication";
         
-        [ApplicationRight("Редактирование ролей и пользователей", ApplicationModule.Umc)]
+        [ApplicationRight("Редактирование ролей и пользователей")]
         public const string EditRolesAndUsers = "Germadent.UserManagementCenter.EditRolesAndUsers";
     }
 }

@@ -329,6 +329,35 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
+        private void UpdateRight(SqlConnection connection, int rightId, string rightDescription, bool isObsolete = false)
+        {
+            var cmdText = "umc_UpdateRight";
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@rightId ", SqlDbType.NVarChar)).Value = rightId;
+                command.Parameters.Add(new SqlParameter("@rightDescription ", SqlDbType.NVarChar)).Value = rightDescription;
+                command.Parameters.Add(new SqlParameter("@isObsolete ", SqlDbType.NVarChar)).Value = isObsolete;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private void AddRight(SqlConnection connection, RightDto right)
+        {
+            var cmdText = "umc_AddRight";
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@applicationID ", SqlDbType.Int)).Value = (int)right.ApplicationModule;
+                command.Parameters.Add(new SqlParameter("@rightName ", SqlDbType.NVarChar)).Value = right.RightName;
+                command.Parameters.Add(new SqlParameter("@rightDescription ", SqlDbType.NVarChar)).Value = right.RightDescription;
+                command.Parameters.Add(new SqlParameter("@rightID", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         public AuthorizationInfoDto Authorize(string login, string password)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -390,39 +419,56 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         private void ActualizeRights()
         {
-            var currrentRightsSet = GetRights();
+            var rightsFromDb = GetRights();
 
-            var actualRightsSet = UserRightsProvider.GetAllUserRights().ToArray();
+            var rightsFromCode = UserRightsProvider.GetAllUserRights();
 
-            //var oldRights = _dbContext.Rights.ToArray();
+            var rightComparer = new RightComparer();
 
-            //var newRights = UserRightsProvider.GetAllUserRights().Select(x => new RightEntity
-            //{
-            //    RightId = x.RightId,
-            //    ApplicationName = x.ApplicationName,
-            //    RightName = x.RightName
-            //}).ToArray();
+            var newRights = rightsFromCode.Except(rightsFromDb, rightComparer).ToArray();
+            var oldRights = rightsFromDb.Except(rightsFromCode, rightComparer).ToArray();
 
-            //var rightComparer = new RightComparer();
-
-            //var rightsToDelete = oldRights.Except(newRights, rightComparer).ToArray();
-            //_dbContext.Rights.RemoveRange(rightsToDelete);
-
-            //var rightsToAdd = newRights.Except(oldRights, rightComparer).ToArray();
-            //_dbContext.Rights.AddRange(rightsToAdd);
-
-            //_dbContext.SaveChanges();
-        }
-
-        private class RightComparer : IEqualityComparer<RightEntity>
-        {
-            public bool Equals(RightEntity x, RightEntity y)
+            var changedRights = new List<RightDto>();
+            foreach (var rightFromCode in rightsFromCode)
             {
-                return x.RightName == y.RightName &&
-                       x.ApplicationName == y.ApplicationName;
+                var rightToRename = rightsFromDb.FirstOrDefault(x =>
+                    x.RightName == rightFromCode.RightName && x.RightDescription != rightFromCode.RightDescription);
+                if (rightToRename != null)
+                    changedRights.Add(rightToRename);
             }
 
-            public int GetHashCode(RightEntity entity)
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                foreach (var oldRight in oldRights)
+                {
+                    UpdateRight(connection, oldRight.RightId, oldRight.RightDescription, true);
+                }
+
+                foreach (var newRight in newRights)
+                {
+                    AddRight(connection, newRight);
+                }
+
+                foreach (var changedRight in changedRights)
+                {
+                    var rightDescription = rightsFromCode.First(x => x.RightName == changedRight.RightName).RightDescription;
+                    UpdateRight(connection, changedRight.RightId, rightDescription);
+                }
+            }
+        }
+
+        private class RightComparer : IEqualityComparer<RightDto>
+        {
+            public bool Equals(RightDto x, RightDto y)
+            {
+                return x.RightName == y.RightName &&
+                    x.ApplicationModule == y.ApplicationModule;
+            }
+
+            public int GetHashCode(RightDto entity)
             {
                 return entity.RightName.GetHashCode();
             }

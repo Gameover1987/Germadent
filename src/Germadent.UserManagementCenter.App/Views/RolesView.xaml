@@ -72,7 +72,7 @@
                                                    <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
-                                               <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
+                                               <TextBlock Grid.Row="0" Text="{Binding Name, Converter={StaticResource ApplicationModuleToStringConverter}}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
 
                                                <ItemsPresenter Grid.Row="1" Margin="12,6,0,12"/>
                                             </Grid>

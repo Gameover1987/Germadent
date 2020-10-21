@@ -16,7 +16,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             _right = right;
         }
 
-        public string Name => _right.RightName;
+        public string Name => _right.RightDescription;
 
         public ApplicationModule ApplicationModule => _right.ApplicationModule;
 
