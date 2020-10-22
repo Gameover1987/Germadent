@@ -11,7 +11,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT rg.RightID, rg.RightName, a.ApplicationID, a.ApplicationName, a.ApplicationDescription
+	SELECT rg.RightID, rg.RightName, rg.RightDescription, rg.IsObsolete, a.ApplicationID, a.ApplicationName, a.ApplicationDescription
 	FROM 
 		Rights rg INNER JOIN Applications a ON rg.ApplicationID = a.ApplicationID
 )
