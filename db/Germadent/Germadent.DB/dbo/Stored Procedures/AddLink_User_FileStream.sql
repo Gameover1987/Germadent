@@ -3,11 +3,11 @@
 -- Create date: 08.02.2020
 -- Description:	Добавление связи заказ-наряда и файлового хранилища
 -- =============================================
-CREATE PROCEDURE [dbo].[AddLinkWO_FileStream] 
+CREATE PROCEDURE [dbo].[AddLink_User_FileStream] 
 	
 	@fileName nvarchar(70),
 	@creationTime datetimeoffset,
-	@workOrderId int
+	@userId int
 	
 AS
 BEGIN
@@ -16,30 +16,24 @@ BEGIN
 
 	DECLARE @streamId uniqueidentifier
 
-	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
-		BEGIN
-			RETURN
-		END
-
 	-- Получение id файлового потока по имени файла и времени его создания
 	SET @streamId = (SELECT stream_id FROM StlAndPhotos	WHERE name = @fileName	AND creation_time = @creationTime)
 
 	-- Проверка, если такая связь уже есть
-	IF EXISTS (SELECT stream_id FROM LinksFileStreams WHERE stream_id = @streamId AND WorkOrderID = @workOrderId)
+	IF EXISTS (SELECT stream_id FROM LinksFileStreams WHERE stream_id = @streamId AND UserID = @userId)
 	BEGIN
 		RETURN
 	END
 
 	-- Собственно вставка
 	INSERT INTO LinksFileStreams
-	(WorkOrderID, stream_id)
+	(UserID, stream_id)
 	VALUES
-    (@workOrderId, @streamId)
+    (@userId, @streamId)
 
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddLinkWO_FileStream] TO [gdl_user]
+    ON OBJECT::[dbo].[AddLink_User_FileStream] TO [gdl_user]
     AS [dbo];
 
