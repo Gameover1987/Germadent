@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.ViewModels.Pricing;
+﻿using System.Linq;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
@@ -9,6 +10,9 @@ namespace Germadent.Rma.App.Views.DesignMock
             : base(new DesignMockPriceGroupRepository(), new DesignMockPricePositionRepository())
         {
             Initialize(BranchType.Laboratory);
+
+            SelectedGroup = Groups.FirstOrDefault();
+            SelectedPosition = Positions.LastOrDefault();
         }
     }
 }

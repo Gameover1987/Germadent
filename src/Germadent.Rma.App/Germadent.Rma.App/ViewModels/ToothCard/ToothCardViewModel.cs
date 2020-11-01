@@ -58,6 +58,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get { return Teeth.Where(x => x.IsChanged).All(x => x.IsValid); }
         }
 
+        public event EventHandler<ToothSelectedEventArgs> ToothSelected;
+
         public void Initialize(ToothDto[] toothCard)
         {
             var prostheticConditions = _dictionaryRepository.GetItems(DictionaryType.ProstheticCondition);
@@ -132,6 +134,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             {
                 _selectedTeeth = value;
                 OnPropertyChanged(() => SelectedTeeth);
+
+
             }
         }
 

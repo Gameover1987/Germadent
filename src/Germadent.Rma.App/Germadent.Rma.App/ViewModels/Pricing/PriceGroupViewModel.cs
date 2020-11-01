@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     {
         private readonly PriceGroupDto _priceGroupDto;
 
-        private bool _isChecked;
+        private bool _hasChanges;
 
         public PriceGroupViewModel(PriceGroupDto priceGroupDto)
         {
@@ -18,50 +18,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public string DisplayName => _priceGroupDto.Name;
 
-        public bool IsChecked
+        public bool HasChanges
         {
-            get { return _isChecked; }
+            get { return _hasChanges; }
             set
             {
-                if (_isChecked == value)
+                if (_hasChanges == value)
                     return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
+                _hasChanges = value;
+                OnPropertyChanged(() => HasChanges);
             }
-        }
-    }
-
-    public class PricePositionViewModel : ViewModelBase
-    {
-        private readonly PricePositionDto _pricePositionDto;
-
-        private bool _isChecked;
-
-        public PricePositionViewModel(PricePositionDto pricePositionDto)
-        {
-            _pricePositionDto = pricePositionDto;
-        }
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-            }
-        }
-
-        public string UserCode
-        {
-            get { return _pricePositionDto.UserCode; }
-        }
-
-        public string DisplayName
-        {
-            get { return _pricePositionDto.Name; }
         }
     }
 }

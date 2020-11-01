@@ -9,6 +9,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public PriceListWizardStepViewModel(IToothCardViewModel toothCard, IPriceListViewModel priceList)
         {
             ToothCard = toothCard;
+
             PriceList = priceList;
         }
 
@@ -29,7 +30,17 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             ToothCard.Initialize(order.ToothCard);
+
             PriceList.Initialize(order.BranchType);
+            PriceList.PricePositionChecked += PriceListOnPricePositionChecked;
+        }
+
+        private void PriceListOnPricePositionChecked(object sender, PricePositionCheckedEventArgs e)
+        {
+            if (ToothCard.SelectedTeeth == null)
+                return;
+
+
         }
 
         public override void AssemblyOrder(OrderDto order)

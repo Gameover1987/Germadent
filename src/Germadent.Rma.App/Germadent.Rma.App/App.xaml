@@ -26,6 +26,7 @@
             <convertersUI:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter"/>
             <convertersUI:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
             <convertersUI:EnumNotEqualToBoolConverter x:Key="EnumNotEqualToBoolConverter"/>
+            <convertersUI:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
             <convertersUI:IntToBoolConverter x:Key="IntToBoolConverter"/>
             <convertersUI:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
             <convertersUI:EnumToInvisibilityConverter x:Key="EnumToInvisibilityConverter"/>

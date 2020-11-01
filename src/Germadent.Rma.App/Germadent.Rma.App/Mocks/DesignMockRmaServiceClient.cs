@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
@@ -246,9 +247,9 @@ namespace Germadent.Rma.App.Mocks
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
-            return new PriceGroupDto[]
+            var groups = new PriceGroupDto[]
             {
-                GetPriceGroup1(), 
+                GetPriceGroup1(),
                 GetPriceGroup2(),
                 GetPriceGroup3(),
                 GetPriceGroup4(),
@@ -257,11 +258,27 @@ namespace Germadent.Rma.App.Mocks
                 GetPriceGroup7(),
                 GetPriceGroup8(),
             };
+            for (int i = 0; i < groups.Length; i++)
+            {
+                groups[i].Id = i;
+                groups[i].BranchType = branchType;
+            }
+            
+            return groups;
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            throw new NotImplementedException();
+            var positions = new PricePositionDto[]
+            {
+                new PricePositionDto {BranchType = branchType, Name = "Культевая вкладка CoCr", UserCode = "101"},
+                new PricePositionDto {BranchType = branchType, Name = "Культевая вкладка разборная CoCr", UserCode = "102"},
+                new PricePositionDto {BranchType = branchType, Name = "Культевая вкладка металлокерамическая", UserCode = "103"},
+                new PricePositionDto {BranchType = branchType, Name = "Культевая вкладка ZrO2 VITA", UserCode = "104"},
+                new PricePositionDto {BranchType = branchType, Name = "Культевая вкладка Ti", UserCode = "105"},
+            };
+
+            return positions;
         }
 
         public ProductDto[] GetProducts()

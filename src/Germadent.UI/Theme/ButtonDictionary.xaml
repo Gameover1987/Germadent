@@ -204,7 +204,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
-					<Grid MinWidth="40" Background="Transparent">
+					<Grid MinWidth="10" Background="Transparent">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />

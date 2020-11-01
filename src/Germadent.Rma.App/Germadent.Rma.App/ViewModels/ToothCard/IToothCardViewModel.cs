@@ -10,6 +10,16 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         IToothCardViewModel ToothCard { get; }
     }
 
+    public class ToothSelectedEventArgs : EventArgs
+    {
+        public ToothSelectedEventArgs(ToothViewModel toothViewModel)
+        {
+            SelectedTooth = toothViewModel;
+        }
+
+        public ToothViewModel SelectedTooth { get; }
+    }
+
     public interface IToothCardViewModel
     {
         /// <summary>
@@ -58,5 +68,10 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         /// Возвращает true если в зубной карте все указано правильно
         /// </summary>
         bool IsValid { get; }
+
+        /// <summary>
+        /// Происходит когда выбрали зуб
+        /// </summary>
+        event EventHandler<ToothSelectedEventArgs> ToothSelected;
     }
 }
