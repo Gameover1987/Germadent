@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using Germadent.Rma.App.Configuration;
 using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.Views;
 using Germadent.UI.Commands;
 using Germadent.UI.Windows;
@@ -26,6 +24,8 @@ namespace Germadent.Rma.App
             AppDomain.CurrentDomain.UnhandledException+= CurrentDomainOnUnhandledException;
 
             var authorizationViewModel = _resolver.GetAuthorizationViewModel();
+            authorizationViewModel.UserName = "slava";
+            authorizationViewModel.Password = "123";
             var authorizationWindow = new AuthorizationWindow();
             authorizationWindow.DataContext = authorizationViewModel;
             if (authorizationWindow.ShowDialog() == false)

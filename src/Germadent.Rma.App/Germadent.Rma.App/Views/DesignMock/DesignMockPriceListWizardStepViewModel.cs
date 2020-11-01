@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
+﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 

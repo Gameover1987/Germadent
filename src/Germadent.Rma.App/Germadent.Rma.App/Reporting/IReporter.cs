@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
 {

@@ -2,7 +2,6 @@
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ServiceClient
 {

@@ -15,6 +15,8 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             throw new NotImplementedException();
         }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
     }
 
     public class DesignMockIPriceListEditorViewModel : PriceListEditorViewModel

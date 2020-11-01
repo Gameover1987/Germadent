@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
              mc:Ignorable="d" 

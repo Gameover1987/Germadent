@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.UI.Controls;
-using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
 {

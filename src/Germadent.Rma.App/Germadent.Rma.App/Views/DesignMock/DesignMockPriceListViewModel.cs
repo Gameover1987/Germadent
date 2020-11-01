@@ -1,5 +1,4 @@
-﻿using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.ViewModels.Pricing;
+﻿using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock

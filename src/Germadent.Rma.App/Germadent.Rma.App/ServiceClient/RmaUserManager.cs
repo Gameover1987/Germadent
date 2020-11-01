@@ -16,5 +16,10 @@ namespace Germadent.Rma.App.ServiceClient
         {
             return _rmaServiceClient.AuthorizationInfo.Rights.Any(x => x.RightName == rightName);
         }
+
+        public AuthorizationInfoDto AuthorizationInfo
+        {
+            get { return _rmaServiceClient.AuthorizationInfo; }
+        }
     }
 }

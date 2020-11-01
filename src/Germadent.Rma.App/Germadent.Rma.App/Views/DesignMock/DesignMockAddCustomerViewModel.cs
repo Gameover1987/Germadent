@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+﻿using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock

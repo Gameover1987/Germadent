@@ -7,6 +7,7 @@ using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
@@ -18,7 +19,6 @@ using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
@@ -33,6 +33,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
+        private readonly IUserManager _userManager;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -61,6 +62,7 @@ namespace Germadent.Rma.App.ViewModels
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
+            _userManager = userManager;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -77,17 +79,15 @@ namespace Germadent.Rma.App.ViewModels
 
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
-
-            var canViewAll = userManager.HasRight(RmaUserRights.ViewAllOrders);
         }
 
-        private bool Filter(object obj)
+        public string Title
         {
-            if (SearchString.IsNullOrWhiteSpace())
-                return true;
-
-            var order = (OrderLiteViewModel)obj;
-            return order.MatchBySearchString(SearchString);
+            get
+            {
+                return string.Format("{0} - {1} ({2})", Resources.AppTitle, _userManager.AuthorizationInfo.FullName,
+                    _userManager.AuthorizationInfo.Login);
+            }
         }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
@@ -149,6 +149,15 @@ namespace Germadent.Rma.App.ViewModels
 
                 RefreshView();
             }
+        }
+
+        private bool Filter(object obj)
+        {
+            if (SearchString.IsNullOrWhiteSpace())
+                return true;
+
+            var order = (OrderLiteViewModel)obj;
+            return order.MatchBySearchString(SearchString);
         }
 
         private void RefreshView()

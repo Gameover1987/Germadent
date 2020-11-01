@@ -8,6 +8,8 @@
     <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyName>Germadent.Rma.App</AssemblyName>
+    <RootNamespace>Germadent.Rma.App</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

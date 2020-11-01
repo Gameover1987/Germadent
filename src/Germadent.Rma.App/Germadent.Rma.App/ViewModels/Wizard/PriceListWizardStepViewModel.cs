@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.Rma.App.ViewModels.Pricing;
+﻿using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
@@ -32,7 +29,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             ToothCard.Initialize(order.ToothCard);
-            PriceList.Initialize(BranchType.Laboratory);
+            PriceList.Initialize(order.BranchType);
         }
 
         public override void AssemblyOrder(OrderDto order)

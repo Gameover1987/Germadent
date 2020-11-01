@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using DocumentFormat.OpenXml.Drawing;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;

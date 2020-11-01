@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.UI.ViewModels;

@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
