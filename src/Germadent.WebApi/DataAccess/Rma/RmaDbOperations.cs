@@ -36,7 +36,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public OrderDto AddOrder(OrderDto order)
         {
-           return _addWorOrderCommand.Execute(order);
+            return _addWorOrderCommand.Execute(order);
         }
 
         public void AttachDataFileToOrder(int id, string fileName, Stream stream)
@@ -186,7 +186,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing == null ? (object)DBNull.Value : order.IndividualAbutmentProcessing;
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff == null ? (object)DBNull.Value : order.Understaff;
-                command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;                
+                command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures == null ? (object)DBNull.Value : order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
@@ -202,7 +202,6 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             var orderDto = GetWorkOrderById(id);
             orderDto.ToothCard = GetToothCard(id);
-            FillHasDataFile(orderDto);
             return orderDto;
         }
 
@@ -436,10 +435,12 @@ namespace Germadent.WebApi.DataAccess.Rma
                         var pricePositionEntity = new PricePositionEntity();
 
                         pricePositionEntity.PricePositionId = reader[nameof(pricePositionEntity.PricePositionId)].ToInt();
-                        pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();                       
+                        pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();
                         pricePositionEntity.PricePositionCode = reader[nameof(pricePositionEntity.PricePositionCode)].ToString();
                         pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();
-                        pricePositionEntity.MaterialId = reader[nameof(pricePositionEntity.MaterialId)].ToInt();
+                        var materialId = reader[nameof(pricePositionEntity.MaterialId)];
+                        if (materialId != DBNull.Value)
+                            pricePositionEntity.MaterialId = materialId.ToInt();
 
                         var pricePositionDto = _converter.ConvertToPricePosition(pricePositionEntity);
                         pricePositionDto.BranchType = branchType;

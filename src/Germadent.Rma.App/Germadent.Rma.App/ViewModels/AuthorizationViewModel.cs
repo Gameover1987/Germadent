@@ -19,24 +19,16 @@ namespace Germadent.Rma.App.ViewModels
             : base(agent)
         {
             _serviceClient = serviceClient;
-            
+
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
         }
 
         private BitmapImage GetApplicationIcon()
         {
-            try
-            {
-                return null;
-                //return new BitmapImage(new Uri(
-                //    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
-                //    UriKind.Absolute));
-            }
-            catch
-            {
-                return null;
-            }
+            return new BitmapImage(new Uri(
+                "pack://application:,,,/Germadent.Rma.App;component/logo.png",
+                UriKind.Absolute));
         }
 
         protected override bool Authorize()

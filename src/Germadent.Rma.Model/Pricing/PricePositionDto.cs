@@ -10,7 +10,7 @@
 
         public string Name { get; set; }
 
-        public int MaterialId { get; set; }
+        public int? MaterialId { get; set; }
 
         public BranchType BranchType { get; set; }
 
