@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -135,7 +136,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 _selectedTeeth = value;
                 OnPropertyChanged(() => SelectedTeeth);
 
-
+                ToothSelected?.Invoke(this, new ToothSelectedEventArgs(_selectedTeeth?.LastOrDefault()));
             }
         }
 
@@ -236,6 +237,12 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void CopyDescriptionCommandHandler()
         {
             _clipboard.CopyToClipboard(Description);
+        }
+
+        public void AttachPricePositions(PricePositionViewModel pricePosition)
+        {
+            if (SelectedTeeth == null)
+                return;
         }
     }
 }

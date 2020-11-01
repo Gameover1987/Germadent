@@ -30,17 +30,20 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             ToothCard.Initialize(order.ToothCard);
+            ToothCard.ToothSelected += ToothCard_ToothSelected;
 
             PriceList.Initialize(order.BranchType);
-            PriceList.PricePositionChecked += PriceListOnPricePositionChecked;
+            PriceList.PricePositionChecked += PriceList_PricePositionChecked;
+        }      
+
+        private void ToothCard_ToothSelected(object sender, ToothSelectedEventArgs e)
+        {
+            PriceList.Setup(e.SelectedTooth?.ToDto());
         }
 
-        private void PriceListOnPricePositionChecked(object sender, PricePositionCheckedEventArgs e)
+        private void PriceList_PricePositionChecked(object sender, PricePositionCheckedEventArgs e)
         {
-            if (ToothCard.SelectedTeeth == null)
-                return;
-
-
+            ToothCard.AttachPricePositions(e.PricePosition);
         }
 
         public override void AssemblyOrder(OrderDto order)

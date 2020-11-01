@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
@@ -73,5 +74,10 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         /// Происходит когда выбрали зуб
         /// </summary>
         event EventHandler<ToothSelectedEventArgs> ToothSelected;
+
+        /// <summary>
+        /// Связывает прайс с выбранными зубами
+        /// </summary>
+        void AttachPricePositions(PricePositionViewModel pricePosition);
     }
 }

@@ -30,7 +30,8 @@
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
-                        <TextBlock Text="{Binding DisplayName}" Margin="3,0,0,0"/>
+                        <TextBlock Text="{Binding DisplayName}" Margin="3,0,0,0" TextTrimming="CharacterEllipsis"
+                                   helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -45,27 +46,22 @@
             <TextBlock  Grid.Row="0" Text="Ценовые позиции" Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Margin="0,6,0,0"
                      ItemsSource="{Binding Positions}"
-                     SelectedItem="{Binding SelectedPosition}"
-                     ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
+                     ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PricePositionViewModel}">
                         <Grid>
-                            <Grid Margin="3,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Margin="0,0,-6,0"/>
-                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"                   
-                                           helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
-                                <TextBlock Grid.Column="2" Text="{Binding UserCode}"/>
-                               
-                            </Grid>
+                            <CheckBox IsChecked="{Binding IsChecked}" Margin="3,0,0,0">
+                                <Grid Margin="-3,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"                   
+                                               helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding UserCode}"/>
+                                </Grid>
+                            </CheckBox>
                         </Grid>
-
-
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

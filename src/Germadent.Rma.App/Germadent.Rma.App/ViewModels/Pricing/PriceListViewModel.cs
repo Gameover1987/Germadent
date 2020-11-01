@@ -18,7 +18,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private readonly IPricePositionRepository _pricePositionRepository;
 
         private PriceGroupViewModel _selectedGroup;
-        private PricePositionViewModel _selectedPosition;
 
         private readonly ICollectionView _pricePositionsView;
 
@@ -61,18 +60,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public ObservableCollection<PricePositionViewModel> Positions { get; }
 
-        public PricePositionViewModel SelectedPosition
-        {
-            get { return _selectedPosition; }
-            set
-            {
-                if (_selectedPosition == value)
-                    return;
-                _selectedPosition = value;
-                OnPropertyChanged(() => SelectedPosition);
-            }
-        }
-
         public void Initialize(BranchType branchType)
         {
             _branchType = branchType;
@@ -83,6 +70,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             {
                 Groups.Add(new PriceGroupViewModel(priceGroupDto));
             }
+
+            SelectedGroup = Groups.FirstOrDefault();
 
             Positions.ForEach(x => x.Checked -= PricePositionOnChecked);
             Positions.Clear();

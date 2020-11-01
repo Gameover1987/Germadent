@@ -12,7 +12,6 @@ namespace Germadent.Rma.App.Views.DesignMock
             Initialize(BranchType.Laboratory);
 
             SelectedGroup = Groups.FirstOrDefault();
-            SelectedPosition = Positions.LastOrDefault();
         }
     }
 }
