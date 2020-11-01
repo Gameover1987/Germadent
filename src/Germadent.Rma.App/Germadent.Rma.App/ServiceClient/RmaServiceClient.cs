@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using DocumentFormat.OpenXml.Drawing;
+using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
@@ -28,6 +30,12 @@ namespace Germadent.Rma.App.ServiceClient
                 _configuration.DataServiceUrl + string.Format("/api/userManagement/authorization/authorize/{0}/{1}", login, password));
 
             AuthorizationInfo = info;
+
+            if (AuthorizationInfo.IsLocked)
+                throw new UserMessageException("Учетная запись заблокирована.");
+
+            if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
+                throw new UserMessageException("Отсутствует право на запуск приложения");
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; private set; }

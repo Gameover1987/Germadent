@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -16,17 +17,21 @@ namespace Germadent.UserManagementCenter.Model.Rights
 
             foreach (var rightModule in rightModules)
             {
-                var moduleDescription = (DescriptionAttribute) rightModule.GetCustomAttributes(typeof(DescriptionAttribute)).First();
+                var rightGroupAttribute = (RightGroupAttribute) rightModule.GetCustomAttributes(typeof(RightGroupAttribute)).First();
                 var rightsByModule = rightModule
                     .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                     .Where(x => x.IsLiteral)
                     .Select(x =>
                     {
-                        var rightDescription = (ApplicationRightAttribute)x.GetCustomAttributes(typeof(ApplicationRightAttribute)).First();
+                        var applicationRightAttribute = (ApplicationRightAttribute)x.GetCustomAttributes(typeof(ApplicationRightAttribute)).First();
+
+                        var fieldValue = x.GetValue(Activator.CreateInstance(rightModule)).ToString();
+
                         return new RightDto
                         {
-                            ApplicationModule = rightDescription.ApplicationModule,
-                            RightDescription = rightDescription.RightDescription,
+                            ApplicationModule = rightGroupAttribute.ApplicationModule,
+                            RightDescription = applicationRightAttribute.RightDescription,
+                            RightName = fieldValue
                         };
                     })
                     .ToArray();

@@ -18,6 +18,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public string Name => _right.RightName;
 
+        public string RightDescription => _right.RightDescription;
+
+        public bool IsObsolete => _right.IsObsolete;
+
         public ApplicationModule ApplicationModule => _right.ApplicationModule;
 
         public bool IsEnabled

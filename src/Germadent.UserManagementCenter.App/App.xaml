@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Germadent.UserManagementCenter.App"
              xmlns:converters="clr-namespace:Germadent.UI.Converters;assembly=Germadent.UI"
+             xmlns:converters1="clr-namespace:Germadent.UserManagementCenter.App.Views.Converters"
              ShutdownMode="OnExplicitShutdown"
              Exit="App_OnExit"
              Startup="App_OnStartup">
@@ -19,6 +20,9 @@
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TabControlDictionary.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/Converters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <converters1:ApplicationModuleToStringConverter x:Key="ApplicationModuleToStringConverter"/>
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
 
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
             <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StlnRadioButtonStyle}"/>

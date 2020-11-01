@@ -15,7 +15,7 @@ RETURN
 	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
 	FROM PriceGroups pg
 		INNER JOIN PricePositions pp ON pg.PriceGroupID = pp.PriceGroupID
-		INNER JOIN Materials m ON pp.MaterialID = m.MaterialID
+		LEFT JOIN Materials m ON pp.MaterialID = m.MaterialID
 		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
 		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
 	WHERE pg.BranchTypeID = @branchTypeId
