@@ -11,10 +11,10 @@
         Title="{Binding Title}"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        MinHeight="600"
-        Height="600"
-        MinWidth="600"
-        Width="600"
+        MinHeight="700"
+        Height="700"
+        MinWidth="700"
+        Width="700"
         Background="{x:Static SystemColors.ControlBrush}"
         FocusManager.FocusedElement="{Binding ElementName=fullNameTextBox}"
         d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockAddUserViewModel}, IsDesignTimeCreatable=True}">
@@ -38,6 +38,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -45,21 +46,58 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Контактные данные" Margin="0,0,0,6" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Контактные данные" Margin="0,0,0,6" FontSize="10" HorizontalAlignment="Center"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Фамилия" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox x:Name="fullNameTextBox" Grid.Row="1" Grid.Column="1" Margin="6,0,0,0"
+                <TextBox x:Name="fullNameTextBox" Grid.Row="1" Grid.Column="1" Margin="6,0,12,0" 
                          Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Имя" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0"
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,12,0" 
                          Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Отчество" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,12,0" 
                          Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Телефон" Margin="0,6,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" HorizontalAlignment="Left" Width="200"
+                <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,12,0"
                          Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="Учетная запись" Margin="0,12,0,6" FontSize="10" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,0,0,0" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Margin="6,0,12,0" 
+                         Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <PasswordBox Grid.Row="7" Grid.Column="1" Margin="6,6,12,0"
+                             helpers:PasswordHelper.Attach="True"
+                             helpers:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <PasswordBox Grid.Row="8" Grid.Column="1" Margin="6,6,12,0"
+                             helpers:PasswordHelper.Attach="True"
+                             helpers:PasswordHelper.Password="{Binding PasswordOnceAgain, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="Описание" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="9" Grid.Column="1" Margin="6,6,12,0"
+                         Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <CheckBox Grid.Row="10" Grid.Column="1" Margin="6,6,0,0"
+                          IsChecked="{Binding IsLocked}"
+                          Content="Заблокировать учетную запись"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Фотография" Margin="0,0,0,6" FontSize="10" HorizontalAlignment="Center"/>
+                <Border Grid.Row="1" Grid.RowSpan="9" Grid.Column="2" Margin="0,0,0,0" BorderThickness="1" CornerRadius="5" SnapsToDevicePixels="True" BorderBrush="Gray" Width="200"></Border>
+                <Button Grid.Row="10" Grid.Column="2" Width="100" Height="23" Margin="0,6,0,0" HorizontalAlignment="Center"
+                        Content="Выбрать фото"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -76,27 +114,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Учетная запись" Margin="0,12,0,6" FontSize="10" HorizontalAlignment="Center"/>
-
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин" VerticalAlignment="Center" Margin="0,0,0,0" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="6,0,0,0" Width="250" HorizontalAlignment="Left"
-                         Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-                <PasswordBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
-                             helpers:PasswordHelper.Attach="True"
-                             helpers:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Пароль еще раз" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-                <PasswordBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Width="250" HorizontalAlignment="Left"
-                             helpers:PasswordHelper.Attach="True"
-                             helpers:PasswordHelper.Password="{Binding PasswordOnceAgain, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" VerticalAlignment="Center" Margin="0,6,0,0" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
-                         Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <CheckBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0"
-                          IsChecked="{Binding IsLocked}"
-                          Content="Заблокировать учетную запись"/>
+              
             </Grid>
 
             <Grid Grid.Row="2" Margin="0,6,0,0">
