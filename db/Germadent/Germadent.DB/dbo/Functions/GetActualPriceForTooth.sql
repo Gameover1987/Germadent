@@ -16,17 +16,16 @@ RETURN
 (
 	SELECT pp.PricePositionID,
 			CASE -- Соображаем, какую цену услуги выбрать в данном конкретном случае. Сначала определяемся с филиалом:
-				WHEN @branchTypeId = 2 THEN pdl.Price
+				WHEN @branchTypeId = 2 THEN p.PriceModel
 				WHEN @branchTypeId = 1 THEN CASE -- Затем для ФЦ смотрим, есть ли STL-файл и содержит ли услуга цену для STL-варианта:
-												WHEN @stlExist = 1 AND pmc.PriceSTL > 0 THEN pmc.PriceSTL
-												ELSE pmc.PriceModel
+												WHEN @stlExist = 1 AND p.PriceSTL > 0 THEN p.PriceSTL
+												ELSE p.PriceModel
 											END
 			END Price
 
 	FROM PricePositions pp
-		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
-		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
+		LEFT JOIN Prices p ON pp.PricePositionID = p.PricePositionID
 	WHERE pp.PricePositionID = @pricePositionId
 		-- Подтягиваем актуальные цены:
-		AND ((GETDATE() BETWEEN pdl.DateBegin AND ISNULL(pdl.DateEnd, '99991231')) OR (GETDATE() BETWEEN pmc.DateBegin AND ISNULL(pmc.DateEnd, '99991231')))
+		AND GETDATE() BETWEEN p.DateBegin AND ISNULL(p.DateEnd, '99991231')
 )

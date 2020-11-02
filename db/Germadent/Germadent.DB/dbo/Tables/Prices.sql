@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[PricesMC] (
+﻿CREATE TABLE [dbo].[Prices] (
     [PricePositionID] INT   NOT NULL,
     [DateBegin]       DATE  NOT NULL,
     [DateEnd]         DATE  NULL,
@@ -8,19 +8,7 @@
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 GO
 CREATE NONCLUSTERED INDEX [IX_PricesMC_PricePositionID]
-    ON [dbo].[PricesMC]([PricePositionID] ASC);
+    ON [dbo].[Prices]([PricePositionID] ASC);
 
