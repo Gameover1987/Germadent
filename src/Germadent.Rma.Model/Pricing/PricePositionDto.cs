@@ -2,7 +2,7 @@
 {
     public class PricePositionDto
     {
-        public int Id { get; set; }
+        public int PricePositionId { get; set; }
 
         public int PriceGroupId { get; set; }
 
@@ -18,7 +18,7 @@
 
         public override string ToString()
         {
-            return string.Format("Id={0}, UserCode={1}, Name={2}", Id, UserCode, Name);
+            return string.Format("Id={0}, UserCode={1}, Name={2}", PricePositionId, UserCode, Name);
         }
     }
 }

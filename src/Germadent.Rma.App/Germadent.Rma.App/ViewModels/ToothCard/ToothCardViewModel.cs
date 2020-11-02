@@ -243,6 +243,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         {
             if (SelectedTeeth == null)
                 return;
+
+            foreach (var toothViewModel in SelectedTeeth)
+            {
+                toothViewModel.AttachPricePosition(pricePosition);
+            }
         }
     }
 }

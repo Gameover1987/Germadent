@@ -7,7 +7,7 @@ namespace Germadent.WebApi.Entities.Conversion
     {
         OrderDto ConvertToOrder(OrderEntity entity);
 
-        ToothDto ConvertToTooth(ToothEntity entity);
+        ToothDto[] ConvertToToothCard(ToothEntity[] entities);
 
         OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
@@ -26,5 +26,7 @@ namespace Germadent.WebApi.Entities.Conversion
         PricePositionDto ConvertToPricePosition(PricePositionEntity entity);
 
         ProductDto ConvertToProduct(ProductEntity entity);
+
+        ToothEntity[] ConvertFromToothDto(ToothDto toothDto);
     }
 }

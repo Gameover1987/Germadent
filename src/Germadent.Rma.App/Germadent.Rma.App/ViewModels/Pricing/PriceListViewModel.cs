@@ -86,7 +86,13 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public void Setup(ToothDto toothDto)
         {
-            
+            Positions.ForEach(x => x.SetIsChecked(false));
+
+            foreach (var pricePositionDto in toothDto.PricePositions)
+            {
+                var positionViewModel = Positions.First(x => x.PricePositionId == pricePositionDto.PricePositionId);
+                positionViewModel.SetIsChecked(true);
+            }
         }
 
         public event EventHandler<PricePositionCheckedEventArgs> PricePositionChecked;

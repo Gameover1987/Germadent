@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.App.ViewModels.Pricing;
+﻿using System.Linq;
+using Germadent.Common.Extensions;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
@@ -48,7 +50,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override void AssemblyOrder(OrderDto order)
         {
-            
+            order.ToothCard = ToothCard.Teeth.Where(x => x.IsChanged).Select(x => x.ToDto()).ToArray();
+            order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
     }
 }

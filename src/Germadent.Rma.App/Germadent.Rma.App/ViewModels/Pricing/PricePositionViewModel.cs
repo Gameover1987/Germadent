@@ -15,6 +15,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _pricePositionDto = pricePositionDto;
         }
 
+        public int PricePositionId => _pricePositionDto.PricePositionId;
+
         public int PriceGroupId => _pricePositionDto.PriceGroupId;
 
         public bool IsChecked
@@ -42,5 +44,13 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         }
 
         public event EventHandler<PricePositionCheckedEventArgs> Checked;
+
+        public PricePositionDto ToDto() => _pricePositionDto;
+
+        public void SetIsChecked(bool isChecked)
+        {
+            _isChecked = isChecked;
+            OnPropertyChanged(() => IsChecked);
+        }
     }
 }

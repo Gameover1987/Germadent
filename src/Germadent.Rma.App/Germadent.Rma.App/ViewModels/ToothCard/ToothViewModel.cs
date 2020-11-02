@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Germadent.Common.Extensions;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
@@ -12,6 +14,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
     {
         private bool _hasBridge;
         private bool _isChanged;
+        private readonly ObservableCollection<PricePositionViewModel> _pricePositions = new ObservableCollection<PricePositionViewModel>();
 
         public ToothViewModel(DictionaryItemDto[] prostheticConditions, DictionaryItemDto[] prostheticTypes, DictionaryItemDto[] materials)
         {
@@ -130,6 +133,21 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public event EventHandler<ToothChangedEventArgs> ToothChanged;
 
+        public void AttachPricePosition(PricePositionViewModel pricePosition)
+        {
+            if (pricePosition.IsChecked)
+            {
+                _pricePositions.Add(pricePosition);
+            }
+            else
+            {
+                _pricePositions.Remove(pricePosition);
+            }
+
+            if (_pricePositions.Any())
+                IsChanged = true;
+        }
+
         public void Initialize(ToothDto toothDto)
         {
             IsChanged = true;
@@ -149,6 +167,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             _hasBridge = toothDto.HasBridge;
 
+            _pricePositions.Clear();
+            toothDto.PricePositions?.ForEach(x => _pricePositions.Add(new PricePositionViewModel(x){IsChecked = true}));
+
             OnPropertyChanged();
         }
 
@@ -163,6 +184,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 ProstheticsName = SelectedProstheticsType?.DisplayName,
                 ConditionId = SelectedProstheticCondition?.Item.Id ?? 0,
                 ConditionName = SelectedProstheticCondition?.DisplayName,
+                PricePositions = _pricePositions.Select(x => x.ToDto()).ToArray(),
                 HasBridge = HasBridge
             };
         }

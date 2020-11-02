@@ -52,7 +52,8 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private void AddOrUpdateToothCard(ToothDto[] toothCard, SqlConnection connection)
         {
-            var toothCardJson = toothCard.SerializeToJson(Formatting.Indented);
+            var toothEntities = toothCard.SelectMany(x => _converter.ConvertFromToothDto(x)).ToArray();
+            var toothCardJson = toothEntities.SerializeToJson(Formatting.Indented);
 
             var cmdText = "AddOrUpdateToothCardInWO";
 
@@ -172,21 +173,20 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@customerID", SqlDbType.Int)).Value = order.CustomerId;
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId == 0 ? (object)DBNull.Value : order.ResponsiblePersonId;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
+                command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
+                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.Bit)).Value = (int)order.Gender;
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
-                command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion.GetValueOrDbNull();
-                command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo == null ? (object)DBNull.Value : order.AdditionalInfo;
                 command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor == null ? (object)DBNull.Value : order.CarcassColor;
                 command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing == null ? (object)DBNull.Value : order.IndividualAbutmentProcessing;
                 command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff == null ? (object)DBNull.Value : order.Understaff;
-                command.Parameters.Add(new SqlParameter("@transparenceID", SqlDbType.Int)).Value = order.Transparency;
                 command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures == null ? (object)DBNull.Value : order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
@@ -367,25 +367,32 @@ namespace Germadent.WebApi.DataAccess.Rma
                 {
                     var reader = command.ExecuteReader();
 
-                    var toothCollection = new List<ToothDto>();
+                    var entities = new List<ToothEntity>();
                     while (reader.Read())
                     {
                         var toothEntity = new ToothEntity();
 
+                        toothEntity.WorkOrderId = reader[nameof(toothEntity.WorkOrderId)].ToInt();
                         toothEntity.ToothNumber = reader[nameof(toothEntity.ToothNumber)].ToInt();
+                        toothEntity.MaterialId = reader[nameof(toothEntity.MaterialId)].ToInt();
                         toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
+                        toothEntity.ConditionId = reader[nameof(toothEntity.ConditionId)].ToInt();
                         toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
+                        toothEntity.ProstheticsId = reader[nameof(toothEntity.ProstheticsId)].ToInt();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
-                        toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();
-                        toothEntity.Price = reader[nameof(toothEntity.Price)].ToInt();
+                        toothEntity.Price = reader[nameof(toothEntity.Price)].ToDecimal();
                         toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
+                        toothEntity.PricePositionId = reader[nameof(toothEntity.PricePositionId)].ToInt();
+                        toothEntity.PricePositionCode = reader[nameof(toothEntity.PricePositionCode)].ToString();
+                        toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();
+                        toothEntity.PriceGroupId = reader[nameof(toothEntity.PriceGroupId)].ToInt();
 
-                        toothCollection.Add(_converter.ConvertToTooth(toothEntity));
+                        entities.Add(toothEntity);
                     }
 
                     reader.Close();
 
-                    return toothCollection.ToArray();
+                    return _converter.ConvertToToothCard(entities.ToArray());
                 }
             }
         }
