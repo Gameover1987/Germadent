@@ -8,7 +8,11 @@
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_PricesMC_PricePositionID]
-    ON [dbo].[Prices]([PricePositionID] ASC);
+CREATE UNIQUE NONCLUSTERED INDEX [IX_PricesMC_PricePositionID]
+    ON [dbo].[Prices]([PricePositionID] ASC, [DateBegin] ASC);
+
+
 
