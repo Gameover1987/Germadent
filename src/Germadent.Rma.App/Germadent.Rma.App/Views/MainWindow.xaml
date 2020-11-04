@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
@@ -13,7 +14,7 @@
         Height="900"
         WindowStartupLocation="CenterScreen"
         Background="{x:Static SystemColors.ControlBrush}"
-        d:DataContext="{d:DesignInstance Type=designmock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Grid Margin="12">
@@ -54,6 +55,7 @@
             <Button Content="Ответственные лица" Margin="0,6,0,0"
                     Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
             <Button Content="Прайслисты" Margin="0,6,0,0"
+                    Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding ShowPriceListEditorCommand}"/>
         </StackPanel>
 

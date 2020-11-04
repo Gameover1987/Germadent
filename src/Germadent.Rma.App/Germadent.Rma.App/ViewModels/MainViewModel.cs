@@ -19,6 +19,7 @@ using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
@@ -79,6 +80,8 @@ namespace Germadent.Rma.App.ViewModels
 
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
+
+            CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
         }
 
         public string Title
@@ -89,6 +92,8 @@ namespace Germadent.Rma.App.ViewModels
                     _userManager.AuthorizationInfo.Login);
             }
         }
+
+        public bool CanViewPriceList { get; }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 

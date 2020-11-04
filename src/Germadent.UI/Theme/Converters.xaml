@@ -9,4 +9,5 @@
     <converters:IntToBoolConverter x:Key="IntToBoolConverter"/>
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
     <converters:EnumToInvisibilityConverter x:Key="EnumToInvisibilityConverter"/>
+    <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
 </ResourceDictionary>

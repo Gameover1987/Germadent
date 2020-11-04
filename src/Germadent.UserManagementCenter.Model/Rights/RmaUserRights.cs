@@ -16,5 +16,11 @@ namespace Germadent.UserManagementCenter.Model.Rights
 
         [ApplicationRight("Просмотр всех заказ-нарядов, а не только назначенных")]
         public const string ViewAllOrders = "Germadent.Rma.ViewAllOrders";
-     }
+
+        [ApplicationRight("Просмотр прайслистов")]
+        public const string ViewPriceList = "Germadent.Rma.ViewPriceList";
+
+        [ApplicationRight("Редактирование прайслистов")]
+        public const string EditPriceList = "Germadent.Rma.EditPriceList";
+    }
 }
