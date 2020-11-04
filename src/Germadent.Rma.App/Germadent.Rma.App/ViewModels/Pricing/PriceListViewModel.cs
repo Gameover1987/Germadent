@@ -87,6 +87,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         public void Setup(ToothDto toothDto)
         {
             Positions.ForEach(x => x.SetIsChecked(false));
+            Groups.ForEach(x => x.HasChanges = false);
 
             if (toothDto.PricePositions == null)
                 return;
@@ -96,12 +97,24 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 var positionViewModel = Positions.First(x => x.PricePositionId == pricePositionDto.PricePositionId);
                 positionViewModel.SetIsChecked(true);
             }
+
+            var groupsWithChanges = Groups
+                .Where(group =>
+                    Positions
+                        .Where(x => x.IsChecked)
+                        .Select(x => x.PriceGroupId)
+                        .Contains(group.PriceGroupId))
+                .ToArray();
+            groupsWithChanges.ForEach(x => x.HasChanges = true);
         }
 
         public event EventHandler PricePositionsChecked;
 
         private void PricePositionOnChecked(object sender, PricePositionCheckedEventArgs e)
         {
+            var group = Groups.First(x => x.PriceGroupId == e.PricePosition.PriceGroupId);
+            group.HasChanges = Positions.Where(x => x.PriceGroupId == group.PriceGroupId).Any(x => x.IsChecked);
+
             PricePositionsChecked?.Invoke(this, e);
         }
     }
