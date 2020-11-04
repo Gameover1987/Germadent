@@ -12,7 +12,7 @@ namespace Germadent.Rma.App.Operations
     {
         PriceGroupDto AddPriceGroup(BranchType branchType);
 
-        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
+        PriceGroupDto EditPriceGroup(PriceGroupDto priceGroupDto);
 
         void DeletePriceGroup(int priceGroupId);
     }
@@ -35,7 +35,7 @@ namespace Germadent.Rma.App.Operations
             return new PriceGroupDto {BranchType = branchType, Name = priceGroupName};
         }
 
-        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        public PriceGroupDto EditPriceGroup(PriceGroupDto priceGroupDto)
         {
             throw new NotImplementedException();
         }

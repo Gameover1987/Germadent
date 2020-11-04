@@ -12,7 +12,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new NotImplementedException();
         }
 
-        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        public PriceGroupDto EditPriceGroup(PriceGroupDto priceGroupDto)
         {
             throw new NotImplementedException();
         }

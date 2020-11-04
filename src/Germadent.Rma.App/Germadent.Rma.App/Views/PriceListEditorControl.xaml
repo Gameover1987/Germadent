@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800">
+             d:DesignHeight="300" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,9 +25,12 @@
         <ListBox Grid.Row="1" Grid.Column="0" Margin="0,6,0,0"></ListBox>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,6,0,0">
-            <Button Content="Добавить" Width="100"></Button>
-            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"></Button>
-            <Button Content="Удалить" Width="100" Margin="6,0,0,0"></Button>
+            <Button Content="Добавить" Width="100"
+                    Command="{Binding AddPriceGroupCommand}"/>
+            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                    Command="{Binding EditPriceGroupCommand}"/>
+            <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                    Command="{Binding DeletePriceGroupCommand}"/>
         </StackPanel>
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Ценовые позиции" Margin="12,0,0,0"

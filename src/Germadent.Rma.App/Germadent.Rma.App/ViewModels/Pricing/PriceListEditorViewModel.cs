@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.App.Operations;
+﻿using System.Collections.ObjectModel;
+using Germadent.Rma.App.Operations;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -10,6 +11,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     public interface IPriceListEditorViewModel
     {
         BranchType BranchType { get; set; }
+
+        void Initialize();
     }
 
     public class PriceListEditorViewModel : ViewModelBase, IPriceListEditorViewModel
@@ -22,8 +25,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _uiOperations = uiOperations;
             _userManager = userManager;
 
+            Groups = new ObservableCollection<PriceGroupViewModel>();
+            Positions = new ObservableCollection<PricePositionViewModel>();
+
             AddPriceGroupCommand = new DelegateCommand(AddPriceGroupCommandHandler, CanAddPriceGroupCommandHandler);
-            UpdatePriceGroupCommand = new DelegateCommand(UpdatePriceGroupCommandHandler, CanUpdatePriceGroupCommandHandler);
+            EditPriceGroupCommand = new DelegateCommand(EditPriceGroupCommandHandler, CanEditPriceGroupCommandHandler);
             DeletePriceGroupCommand = new DelegateCommand(DeletePriceGroupCommandHandler, CanDeletePriceGroupCommandHandler);
 
             CanEditPriceList = _userManager.HasRight(RmaUserRights.EditPriceList);
@@ -33,9 +39,18 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public BranchType BranchType { get; set; }
 
+        public void Initialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ObservableCollection<PriceGroupViewModel> Groups { get; }
+
+        public ObservableCollection<PricePositionViewModel> Positions { get; }
+
         public IDelegateCommand AddPriceGroupCommand { get; }
 
-        public IDelegateCommand UpdatePriceGroupCommand { get; }
+        public IDelegateCommand EditPriceGroupCommand { get; }
 
         public IDelegateCommand DeletePriceGroupCommand { get; }
 
@@ -51,12 +66,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return;
         }
 
-        private bool CanUpdatePriceGroupCommandHandler()
+        private bool CanEditPriceGroupCommandHandler()
         {
             return CanEditPriceList;
         }
 
-        private void UpdatePriceGroupCommandHandler()
+        private void EditPriceGroupCommandHandler()
         {
 
         }

@@ -111,6 +111,7 @@ namespace Germadent.Rma.App.Infrastructure
 
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceListViewModel, PriceListViewModel>(new TransientLifetimeManager());
+            _container.RegisterType<IPriceListUIOperations, PriceListUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceListEditorViewModel, PriceListEditorViewModel>(new ContainerControlledLifetimeManager());
         }
 
