@@ -6,7 +6,6 @@
         {
             AffectsRenderToothCard = affectsRenderToothCard;
         }
-
         public bool AffectsRenderToothCard { get; }
     }
 }

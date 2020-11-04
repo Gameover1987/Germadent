@@ -51,11 +51,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         ToothDto[] ToDto();
 
         /// <summary>
-        /// Возникает когда надо перерисовать зубную карту
-        /// </summary>
-        event EventHandler<EventArgs> RenderRequest;
-
-        /// <summary>
         /// Копировать описание работ в буфер обмена
         /// </summary>
         ICommand CopyDescriptionCommand { get; }
@@ -71,6 +66,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         bool IsValid { get; }
 
         /// <summary>
+        /// Возникает когда надо перерисовать зубную карту
+        /// </summary>
+        event EventHandler<ToothChangedEventArgs> ToothChanged;
+
+        /// <summary>
         /// Происходит когда выбрали зуб
         /// </summary>
         event EventHandler<ToothSelectedEventArgs> ToothSelected;
@@ -78,6 +78,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         /// <summary>
         /// Связывает прайс с выбранными зубами
         /// </summary>
-        void AttachPricePositions(PricePositionViewModel pricePosition);
+        void AttachPricePositions(PricePositionViewModel[] pricePositions);
     }
 }

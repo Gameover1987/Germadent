@@ -33,18 +33,21 @@ namespace Germadent.Rma.App.Views.Wizard
         {
             if (_toothCard != null)
             {
-                _toothCard.RenderRequest -= ToothCardOnRenderRequest;
+                _toothCard.ToothChanged -= ToothCardOnToothChanged;
             }
 
             if (DataContext == null)
                 return;
 
             _toothCard = (IToothCardViewModel)DataContext;
-            _toothCard.RenderRequest += ToothCardOnRenderRequest;
+            _toothCard.ToothChanged += ToothCardOnToothChanged;
         }
 
-        private void ToothCardOnRenderRequest(object sender, EventArgs e)
+        private void ToothCardOnToothChanged(object sender, ToothChangedEventArgs e)
         {
+            if (!e.AffectsRenderToothCard)
+                return;
+
             RenderMouth();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
 
@@ -20,6 +21,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         void Setup(ToothDto toothDto);
 
-        event EventHandler<PricePositionCheckedEventArgs> PricePositionChecked;
+        ObservableCollection<PricePositionViewModel> Positions { get; }
+
+        event EventHandler PricePositionsChecked;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
@@ -33,19 +34,28 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             ToothCard.Initialize(order.ToothCard);
             ToothCard.ToothSelected += ToothCard_ToothSelected;
+            ToothCard.ToothChanged += ToothCardOnToothChanged;
 
             PriceList.Initialize(order.BranchType);
-            PriceList.PricePositionChecked += PriceList_PricePositionChecked;
-        }      
+            PriceList.PricePositionsChecked += PriceList_PricePositionChecked;
+        }
+
+        private void ToothCardOnToothChanged(object sender, ToothChangedEventArgs e)
+        {
+            if (ToothCard.SelectedTeeth == null || ToothCard.SelectedTeeth.Length == 0)
+                return;
+
+            PriceList.Setup(ToothCard.SelectedTeeth.First().ToDto());
+        }
 
         private void ToothCard_ToothSelected(object sender, ToothSelectedEventArgs e)
         {
             PriceList.Setup(e.SelectedTooth?.ToDto());
         }
 
-        private void PriceList_PricePositionChecked(object sender, PricePositionCheckedEventArgs e)
+        private void PriceList_PricePositionChecked(object sender, EventArgs e)
         {
-            ToothCard.AttachPricePositions(e.PricePosition);
+            ToothCard.AttachPricePositions(PriceList.Positions.Where(x => x.IsChecked).ToArray());
         }
 
         public override void AssemblyOrder(OrderDto order)

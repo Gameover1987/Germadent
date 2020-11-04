@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.Test
             // Given
             var raised = false;
             var target = CreateTarget();
-            target.RenderRequest += (sender, args) => { raised = true; };
+            target.ToothChanged += (sender, args) => { raised = true; };
 
             // When
             target.Initialize(CreateToothCard());

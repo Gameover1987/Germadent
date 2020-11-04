@@ -95,11 +95,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public event EventHandler<PricePositionCheckedEventArgs> PricePositionChecked;
+        public event EventHandler PricePositionsChecked;
 
         private void PricePositionOnChecked(object sender, PricePositionCheckedEventArgs e)
         {
-            PricePositionChecked?.Invoke(this, e);
+            PricePositionsChecked?.Invoke(this, e);
         }
     }
 }
