@@ -3,29 +3,12 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.DesignTime;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
-    public class DesignMockUserManager : IUserManager
-    {
-        public bool HasRight(string rightName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AuthorizationInfoDto AuthorizationInfo { get; }
-    }
-
-    public class DesignMockIPriceListEditorViewModel : PriceListEditorViewModel
-    {
-
-    }
-
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()

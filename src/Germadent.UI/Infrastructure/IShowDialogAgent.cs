@@ -151,6 +151,13 @@ namespace Germadent.UI.Infrastructure
 		/// <returns></returns>
 		bool? ShowSaveFileDialog(string filter, string defFileName, out string fileName, IWindow owner = null);
 
-        string ShowInputBox(string title, string parameterName, string inputString);
+		/// <summary>
+		/// Простое окно для ввода строки
+		/// </summary>
+		/// <param name="title">Заголовок окна</param>
+		/// <param name="parameterName">Название параметра</param>
+		/// <param name="inputString">Начальное значение параметра</param>
+		/// <returns></returns>
+        string ShowInputBox(string title, string parameterName, string inputString = null);
     }
 }

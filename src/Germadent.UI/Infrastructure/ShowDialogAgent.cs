@@ -282,7 +282,7 @@ namespace Germadent.UI.Infrastructure
             return res;
         }
 
-        public string ShowInputBox(string title, string parameterName, string inputString)
+        public string ShowInputBox(string title, string parameterName, string inputString = null)
         {
             var inputBoxViewModel = new InputBoxViewModel
             {

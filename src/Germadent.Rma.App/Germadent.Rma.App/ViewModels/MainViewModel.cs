@@ -304,7 +304,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanShowPriceListEditorCommandHandler()
         {
-            return true;
+            return CanViewPriceList;
         }
 
         private void ShowPriceListEditorCommandHandler()
