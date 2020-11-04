@@ -1,6 +1,8 @@
-﻿namespace Germadent.Rma.App.ViewModels.ToothCard
+﻿using System;
+
+namespace Germadent.Rma.App.ViewModels.ToothCard
 {
-    public class ToothChangedEventArgs
+    public class ToothChangedEventArgs : EventArgs
     {
         public ToothChangedEventArgs(bool affectsRenderToothCard)
         {

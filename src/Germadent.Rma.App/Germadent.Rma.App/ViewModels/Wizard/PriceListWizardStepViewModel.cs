@@ -34,18 +34,15 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             ToothCard.Initialize(order.ToothCard);
             ToothCard.ToothSelected += ToothCard_ToothSelected;
-            ToothCard.ToothChanged += ToothCardOnToothChanged;
+            ToothCard.ToothCleanup += ToothCardOnToothCleanup;
 
             PriceList.Initialize(order.BranchType);
             PriceList.PricePositionsChecked += PriceList_PricePositionChecked;
         }
 
-        private void ToothCardOnToothChanged(object sender, ToothChangedEventArgs e)
+        private void ToothCardOnToothCleanup(object sender, ToothCleanUpEventArgs e)
         {
-            if (ToothCard.SelectedTeeth == null || ToothCard.SelectedTeeth.Length == 0)
-                return;
-
-            PriceList.Setup(ToothCard.SelectedTeeth.First().ToDto());
+            PriceList.Setup(e.Tooth.ToDto());
         }
 
         private void ToothCard_ToothSelected(object sender, ToothSelectedEventArgs e)

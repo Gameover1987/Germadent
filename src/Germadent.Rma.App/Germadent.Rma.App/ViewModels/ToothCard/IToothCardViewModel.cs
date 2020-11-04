@@ -76,6 +76,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         event EventHandler<ToothSelectedEventArgs> ToothSelected;
 
         /// <summary>
+        /// Происходит при очистке зуба
+        /// </summary>
+        event EventHandler<ToothCleanUpEventArgs> ToothCleanup; 
+
+        /// <summary>
         /// Связывает прайс с выбранными зубами
         /// </summary>
         void AttachPricePositions(PricePositionViewModel[] pricePositions);

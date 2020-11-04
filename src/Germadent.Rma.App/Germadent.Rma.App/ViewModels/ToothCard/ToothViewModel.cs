@@ -136,6 +136,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public event EventHandler<ToothChangedEventArgs> ToothChanged;
 
+        public event EventHandler<ToothCleanUpEventArgs> ToothCleanup; 
+
         public void AttachPricePositions(PricePositionViewModel[] pricePositions)
         {
             _pricePositions = pricePositions;
@@ -195,6 +197,8 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             _pricePositions = null;
 
             IsChanged = false;
+
+            ToothCleanup?.Invoke(this, new ToothCleanUpEventArgs(this));
         }
 
         public override string ToString()
