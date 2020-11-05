@@ -36,7 +36,7 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IShowDialogAgent>(),
                 Mock.Of<ICustomerCatalogViewModel>(),
                 Mock.Of<IResponsiblePersonCatalogViewModel>(),
-                Mock.Of<IPriceListEditorViewModel>(),
+                Mock.Of<IPriceListEditorContainerViewModel>(),
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
                 Mock.Of<IReporter>(),

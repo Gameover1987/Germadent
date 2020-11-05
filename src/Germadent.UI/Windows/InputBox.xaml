@@ -34,6 +34,7 @@
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Width="100" Height="23" Content="OK" IsDefault="True"
+                    Command="{Binding OKCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>
             <Button Width="100" Height="23" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
                     helpers:WindowCloseHelper.DialogResult="False"/>

@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Germadent.Rma.App.Views"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
@@ -15,14 +17,26 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="0.65*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Ценовые группы"
                    Style="{StaticResource GroupNameStyle}"/>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Margin="0,6,0,0"></ListBox>
+        <ListBox Grid.Row="1" Grid.Column="0" Margin="0,6,0,0" Width="320"
+                 ItemsSource="{Binding Groups}"
+                 SelectedItem="{Binding SelectedGroup}"
+                 ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
+                    <Grid>
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="3,0,0,0" TextTrimming="CharacterEllipsis"
+                                   helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,6,0,0">
             <Button Content="Добавить" Width="100"

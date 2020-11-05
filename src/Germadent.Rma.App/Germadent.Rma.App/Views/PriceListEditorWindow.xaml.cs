@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Germadent.Rma.App.ViewModels.Pricing;
 
 namespace Germadent.Rma.App.Views
 {
@@ -10,6 +11,14 @@ namespace Germadent.Rma.App.Views
         public PriceListEditorWindow()
         {
             InitializeComponent();
+
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var editorContainer = (IPriceListEditorContainerViewModel) DataContext;
+            editorContainer?.Initialize();
         }
     }
 }

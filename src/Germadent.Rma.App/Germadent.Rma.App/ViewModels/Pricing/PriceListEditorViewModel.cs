@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -19,11 +21,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     {
         private readonly IPriceListUIOperations _uiOperations;
         private readonly IUserManager _userManager;
+        private readonly IPriceGroupRepository _priceGroupRepository;
+        private readonly IPricePositionRepository _pricePositionRepository;
+        private PriceGroupViewModel _selectedGroup;
 
-        public PriceListEditorViewModel(IPriceListUIOperations uiOperations, IUserManager userManager)
+        public PriceListEditorViewModel(IPriceListUIOperations uiOperations, IUserManager userManager, IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository)
         {
             _uiOperations = uiOperations;
             _userManager = userManager;
+            _priceGroupRepository = priceGroupRepository;
+            _pricePositionRepository = pricePositionRepository;
 
             Groups = new ObservableCollection<PriceGroupViewModel>();
             Positions = new ObservableCollection<PricePositionViewModel>();
@@ -41,10 +48,30 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public void Initialize()
         {
-            throw new System.NotImplementedException();
+            Groups.Clear();
+
+            var groups = _priceGroupRepository.Items.Where(x => x.BranchType == BranchType).ToArray();
+            foreach (var priceGroupDto in groups)
+            {
+                Groups.Add(new PriceGroupViewModel(priceGroupDto));
+            }
+
+            SelectedGroup = Groups.FirstOrDefault();
         }
 
         public ObservableCollection<PriceGroupViewModel> Groups { get; }
+
+        public PriceGroupViewModel SelectedGroup
+        {
+            get { return _selectedGroup; }
+            set
+            {
+                if (_selectedGroup == value)
+                    return;
+                _selectedGroup = value;
+                OnPropertyChanged(() => SelectedGroup);
+            }
+        }
 
         public ObservableCollection<PricePositionViewModel> Positions { get; }
 

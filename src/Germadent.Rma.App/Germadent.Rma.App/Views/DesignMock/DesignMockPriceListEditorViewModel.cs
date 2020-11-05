@@ -4,8 +4,9 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockPriceListEditorViewModel : PriceListEditorViewModel
     {
-        public DesignMockPriceListEditorViewModel() : base(new DesignMockPriceListUIOperations(), new DesignMockUserManager())
+        public DesignMockPriceListEditorViewModel() : base(new DesignMockPriceListUIOperations(), new DesignMockUserManager(), new DesignMockPriceGroupRepository(), new DesignMockPricePositionRepository())
         {
+            Initialize();
         }
     }
 }

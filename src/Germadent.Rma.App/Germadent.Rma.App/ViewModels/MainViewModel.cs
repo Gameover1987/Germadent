@@ -30,7 +30,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
-        private readonly IPriceListEditorViewModel _priceListEditorViewModel;
+        private readonly IPriceListEditorContainerViewModel _priceListEditorContainerViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
@@ -48,7 +48,7 @@ namespace Germadent.Rma.App.ViewModels
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
-            IPriceListEditorViewModel priceListEditorViewModel,
+            IPriceListEditorContainerViewModel priceListEditorContainerContainerViewModel,
             IPrintModule printModule,
             ILogger logger,
             IReporter reporter, 
@@ -59,7 +59,7 @@ namespace Germadent.Rma.App.ViewModels
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
-            _priceListEditorViewModel = priceListEditorViewModel;
+            _priceListEditorContainerViewModel = priceListEditorContainerContainerViewModel;
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
@@ -309,7 +309,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void ShowPriceListEditorCommandHandler()
         {
-            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorViewModel);
+            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
         }
     }
 }
