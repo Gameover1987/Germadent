@@ -119,15 +119,15 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private void LinkFileToWorkOrder(int workOrderId, string fileName, DateTime creationTime, SqlConnection connection)
+        private void LinkFileToWorkOrder(int userId, string fileName, DateTime creationTime, SqlConnection connection)
         {
-            var cmdText = "AddLinkWO_FileStream";
+            var cmdText = "AddLink_User_FileStream";
             using (var command = new SqlCommand(cmdText, connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@fileName", SqlDbType.NVarChar)).Value = fileName;
                 command.Parameters.Add(new SqlParameter("@creationTime", SqlDbType.DateTimeOffset)).Value = creationTime;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
 
                 command.ExecuteNonQuery();
             }
