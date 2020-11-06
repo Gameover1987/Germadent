@@ -37,3 +37,8 @@ BEGIN
 	WHERE ProductID = 0 OR ProductID IS NULL
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateProductSet] TO [gdl_user]
+    AS [dbo];
+

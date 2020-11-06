@@ -34,3 +34,8 @@ BEGIN
 	SET @priceGroupId = SCOPE_IDENTITY()
     
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddPriceGroup] TO [gdl_user]
+    AS [dbo];
+

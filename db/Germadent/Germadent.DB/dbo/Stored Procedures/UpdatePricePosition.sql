@@ -27,3 +27,8 @@ BEGIN
 	EXEC AddOrUpdateProductSet @jsonStringProduct
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdatePricePosition] TO [gdl_user]
+    AS [dbo];
+

@@ -40,3 +40,8 @@ BEGIN
 			END	
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UnionPriceGroups] TO [gdl_user]
+    AS [dbo];
+

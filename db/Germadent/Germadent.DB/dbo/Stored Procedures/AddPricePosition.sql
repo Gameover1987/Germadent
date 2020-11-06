@@ -36,3 +36,8 @@ BEGIN
 	SET @pricePositionId = SCOPE_IDENTITY()
 	   
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddPricePosition] TO [gdl_user]
+    AS [dbo];
+

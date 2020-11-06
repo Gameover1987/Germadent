@@ -4,11 +4,17 @@
     [Rate]                  MONEY   NOT NULL,
     [DateBegin]             DATE    NOT NULL,
     [DateEnd]               DATE    NULL,
-    CONSTRAINT [PK_Rates] PRIMARY KEY CLUSTERED ([TechnologyOperationID] ASC),
     CONSTRAINT [FK_Rates_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID])
 );
 
 
 
 
+
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Rates]
+    ON [dbo].[Rates]([TechnologyOperationID] ASC, [QualifyingRank] ASC);
 

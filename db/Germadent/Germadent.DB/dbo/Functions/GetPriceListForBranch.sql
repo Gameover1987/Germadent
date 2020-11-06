@@ -12,12 +12,12 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, p.PriceSTL, p.PriceModel
+	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, p.DateBegin, p.DateEnd, p.PriceSTL, p.PriceModel
 	FROM PriceGroups pg
 		LEFT JOIN PricePositions pp ON pg.PriceGroupID = pp.PriceGroupID
 		LEFT JOIN Materials m ON pp.MaterialID = m.MaterialID
 		LEFT JOIN Prices p ON pp.PricePositionID = p.PricePositionID
 	WHERE pg.BranchTypeID = @branchTypeId
-		AND GETDATE() BETWEEN p.DateBegin AND ISNULL(p.DateEnd, '99991231')
+		AND GETDATE() BETWEEN ISNULL(p.DateBegin, '17530101') AND ISNULL(p.DateEnd, '99991231')
 
 )

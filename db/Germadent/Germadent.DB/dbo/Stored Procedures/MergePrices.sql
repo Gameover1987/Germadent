@@ -40,3 +40,8 @@ BEGIN
 		DELETE;
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[MergePrices] TO [gdl_user]
+    AS [dbo];
+

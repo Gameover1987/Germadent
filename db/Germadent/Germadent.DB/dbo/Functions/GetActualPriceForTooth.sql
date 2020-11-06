@@ -6,7 +6,6 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetActualPriceForTooth]
 (	
-	@branchTypeId int, 
 	@pricePositionId int,
 	@stlExist bit = 0
 )
@@ -14,13 +13,10 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT pp.PricePositionID,
-			CASE -- Соображаем, какую цену услуги выбрать в данном конкретном случае. Сначала определяемся с филиалом:
-				WHEN @branchTypeId = 2 THEN p.PriceModel
-				WHEN @branchTypeId = 1 THEN CASE -- Затем для ФЦ смотрим, есть ли STL-файл и содержит ли услуга цену для STL-варианта:
-												WHEN @stlExist = 1 AND p.PriceSTL > 0 THEN p.PriceSTL
-												ELSE p.PriceModel
-											END
+	SELECT 
+			CASE -- Смотрим, есть ли STL-файл и содержит ли услуга цену для STL-варианта:
+				WHEN @stlExist = 1 AND p.PriceSTL > 0 THEN p.PriceSTL
+				ELSE p.PriceModel
 			END Price
 
 	FROM PricePositions pp

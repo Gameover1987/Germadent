@@ -20,3 +20,8 @@ BEGIN
 	WHERE PriceGroupID = @priceGroupId
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdatePriceGroup] TO [gdl_user]
+    AS [dbo];
+
