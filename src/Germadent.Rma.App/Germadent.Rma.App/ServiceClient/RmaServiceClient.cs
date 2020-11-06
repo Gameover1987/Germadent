@@ -167,6 +167,12 @@ namespace Germadent.Rma.App.ServiceClient
             return addedPriceGroup;
         }
 
+        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
+            return updatedPriceGroup;
+        }
+
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
             return ExecuteHttpGet<PricePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);

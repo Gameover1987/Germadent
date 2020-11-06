@@ -34,7 +34,23 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UpdatePriceGroup", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = (int)priceGroupDto.Id;
+                    command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = priceGroupDto.BranchType;
+                    command.Parameters.Add(new SqlParameter("@priceGroupName", SqlDbType.NVarChar)).Value = priceGroupDto.Name;
+
+                    command.ExecuteNonQuery();
+
+                    priceGroupDto.Id = command.Parameters["@priceGroupId"].Value.ToInt();
+
+                    return priceGroupDto;
+                }
+            }
         }
     }
 }

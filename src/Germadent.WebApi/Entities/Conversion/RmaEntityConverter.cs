@@ -66,7 +66,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 var prototype = grouping.First();
                 toothDto.WorkOrderId = prototype.WorkOrderId;
                 toothDto.ToothNumber = prototype.ToothNumber;
-                toothDto.HasBridge = prototype.FlagBridge;
+                toothDto.HasBridge = prototype.HasBridge;
                 toothDto.MaterialId = prototype.MaterialId;
                 toothDto.MaterialName = prototype.MaterialName;
                 toothDto.ProstheticsId = prototype.ProstheticsId;
@@ -232,7 +232,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 {
                     WorkOrderId = toothDto.WorkOrderId,
                     ConditionName = toothDto.ConditionName,
-                    FlagBridge = toothDto.HasBridge,
+                    HasBridge = toothDto.HasBridge,
                     MaterialName = toothDto.MaterialName,
                     Price = toothDto.Price,
                     PricePositionId = pricePosition.PricePositionId,

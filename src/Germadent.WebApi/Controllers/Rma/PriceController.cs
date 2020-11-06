@@ -58,6 +58,23 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
+        [HttpPost]
+        [Route("UpdatePriceGroup")]
+        public IActionResult UpdatePriceGroup(PriceGroupDto priceGroup)
+        {
+            try
+            {
+                _logger.Info(nameof(UpdatePriceGroup));
+                priceGroup = _rmaDbOperations.UpdatePriceGroup(priceGroup);
+                return Ok(priceGroup);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
         [HttpGet]
         [Route("PricePositions/{branchType:int}")]
         public IActionResult GetPricePositions(int branchType)

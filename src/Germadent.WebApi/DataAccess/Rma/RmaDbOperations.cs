@@ -381,7 +381,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         toothEntity.ProstheticsId = reader[nameof(toothEntity.ProstheticsId)].ToInt();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
                         toothEntity.Price = reader[nameof(toothEntity.Price)].ToDecimal();
-                        toothEntity.FlagBridge = reader[nameof(toothEntity.FlagBridge)].ToBool();
+                        toothEntity.HasBridge = reader[nameof(toothEntity.HasBridge)].ToBool();
                         toothEntity.PricePositionId = reader[nameof(toothEntity.PricePositionId)].ToInt();
                         toothEntity.PricePositionCode = reader[nameof(toothEntity.PricePositionCode)].ToString();
                         toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();

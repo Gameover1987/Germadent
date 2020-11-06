@@ -106,17 +106,21 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanEditPriceGroupCommandHandler()
         {
-            return CanEditPriceList;
+            return CanEditPriceList && SelectedGroup != null;
         }
 
         private void EditPriceGroupCommandHandler()
         {
+            var priceGroupName = _dialogAgent.ShowInputBox("Изменение названия ценовой группы", "Ценовая группа", SelectedGroup.DisplayName);
+            if (priceGroupName == null)
+                return;
 
+            
         }
 
         private bool CanDeletePriceGroupCommandHandler()
         {
-            return CanEditPriceList;
+            return CanEditPriceList && SelectedGroup != null;
         }
 
         private void DeletePriceGroupCommandHandler()

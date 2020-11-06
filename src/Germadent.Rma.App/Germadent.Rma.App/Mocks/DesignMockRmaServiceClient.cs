@@ -272,6 +272,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        {
+            throw new NotImplementedException();
+        }
+
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
             var positions = new PricePositionDto[]

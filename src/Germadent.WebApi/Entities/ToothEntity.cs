@@ -28,6 +28,6 @@
 
         public decimal Price { get; set; }
 
-        public bool FlagBridge { get; set; }
+        public bool HasBridge { get; set; }
     }
 }

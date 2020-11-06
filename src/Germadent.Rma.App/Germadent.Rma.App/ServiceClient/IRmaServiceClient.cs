@@ -156,6 +156,13 @@ namespace Germadent.Rma.App.ServiceClient
         PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
 
         /// <summary>
+        /// Обновляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
         /// Возвращает ценовые позиции по выбранному типу филиала
         /// 
         /// </summary>

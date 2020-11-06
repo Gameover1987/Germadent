@@ -100,7 +100,14 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (!IsChanged)
                     return true;
 
-                return SelectedProstheticCondition != null && SelectedMaterial != null && SelectedProstheticsType != null && _pricePositions.Any();
+                if (SelectedProstheticCondition == null && SelectedMaterial == null &&
+                    SelectedProstheticsType == null)
+                    return false;
+
+                if (_pricePositions == null || _pricePositions.Length == 0)
+                    return false;
+
+                return true;
             }
         }
 
