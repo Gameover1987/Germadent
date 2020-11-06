@@ -16,7 +16,17 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public int PriceGroupId => _priceGroupDto.Id;
 
-        public string DisplayName => _priceGroupDto.Name;
+        public string DisplayName
+        {
+            get { return _priceGroupDto.Name; }
+            set
+            {
+                if (_priceGroupDto.Name == value)
+                    return;
+                _priceGroupDto.Name = value;
+                OnPropertyChanged(() => DisplayName);
+            }
+        } 
 
         public bool HasChanges
         {
@@ -28,6 +38,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 _hasChanges = value;
                 OnPropertyChanged(() => HasChanges);
             }
+        }
+
+        public PriceGroupDto ToDto()
+        {
+            return _priceGroupDto;
         }
     }
 }
