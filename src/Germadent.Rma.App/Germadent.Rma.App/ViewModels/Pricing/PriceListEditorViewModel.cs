@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
@@ -19,18 +22,20 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
     public class PriceListEditorViewModel : ViewModelBase, IPriceListEditorViewModel
     {
-        private readonly IPriceListUIOperations _uiOperations;
         private readonly IUserManager _userManager;
         private readonly IPriceGroupRepository _priceGroupRepository;
         private readonly IPricePositionRepository _pricePositionRepository;
+        private readonly IShowDialogAgent _dialogAgent;
+        private readonly IRmaServiceClient _serviceClient;
         private PriceGroupViewModel _selectedGroup;
 
-        public PriceListEditorViewModel(IPriceListUIOperations uiOperations, IUserManager userManager, IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository)
+        public PriceListEditorViewModel(IUserManager userManager, IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository, IShowDialogAgent dialogAgent, IRmaServiceClient serviceClient)
         {
-            _uiOperations = uiOperations;
             _userManager = userManager;
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
+            _dialogAgent = dialogAgent;
+            _serviceClient = serviceClient;
 
             Groups = new ObservableCollection<PriceGroupViewModel>();
             Positions = new ObservableCollection<PricePositionViewModel>();
@@ -88,9 +93,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private void AddPriceGroupCommandHandler()
         {
-            var priceGroup = _uiOperations.AddPriceGroup(BranchType);
-            if (priceGroup == null)
+            var priceGroupName = _dialogAgent.ShowInputBox("Добавление ценовой группы", "Ценовая группа");
+            if (priceGroupName == null)
                 return;
+
+            var priceGroup = new PriceGroupDto { BranchType = BranchType, Name = priceGroupName };
+
+            _serviceClient.AddPriceGroup(priceGroup);
+
+            Groups.Add(new PriceGroupViewModel(priceGroup));
         }
 
         private bool CanEditPriceGroupCommandHandler()

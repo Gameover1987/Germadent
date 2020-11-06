@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
-    public class RmaDbOperations : IRmaDbOperations
+    public partial class RmaDbOperations : IRmaDbOperations
     {
         private readonly IAddWorOrderCommand _addWorOrderCommand;
         private readonly IRmaEntityConverter _converter;
@@ -441,7 +441,11 @@ namespace Germadent.WebApi.DataAccess.Rma
                     {
                         var pricePositionEntity = new PricePositionEntity();
 
-                        pricePositionEntity.PricePositionId = reader[nameof(pricePositionEntity.PricePositionId)].ToInt();
+                        var pricePositionId = reader[nameof(pricePositionEntity.PricePositionId)];
+                        if (pricePositionId == DBNull.Value)
+                            continue;
+
+                        pricePositionEntity.PricePositionId = pricePositionId.ToInt();
                         pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();
                         pricePositionEntity.PricePositionCode = reader[nameof(pricePositionEntity.PricePositionCode)].ToString();
                         pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();

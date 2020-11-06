@@ -22,8 +22,6 @@ namespace Germadent.Rma.App.ServiceClient
         {
             _configuration = configuration;
             _fileManager = fileManager;
-
-           
         }
 
         public async void Authorize(string login, string password)
@@ -161,6 +159,12 @@ namespace Germadent.Rma.App.ServiceClient
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
             return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
+        }
+
+        public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
+            return addedPriceGroup;
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)

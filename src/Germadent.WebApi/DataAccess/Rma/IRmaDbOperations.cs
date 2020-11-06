@@ -138,5 +138,19 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <returns></returns>
         ProductDto[] GetProducts();
+
+        /// <summary>
+        /// Добавляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// ОБновить ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
     }
 }

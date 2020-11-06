@@ -62,34 +62,34 @@ namespace Germadent.WebApi.Entities.Conversion
 
             foreach (var grouping in groupings)
             {
-               var toothDto = new ToothDto();
-               var prototype = grouping.First();
-               toothDto.WorkOrderId = prototype.WorkOrderId;
-               toothDto.ToothNumber =prototype .ToothNumber;
-               toothDto.HasBridge = prototype.FlagBridge;
-               toothDto.MaterialId = prototype.MaterialId;
-               toothDto.MaterialName = prototype.MaterialName;
-               toothDto.ProstheticsId = prototype.ProstheticsId;
-               toothDto.ProstheticsName = prototype.ProstheticsName;
-               toothDto.ConditionId = prototype.ConditionId;
-               toothDto.ConditionName = prototype.ConditionName;
+                var toothDto = new ToothDto();
+                var prototype = grouping.First();
+                toothDto.WorkOrderId = prototype.WorkOrderId;
+                toothDto.ToothNumber = prototype.ToothNumber;
+                toothDto.HasBridge = prototype.FlagBridge;
+                toothDto.MaterialId = prototype.MaterialId;
+                toothDto.MaterialName = prototype.MaterialName;
+                toothDto.ProstheticsId = prototype.ProstheticsId;
+                toothDto.ProstheticsName = prototype.ProstheticsName;
+                toothDto.ConditionId = prototype.ConditionId;
+                toothDto.ConditionName = prototype.ConditionName;
 
                 var pricePositions = new List<PricePositionDto>();
-               foreach (var toothEntity in grouping)
-               {
-                   pricePositions.Add(new PricePositionDto
-                   {
-                       PricePositionId = toothEntity.PricePositionId,
-                       PriceGroupId = toothEntity.PriceGroupId,
-                       MaterialId = toothEntity.MaterialId,
-                       UserCode = toothEntity.PricePositionCode,
-                       Name = toothEntity.PricePositionName
-                   });
-               }
+                foreach (var toothEntity in grouping)
+                {
+                    pricePositions.Add(new PricePositionDto
+                    {
+                        PricePositionId = toothEntity.PricePositionId,
+                        PriceGroupId = toothEntity.PriceGroupId,
+                        MaterialId = toothEntity.MaterialId,
+                        UserCode = toothEntity.PricePositionCode,
+                        Name = toothEntity.PricePositionName
+                    });
+                }
 
-               toothDto.PricePositions = pricePositions.ToArray();
+                toothDto.PricePositions = pricePositions.ToArray();
 
-               toothCollection.Add(toothDto);
+                toothCollection.Add(toothDto);
             }
 
             return toothCollection.ToArray();

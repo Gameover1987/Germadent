@@ -1,6 +1,8 @@
 ﻿using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
+using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
@@ -14,20 +16,22 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     {
         private readonly IPriceGroupRepository _priceGroupRepository;
         private readonly IPricePositionRepository _pricePositionRepository;
-        private readonly IPriceListUIOperations _uiOperations;
         private readonly IUserManager _userManager;
+        private readonly IShowDialogAgent _dialogAgent;
+        private readonly IRmaServiceClient _serviceClient;
 
-        public PriceListEditorFactory(IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository, IPriceListUIOperations uiOperations, IUserManager userManager)
+        public PriceListEditorFactory(IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository, IUserManager userManager, IShowDialogAgent dialogAgent, IRmaServiceClient serviceClient)
         {
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
-            _uiOperations = uiOperations;
             _userManager = userManager;
+            _dialogAgent = dialogAgent;
+            _serviceClient = serviceClient;
         }
 
         public IPriceListEditorViewModel CreateEditor(BranchType branchType)
         {
-            var editor = new PriceListEditorViewModel(_uiOperations, _userManager, _priceGroupRepository, _pricePositionRepository);
+            var editor = new PriceListEditorViewModel(_userManager, _priceGroupRepository, _pricePositionRepository, _dialogAgent, _serviceClient);
             editor.BranchType = branchType;
             return editor;
         }
