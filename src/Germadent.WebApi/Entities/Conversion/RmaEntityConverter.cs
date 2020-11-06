@@ -201,6 +201,18 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
+        public PriceDto ConvertToPrice(PriceEntity entity)
+        {
+            return new PriceDto
+            {
+                PricePositionId = entity.PricePositionId,
+                DateBegin = entity.DateBegin,
+                DateEnd = entity.DateEnd,
+                PriceSTL = entity.PriceSTL,
+                PriceModel = entity.PriceModel
+            };
+        }
+
         public ProductDto ConvertToProduct(ProductEntity entity)
         {
             return new ProductDto

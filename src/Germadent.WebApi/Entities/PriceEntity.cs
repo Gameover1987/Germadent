@@ -2,7 +2,7 @@
 
 namespace Germadent.WebApi.Entities
 {
-    public class PricesEntity
+    public class PriceEntity
     {
         /// <summary>
         /// Идентификатор ценовой позиции

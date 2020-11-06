@@ -428,7 +428,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            var cmdText = string.Format("select PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", (int)branchType);
+            var cmdText = string.Format("select distinct PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", (int)branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -456,6 +456,36 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return pricePositionCollection.ToArray();
+                }
+            }
+        }
+
+        public PriceDto[] GetPrices (int branchType)
+        {
+            var cmdText = string.Format("select PricePositionID, DateBegin, DateEnd, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var priceCollection = new List<PriceDto>();
+                    while (reader.Read())
+                    {
+                        var priceEntity = new PriceEntity();
+                        priceEntity.PricePositionId = reader[nameof(priceEntity.PricePositionId)].ToInt();
+                        priceEntity.DateBegin = reader[nameof(priceEntity.DateBegin)].ToDateTime();
+                        priceEntity.DateEnd = reader[nameof(priceEntity.DateEnd)].ToDateTime();
+                        priceEntity.PriceSTL = reader[nameof(priceEntity.PriceSTL)].ToDecimal();
+                        priceEntity.PriceModel = reader[nameof(priceEntity.PriceModel)].ToDecimal();
+
+                        var priceDto = _converter.ConvertToPrice(priceEntity);
+                        priceCollection.Add(priceDto);
+                    }
+                    reader.Close();
+
+                    return priceCollection.ToArray();
                 }
             }
         }
