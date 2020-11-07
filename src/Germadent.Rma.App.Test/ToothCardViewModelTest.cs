@@ -1,9 +1,9 @@
-﻿using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using Moq;
 using System.Linq;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.Test
             // Given
             var raised = false;
             var target = CreateTarget();
-            target.RenderRequest += (sender, args) => { raised = true; };
+            target.ToothChanged += (sender, args) => { raised = true; };
 
             // When
             target.Initialize(CreateToothCard());

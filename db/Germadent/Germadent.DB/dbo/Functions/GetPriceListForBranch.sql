@@ -1,8 +1,8 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 29.06.2020
--- Edit date:   17.09.2020
--- Description:	Возвращает прайс-лист на услуги филиала на текущую дату
+-- Edit date:   03.11.2020
+-- Description:	Возвращает актуальный прайс-лист на услуги филиала на текущую дату
 -- =============================================
 CREATE FUNCTION [dbo].[GetPriceListForBranch] 
 (	
@@ -12,13 +12,12 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, pdl.Price, pmc.PriceSTL, pmc.PriceModel
+	SELECT pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName, m.MaterialID, m.MaterialName, p.DateBegin, p.DateEnd, p.PriceSTL, p.PriceModel
 	FROM PriceGroups pg
-		INNER JOIN PricePositions pp ON pg.PriceGroupID = pp.PriceGroupID
-		INNER JOIN Materials m ON pp.MaterialID = m.MaterialID
-		LEFT JOIN PricesDL pdl ON pp.PricePositionID = pdl.PricePositionID
-		LEFT JOIN PricesMC pmc ON pp.PricePositionID = pmc.PricePositionID
+		LEFT JOIN PricePositions pp ON pg.PriceGroupID = pp.PriceGroupID
+		LEFT JOIN Materials m ON pp.MaterialID = m.MaterialID
+		LEFT JOIN Prices p ON pp.PricePositionID = p.PricePositionID
 	WHERE pg.BranchTypeID = @branchTypeId
-		AND ((GETDATE() BETWEEN pdl.DateBegin AND ISNULL(pdl.DateEnd, '99991231')) OR (GETDATE() BETWEEN pmc.DateBegin AND ISNULL(pmc.DateEnd, '99991231')))
+		AND GETDATE() BETWEEN ISNULL(p.DateBegin, '17530101') AND ISNULL(p.DateEnd, '99991231')
 
 )

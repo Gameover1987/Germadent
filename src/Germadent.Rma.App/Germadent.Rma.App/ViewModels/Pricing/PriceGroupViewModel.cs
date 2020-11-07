@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     {
         private readonly PriceGroupDto _priceGroupDto;
 
-        private bool _isChecked;
+        private bool _hasChanges;
 
         public PriceGroupViewModel(PriceGroupDto priceGroupDto)
         {
@@ -16,52 +16,33 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public int PriceGroupId => _priceGroupDto.Id;
 
-        public string DisplayName => _priceGroupDto.Name;
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-            }
-        }
-    }
-
-    public class PricePositionViewModel : ViewModelBase
-    {
-        private readonly PricePositionDto _pricePositionDto;
-
-        private bool _isChecked;
-
-        public PricePositionViewModel(PricePositionDto pricePositionDto)
-        {
-            _pricePositionDto = pricePositionDto;
-        }
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-            }
-        }
-
-        public string UserCode
-        {
-            get { return _pricePositionDto.UserCode; }
-        }
-
         public string DisplayName
         {
-            get { return _pricePositionDto.Name; }
+            get { return _priceGroupDto.Name; }
+            set
+            {
+                if (_priceGroupDto.Name == value)
+                    return;
+                _priceGroupDto.Name = value;
+                OnPropertyChanged(() => DisplayName);
+            }
+        } 
+
+        public bool HasChanges
+        {
+            get { return _hasChanges; }
+            set
+            {
+                if (_hasChanges == value)
+                    return;
+                _hasChanges = value;
+                OnPropertyChanged(() => HasChanges);
+            }
+        }
+
+        public PriceGroupDto ToDto()
+        {
+            return _priceGroupDto;
         }
     }
 }

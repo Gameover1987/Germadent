@@ -1,12 +1,9 @@
-﻿using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Operations;
+﻿using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.App.Views.DesignMock;
 using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
@@ -27,6 +24,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
         private readonly IPriceListViewModel _priceListViewModel;
+        private readonly IClipboardHelper _clipboardHelper;
 
 
         public LabWizardStepsProvider(IOrderFilesContainerViewModel filesContainer,
@@ -37,7 +35,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository,
             IDictionaryRepository dictionaryRepository,
-            IPriceListViewModel priceListViewModel)
+            IPriceListViewModel priceListViewModel,
+            IClipboardHelper clipboardHelper)
         {
             _filesContainer = filesContainer;
             _customerSuggestionProvider = customerSuggestionProvider;
@@ -48,6 +47,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _responsiblePersonRepository = responsiblePersonRepository;
             _dictionaryRepository = dictionaryRepository;
             _priceListViewModel = priceListViewModel;
+            _clipboardHelper = clipboardHelper;
             _filesContainer = filesContainer;
         }
 
@@ -58,7 +58,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new LaboratoryInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository),
-                new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, new ClipboardHelper()), _priceListViewModel), 
+                new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, _clipboardHelper), _priceListViewModel), 
             };
         }
     }

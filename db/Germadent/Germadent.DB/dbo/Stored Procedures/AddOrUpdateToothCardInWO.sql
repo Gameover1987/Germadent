@@ -31,7 +31,7 @@ BEGIN
 
 	-- Наполняем новым содержимым, распарсив строку json
 	INSERT INTO ToothCard
-		(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProstheticsID, Price, FlagBridge)
+		(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProstheticsID, Price, HasBridge)
 	SELECT WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProstheticsID, Price, HasBridge
 	FROM OPENJSON (@jsonString)
 		WITH (WorkOrderId int, ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProstheticsId int, Price money, HasBridge bit)

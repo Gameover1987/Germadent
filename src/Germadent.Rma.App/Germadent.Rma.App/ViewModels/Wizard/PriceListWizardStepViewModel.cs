@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.Model;
@@ -12,6 +12,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public PriceListWizardStepViewModel(IToothCardViewModel toothCard, IPriceListViewModel priceList)
         {
             ToothCard = toothCard;
+
             PriceList = priceList;
         }
 
@@ -32,12 +33,32 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             ToothCard.Initialize(order.ToothCard);
-            PriceList.Initialize(BranchType.Laboratory);
+            ToothCard.ToothSelected += ToothCard_ToothSelected;
+            ToothCard.ToothCleanup += ToothCardOnToothCleanup;
+
+            PriceList.Initialize(order.BranchType);
+            PriceList.PricePositionsChecked += PriceList_PricePositionChecked;
+        }
+
+        private void ToothCardOnToothCleanup(object sender, ToothCleanUpEventArgs e)
+        {
+            PriceList.Setup(e.Tooth.ToDto());
+        }
+
+        private void ToothCard_ToothSelected(object sender, ToothSelectedEventArgs e)
+        {
+            PriceList.Setup(e.SelectedTooth?.ToDto());
+        }
+
+        private void PriceList_PricePositionChecked(object sender, EventArgs e)
+        {
+            ToothCard.AttachPricePositions(PriceList.Positions.Where(x => x.IsChecked).ToArray());
         }
 
         public override void AssemblyOrder(OrderDto order)
         {
-            
+            order.ToothCard = ToothCard.Teeth.Where(x => x.IsChanged).Select(x => x.ToDto()).ToArray();
+            order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
     }
 }

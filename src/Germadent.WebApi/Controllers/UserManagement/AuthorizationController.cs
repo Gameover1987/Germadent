@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Germadent.Common.Logging;
-using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.DataAccess.UserManagement;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.UserManagement
 {
@@ -16,11 +12,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
     {
         private readonly IUmcDbOperations _umcDbOperations;
         private readonly ILogger _logger;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger)
+        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger, IHubContext<ChatHub> hubContext)
         {
             _umcDbOperations = umcDbOperations;
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -31,6 +29,9 @@ namespace Germadent.WebApi.Controllers.UserManagement
             {
                 _logger.Info(nameof(Authorize));
                 var authorizationInfoDto = _umcDbOperations.Authorize(login, password);
+
+                _hubContext.Clients.All.SendAsync("Send", "Preved from SignalR!","Param2");
+
                 return Ok(authorizationInfoDto);
             }
             catch (Exception exception)

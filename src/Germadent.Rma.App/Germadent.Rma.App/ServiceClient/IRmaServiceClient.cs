@@ -2,7 +2,6 @@
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ServiceClient
 {
@@ -148,6 +147,20 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="branchType"></param>
         /// <returns></returns>
         PriceGroupDto[] GetPriceGroups(BranchType branchType);
+
+        /// <summary>
+        /// Добавляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Обновляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
 
         /// <summary>
         /// Возвращает ценовые позиции по выбранному типу филиала

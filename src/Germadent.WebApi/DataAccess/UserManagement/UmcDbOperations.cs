@@ -394,6 +394,11 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                         }
                     }
 
+                    if (authorizartionEntities.Count == 0)
+                    {
+                        throw new UserNotAuthorizedException( string.Format("Пользователь с логином '{0}' не авторизован!", login));
+                    }
+
                     var groupings = authorizartionEntities.GroupBy(x => x.UserId).ToArray();
 
                     authorizationInfo.UserId = groupings.First().First().UserId;

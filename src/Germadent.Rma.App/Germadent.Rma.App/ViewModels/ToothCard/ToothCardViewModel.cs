@@ -5,8 +5,8 @@ using System.Text;
 using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -59,6 +59,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get { return Teeth.Where(x => x.IsChanged).All(x => x.IsValid); }
         }
 
+        public event EventHandler<ToothSelectedEventArgs> ToothSelected;
+        public event EventHandler<ToothCleanUpEventArgs> ToothCleanup;
+
         public void Initialize(ToothDto[] toothCard)
         {
             var prostheticConditions = _dictionaryRepository.GetItems(DictionaryType.ProstheticCondition);
@@ -68,6 +71,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             foreach (var toothViewModel in Teeth)
             {
                 toothViewModel.ToothChanged -= TeethViewModelOnToothChanged;
+                toothViewModel.ToothCleanup -= ToothViewModelOnToothCleanup;
             }
 
             Teeth.Clear();
@@ -95,6 +99,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             foreach (var teethViewModel in Teeth)
             {
                 teethViewModel.ToothChanged += TeethViewModelOnToothChanged;
+                teethViewModel.ToothCleanup += ToothViewModelOnToothCleanup;
 
                 var toothDto = toothCard.FirstOrDefault(x => x.ToothNumber == teethViewModel.Number);
                 if (toothDto == null)
@@ -104,12 +109,17 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
+        private void ToothViewModelOnToothCleanup(object sender, ToothCleanUpEventArgs e)
+        {
+            ToothCleanup?.Invoke(this, e);
+        }
+
         public ToothDto[] ToDto()
         {
             return Teeth.Where(x => x.IsChanged).Select(x => x.ToDto()).ToArray();
         }
 
-        public event EventHandler<EventArgs> RenderRequest;
+        public event EventHandler<ToothChangedEventArgs> ToothChanged;
 
         public string Description
         {
@@ -133,13 +143,14 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             {
                 _selectedTeeth = value;
                 OnPropertyChanged(() => SelectedTeeth);
+
+                ToothSelected?.Invoke(this, new ToothSelectedEventArgs(_selectedTeeth?.LastOrDefault()));
             }
         }
 
         private void TeethViewModelOnToothChanged(object sender, ToothChangedEventArgs e)
         {
-            if (e.AffectsRenderToothCard)
-                RenderRequest?.Invoke(this, EventArgs.Empty);
+            ToothChanged?.Invoke(this, e);
 
             OnPropertyChanged(() => Description);
             OnPropertyChanged(() => IsValid);
@@ -233,6 +244,19 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void CopyDescriptionCommandHandler()
         {
             _clipboard.CopyToClipboard(Description);
+        }
+
+        public void AttachPricePositions(PricePositionViewModel[] pricePositions)
+        {
+            if (SelectedTeeth == null || !SelectedTeeth.Any())
+                return;
+
+            foreach (var toothViewModel in SelectedTeeth)
+            {
+                toothViewModel.AttachPricePositions(pricePositions);
+            }
+
+            //SelectedTeeth.Last().AttachPricePositions(pricePositions);
         }
     }
 }

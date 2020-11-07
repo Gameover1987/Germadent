@@ -1,5 +1,4 @@
-﻿using System;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs

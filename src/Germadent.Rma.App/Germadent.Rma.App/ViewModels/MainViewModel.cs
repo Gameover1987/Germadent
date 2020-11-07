@@ -7,6 +7,7 @@ using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
@@ -29,10 +30,11 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
-        private readonly IPriceListEditorViewModel _priceListEditorViewModel;
+        private readonly IPriceListEditorContainerViewModel _priceListEditorContainerViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
+        private readonly IUserManager _userManager;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -46,7 +48,7 @@ namespace Germadent.Rma.App.ViewModels
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
-            IPriceListEditorViewModel priceListEditorViewModel,
+            IPriceListEditorContainerViewModel priceListEditorContainerContainerViewModel,
             IPrintModule printModule,
             ILogger logger,
             IReporter reporter, 
@@ -57,10 +59,11 @@ namespace Germadent.Rma.App.ViewModels
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
-            _priceListEditorViewModel = priceListEditorViewModel;
+            _priceListEditorContainerViewModel = priceListEditorContainerContainerViewModel;
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
+            _userManager = userManager;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -78,17 +81,19 @@ namespace Germadent.Rma.App.ViewModels
             _collectionView = CollectionViewSource.GetDefaultView(Orders);
             _collectionView.Filter = Filter;
 
-            var canViewAll = userManager.HasRight(RmaUserRights.ViewAllOrders);
+            CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
         }
 
-        private bool Filter(object obj)
+        public string Title
         {
-            if (SearchString.IsNullOrWhiteSpace())
-                return true;
-
-            var order = (OrderLiteViewModel)obj;
-            return order.MatchBySearchString(SearchString);
+            get
+            {
+                return string.Format("{0} - {1} ({2})", Resources.AppTitle, _userManager.AuthorizationInfo.FullName,
+                    _userManager.AuthorizationInfo.Login);
+            }
         }
+
+        public bool CanViewPriceList { get; }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -149,6 +154,15 @@ namespace Germadent.Rma.App.ViewModels
 
                 RefreshView();
             }
+        }
+
+        private bool Filter(object obj)
+        {
+            if (SearchString.IsNullOrWhiteSpace())
+                return true;
+
+            var order = (OrderLiteViewModel)obj;
+            return order.MatchBySearchString(SearchString);
         }
 
         private void RefreshView()
@@ -290,12 +304,12 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanShowPriceListEditorCommandHandler()
         {
-            return true;
+            return CanViewPriceList;
         }
 
         private void ShowPriceListEditorCommandHandler()
         {
-            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorViewModel);
+            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
         }
     }
 }

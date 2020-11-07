@@ -16,6 +16,7 @@ namespace Germadent.Rma.App.Test
             var designMockMillingCenterInfoWizardStepViewModel = new DesignMockMillingCenterInfoWizardStepViewModel();
             var designMockLaboratoryProjectWizardStepViewModel = new DesignMockLaboratoryProjectWizardStepViewModel();
             var designMockPriceListViewModel = new DesignMockPriceListViewModel();
+            var designMockMillingCenterAdditionalEquipmentViewModel = new DesignMockMillingCenterAdditionalEquipmentViewModel();
         }
     }
 }

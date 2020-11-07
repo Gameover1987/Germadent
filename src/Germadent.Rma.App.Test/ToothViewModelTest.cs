@@ -1,7 +1,7 @@
-﻿using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using System.Linq;
 using FluentAssertions;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
@@ -18,9 +16,11 @@ using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views.DesignMock;
 using Germadent.UI.Infrastructure;
+using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 using Unity;
 using Unity.Lifetime;
+using ISplashScreenViewModel = Germadent.Rma.App.ViewModels.ISplashScreenViewModel;
 
 namespace Germadent.Rma.App.Infrastructure
 {
@@ -110,8 +110,9 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IToothCardViewModel, ToothCardViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPriceListViewModel, PriceListViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPriceListEditorViewModel, PriceListEditorViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPriceListViewModel, PriceListViewModel>(new TransientLifetimeManager());
+            _container.RegisterType<IPriceListEditorContainerViewModel, PriceListEditorContainerViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPriceListEditorFactory, PriceListEditorFactory>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()

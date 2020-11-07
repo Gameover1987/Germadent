@@ -1,17 +1,14 @@
-﻿using Germadent.UI.Infrastructure;
-using Germadent.UI.ViewModels;
-using System;
+﻿using System;
 using System.Windows.Media.Imaging;
 using Germadent.Common;
 using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.UI.Infrastructure;
+using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public interface IAuthorizationViewModel
-    { }
-
-    public class AuthorizationViewModel : AuthorizationViewModelBase, IAuthorizationViewModel
+    public class AuthorizationViewModel : AuthorizationViewModelBase
     {
         private readonly IRmaServiceClient _serviceClient;
 
@@ -19,24 +16,16 @@ namespace Germadent.Rma.App.ViewModels
             : base(agent)
         {
             _serviceClient = serviceClient;
-            
+
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
         }
 
         private BitmapImage GetApplicationIcon()
         {
-            try
-            {
-                return null;
-                //return new BitmapImage(new Uri(
-                //    "pack://application:,,,/Germadent.Rma.App;component/logo.png",
-                //    UriKind.Absolute));
-            }
-            catch
-            {
-                return null;
-            }
+            return new BitmapImage(new Uri(
+                "pack://application:,,,/Germadent.Rma.App;component/logo.png",
+                UriKind.Absolute));
         }
 
         protected override bool Authorize()

@@ -1,4 +1,6 @@
-﻿using Germadent.Rma.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.Entities.Conversion
@@ -12,7 +14,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 WorkOrderId = entity.WorkOrderId,
                 Status = entity.Status,
                 AdditionalInfo = entity.AdditionalInfo,
-                BranchType = (BranchType) entity.BranchTypeId,
+                BranchType = (BranchType)entity.BranchTypeId,
                 CarcassColor = entity.CarcassColor,
                 CustomerId = entity.CustomerId,
                 Customer = entity.CustomerName,
@@ -52,19 +54,45 @@ namespace Germadent.WebApi.Entities.Conversion
             return orderDto;
         }
 
-        public ToothDto ConvertToTooth(ToothEntity entity)
+        public ToothDto[] ConvertToToothCard(ToothEntity[] entities)
         {
-            return new ToothDto
+            var groupings = entities.GroupBy(x => x.ToothNumber).ToArray();
+
+            var toothCollection = new List<ToothDto>();
+
+            foreach (var grouping in groupings)
             {
-                ToothNumber = entity.ToothNumber,
-                ConditionName = entity.ConditionName.Trim(),
-                MaterialName = entity.MaterialName.Trim(),
-                ProstheticsName = entity.ProstheticsName.Trim(),
-                PricePositionCode = entity.PricePositionCode,
-                PricePositionName = entity.PricePositionName,
-                Price = entity.Price,
-                HasBridge = entity.FlagBridge
-            };
+                var toothDto = new ToothDto();
+                var prototype = grouping.First();
+                toothDto.WorkOrderId = prototype.WorkOrderId;
+                toothDto.ToothNumber = prototype.ToothNumber;
+                toothDto.HasBridge = prototype.HasBridge;
+                toothDto.MaterialId = prototype.MaterialId;
+                toothDto.MaterialName = prototype.MaterialName;
+                toothDto.ProstheticsId = prototype.ProstheticsId;
+                toothDto.ProstheticsName = prototype.ProstheticsName;
+                toothDto.ConditionId = prototype.ConditionId;
+                toothDto.ConditionName = prototype.ConditionName;
+
+                var pricePositions = new List<PricePositionDto>();
+                foreach (var toothEntity in grouping)
+                {
+                    pricePositions.Add(new PricePositionDto
+                    {
+                        PricePositionId = toothEntity.PricePositionId,
+                        PriceGroupId = toothEntity.PriceGroupId,
+                        MaterialId = toothEntity.MaterialId,
+                        UserCode = toothEntity.PricePositionCode,
+                        Name = toothEntity.PricePositionName
+                    });
+                }
+
+                toothDto.PricePositions = pricePositions.ToArray();
+
+                toothCollection.Add(toothDto);
+            }
+
+            return toothCollection.ToArray();
         }
 
         public OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity)
@@ -165,11 +193,23 @@ namespace Germadent.WebApi.Entities.Conversion
         {
             return new PricePositionDto
             {
-                Id = entity.PricePositionId,
+                PricePositionId = entity.PricePositionId,
                 PriceGroupId = entity.PriceGroupId,
                 UserCode = entity.PricePositionCode,
                 Name = entity.PricePositionName,
                 MaterialId = entity.MaterialId
+            };
+        }
+
+        public PriceDto ConvertToPrice(PriceEntity entity)
+        {
+            return new PriceDto
+            {
+                PricePositionId = entity.PricePositionId,
+                DateBegin = entity.DateBegin,
+                DateEnd = entity.DateEnd,
+                PriceSTL = entity.PriceSTL,
+                PriceModel = entity.PriceModel
             };
         }
 
@@ -181,6 +221,31 @@ namespace Germadent.WebApi.Entities.Conversion
                 PricePositionId = entity.PricePositionId,
                 Name = entity.ProstheticsName,
             };
+        }
+
+        public ToothEntity[] ConvertFromToothDto(ToothDto toothDto)
+        {
+            var entities = new List<ToothEntity>();
+            foreach (var pricePosition in toothDto.PricePositions)
+            {
+                var entity = new ToothEntity
+                {
+                    WorkOrderId = toothDto.WorkOrderId,
+                    ConditionName = toothDto.ConditionName,
+                    HasBridge = toothDto.HasBridge,
+                    MaterialName = toothDto.MaterialName,
+                    Price = toothDto.Price,
+                    PricePositionId = pricePosition.PricePositionId,
+                    ConditionId = toothDto.ConditionId,
+                    MaterialId = pricePosition.MaterialId,
+                    ProstheticsId = toothDto.ProstheticsId,
+                    ProstheticsName = toothDto.ProstheticsName,
+                    ToothNumber = toothDto.ToothNumber
+                };
+                entities.Add(entity);
+            }
+
+            return entities.ToArray();
         }
     }
 }

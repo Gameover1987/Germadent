@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Germadent.Rma.App.ViewModels;
 
 namespace Germadent.Rma.App.Views
 {

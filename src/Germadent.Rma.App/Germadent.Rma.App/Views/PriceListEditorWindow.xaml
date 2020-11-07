@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="Редактирование прайслистов" 
         MinHeight="450"
@@ -12,7 +13,8 @@
         Width="800"
         Background="{x:Static SystemColors.ControlBrush}"
         ShowInTaskbar="False"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorContainerViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -21,10 +23,12 @@
         </Grid.RowDefinitions>
 
         <TabControl BorderThickness="0">
-            <TabItem Header="Фрезерный центр">
+            <TabItem Header="Фрезерный центр"
+                     DataContext="{Binding MillingCenterPriceListEditor}">
                 <local:PriceListEditorControl Margin="12,6,12,0"/>
             </TabItem>
-            <TabItem Header="Лаборатория">
+            <TabItem Header="Лаборатория"
+                     DataContext="{Binding LaboratoryPriceListEditor}">
                 <local:PriceListEditorControl Margin="12,6,12,0"/>
             </TabItem>
         </TabControl>

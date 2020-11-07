@@ -3,7 +3,7 @@ using Germadent.UI.Infrastructure;
 
 namespace Germadent.UI.ViewModels.DesignTime
 {
-	internal class DesignMockShowDialogAgent : IShowDialogAgent
+	public class DesignMockShowDialogAgent : IShowDialogAgent
 	{
 		/// <summary>
 		/// Заголовок окна по умолчанию для отображения в ShowMessageDialog, если не удалось получить активное окно
@@ -176,5 +176,10 @@ namespace Germadent.UI.ViewModels.DesignTime
 			fileName = null;
 			return null;
 		}
-	}
+
+        public string ShowInputBox(string title, string parameterName, string inputString)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

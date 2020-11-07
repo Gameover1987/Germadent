@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using DocumentFormat.OpenXml.Drawing;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
@@ -9,6 +8,7 @@ using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
+using Microsoft.AspNetCore.SignalR.Client;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -24,8 +24,16 @@ namespace Germadent.Rma.App.ServiceClient
             _fileManager = fileManager;
         }
 
-        public void Authorize(string login, string password)
+        public async void Authorize(string login, string password)
         {
+            var connection = new HubConnectionBuilder()
+                .WithUrl(new Uri(_configuration.DataServiceUrl+ "/chathub"))
+                .WithAutomaticReconnect()
+                .Build();
+
+            await connection.StartAsync();
+            connection.On<string, string>("Send", Handler);
+
             var info = ExecuteHttpGet<AuthorizationInfoDto>(
                 _configuration.DataServiceUrl + string.Format("/api/userManagement/authorization/authorize/{0}/{1}", login, password));
 
@@ -36,6 +44,11 @@ namespace Germadent.Rma.App.ServiceClient
 
             if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
                 throw new UserMessageException("Отсутствует право на запуск приложения");
+        }
+
+        private void Handler(string arg1, string arg2)
+        {
+            
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; private set; }
@@ -146,6 +159,18 @@ namespace Germadent.Rma.App.ServiceClient
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
             return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
+        }
+
+        public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
+            return addedPriceGroup;
+        }
+
+        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
+            return updatedPriceGroup;
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)

@@ -9,6 +9,11 @@ namespace Germadent.Common.Extensions
             return int.Parse(obj.ToString());
         }
 
+        public static decimal ToDecimal(this object obj)
+        {
+            return decimal.Parse(obj.ToString());
+        }
+
         public static DateTime ToDateTime(this object obj)
         {
             return DateTime.Parse(obj.ToString());
