@@ -24,7 +24,6 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        /// <param name="stream"></param>
         OrderDto AddOrder(OrderDto order);
 
         /// <summary>
@@ -152,5 +151,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="priceGroupDto"></param>
         /// <returns></returns>
         PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Удаляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupId"></param>
+        /// <returns></returns>
+        PriceGroupDeleteResult DeletePriceGroup(int priceGroupId);
     }
 }

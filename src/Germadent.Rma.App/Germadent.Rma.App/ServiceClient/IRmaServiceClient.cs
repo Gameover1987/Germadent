@@ -163,6 +163,13 @@ namespace Germadent.Rma.App.ServiceClient
         PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
 
         /// <summary>
+        /// Удаляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupId"></param>
+        /// <returns></returns>
+        PriceGroupDeleteResult DeletePriceGroup(int priceGroupId);
+
+        /// <summary>
         /// Возвращает ценовые позиции по выбранному типу филиала
         /// 
         /// </summary>

@@ -27,7 +27,7 @@ namespace Germadent.Rma.App.ServiceClient
         public async void Authorize(string login, string password)
         {
             var connection = new HubConnectionBuilder()
-                .WithUrl(new Uri(_configuration.DataServiceUrl+ "/chathub"))
+                .WithUrl(new Uri(_configuration.DataServiceUrl + "/chathub"))
                 .WithAutomaticReconnect()
                 .Build();
 
@@ -48,7 +48,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         private void Handler(string arg1, string arg2)
         {
-            
+
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; private set; }
@@ -171,6 +171,11 @@ namespace Germadent.Rma.App.ServiceClient
         {
             var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
             return updatedPriceGroup;
+        }
+
+        public PriceGroupDeleteResult DeletePriceGroup(int priceGroupId)
+        {
+            return ExecuteHttpDelete<PriceGroupDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)

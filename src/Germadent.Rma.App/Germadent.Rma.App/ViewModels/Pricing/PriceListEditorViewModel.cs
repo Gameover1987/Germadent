@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
@@ -121,12 +122,28 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanDeletePriceGroupCommandHandler()
         {
-            return CanEditPriceList && SelectedGroup != null;
+            if (!CanEditPriceList)
+                return false;
+
+            if (SelectedGroup == null)
+                return false;
+
+            var positionsFromGroup = Positions.Where(x => x.PriceGroupId == SelectedGroup.PriceGroupId).ToArray();
+            if (positionsFromGroup.Any())
+                return false;
+
+            return true;
         }
 
         private void DeletePriceGroupCommandHandler()
         {
+            var message = "Вы действительно хотите удалить ценовую группу?";
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
 
+            _serviceClient.DeletePriceGroup(SelectedGroup.PriceGroupId);
+
+            Groups.Remove(SelectedGroup);
         }
     }
 }

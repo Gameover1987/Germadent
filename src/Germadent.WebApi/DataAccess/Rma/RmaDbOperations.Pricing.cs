@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
+using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.DataAccess.Rma
@@ -47,6 +48,31 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.ExecuteNonQuery();
 
                     return priceGroupDto;
+                }
+            }
+        }
+
+        public PriceGroupDeleteResult DeletePriceGroup(int priceGroupId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("UnionPriceGroups", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@oldPriceGroupId", SqlDbType.NVarChar)).Value = priceGroupId;
+                    command.Parameters.Add(new SqlParameter("@newPriceGroupId", SqlDbType.NVarChar)).Value = DBNull.Value;
+                    command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var count = command.Parameters["@resultCount"].Value.ToInt();
+
+                    return new PriceGroupDeleteResult()
+                    {
+                        PriceGroupId = priceGroupId,
+                        Count = count
+                    };
                 }
             }
         }

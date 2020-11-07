@@ -15,4 +15,11 @@
             return string.Format("Id={0}, Name={1}", Id, Name);
         }
     }
+
+    public class PriceGroupDeleteResult
+    {
+        public int PriceGroupId { get; set; }
+
+        public int Count { get; set; }
+    }
 }

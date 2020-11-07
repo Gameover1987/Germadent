@@ -71,6 +71,23 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
+        [HttpDelete]
+        [Route("DeletePriceGroup/{priceGroupId:int}")]
+        public IActionResult DeletePriceGroup(int priceGroupId)
+        {
+            try
+            {
+                _logger.Info(nameof(DeletePriceGroup));
+                var result = _rmaDbOperations.DeletePriceGroup(priceGroupId);
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
         [HttpGet]
         [Route("PricePositions/{branchType:int}")]
         public IActionResult GetPricePositions(int branchType)
