@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockPriceListEditorContainerViewModel()
             : base(new DesignMockPriceListEditorFactory())
         {
-
+            Initialize();
         }
     }
 }

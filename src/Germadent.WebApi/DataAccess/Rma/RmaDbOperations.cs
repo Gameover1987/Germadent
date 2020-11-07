@@ -466,7 +466,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PriceDto[] GetPrices (int branchType)
         {
-            var cmdText = string.Format("select PricePositionID, DateBegin, DateEnd, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
+            var cmdText = string.Format("select distinct PricePositionID, DateBegin, DateEnd, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();

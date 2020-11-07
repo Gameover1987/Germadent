@@ -9,7 +9,7 @@
              xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorContainerViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -50,7 +50,29 @@
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Ценовые позиции" Margin="12,0,0,0"
                    Style="{StaticResource GroupNameStyle}"/>
 
-        <ListBox Grid.Row="1" Grid.Column="1" Margin="12,6,0,0"></ListBox>
+        <DataGrid Grid.Row="1" Grid.Column="1" Margin="12,6,0,0"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"	
+                  AlternationCount="2"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Positions}"
+                  SelectedItem="{Binding SelectedPosition}">
+           <DataGrid.Columns>
+               <DataGridTextColumn Header="Код" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                           Binding="{Binding UserCode}"/>
+               <DataGridTextColumn Header="Наименование" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding DisplayName}"/>
+               <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding PriceStl}"/>
+               <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding PriceModel}"/>
+           </DataGrid.Columns>
+        </DataGrid>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="12,6,0,0">
             <Button Content="Добавить" Width="100"></Button>

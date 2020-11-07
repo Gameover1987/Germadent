@@ -16,6 +16,10 @@
 
         public ProductDto[] Products { get; set; }
 
+        public decimal PriceStl { get; set; }
+
+        public decimal PriceModel { get; set; }
+
         public override string ToString()
         {
             return string.Format("Id={0}, UserCode={1}, Name={2}", PricePositionId, UserCode, Name);
