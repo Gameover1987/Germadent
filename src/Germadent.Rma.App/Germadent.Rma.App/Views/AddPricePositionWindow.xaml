@@ -1,0 +1,78 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.AddPricePositionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
+        xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+        mc:Ignorable="d"
+        Background="{x:Static SystemColors.ControlBrush}"
+        Title="{Binding Title}" 
+        MinHeight="230"
+        Height="230"
+        MinWidth="500"
+        Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddPricePositionViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование" VerticalAlignment="Center"/>
+            <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Ценовая группа" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Height="23"
+                      ItemsSource="{Binding Groups}"
+                      SelectedItem="{Binding SelectedPriceGroup}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Left" Width="150"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Left" Width="150"/>
+
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="100" IsDefault="True"
+                    Command="{Binding OkCommand}"
+                    helpers:WindowCloseHelper.DialogResult="True"/>
+            <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
+                    Visibility="{Binding ViewMode, Converter={StaticResource EnumToInvisibilityConverter}, ConverterParameter={x:Static catalogs:CardViewMode.View}}"
+                    helpers:WindowCloseHelper.DialogResult="False"/>
+        </StackPanel>
+    </Grid>
+</Window>

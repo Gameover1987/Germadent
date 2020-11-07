@@ -192,6 +192,11 @@ namespace Germadent.Rma.App.ServiceClient
 
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
+        public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
+        {
+            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
+        }
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

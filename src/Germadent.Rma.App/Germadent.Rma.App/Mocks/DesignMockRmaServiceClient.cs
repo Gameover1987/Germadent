@@ -432,6 +432,7 @@ namespace Germadent.Rma.App.Mocks
 
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
+      
 
         private DictionaryItemDto[] GetProstheticConditions()
         {
@@ -481,6 +482,11 @@ namespace Germadent.Rma.App.Mocks
                 new DictionaryItemDto {Name = "Временная конструкция", Id = 5},
                 new DictionaryItemDto {Name = "Другая конструкция", Id = 6},
             };
+        }
+
+        public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

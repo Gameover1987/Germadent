@@ -6,6 +6,8 @@ using System.Windows.Data;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Commands;
@@ -25,23 +27,28 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
     public class PriceListEditorViewModel : ViewModelBase, IPriceListEditorViewModel
     {
-        private readonly IUserManager _userManager;
         private readonly IPriceGroupRepository _priceGroupRepository;
         private readonly IPricePositionRepository _pricePositionRepository;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IRmaServiceClient _serviceClient;
+        private readonly IAddPricePositionViewModel _addPricePositionViewModel;
         private PriceGroupViewModel _selectedGroup;
         private PricePositionViewModel _selectedPricePosition;
 
         private readonly ICollectionView _positionsView;
 
-        public PriceListEditorViewModel(IUserManager userManager, IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository, IShowDialogAgent dialogAgent, IRmaServiceClient serviceClient)
+        public PriceListEditorViewModel(IUserManager userManager, 
+            IPriceGroupRepository priceGroupRepository, 
+            IPricePositionRepository pricePositionRepository, 
+            IShowDialogAgent dialogAgent,
+            IRmaServiceClient serviceClient,
+            IAddPricePositionViewModel addPricePositionViewModel)
         {
-            _userManager = userManager;
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
             _dialogAgent = dialogAgent;
             _serviceClient = serviceClient;
+            _addPricePositionViewModel = addPricePositionViewModel;
 
             Groups = new ObservableCollection<PriceGroupViewModel>();
             Positions = new ObservableCollection<PricePositionViewModel>();
@@ -53,7 +60,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             EditPriceGroupCommand = new DelegateCommand(EditPriceGroupCommandHandler, CanEditPriceGroupCommandHandler);
             DeletePriceGroupCommand = new DelegateCommand(DeletePriceGroupCommandHandler, CanDeletePriceGroupCommandHandler);
 
-            CanEditPriceList = _userManager.HasRight(RmaUserRights.EditPriceList);
+            CanEditPriceList = userManager.HasRight(RmaUserRights.EditPriceList);
         }
 
         private bool PricePositionFilter(object obj)
@@ -124,6 +131,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public IDelegateCommand DeletePriceGroupCommand { get; }
 
+        public IDelegateCommand AddPricePositionCommand { get; }
+
+        public IDelegateCommand EditPricePositionCommand { get; }
+
+        public IDelegateCommand DeletePricePositionCommand { get; }
+
         private bool CanAddPriceGroupCommandHandler()
         {
             return CanEditPriceList;
@@ -181,6 +194,21 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _serviceClient.DeletePriceGroup(SelectedGroup.PriceGroupId);
 
             Groups.Remove(SelectedGroup);
+        }
+
+        private bool CanAddPricePositionCommandHandler()
+        {
+            return CanEditPriceList;
+        }
+        private void AddPricePositionCommandHandler()
+        {
+            var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
+            _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto(), allUserCodes, BranchType);
+            if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
+                return;
+
+            var pricePositionDto = _serviceClient.AddPricePosition(_addPricePositionViewModel.GetPricePosition());
+            Positions.Add(new PricePositionViewModel(pricePositionDto));
         }
     }
 }

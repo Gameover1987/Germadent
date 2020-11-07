@@ -158,5 +158,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="priceGroupId"></param>
         /// <returns></returns>
         PriceGroupDeleteResult DeletePriceGroup(int priceGroupId);
+
+        /// <summary>
+        /// Добавляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
     }
 }

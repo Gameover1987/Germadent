@@ -34,6 +34,12 @@ namespace Germadent.UI.Commands
         {
         }
 
+        public DelegateCommand(Func<bool> canExecute)
+            : this(() => { }, canExecute)
+        {
+
+        }
+
         public DelegateCommand(Action<object> execute, Func<object, bool> canExecute, Action<Exception> exceptionAction)
         {
             if (exceptionAction == null) throw new ArgumentNullException(nameof(exceptionAction));

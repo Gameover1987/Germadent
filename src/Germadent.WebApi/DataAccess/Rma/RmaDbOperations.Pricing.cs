@@ -76,5 +76,10 @@ namespace Germadent.WebApi.DataAccess.Rma
                 }
             }
         }
+
+        public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
+        {
+            return pricePositionDto;
+        }
     }
 }

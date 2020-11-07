@@ -4,6 +4,9 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Views\AddPricePositionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PriceListEditorControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,6 +30,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\AddPricePositionWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PriceListEditorControl.xaml">
       <SubType>Designer</SubType>
     </Page>

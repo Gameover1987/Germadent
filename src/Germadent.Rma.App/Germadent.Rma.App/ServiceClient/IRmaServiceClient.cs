@@ -192,5 +192,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// Событие изменения репозитория ответственных лиц
         /// </summary>
         event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
+
+        /// <summary>
+        /// Добавляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
     }
 }
