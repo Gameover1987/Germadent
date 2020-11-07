@@ -23,5 +23,5 @@ RETURN
 		LEFT JOIN Prices p ON pp.PricePositionID = p.PricePositionID
 	WHERE pp.PricePositionID = @pricePositionId
 		-- Подтягиваем актуальные цены:
-		AND GETDATE() BETWEEN p.DateBegin AND ISNULL(p.DateEnd, '99991231')
+		AND GETDATE() BETWEEN p.DateBeginning AND ISNULL(p.DateEnd, '99991231')
 )

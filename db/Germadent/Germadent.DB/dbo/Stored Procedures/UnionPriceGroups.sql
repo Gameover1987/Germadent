@@ -3,10 +3,10 @@
 -- Create date: 03.11.2020
 -- Description:	Объединение/удаление ценовых групп
 -- =============================================
-CREATE PROCEDURE UnionPriceGroups 
+CREATE PROCEDURE [dbo].[UnionPriceGroups] 
 	
 	@oldPriceGroupId int,
-	@newPriceGroupId int,
+	@newPriceGroupId int = NULL,
 	@resultCount int output
 
 AS
