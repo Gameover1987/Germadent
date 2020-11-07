@@ -46,8 +46,6 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     command.ExecuteNonQuery();
 
-                    priceGroupDto.Id = command.Parameters["@priceGroupId"].Value.ToInt();
-
                     return priceGroupDto;
                 }
             }

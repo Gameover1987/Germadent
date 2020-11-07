@@ -116,7 +116,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return;
 
             SelectedGroup.DisplayName = priceGroupName;
-            _serviceClient.AddPriceGroup(SelectedGroup.ToDto());
+            _serviceClient.UpdatePriceGroup(SelectedGroup.ToDto());
         }
 
         private bool CanDeletePriceGroupCommandHandler()
