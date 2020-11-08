@@ -17,7 +17,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             {
                 PriceGroupId = 1,
                 Name = "Preved position",
-                UserCode = "222",
+                UserCode = "MC222",
                 PriceModel = 111,
                 PriceStl = 222
             }, new []{"111","222"}, BranchType.Laboratory);

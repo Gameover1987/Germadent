@@ -60,6 +60,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             EditPriceGroupCommand = new DelegateCommand(EditPriceGroupCommandHandler, CanEditPriceGroupCommandHandler);
             DeletePriceGroupCommand = new DelegateCommand(DeletePriceGroupCommandHandler, CanDeletePriceGroupCommandHandler);
 
+            AddPricePositionCommand = new DelegateCommand(AddPricePositionCommandHandler, CanAddPricePositionCommandHandler);
+            EditPricePositionCommand = new DelegateCommand(EditPricePositionCommandHandler, CanEditPricePositionCommandHandler);
+            DeletePricePositionCommand = new DelegateCommand(DeletePricePositionCommandHandler, CanDeletePricePositionCommandHandler);
+
             CanEditPriceList = userManager.HasRight(RmaUserRights.EditPriceList);
         }
 
@@ -209,6 +213,26 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             var pricePositionDto = _serviceClient.AddPricePosition(_addPricePositionViewModel.GetPricePosition());
             Positions.Add(new PricePositionViewModel(pricePositionDto));
+        }
+
+        private bool CanEditPricePositionCommandHandler()
+        {
+            return CanEditPriceList && SelectedPosition != null;
+        }
+
+        private void EditPricePositionCommandHandler()
+        {
+
+        }
+
+        private bool CanDeletePricePositionCommandHandler()
+        {
+            return CanEditPriceList && SelectedPosition != null;
+        }
+
+        private void DeletePricePositionCommandHandler()
+        {
+
         }
     }
 }

@@ -11,8 +11,7 @@
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
-        MinHeight="230"
-        Height="230"
+        SizeToContent="Height"
         MinWidth="500"
         Width="500"
         ResizeMode="NoResize"
@@ -54,12 +53,16 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
             <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Left" Width="150"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceModel, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
         </Grid>

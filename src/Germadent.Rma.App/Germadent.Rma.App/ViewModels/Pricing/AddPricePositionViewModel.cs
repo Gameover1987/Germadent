@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Accessibility;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -18,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private readonly IPriceGroupRepository _priceGroupRepository;
         private BranchType _branchType;
         private string _userCode;
-        private string[] _existedUserCodes;
+        private string[] _allUserCodes;
         private string _name;
         private decimal _priceStl;
         private decimal _priceModel;
@@ -27,6 +28,20 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository)
         {
             _priceGroupRepository = priceGroupRepository;
+
+            AddValidationFor(() => Name)
+                .When(() => string.IsNullOrWhiteSpace(Name), () => "Укажите наименование ценовой позиции");
+
+            AddValidationFor(() => UserCode)
+                .When(() => string.IsNullOrWhiteSpace(UserCode), () => "Укажите код");
+            AddValidationFor(() => UserCode)
+                .When(() => _allUserCodes.ContainsIgnoreCase(UserCode), () => "Укажите уникальный код");
+
+            AddValidationFor(() => PriceStl)
+                .When(() => PriceStl <= 0, () => "Укажите цену с STL отличную от нуля");
+            AddValidationFor(() => PriceModel)
+                .When(() => PriceStl <= 0, () => "Укажите цену с модели отличную от нуля");
+
 
             OkCommand = new DelegateCommand(CanOkCommandHandler);
         }
@@ -58,7 +73,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 if (_userCode == value)
                     return;
                 _userCode = value;
-                OnPropertyChanged(() => Name);
+                OnPropertyChanged(() => UserCode);
             }
         }
 
@@ -104,13 +119,31 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanOkCommandHandler()
         {
-            return !HasErrors;
+            return !HasErrors && IsValid();
+        }
+
+        private bool IsValid()
+        {
+            if (Name.IsNullOrWhiteSpace())
+                return false;
+
+            if (UserCode.IsNullOrWhiteSpace())
+                return false;
+
+            if (SelectedPriceGroup == null)
+                return false;
+
+            if (PriceModel <= 0 || PriceStl <= 0)
+                return false;
+
+            return true;
         }
 
         public void Initialize(CardViewMode viewMode, PricePositionDto pricePositionDto, string[] allUserCodes, BranchType branchType)
         {
             ViewMode = viewMode;
             _branchType = branchType;
+            _allUserCodes = allUserCodes;
 
             Groups.Clear();
             foreach (var priceGroupDto in _priceGroupRepository.Items.Where(x => x.BranchType == branchType))
@@ -119,6 +152,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
 
             Name = pricePositionDto.Name;
+            UserCode = pricePositionDto.UserCode;
             SelectedPriceGroup = Groups.FirstOrDefault(x => x.PriceGroupId == pricePositionDto.PriceGroupId);
 
             PriceStl = pricePositionDto.PriceStl;

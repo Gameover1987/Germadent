@@ -79,7 +79,25 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
         {
-            return pricePositionDto;
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("AddPricePosition", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
+                    command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
+                    command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
+                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+                    command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    pricePositionDto.PricePositionId = command.Parameters["@pricePositionId"].Value.ToInt();
+
+                    return pricePositionDto;
+                }
+            }
         }
     }
 }

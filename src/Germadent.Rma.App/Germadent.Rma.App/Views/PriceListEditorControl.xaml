@@ -9,7 +9,7 @@
              xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorContainerViewModel}, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -75,9 +75,12 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="12,6,0,0">
-            <Button Content="Добавить" Width="100"></Button>
-            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"></Button>
-            <Button Content="Удалить" Width="100" Margin="6,0,0,0"></Button>
+            <Button Content="Добавить" Width="100"
+                    Command="{Binding AddPricePositionCommand}"/>
+            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                    Command="{Binding EditPricePositionCommand}"/>
+            <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                    Command="{Binding DeletePricePositionCommand}"/>
         </StackPanel>
 
     </Grid>
