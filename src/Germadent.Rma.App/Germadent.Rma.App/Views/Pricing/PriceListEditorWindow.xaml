@@ -1,10 +1,11 @@
-﻿<Window x:Class="Germadent.Rma.App.Views.PriceListEditorWindow"
+﻿<Window x:Class="Germadent.Rma.App.Views.Pricing.PriceListEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:pricing="clr-namespace:Germadent.Rma.App.Views.Pricing"
         mc:Ignorable="d"
         Title="Редактирование прайслистов" 
         MinHeight="450"
@@ -25,11 +26,11 @@
         <TabControl BorderThickness="0">
             <TabItem Header="Фрезерный центр"
                      DataContext="{Binding MillingCenterPriceListEditor}">
-                <local:PriceListEditorControl Margin="12,6,12,0"/>
+                <pricing:PriceListEditorControl Margin="12,6,12,0"/>
             </TabItem>
             <TabItem Header="Лаборатория"
                      DataContext="{Binding LaboratoryPriceListEditor}">
-                <local:PriceListEditorControl Margin="12,6,12,0"/>
+                <pricing:PriceListEditorControl Margin="12,6,12,0"/>
             </TabItem>
         </TabControl>
 

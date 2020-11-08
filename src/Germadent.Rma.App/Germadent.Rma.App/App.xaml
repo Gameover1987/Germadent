@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DatePickerDictionary.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TabControlDictionary.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/Converters.xaml"/>
+                <ResourceDictionary Source="Views/Wizard/ToothCardDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
           
             <converters:BranchTypeToStringConverter x:Key="BranchTypeToStringConverter"/>

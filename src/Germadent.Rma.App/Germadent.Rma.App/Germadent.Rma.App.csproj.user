@@ -4,13 +4,13 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Views\AddPricePositionWindow.xaml.cs">
+    <Compile Update="Views\Pricing\AddPricePositionWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PriceListEditorControl.xaml.cs">
+    <Compile Update="Views\Pricing\PriceListEditorControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PriceListEditorWindow.xaml.cs">
+    <Compile Update="Views\Pricing\PriceListEditorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
@@ -28,15 +28,18 @@
     <Compile Update="Views\Wizard\ResponsiblePersonUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Wizard\ToothUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\AddPricePositionWindow.xaml">
+    <Page Update="Views\Pricing\AddPricePositionWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PriceListEditorControl.xaml">
+    <Page Update="Views\Pricing\PriceListEditorControl.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PriceListEditorWindow.xaml">
+    <Page Update="Views\Pricing\PriceListEditorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
@@ -52,6 +55,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Wizard\ResponsiblePersonUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\ToothCardDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\ToothUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

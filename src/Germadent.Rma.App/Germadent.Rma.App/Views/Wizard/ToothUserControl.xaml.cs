@@ -8,16 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Germadent.Rma.App.Views
+namespace Germadent.Rma.App.Views.Wizard
 {
     /// <summary>
-    /// Interaction logic for AddPricePositionWindow.xaml
+    /// Interaction logic for ToothUserControl.xaml
     /// </summary>
-    public partial class AddPricePositionWindow : Window
+    public partial class ToothUserControl : UserControl
     {
-        public AddPricePositionWindow()
+        public ToothUserControl()
         {
             InitializeComponent();
         }

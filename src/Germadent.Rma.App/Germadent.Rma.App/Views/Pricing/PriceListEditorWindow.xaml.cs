@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Germadent.Rma.App.ViewModels.Pricing;
 
-namespace Germadent.Rma.App.Views
+namespace Germadent.Rma.App.Views.Pricing
 {
     /// <summary>
     /// Interaction logic for PriceListEditorWindow.xaml

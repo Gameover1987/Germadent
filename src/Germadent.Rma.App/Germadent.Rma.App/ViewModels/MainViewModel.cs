@@ -13,6 +13,7 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.Pricing;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
