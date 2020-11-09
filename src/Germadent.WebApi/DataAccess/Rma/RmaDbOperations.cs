@@ -479,7 +479,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     {
                         var priceEntity = new PriceEntity();
                         priceEntity.PricePositionId = reader[nameof(priceEntity.PricePositionId)].ToInt();
-                        priceEntity.DateBegin = reader[nameof(priceEntity.DateBegin)].ToDateTime();
+                        priceEntity.DateBeginning = reader[nameof(priceEntity.DateBeginning)].ToDateTime();
                         priceEntity.DateEnd = reader[nameof(priceEntity.DateEnd)].ToDateTime();
                         priceEntity.PriceSTL = reader[nameof(priceEntity.PriceSTL)].ToDecimal();
                         priceEntity.PriceModel = reader[nameof(priceEntity.PriceModel)].ToDecimal();
@@ -494,9 +494,9 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public ProductDto[] GetProducts()
+        public ProductDto[] GetProductSetForPricePosition(int pricePositionId)
         {
-            var cmdText = "SELECT * FROM GetProductCollection()";
+            var cmdText = string.Format("SELECT * FROM GetProductSetForPricePosition({0})", pricePositionId);
             using var connection = new SqlConnection(_configuration.ConnectionString);
             connection.Open();
 
@@ -545,6 +545,36 @@ namespace Germadent.WebApi.DataAccess.Rma
             //        return productSetCollection.ToArray();
             //    }
             //}
+        }
+
+        private static void AddPrice(PriceDto price, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("AddPrice", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = (int)price.PricePositionId;
+                command.Parameters.Add(new SqlParameter("@dateBeginning", SqlDbType.Date)).Value = price.DateBeginning;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static void UpdatePrice(PriceDto price, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("UpdatePrice", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = price.PricePositionId;
+                command.Parameters.Add(new SqlParameter("@dateBeginningCurrent", SqlDbType.Date)).Value = price.DateBeginning;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
+                command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
+
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)

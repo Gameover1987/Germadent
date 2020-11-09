@@ -206,7 +206,7 @@ namespace Germadent.WebApi.Entities.Conversion
             return new PriceDto
             {
                 PricePositionId = entity.PricePositionId,
-                DateBegin = entity.DateBegin,
+                DateBeginning = entity.DateBeginning,
                 DateEnd = entity.DateEnd,
                 PriceSTL = entity.PriceSTL,
                 PriceModel = entity.PriceModel

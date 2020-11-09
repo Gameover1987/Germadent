@@ -133,10 +133,10 @@ namespace Germadent.WebApi.DataAccess.Rma
         PricePositionDto[] GetPricePositions(BranchType branchType);
 
         /// <summary>
-        /// Возвращает список изделий
+        /// Возвращает набор изделий для ценовой позиции
         /// </summary>
         /// <returns></returns>
-        ProductDto[] GetProducts();
+        ProductDto[] GetProductSetForPricePosition(int pricePositionId);
 
         /// <summary>
         /// Добавляет ценовую группу
