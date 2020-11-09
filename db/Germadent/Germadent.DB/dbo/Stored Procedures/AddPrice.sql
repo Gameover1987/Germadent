@@ -20,20 +20,25 @@ BEGIN
 		SET @dateBeginning = GETDATE()
 	END
 
-	IF @dateBeginning > (SELECT MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId) BEGIN
+	DECLARE @maxDateBeginning date
 
-    UPDATE Prices
-	SET DateEnd = @dateBeginning
-	WHERE PricePositionID = @pricePositionId
+	SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
 
-	INSERT INTO Prices
-	(PricePositionID, DateBeginning, PriceSTL, PriceModel)
-	VALUES
-	(@pricePositionId, @dateBeginning, @priceSTL, @priceModel)
+	IF @dateBeginning > @maxDateBeginning BEGIN
+
+		UPDATE Prices
+		SET DateEnd = @dateBeginning
+		WHERE PricePositionID = @pricePositionId
+
+		INSERT INTO Prices
+		(PricePositionID, DateBeginning, PriceSTL, PriceModel)
+		VALUES
+		(@pricePositionId, @dateBeginning, @priceSTL, @priceModel)
 	
 	END
-	ELSE BEGIN
-	PRINT 'На эту дату уже есть актуальная цена'
-	END
+	
+	ELSE 
+		PRINT CONCAT('На эту дату уже есть актуальная цена, выберите другую дату, позднее ', @maxDateBeginning)
+	
 
 END

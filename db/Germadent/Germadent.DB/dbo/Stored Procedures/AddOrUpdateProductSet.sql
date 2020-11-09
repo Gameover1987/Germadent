@@ -1,9 +1,9 @@
 ﻿-- =============================================
 -- Author:		Name
 -- Create date: 03.11.2020
--- Description:	Добавление или изменение набора изделий для ценовой группы
+-- Description:	Добавление или изменение набора изделий для ценовой позиции
 -- =============================================
-CREATE PROCEDURE AddOrUpdateProductSet 
+CREATE PROCEDURE [dbo].[AddOrUpdateProductSet] 
 	
 	@jsonStringProduct nvarchar(max)
 	

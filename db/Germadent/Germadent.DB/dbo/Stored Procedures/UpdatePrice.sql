@@ -7,7 +7,7 @@ CREATE PROCEDURE [dbo].[UpdatePrice]
 	
 	@pricePositionId int,
 	@dateBeginningCurrent date,
-	@dateBeginningNew date,
+	
 	@priceSTL money,
 	@priceModel money,	
 	@dateEnd date
@@ -16,19 +16,62 @@ AS
 BEGIN
 	
 	SET NOCOUNT ON;
-	
-	UPDATE Prices
-	SET DateBeginning = @dateBeginningNew,
-		PriceSTL = @priceSTL,
-		PriceModel = @priceModel,
-		DateEnd = @dateEnd
-	WHERE PricePositionID = @pricePositionId
-		AND DateBeginning = @dateBeginningCurrent
+	SET ANSI_WARNINGS OFF;
 
-	DELETE
-	FROM Prices
-	WHERE PricePositionID = @pricePositionId
-		AND (PriceSTL = 0 OR PriceSTL IS NULL) 
-		AND (PriceModel = 0 OR PriceModel IS NULL)
+	DECLARE @dateBeginningNew date, -- перетащить во входные параметры
+			@maxDateBeginning date,
+			@maxDateEnd date
+
+	SET @dateBeginningNew = @dateBeginningCurrent -- пока так
+	
+	IF @dateEnd IS NULL SET @dateEnd = '99991231'
+
+	-- Редактирование цены с проверкой корректности дат начала и окончания действия
+	BEGIN TRAN
+		
+		DELETE
+		FROM Prices
+		WHERE PricePositionID = @pricePositionId
+			AND DateBeginning = @dateBeginningCurrent
+
+		SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
+		SELECT @maxDateEnd = MAX(DateEnd) FROM Prices WHERE PricePositionID = @pricePositionId
+
+		IF @dateBeginningNew <= @maxDateBeginning OR @dateEnd <= @maxDateEnd OR @dateBeginningNew > @dateEnd BEGIN
+		ROLLBACK
+		PRINT 'Даты начала или окончания цены меньше тех, которые уже есть в базе'
+		END
+
+		ELSE BEGIN
+			INSERT INTO Prices
+			(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
+			VALUES
+			(@pricePositionId, @dateBeginningNew, @priceSTL, @priceModel, @dateEnd)
+
+			UPDATE Prices
+			SET DateEnd = @dateBeginningNew
+			WHERE PricePositionID = @pricePositionId
+				AND DateEnd = @maxDateEnd
+
+			COMMIT TRAN
+
+		END
+
+		-- Удаление записи с нулевыми ценами и открытие периода актуальности для предыдущих цен
+		BEGIN TRAN
+
+			DELETE
+			FROM Prices
+			WHERE PricePositionID = @pricePositionId
+				AND (PriceSTL = 0 OR PriceSTL IS NULL) 
+				AND (PriceModel = 0 OR PriceModel IS NULL)
+
+			SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
+
+			UPDATE Prices
+			SET DateEnd = NULL
+			WHERE PricePositionID = @pricePositionId
+				AND DateBeginning = @maxDateBeginning
+		COMMIT TRAN	
 
 END
