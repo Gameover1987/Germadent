@@ -133,7 +133,6 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceGroupRepository, PriceGroupRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPricePositionRepository, PricePositionRepository>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IProductRepository, ProductRepository>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterPrintModule()

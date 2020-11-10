@@ -183,11 +183,6 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<PricePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);
         }
 
-        public ProductDto[] GetProducts()
-        {
-            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/Products");
-        }
-
         public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
 
         public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;

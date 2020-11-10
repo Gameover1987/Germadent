@@ -26,7 +26,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     command.ExecuteNonQuery();
 
-                    priceGroupDto.Id = command.Parameters["@priceGroupId"].Value.ToInt();
+                    priceGroupDto.PriceGroupId = command.Parameters["@priceGroupId"].Value.ToInt();
 
                     return priceGroupDto;
                 }
@@ -41,7 +41,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 using (var command = new SqlCommand("UpdatePriceGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = (int)priceGroupDto.Id;
+                    command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = (int)priceGroupDto.PriceGroupId;
                     command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = priceGroupDto.BranchType;
                     command.Parameters.Add(new SqlParameter("@priceGroupName", SqlDbType.NVarChar)).Value = priceGroupDto.Name;
 

@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockAddPricePositionViewModel : AddPricePositionViewModel
     {
-        public DesignMockAddPricePositionViewModel() : base(new DesignMockPriceGroupRepository())
+        public DesignMockAddPricePositionViewModel() : base(new DesignMockPriceGroupRepository(), new DesignMockDictionaryRepository())
         {
             Initialize(CardViewMode.Add, new PricePositionDto
             {

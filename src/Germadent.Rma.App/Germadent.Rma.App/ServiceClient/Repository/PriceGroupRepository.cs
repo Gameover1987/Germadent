@@ -49,23 +49,4 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             return pricePositionsForMc.Concat(pricePositionsForLab).ToArray();
         }
     }
-
-    public interface IProductRepository : IRepository<ProductDto>
-    {
-
-    }
-
-    public class ProductRepository : Repository<ProductDto>, IProductRepository
-    {
-        private readonly IRmaServiceClient _rmaServiceClient;
-
-        public ProductRepository(IRmaServiceClient rmaServiceClient)
-        {
-            _rmaServiceClient = rmaServiceClient;
-        }
-        protected override ProductDto[] GetItems()
-        {
-            return _rmaServiceClient.GetProducts();
-        }
-    }
 }

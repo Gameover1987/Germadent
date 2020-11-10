@@ -178,12 +178,6 @@ namespace Germadent.Rma.App.ServiceClient
         PricePositionDto[] GetPricePositions(BranchType branchType);
 
         /// <summary>
-        /// Возвращает список изделий
-        /// </summary>
-        /// <returns></returns>
-        ProductDto[] GetProducts();
-
-        /// <summary>
         /// Собтие изменения репозитория заказчиков
         /// </summary>
         event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;

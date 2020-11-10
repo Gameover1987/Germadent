@@ -2,7 +2,7 @@
 {
     public class PriceGroupDto
     {
-        public int Id { get; set; }
+        public int PriceGroupId { get; set; }
 
         public string Name { get; set; }
 
@@ -12,7 +12,7 @@
 
         public override string ToString()
         {
-            return string.Format("Id={0}, Name={1}", Id, Name);
+            return string.Format("PriceGroupId={0}, Name={1}", PriceGroupId, Name);
         }
     }
 

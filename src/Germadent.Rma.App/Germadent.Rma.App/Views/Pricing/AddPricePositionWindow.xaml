@@ -8,6 +8,8 @@
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
         xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+        xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+        xmlns:pricing1="clr-namespace:Germadent.Rma.Model.Pricing;assembly=Germadent.Rma.Model"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
@@ -37,6 +39,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование" VerticalAlignment="Center"/>
@@ -47,22 +50,33 @@
                       ItemsSource="{Binding Groups}"
                       SelectedItem="{Binding SelectedPriceGroup}">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
-                        <TextBlock Text="{Binding DisplayName}"/>
+                    <DataTemplate DataType="{x:Type pricing1:PriceGroupDto}">
+                        <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Материал" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="23"
+                      ItemsSource="{Binding Materials}"
+                      SelectedItem="{Binding SelectedMaterial}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceModel, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceModel, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
         </Grid>

@@ -183,7 +183,7 @@ namespace Germadent.WebApi.Entities.Conversion
         {
             return new PriceGroupDto
             {
-                Id = entity.PriceGroupId,
+                PriceGroupId = entity.PriceGroupId,
                 Name = entity.PriceGroupName
             };
         }

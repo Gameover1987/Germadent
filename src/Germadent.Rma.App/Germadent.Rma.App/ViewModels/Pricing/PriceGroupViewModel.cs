@@ -14,7 +14,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _priceGroupDto = priceGroupDto;
         }
 
-        public int PriceGroupId => _priceGroupDto.Id;
+        public int PriceGroupId => _priceGroupDto.PriceGroupId;
 
         public string DisplayName
         {

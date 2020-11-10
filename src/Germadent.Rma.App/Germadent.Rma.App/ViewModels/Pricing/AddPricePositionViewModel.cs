@@ -17,17 +17,20 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     public class AddPricePositionViewModel : ValidationSupportableViewModel, IAddPricePositionViewModel
     {
         private readonly IPriceGroupRepository _priceGroupRepository;
+        private readonly IDictionaryRepository _dictionaryRepository;
         private BranchType _branchType;
         private string _userCode;
         private string[] _allUserCodes;
         private string _name;
         private decimal _priceStl;
         private decimal _priceModel;
-        private PriceGroupViewModel _selectedPriceGroup;
+        private PriceGroupDto _selectedPriceGroup;
+        private DictionaryItemDto _selectedMaterial;
 
-        public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository)
+        public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository, IDictionaryRepository dictionaryRepository)
         {
             _priceGroupRepository = priceGroupRepository;
+            _dictionaryRepository = dictionaryRepository;
 
             AddValidationFor(() => Name)
                 .When(() => string.IsNullOrWhiteSpace(Name), () => "Укажите наименование ценовой позиции");
@@ -41,7 +44,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 .When(() => PriceStl <= 0, () => "Укажите цену с STL отличную от нуля");
             AddValidationFor(() => PriceModel)
                 .When(() => PriceStl <= 0, () => "Укажите цену с модели отличную от нуля");
-
 
             OkCommand = new DelegateCommand(CanOkCommandHandler);
         }
@@ -77,9 +79,23 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public ObservableCollection<PriceGroupViewModel> Groups { get; } = new ObservableCollection<PriceGroupViewModel>();
+        public ObservableCollection<PriceGroupDto> Groups { get; } = new ObservableCollection<PriceGroupDto>();
 
-        public PriceGroupViewModel SelectedPriceGroup
+        public ObservableCollection<DictionaryItemDto> Materials { get; } = new ObservableCollection<DictionaryItemDto>();
+
+        public DictionaryItemDto SelectedMaterial
+        {
+            get { return _selectedMaterial; }
+            set
+            {
+                if (_selectedMaterial == value)
+                    return;
+                _selectedMaterial = value;
+                OnPropertyChanged(() => SelectedMaterial);
+            }
+        }
+
+        public PriceGroupDto SelectedPriceGroup
         {
             get { return _selectedPriceGroup; }
             set
@@ -114,7 +130,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 OnPropertyChanged(() => PriceModel);
             }
         }
-        
+
         public IDelegateCommand OkCommand { get; }
 
         private bool CanOkCommandHandler()
@@ -133,6 +149,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             if (SelectedPriceGroup == null)
                 return false;
 
+            if (SelectedMaterial == null)
+                return false;
+
             if (PriceModel <= 0 || PriceStl <= 0)
                 return false;
 
@@ -141,6 +160,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public void Initialize(CardViewMode viewMode, PricePositionDto pricePositionDto, string[] allUserCodes, BranchType branchType)
         {
+            ResetValidation();
+
             ViewMode = viewMode;
             _branchType = branchType;
             _allUserCodes = allUserCodes;
@@ -148,15 +169,21 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             Groups.Clear();
             foreach (var priceGroupDto in _priceGroupRepository.Items.Where(x => x.BranchType == branchType))
             {
-                Groups.Add(new PriceGroupViewModel(priceGroupDto));
+                Groups.Add(priceGroupDto);
             }
 
-            Name = pricePositionDto.Name;
-            UserCode = pricePositionDto.UserCode;
-            SelectedPriceGroup = Groups.FirstOrDefault(x => x.PriceGroupId == pricePositionDto.PriceGroupId);
+            Materials.Clear();
+            foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.Material))
+            {
+                Materials.Add(dictionaryItemDto);
+            }
 
-            PriceStl = pricePositionDto.PriceStl;
-            PriceModel = pricePositionDto.PriceModel;
+            _name = pricePositionDto.Name;
+            _userCode = pricePositionDto.UserCode;
+            _selectedPriceGroup = Groups.FirstOrDefault(x => x.PriceGroupId == pricePositionDto.PriceGroupId);
+            _selectedMaterial = Materials.FirstOrDefault(x => x.Id == pricePositionDto.MaterialId);
+            _priceStl = pricePositionDto.PriceStl;
+            _priceModel = pricePositionDto.PriceModel;
         }
 
         public PricePositionDto GetPricePosition()
@@ -166,7 +193,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 BranchType = _branchType,
                 Name = Name,
                 PriceGroupId = SelectedPriceGroup.PriceGroupId,
-                PriceStl =  PriceStl,
+                MaterialId = SelectedMaterial.Id,
+                PriceStl = PriceStl,
                 PriceModel = PriceModel,
                 UserCode = UserCode
             };

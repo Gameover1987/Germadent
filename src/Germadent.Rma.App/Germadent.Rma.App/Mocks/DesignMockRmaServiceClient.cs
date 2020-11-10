@@ -260,7 +260,7 @@ namespace Germadent.Rma.App.Mocks
             };
             for (int i = 0; i < groups.Length; i++)
             {
-                groups[i].Id = i;
+                groups[i].PriceGroupId = i;
                 groups[i].BranchType = branchType;
             }
             
@@ -294,11 +294,6 @@ namespace Germadent.Rma.App.Mocks
             };
 
             return positions;
-        }
-
-        public ProductDto[] GetProducts()
-        {
-            return new ProductDto[0];
         }
 
         private PriceGroupDto GetPriceGroup1()
