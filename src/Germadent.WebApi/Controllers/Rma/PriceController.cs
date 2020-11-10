@@ -111,8 +111,25 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             try
             {
-                _logger.Info(nameof(pricePositionDto));
+                _logger.Info(nameof(AddPricePosition));
                 pricePositionDto = _rmaDbOperations.AddPricePosition(pricePositionDto);
+                return Ok(pricePositionDto);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdatePricePosition")]
+        public IActionResult UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            try
+            {
+                _logger.Info(nameof(UpdatePricePosition));
+                pricePositionDto = _rmaDbOperations.UpdatePricePosition(pricePositionDto);
                 return Ok(pricePositionDto);
             }
             catch (Exception exception)

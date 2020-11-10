@@ -192,5 +192,12 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="pricePositionDto"></param>
         PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Обновляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto);
     }
 }

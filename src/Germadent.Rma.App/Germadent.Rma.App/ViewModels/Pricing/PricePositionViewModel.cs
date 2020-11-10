@@ -6,7 +6,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 {
     public class PricePositionViewModel : ViewModelBase
     {
-        private readonly PricePositionDto _pricePositionDto;
+        private PricePositionDto _pricePositionDto;
 
         private bool _isChecked;
 
@@ -61,6 +61,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         {
             _isChecked = isChecked;
             OnPropertyChanged(() => IsChecked);
+        }
+
+        public void Update(PricePositionDto pricePositionDto)
+        {
+            _pricePositionDto = pricePositionDto;
+            OnPropertyChanged();
         }
     }
 }

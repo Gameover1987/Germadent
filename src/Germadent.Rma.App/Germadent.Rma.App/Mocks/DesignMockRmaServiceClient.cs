@@ -483,5 +483,10 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

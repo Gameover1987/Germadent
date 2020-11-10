@@ -203,12 +203,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanAddPricePositionCommandHandler()
         {
-            return CanEditPriceList;
+            return CanEditPriceList && SelectedGroup != null;
         }
         private void AddPricePositionCommandHandler()
         {
             var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
-            _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto(), allUserCodes, BranchType);
+            _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto{PriceGroupId = SelectedGroup.PriceGroupId}, allUserCodes, BranchType);
             if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
                 return;
 
@@ -218,12 +218,18 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanEditPricePositionCommandHandler()
         {
-            return CanEditPriceList && SelectedPosition != null;
+            return CanEditPriceList && SelectedPosition != null && SelectedGroup != null;
         }
 
         private void EditPricePositionCommandHandler()
         {
+            var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
+            _addPricePositionViewModel.Initialize(CardViewMode.Edit, SelectedPosition.ToDto(), allUserCodes, BranchType);
+            if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
+                return;
 
+            var pricePositionDto = _serviceClient.UpdatePricePosition(_addPricePositionViewModel.GetPricePosition());
+            SelectedPosition.Update(pricePositionDto);
         }
 
         private bool CanDeletePricePositionCommandHandler()

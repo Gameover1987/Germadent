@@ -146,7 +146,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
 
         /// <summary>
-        /// ОБновить ценовую группу
+        /// Обновить ценовую группу
         /// </summary>
         /// <param name="priceGroupDto"></param>
         /// <returns></returns>
@@ -165,5 +165,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="pricePositionDto"></param>
         /// <returns></returns>
         PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Обновить ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto);
     }
 }

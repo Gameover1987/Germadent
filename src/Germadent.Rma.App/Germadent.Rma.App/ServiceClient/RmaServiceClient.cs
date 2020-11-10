@@ -192,6 +192,11 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
         }
 
+        public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
+        }
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

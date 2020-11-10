@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.WebApi.Entities;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -87,7 +88,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
-                    command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
+                    command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.Int)).Value = pricePositionDto.Name;
                     command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
@@ -97,6 +98,176 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     return pricePositionDto;
                 }
+            }
+        }
+
+        public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("AddPricePosition", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = pricePositionDto.PricePositionId;
+                    command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
+                    command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
+                    command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
+                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+
+                    command.ExecuteNonQuery();
+
+                    return pricePositionDto;
+                }
+            }
+        }
+
+        public PriceGroupDto[] GetPriceGroups(BranchType branchType)
+        {
+            var cmdText = string.Format("select distinct PriceGroupID, PriceGroupName from GetPriceListForBranch({0})", (int)branchType);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var priceGroupCollection = new List<PriceGroupDto>();
+                    while (reader.Read())
+                    {
+                        var priceGroupEntity = new PriceGroupEntity();
+
+                        priceGroupEntity.PriceGroupId = reader[nameof(priceGroupEntity.PriceGroupId)].ToInt();
+                        priceGroupEntity.PriceGroupName = reader[nameof(priceGroupEntity.PriceGroupName)].ToString();
+
+                        var priceGroupDto = _converter.ConvertToPriceGroup(priceGroupEntity);
+                        priceGroupDto.BranchType = branchType;
+                        priceGroupCollection.Add(priceGroupDto);
+                    }
+                    reader.Close();
+
+                    return priceGroupCollection.ToArray();
+                }
+            }
+        }
+
+        public PricePositionDto[] GetPricePositions(BranchType branchType)
+        {
+            var cmdText = string.Format("select distinct PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0})", (int)branchType);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var pricePositionCollection = new List<PricePositionDto>();
+                    while (reader.Read())
+                    {
+                        var pricePositionEntity = new PricePositionEntity();
+
+                        var pricePositionId = reader[nameof(pricePositionEntity.PricePositionId)];
+                        if (pricePositionId == DBNull.Value)
+                            continue;
+
+                        pricePositionEntity.PricePositionId = pricePositionId.ToInt();
+                        pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();
+                        pricePositionEntity.PricePositionCode = reader[nameof(pricePositionEntity.PricePositionCode)].ToString();
+                        pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();
+                        var materialId = reader[nameof(pricePositionEntity.MaterialId)];
+                        if (materialId != DBNull.Value)
+                            pricePositionEntity.MaterialId = materialId.ToInt();
+
+                        var pricePositionDto = _converter.ConvertToPricePosition(pricePositionEntity);
+                        pricePositionDto.BranchType = branchType;
+                        pricePositionCollection.Add(pricePositionDto);
+                    }
+                    reader.Close();
+
+                    return pricePositionCollection.ToArray();
+                }
+            }
+        }
+
+        public PriceDto[] GetPrices(int branchType)
+        {
+            var cmdText = string.Format("select distinct PricePositionID, DateBeginning, DateEnd, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var priceCollection = new List<PriceDto>();
+                    while (reader.Read())
+                    {
+                        var priceEntity = new PriceEntity();
+                        priceEntity.PricePositionId = reader[nameof(priceEntity.PricePositionId)].ToInt();
+                        priceEntity.DateBeginning = reader[nameof(priceEntity.DateBeginning)].ToDateTime();
+                        priceEntity.DateEnd = reader[nameof(priceEntity.DateEnd)].ToDateTime();
+                        priceEntity.PriceSTL = reader[nameof(priceEntity.PriceSTL)].ToDecimal();
+                        priceEntity.PriceModel = reader[nameof(priceEntity.PriceModel)].ToDecimal();
+
+                        var priceDto = _converter.ConvertToPrice(priceEntity);
+                        priceCollection.Add(priceDto);
+                    }
+                    reader.Close();
+
+                    return priceCollection.ToArray();
+                }
+            }
+        }
+
+        public ProductDto[] GetProductSetForPricePosition(int pricePositionId)
+        {
+            var cmdText = string.Format("SELECT * FROM GetProductSetForPricePosition({0})", pricePositionId);
+            using var connection = new SqlConnection(_configuration.ConnectionString);
+            connection.Open();
+
+            using var command = new SqlCommand(cmdText, connection);
+            using var reader = command.ExecuteReader();
+            var products = new List<ProductDto>();
+            while (reader.Read())
+            {
+                var productEntity = new ProductEntity();
+
+                productEntity.ProductId = reader[nameof(productEntity.ProductId)].ToInt();
+                productEntity.PricePositionId = reader[nameof(productEntity.PricePositionId)].ToInt();
+                productEntity.ProstheticsName = reader[nameof(productEntity.ProstheticsName)].ToString();
+
+                products.Add(_converter.ConvertToProduct(productEntity));
+            }
+
+            return products.ToArray();
+        }
+
+        private static void AddPrice(PriceDto price, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("AddPrice", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = (int)price.PricePositionId;
+                command.Parameters.Add(new SqlParameter("@dateBeginning", SqlDbType.Date)).Value = price.DateBeginning;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static void UpdatePrice(PriceDto price, SqlConnection connection)
+        {
+            using (var command = new SqlCommand("UpdatePrice", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = price.PricePositionId;
+                command.Parameters.Add(new SqlParameter("@dateBeginningCurrent", SqlDbType.Date)).Value = price.DateBeginning;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
+                command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
+
+                command.ExecuteNonQuery();
             }
         }
     }
