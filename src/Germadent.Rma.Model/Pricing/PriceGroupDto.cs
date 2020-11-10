@@ -16,9 +16,9 @@
         }
     }
 
-    public class PriceGroupDeleteResult
+    public class DeleteResult
     {
-        public int PriceGroupId { get; set; }
+        public int Id { get; set; }
 
         public int Count { get; set; }
     }

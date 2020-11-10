@@ -53,7 +53,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public PriceGroupDeleteResult DeletePriceGroup(int priceGroupId)
+        public DeleteResult DeletePriceGroup(int priceGroupId)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -69,9 +69,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     var count = command.Parameters["@resultCount"].Value.ToInt();
 
-                    return new PriceGroupDeleteResult()
+                    return new DeleteResult()
                     {
-                        PriceGroupId = priceGroupId,
+                        Id = priceGroupId,
                         Count = count
                     };
                 }
@@ -118,6 +118,30 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.ExecuteNonQuery();
 
                     return pricePositionDto;
+                }
+            }
+        }
+
+        public DeleteResult DeletePricePosition(int pricePositionId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("DeletePricePosition", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = pricePositionId;
+                    command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var count = command.Parameters["@resultCount"].Value.ToInt();
+
+                    return new DeleteResult()
+                    {
+                        Id = pricePositionId,
+                        Count = count
+                    };
                 }
             }
         }

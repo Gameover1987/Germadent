@@ -28,9 +28,17 @@
                  ItemsSource="{Binding Groups}"
                  SelectedItem="{Binding SelectedGroup}"
                  ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
+            <ListBox.InputBindings>
+                <KeyBinding Key="N" Modifiers="Control"
+                            Command="{Binding AddPriceGroupCommand}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditPriceGroupCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeletePriceGroupCommand}"/>
+            </ListBox.InputBindings>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
-                    <Grid>
+                    <Grid Background="Transparent" MouseLeftButtonDown="PriceGroupMouseButtonDown">
                         <TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="3,0,0,0" TextTrimming="CharacterEllipsis"
                                    helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
                     </Grid>
@@ -62,7 +70,31 @@
                   IsReadOnly="True"
                   ItemsSource="{Binding Positions}"
                   SelectedItem="{Binding SelectedPosition}">
-           <DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="PreviewMouseDoubleClick" Handler="PricePositionMouseDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding EditPricePositionCommand}"
+                                          InputGestureText="F2"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeletePricePositionCommand}"
+                                          InputGestureText="Delete"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.InputBindings>
+                <KeyBinding Key="N" Modifiers="Control"
+                            Command="{Binding AddPricePositionCommand}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditPricePositionCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeletePricePositionCommand}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
                <DataGridTextColumn Header="Код" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                            Binding="{Binding UserCode}"/>
                <DataGridTextColumn Header="Наименование" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"

@@ -277,7 +277,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public PriceGroupDeleteResult DeletePriceGroup(int priceGroupId)
+        public DeleteResult DeletePriceGroup(int priceGroupId)
         {
             throw new NotImplementedException();
         }
@@ -485,6 +485,11 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DeleteResult DeletePricePosition(int pricePositionId)
         {
             throw new NotImplementedException();
         }

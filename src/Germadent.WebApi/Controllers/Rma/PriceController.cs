@@ -138,5 +138,22 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
+
+        [HttpDelete]
+        [Route("DeletePricePosition/{pricePositionId:int}")]
+        public IActionResult DeletePricePosition(int pricePositionId)
+        {
+            try
+            {
+                _logger.Info(nameof(DeletePricePosition));
+                var result = _rmaDbOperations.DeletePricePosition(pricePositionId);
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
     }
 }

@@ -167,7 +167,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="priceGroupId"></param>
         /// <returns></returns>
-        PriceGroupDeleteResult DeletePriceGroup(int priceGroupId);
+        DeleteResult DeletePriceGroup(int priceGroupId);
 
         /// <summary>
         /// Возвращает ценовые позиции по выбранному типу филиала
@@ -199,5 +199,12 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="pricePositionDto"></param>
         /// <returns></returns>
         PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Удаляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionId"></param>
+        /// <returns></returns>
+        DeleteResult DeletePricePosition(int pricePositionId);
     }
 }

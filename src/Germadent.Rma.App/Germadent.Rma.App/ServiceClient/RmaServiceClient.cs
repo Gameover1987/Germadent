@@ -173,9 +173,9 @@ namespace Germadent.Rma.App.ServiceClient
             return updatedPriceGroup;
         }
 
-        public PriceGroupDeleteResult DeletePriceGroup(int priceGroupId)
+        public DeleteResult DeletePriceGroup(int priceGroupId)
         {
-            return ExecuteHttpDelete<PriceGroupDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
@@ -195,6 +195,11 @@ namespace Germadent.Rma.App.ServiceClient
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
         {
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
+        }
+
+        public DeleteResult DeletePricePosition(int pricePositionId)
+        {
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
         }
 
         protected override void HandleError(IRestResponse response)

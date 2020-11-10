@@ -19,13 +19,6 @@ using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
-    public interface IPriceListEditorViewModel
-    {
-        BranchType BranchType { get; set; }
-
-        void Initialize();
-    }
-
     public class PriceListEditorViewModel : ViewModelBase, IPriceListEditorViewModel
     {
         private readonly IPriceGroupRepository _priceGroupRepository;
@@ -239,7 +232,13 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private void DeletePricePositionCommandHandler()
         {
+            var message = "Вы действительно хотите удалить ценовую позицию?";
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
 
+            _serviceClient.DeletePricePosition(SelectedGroup.PriceGroupId);
+
+            Positions.Remove(SelectedPosition);
         }
     }
 }
