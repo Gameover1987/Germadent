@@ -42,3 +42,8 @@ BEGIN
 	
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddPrice] TO [gdl_user]
+    AS [dbo];
+

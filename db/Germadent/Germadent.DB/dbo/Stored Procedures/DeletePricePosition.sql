@@ -31,3 +31,8 @@ BEGIN
 			END	
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[DeletePricePosition] TO [gdl_user]
+    AS [dbo];
+
