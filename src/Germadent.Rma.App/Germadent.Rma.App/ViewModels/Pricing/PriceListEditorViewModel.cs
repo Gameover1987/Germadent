@@ -148,9 +148,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             var priceGroup = new PriceGroupDto { BranchType = BranchType, Name = priceGroupName };
 
-            _serviceClient.AddPriceGroup(priceGroup);
+            var addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup);
 
-            Groups.Add(new PriceGroupViewModel(priceGroup));
+            Groups.Add(new PriceGroupViewModel(addedPriceGroup));
         }
 
         private bool CanEditPriceGroupCommandHandler()

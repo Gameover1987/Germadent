@@ -15,13 +15,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Germadent.WebApi
 {
-    public class ChatHub : Hub
+    public class NotificationHub : Hub
     {
-        public async Task Send(string name, string message)
-        {
-            // Call the broadcastMessage method to update clients.
-            await Clients.All.SendAsync("broadcastMessage", name, message);
-        }
+        
     }
 
     public class Startup
@@ -61,7 +57,7 @@ namespace Germadent.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<NotificationHub>("/NotificationHub");
             });
         }
     }

@@ -12,9 +12,9 @@ namespace Germadent.WebApi.Controllers.UserManagement
     {
         private readonly IUmcDbOperations _umcDbOperations;
         private readonly ILogger _logger;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger, IHubContext<ChatHub> hubContext)
+        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
         {
             _umcDbOperations = umcDbOperations;
             _logger = logger;

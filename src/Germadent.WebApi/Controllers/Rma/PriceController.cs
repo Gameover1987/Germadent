@@ -1,9 +1,11 @@
 ﻿using System;
+using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
@@ -13,11 +15,13 @@ namespace Germadent.WebApi.Controllers.Rma
     {
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly ILogger _logger;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public PriceController(IRmaDbOperations rmaDbOperations, ILogger logger)
+        public PriceController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
         {
             _rmaDbOperations = rmaDbOperations;
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -45,6 +49,11 @@ namespace Germadent.WebApi.Controllers.Rma
             {
                 _logger.Info(nameof(AddPriceGroup));
                 priceGroup = _rmaDbOperations.AddPriceGroup(priceGroup);
+
+                var repositoryNotificationDto = new RepositoryNotificationDto(RepositoryType.PriceGroup);
+                repositoryNotificationDto.AddedItems = new[] { priceGroup };
+                _hubContext.Clients.All.SendAsync("Send", repositoryNotificationDto.SerializeToJson());
+
                 return Ok(priceGroup);
             }
             catch (Exception exception)
@@ -62,6 +71,11 @@ namespace Germadent.WebApi.Controllers.Rma
             {
                 _logger.Info(nameof(UpdatePriceGroup));
                 priceGroup = _rmaDbOperations.UpdatePriceGroup(priceGroup);
+
+                var repositoryNotificationDto = new RepositoryNotificationDto(RepositoryType.PriceGroup);
+                repositoryNotificationDto.ChangedItems = new[] { priceGroup };
+                _hubContext.Clients.All.SendAsync("Send", repositoryNotificationDto.SerializeToJson());
+
                 return Ok(priceGroup);
             }
             catch (Exception exception)
@@ -79,6 +93,11 @@ namespace Germadent.WebApi.Controllers.Rma
             {
                 _logger.Info(nameof(DeletePriceGroup));
                 var result = _rmaDbOperations.DeletePriceGroup(priceGroupId);
+
+                var repositoryNotificationDto = new RepositoryNotificationDto(RepositoryType.PriceGroup);
+                repositoryNotificationDto.DeletedItems = new[] {priceGroupId};
+                _hubContext.Clients.All.SendAsync("Send", repositoryNotificationDto.SerializeToJson());
+
                 return Ok(result);
             }
             catch (Exception exception)
