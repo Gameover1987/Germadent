@@ -75,3 +75,8 @@ BEGIN
 		COMMIT TRAN	
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdatePrice] TO [gdl_user]
+    AS [dbo];
+

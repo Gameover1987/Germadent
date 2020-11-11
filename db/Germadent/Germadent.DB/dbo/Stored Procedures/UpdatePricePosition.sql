@@ -3,14 +3,14 @@
 -- Create date: 03.11.2020
 -- Description:	Редактирование ценовой позиции
 -- =============================================
-CREATE PROCEDURE UpdatePricePosition 
+CREATE PROCEDURE [dbo].[UpdatePricePosition] 
 	
 	@pricePositionId int,	
 	@pricePositionCode nvarchar(20),
 	@priceGroupId int,
 	@pricePositionName nvarchar(max),
-	@materialId int,
-	@jsonStringProduct nvarchar(max)
+	@materialId int
+--	@jsonStringProduct nvarchar(max)
 
 AS
 BEGIN
@@ -24,7 +24,7 @@ BEGIN
 		MaterialID = @materialId
 	WHERE PricePositionID = @pricePositionId
 
-	EXEC AddOrUpdateProductSet @jsonStringProduct
+--	EXEC AddOrUpdateProductSet @jsonStringProduct
 
 END
 GO
