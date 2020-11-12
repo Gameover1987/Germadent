@@ -13,25 +13,27 @@ namespace Germadent.Rma.App.ServiceClient
     {
         private readonly IConfiguration _configuration;
 
+        private HubConnection _connection;
+
         public SignalRClient(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
-
+            await _connection.DisposeAsync();
         }
 
         public async void Initialize()
         {
-            var connection = new HubConnectionBuilder()
+            _connection = new HubConnectionBuilder()
                 .WithUrl(new Uri(_configuration.DataServiceUrl + "/NotificationHub"))
                 .WithAutomaticReconnect()
                 .Build();
 
-            await connection.StartAsync();
-            connection.On<string>("Send", OnNotification);
+            await _connection.StartAsync();
+            _connection.On<string>("Send", OnNotification);
         }
 
         public event EventHandler<RepositoryChangedEventArgs<PriceGroupDto>> PriceGroupRepositoryChanged;
