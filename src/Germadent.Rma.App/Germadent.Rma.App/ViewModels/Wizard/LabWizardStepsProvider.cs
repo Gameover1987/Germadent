@@ -15,7 +15,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class LabWizardStepsProvider : ILabWizardStepsProvider
     {
-        private readonly IOrderFilesContainerViewModel _filesContainer;
         private readonly ICustomerSuggestionProvider _customerSuggestionProvider;
         private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonSuggestionProvider;
         private readonly ICatalogUIOperations _catalogUIOperations;
@@ -27,8 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly IClipboardHelper _clipboardHelper;
 
 
-        public LabWizardStepsProvider(IOrderFilesContainerViewModel filesContainer,
-            ICustomerSuggestionProvider customerSuggestionProvider,
+        public LabWizardStepsProvider(ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonSuggestionProvider,
             ICatalogUIOperations catalogUIOperations,
             ICatalogSelectionUIOperations catalogSelectionOperations,
@@ -38,7 +36,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             IPriceListViewModel priceListViewModel,
             IClipboardHelper clipboardHelper)
         {
-            _filesContainer = filesContainer;
             _customerSuggestionProvider = customerSuggestionProvider;
             _responsiblePersonSuggestionProvider = responsiblePersonSuggestionProvider;
             _catalogUIOperations = catalogUIOperations;
@@ -48,7 +45,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _dictionaryRepository = dictionaryRepository;
             _priceListViewModel = priceListViewModel;
             _clipboardHelper = clipboardHelper;
-            _filesContainer = filesContainer;
         }
 
         public BranchType BranchType => BranchType.Laboratory;

@@ -15,10 +15,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private DictionaryItemDto _selectedTransparency;
 
-        public LaboratoryProjectWizardStepViewModel(IOrderFilesContainerViewModel orderFilesContainer, IDictionaryRepository dictionaryRepository)
+        public LaboratoryProjectWizardStepViewModel(IDictionaryRepository dictionaryRepository)
         {
             _dictionaryRepository = dictionaryRepository;
-            FilesContainer = orderFilesContainer;
         }
 
         public override string DisplayName => "Проект";
@@ -74,8 +73,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
-        public IOrderFilesContainerViewModel FilesContainer { get; }
-
         public override void Initialize(OrderDto order)
         {
             _workDescription = order.WorkDescription;
@@ -87,8 +84,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             transparences.ForEach(x => Transparences.Add(x));
 
             SelectedTransparency = Transparences.First(x => x.Id == order.Transparency);
-            
-            FilesContainer.Initialize(order);
 
             OnPropertyChanged();
         }
@@ -99,8 +94,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = SelectedTransparency.Id;
             order.ProstheticArticul = ProstheticArticul;
-
-            FilesContainer.AssemblyOrder(order);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockLaboratoryProjectWizardStepViewModel : LaboratoryProjectWizardStepViewModel
     {
         public DesignMockLaboratoryProjectWizardStepViewModel()
-            : base(new DesignMockOrderFilesContainerViewModel(), new DesignMockDictionaryRepository())
+            : base( new DesignMockDictionaryRepository())
         {
             var order = new OrderDto()
             {
