@@ -197,7 +197,9 @@ namespace Germadent.WebApi.Entities.Conversion
                 PriceGroupId = entity.PriceGroupId,
                 UserCode = entity.PricePositionCode,
                 Name = entity.PricePositionName,
-                MaterialId = entity.MaterialId
+                MaterialId = entity.MaterialId,
+                PriceModel = entity.PriceModel ?? 0,
+                PriceStl = entity.PriceStl ?? 0
             };
         }
 

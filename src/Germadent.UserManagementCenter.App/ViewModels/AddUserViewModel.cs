@@ -28,6 +28,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private string _description;
         private bool _isLocked;
         private string _phone;
+        private bool _isLoading;
+        private byte[] _image;
 
         public AddUserViewModel(IUmcServiceClient umcServiceClient)
         {
@@ -44,11 +46,24 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 .When(() => Password != PasswordOnceAgain, () => "Пароли должны совпадать");
 
             OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
+            ChangeUserImageCommand = new DelegateCommand(ChangeUserImageCommandHandler);
         }
 
         public string Title { get; private set; }
 
         public ViewMode ViewMode { get; private set; }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                if (_isLoading = value)
+                    return;
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
+        }
 
         public string FirstName
         {
@@ -158,9 +173,23 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
+        public byte[] Image
+        {
+            get { return _image; }
+            set
+            {
+                if (_image == value)
+                    return;
+                _image = value;
+                OnPropertyChanged(() => Image);
+            }
+        }
+
         public ObservableCollection<RoleViewModel> Roles { get; } = new ObservableCollection<RoleViewModel>();
 
         public IDelegateCommand OkCommand { get; }
+
+        public IDelegateCommand ChangeUserImageCommand { get; }
 
         public bool AtLeastOneRoleChecked
         {
@@ -236,6 +265,16 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private bool CanOkCommandHandler()
         {
             return IsValid();
+        }
+
+        private void ChangeUserImageCommandHandler()
+        {
+
+        }
+
+        private async void SetUserImage(byte[] image)
+        {
+            _umcServiceClient.
         }
 
         private bool IsValid()

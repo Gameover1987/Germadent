@@ -104,6 +104,8 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
+                                    Binding="{Binding Model.WorkOrderId}"/>
                 <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
                                     Binding="{Binding Model.DocNumber}"/>
                 <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"

@@ -30,27 +30,16 @@ namespace Germadent.WebApi.Entities
         /// <summary>
         /// Идентификатор материала, привязанного к ценовой позиции
         /// </summary>
-        public int? MaterialId { get; set; }
-/*
-        /// <summary>
-        /// Наименование материала, привязанного к ценовой позиции
-        /// </summary>
-        public string MaterialName { get; set; }
-
-        /// <summary>
-        /// Цена для лаборатории
-        /// </summary>
-        public int Price { get; set; }
+        public int? MaterialId { get; set; }     
 
         /// <summary>
         /// Цена для ФЦ с stl-файла
         /// </summary>
-        public int PriceStl { get; set; }
+        public decimal? PriceStl { get; set; }
 
         /// <summary>
         /// Цена для ФЦ с модели
         /// </summary>
-        public int PriceModel { get; set; }
-*/
+        public decimal? PriceModel { get; set; }
     }
 }

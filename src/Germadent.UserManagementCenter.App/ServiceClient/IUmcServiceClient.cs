@@ -69,5 +69,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         /// <param name="roleId"></param>
         /// <returns></returns>
         RightDto[] GetRightsByRole(int roleId);
+
+
     }
 }
