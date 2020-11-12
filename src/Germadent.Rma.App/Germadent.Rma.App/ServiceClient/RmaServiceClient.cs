@@ -63,24 +63,14 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
-            if (order.DataFileName != null)
-            {
-                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
-                ExecuteFileUpload(api, order.DataFileName);
-            }
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);           
 
             return addedOrder;
         }
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
-            if (order.DataFileName != null)
-            {
-                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
-                ExecuteFileUpload(api, order.DataFileName);
-            }
+            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);          
 
             return updatedOrder;
         }

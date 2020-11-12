@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Common.FileSystem;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.App.Configuration;
@@ -33,6 +34,7 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IUserManagementUIOperations, UserManagementUIOperations>();
             _container.RegisterType<IAddUserViewModel, AddUserViewModel>(new TransientLifetimeManager());
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
+            _container.RegisterSingleton<IFileManager, FileManager>();
             _container.RegisterType<IAddRoleViewModel, AddRoleViewModel>(new TransientLifetimeManager());
         }
 

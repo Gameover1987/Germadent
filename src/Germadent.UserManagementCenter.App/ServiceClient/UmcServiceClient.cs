@@ -1,4 +1,5 @@
 ﻿using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.UserManagementCenter.App.Configuration;
 using Germadent.UserManagementCenter.Model;
@@ -10,12 +11,13 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     public class UmcServiceClient : ServiceClientBase, IUmcServiceClient
     {
         private readonly IUmcConfiguration _configuration;
+        private readonly IFileManager _fileManager;
         private readonly RestClient _client;
 
-        public UmcServiceClient(IUmcConfiguration configuration)
+        public UmcServiceClient(IUmcConfiguration configuration, IFileManager fileManager)
         {
             _configuration = configuration;
-
+            _fileManager = fileManager;
             _client = new RestClient();
         }
 
@@ -31,12 +33,26 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
 
         public UserDto AddUser(UserDto userDto)
         {
-            return ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/adduser", userDto);
+            var addedUser = ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/adduser", userDto);
+            if (userDto.FileName != null)
+            {
+                var api = string.Format("{0}/api/userManagement/users/fileupload/{1}/{2}", _configuration.DataServiceUrl, addedUser.UserId, _fileManager.GetShortFileName(userDto.FileName));
+                ExecuteFileUpload(api, userDto.FileName);
+            }
+
+            return addedUser;
         }
 
         public UserDto EditUser(UserDto userDto)
         {
-            return ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/edituser", userDto);
+            var editedUser = ExecuteHttpPost<UserDto>(_configuration.DataServiceUrl + "/api/userManagement/users/edituser", userDto);
+            if (userDto.FileName != null)
+            {
+                var api = string.Format("{0}/api/userManagement/users/fileupload/{1}/{2}", _configuration.DataServiceUrl, editedUser.UserId, _fileManager.GetShortFileName(editedUser.FileName));
+                ExecuteFileUpload(api, userDto.FileName);
+            }
+
+            return editedUser;
         }
 
         public void DeleteUser(int userId)

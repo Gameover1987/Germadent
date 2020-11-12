@@ -73,8 +73,6 @@ namespace Germadent.Rma.Model
 
         public string ProstheticArticul { get; set; }
 
-        public string DataFileName { get; set; }
-
         public string MaterialsStr { get; set; }
 
         public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }

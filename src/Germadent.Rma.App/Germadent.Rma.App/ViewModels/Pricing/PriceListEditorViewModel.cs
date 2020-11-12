@@ -236,7 +236,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            _serviceClient.DeletePricePosition(SelectedGroup.PriceGroupId);
+            _serviceClient.DeletePricePosition(SelectedPosition.PricePositionId);
 
             Positions.Remove(SelectedPosition);
         }

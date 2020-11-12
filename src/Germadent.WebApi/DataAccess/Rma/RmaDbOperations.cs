@@ -20,35 +20,18 @@ namespace Germadent.WebApi.DataAccess.Rma
         private readonly IAddWorOrderCommand _addWorOrderCommand;
         private readonly IRmaEntityConverter _converter;
         private readonly IServiceConfiguration _configuration;
-        private readonly IFileManager _fileManager;
 
-        private readonly string _storageDirectory;
-
-        public RmaDbOperations(IAddWorOrderCommand addWorOrderCommand, IRmaEntityConverter converter, IServiceConfiguration configuration, IFileManager fileManager)
+        public RmaDbOperations(IAddWorOrderCommand addWorOrderCommand, IRmaEntityConverter converter, IServiceConfiguration configuration)
         {
             _addWorOrderCommand = addWorOrderCommand;
             _converter = converter;
             _configuration = configuration;
-            _fileManager = fileManager;
-
-            _storageDirectory = GetFileTableFullPath();
         }
 
         public OrderDto AddOrder(OrderDto order)
         {
             return _addWorOrderCommand.Execute(order);
-        }
-
-        public void AttachDataFileToOrder(int id, string fileName, Stream stream)
-        {
-            var resultFileName = Path.Combine(_storageDirectory, fileName);
-            var fileInfo = _fileManager.Save(stream, resultFileName);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-                LinkFileToWorkOrder(id, fileName, fileInfo.CreationTime, connection);
-            }
-        }
+        }     
 
         private void AddOrUpdateToothCard(ToothDto[] toothCard, SqlConnection connection)
         {
@@ -131,22 +114,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                 command.ExecuteNonQuery();
             }
-        }
-
-        private string GetFileTableFullPath()
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "select dbo.GetFileTableFullPath()";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var commandResult = command.ExecuteScalar();
-                    return commandResult.ToString();
-                }
-            }
-        }
+        }      
 
         private static void AddOrUpdateAdditionalEquipmentInWO(OrderDto order, SqlConnection connection)
         {
@@ -203,60 +171,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             var orderDto = GetWorkOrderById(id);
             orderDto.ToothCard = GetToothCard(id);
             return orderDto;
-        }
-
-        private void FillHasDataFile(OrderDto order)
-        {
-            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", order.WorkOrderId);
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var dataFileAttributes = new DataFileAttributes();
-                    while (reader.Read())
-                    {
-                        dataFileAttributes.FileName = reader["name"].ToString();
-                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
-                    }
-
-                    if (dataFileAttributes.FileName == null)
-                        return;
-
-                    order.DataFileName = dataFileAttributes.FileName;
-                }
-            }
-        }
-
-        public string GetFileByWorkOrder(int id)
-        {
-            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", id);
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var dataFileAttributes = new DataFileAttributes();
-                    while (reader.Read())
-                    {
-                        dataFileAttributes.FileName = reader["name"].ToString();
-                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
-                    }
-
-                    if (dataFileAttributes.FileName == null)
-                        return null;
-
-                    var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
-                    return fullPathToDataFile;
-                }
-            }
-        }
+        }           
 
         private OrderDto GetWorkOrderById(int id)
         {

@@ -11,6 +11,9 @@ namespace Germadent.Common.Extensions
 
         public static decimal ToDecimal(this object obj)
         {
+            if (obj == null || obj == DBNull.Value)
+                return 0;
+
             return decimal.Parse(obj.ToString());
         }
 

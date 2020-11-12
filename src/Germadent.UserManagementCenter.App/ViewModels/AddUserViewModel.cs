@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.Model;
@@ -17,7 +19,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
         private readonly IUmcServiceClient _umcServiceClient;
-
+        private readonly IShowDialogAgent _dialogAgent;
+        private readonly IFileManager _fileManager;
         private int _userId;
         private string _firstName;
         private string _surName;
@@ -28,10 +31,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private string _description;
         private bool _isLocked;
         private string _phone;
+        private bool _isLoading;
+        private byte[] _image;
+        private string _fileName;
 
-        public AddUserViewModel(IUmcServiceClient umcServiceClient)
+        public AddUserViewModel(IUmcServiceClient umcServiceClient, IShowDialogAgent dialogAgent, IFileManager fileManager)
         {
             _umcServiceClient = umcServiceClient;
+            _dialogAgent = dialogAgent;
+            _fileManager = fileManager;
 
             AddValidationFor(() => FirstName)
                 .When(() => string.IsNullOrWhiteSpace(FirstName), () => "Укажите полное имя пользователя");
@@ -44,11 +52,24 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 .When(() => Password != PasswordOnceAgain, () => "Пароли должны совпадать");
 
             OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
+            ChangeUserImageCommand = new DelegateCommand(ChangeUserImageCommandHandler);
         }
 
         public string Title { get; private set; }
 
         public ViewMode ViewMode { get; private set; }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                if (_isLoading = value)
+                    return;
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
+        }
 
         public string FirstName
         {
@@ -158,9 +179,35 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
+        public byte[] Image
+        {
+            get { return _image; }
+            set
+            {
+                if (_image == value)
+                    return;
+                _image = value;
+                OnPropertyChanged(() => Image);
+            }
+        }
+
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                if (_fileName == value)
+                    return;
+                _fileName = value;
+                OnPropertyChanged(() => FileName);
+            }
+        }
+
         public ObservableCollection<RoleViewModel> Roles { get; } = new ObservableCollection<RoleViewModel>();
 
         public IDelegateCommand OkCommand { get; }
+
+        public IDelegateCommand ChangeUserImageCommand { get; }
 
         public bool AtLeastOneRoleChecked
         {
@@ -189,6 +236,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             _login = user.Login;
             _isLocked = user.IsLocked;
             _description = user.Description;
+            _fileName = user.FileName;
 
             var roles = _umcServiceClient.GetRoles();
 
@@ -229,13 +277,25 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 Password = Password,
                 IsLocked = IsLocked,
                 Description = Description,
-                Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray()
+                Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray(),
+                FileName = FileName
             };
         }
 
         private bool CanOkCommandHandler()
         {
             return IsValid();
+        }
+
+        private void ChangeUserImageCommandHandler()
+        {
+            var fileName = string.Empty;
+            var filter = "Изображения|*.png";
+            if (_dialogAgent.ShowOpenFileDialog(filter, out fileName) == false)
+                return;
+
+            FileName = fileName;
+            Image = _fileManager.ReadAllBytes(FileName);
         }
 
         private bool IsValid()

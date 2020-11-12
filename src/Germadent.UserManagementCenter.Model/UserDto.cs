@@ -37,5 +37,7 @@ namespace Germadent.UserManagementCenter.Model
         public bool IsLocked { get; set; }
 
         public RoleDto[] Roles { get; set; }
+
+        public string FileName { get; set; }
     }
 }
