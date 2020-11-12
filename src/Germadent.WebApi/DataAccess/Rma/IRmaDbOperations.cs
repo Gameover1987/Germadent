@@ -24,19 +24,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        OrderDto AddOrder(OrderDto order);
-
-        /// <summary>
-        /// Присоединяет файл к созданному заказнаряду
-        /// </summary>
-        void AttachDataFileToOrder(int id, string fileName, Stream stream);
-
-        /// <summary>
-        /// Возвращает путь к файлу привязанному к заказнаряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        string GetFileByWorkOrder(int id);
+        OrderDto AddOrder(OrderDto order);       
 
         /// <summary>
         /// Обновляет заказ наряд

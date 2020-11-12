@@ -1,6 +1,6 @@
 ﻿using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
-using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace Germadent.WebApi.DataAccess.UserManagement
 {
@@ -76,5 +76,20 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         /// <param name="password"></param>
         /// <returns></returns>
         AuthorizationInfoDto Authorize(string login, string password);
+
+        /// <summary>
+        /// Возвращает путь к файлу привязанному к заказнаряду
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string GetUserImage(int userId);
+
+        /// <summary>
+        /// Добавляет картинку для пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="fileName"></param>
+        /// <param name="stream"></param>
+        void SetUserImage(int userId, string fileName, Stream stream);
     }
 }

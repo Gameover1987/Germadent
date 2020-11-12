@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.Configuration;
@@ -17,13 +19,32 @@ namespace Germadent.WebApi.DataAccess.UserManagement
     {
         private readonly IServiceConfiguration _configuration;
         private readonly IUmcEntityConverter _converter;
+        private readonly IFileManager _fileManager;
+        private readonly string _storageDirectory;
 
-        public UmcDbOperations(IServiceConfiguration configuration, IUmcEntityConverter converter)
+        public UmcDbOperations(IServiceConfiguration configuration, IUmcEntityConverter converter, IFileManager fileManager)
         {
             _configuration = configuration;
             _converter = converter;
+            _fileManager = fileManager;
+            _storageDirectory = GetFileTableFullPath();
 
             ActualizeRights();
+        }
+
+        private string GetFileTableFullPath()
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "select dbo.GetFileTableFullPath()";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var commandResult = command.ExecuteScalar();
+                    return commandResult.ToString();
+                }
+            }
         }
 
         public UserDto[] GetUsers()
@@ -123,7 +144,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
                 return userDto;
             }
-        }
+        }       
 
         private void UpdateUserImpl(UserDto userDto, SqlConnection connection)
         {
@@ -462,6 +483,84 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 {
                     var rightDescription = rightsFromCode.First(x => x.RightName == changedRight.RightName).RightDescription;
                     UpdateRight(connection, changedRight.RightId, rightDescription);
+                }
+            }
+        }
+
+        public void SetUserImage(int userId, string fileName, Stream stream)
+        {
+            var resultFileName = Path.Combine(_storageDirectory, fileName);
+            var fileInfo = _fileManager.Save(stream, resultFileName);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                LinkFileToUser(userId, fileName, fileInfo.CreationTime, connection);
+            }
+        }
+
+        private void FillHasDataFile(UserDto user)
+        {
+            var cmdText = string.Format("select * from GetFileAttributesByWOId({0})", user.UserId);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var dataFileAttributes = new DataFileAttributes();
+                    while (reader.Read())
+                    {
+                        dataFileAttributes.FileName = reader["name"].ToString();
+                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
+                    }
+
+                    if (dataFileAttributes.FileName == null)
+                        return;
+
+                    user.FileName = dataFileAttributes.FileName;
+                }
+            }
+        }
+
+        private void LinkFileToUser(int userId, string fileName, DateTime creationTime, SqlConnection connection)
+        {
+            var cmdText = "AddLink_User_FileStream";
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@fileName", SqlDbType.NVarChar)).Value = fileName;
+                command.Parameters.Add(new SqlParameter("@creationTime", SqlDbType.DateTimeOffset)).Value = creationTime;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public string GetUserImage(int id)
+        {
+            var cmdText = string.Format("select * from GetFileAttributesByUserId({0})", id);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var dataFileAttributes = new DataFileAttributes();
+                    while (reader.Read())
+                    {
+                        dataFileAttributes.FileName = reader["name"].ToString();
+                        dataFileAttributes.StreamId = reader["stream_id"].ToGuid();
+                    }
+
+                    if (dataFileAttributes.FileName == null)
+                        return null;
+
+                    var fullPathToDataFile = Path.Combine(_storageDirectory, dataFileAttributes.FileName);
+                    return fullPathToDataFile;
                 }
             }
         }

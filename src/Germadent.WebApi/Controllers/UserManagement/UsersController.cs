@@ -54,7 +54,7 @@ namespace Germadent.WebApi.Controllers.UserManagement
 
         [HttpPost]
         [Route("AddUser")]
-        public IActionResult AddUser(UserDto user)
+        public IActionResult AddUser([FromBody]UserDto user)
         {
             try
             {
@@ -84,6 +84,24 @@ namespace Germadent.WebApi.Controllers.UserManagement
             }
         }
 
+        [HttpPost]
+        [Route("fileUpload/{userId}/{fileName}")]
+        public IActionResult FileUpload(int userId, string fileName)
+        {
+            try
+            {
+                _logger.Info(nameof(FileUpload));
+                var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
+                _umcDbOperations.SetUserImage(userId, fileName, stream);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
         [HttpDelete]
         [Route("DeleteUser/{userId}")]
 
@@ -100,6 +118,6 @@ namespace Germadent.WebApi.Controllers.UserManagement
                 _logger.Error(exception);
                 return BadRequest(exception);
             }
-        }
+        }       
     }
 }

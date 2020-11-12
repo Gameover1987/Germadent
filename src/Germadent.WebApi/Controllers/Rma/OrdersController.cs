@@ -74,47 +74,6 @@ namespace Germadent.WebApi.Controllers.Rma
         }
 
         [HttpPost]
-        [Route("fileUpload/{id}/{fileName}")]
-        public IActionResult FileUpload(int id, string fileName)
-        {
-            try
-            {
-                _logger.Info(nameof(FileUpload));
-                var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
-                _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
-                return Ok();
-            }
-            catch(Exception exception)
-            {
-                _logger.Error(exception);
-                return BadRequest(exception);
-            }
-        }
-
-        [HttpGet]
-        [Route("fileDownload/{id}")]
-        public IActionResult FileDownload(int id)
-        {
-            try
-            {
-                _logger.Info(nameof(FileDownload));
-                var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
-                if (fullFileName == null)
-                    return null;
-
-                var stream = _fileManager.OpenFileAsStream(fullFileName);
-
-                var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
-                return fileStreamResult;
-            }
-            catch (Exception exception)
-            {
-                _logger.Error(exception);
-                return BadRequest(exception);
-            }
-        }
-
-        [HttpPost]
         [Route("update")]
         public IActionResult UpdateOrder([FromBody] OrderDto orderDto)
         {
