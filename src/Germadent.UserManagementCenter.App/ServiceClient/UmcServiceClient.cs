@@ -90,6 +90,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             throw new System.NotImplementedException();
         }
 
+        public byte[] GetUserImage(int userId)
+        {
+            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/userManagement/users/fileDownload/{0}", userId);
+            return ExecuteFileDownload(apiUrl);
+        }
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

@@ -218,5 +218,10 @@ namespace Germadent.UserManagementCenter.App.Mocks
             var rights = UserRightsProvider.GetAllUserRights();
             return new RightDto[0];
         }
+
+        public byte[] GetUserImage(int userId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
