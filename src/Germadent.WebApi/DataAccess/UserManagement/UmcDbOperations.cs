@@ -538,9 +538,9 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
-        public string GetUserImage(int id)
+        public string GetUserImage(int userId)
         {
-            var cmdText = string.Format("select * from GetFileAttributesByUserId({0})", id);
+            var cmdText = string.Format("select * from GetFileAttributesByUserId({0})", userId);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {

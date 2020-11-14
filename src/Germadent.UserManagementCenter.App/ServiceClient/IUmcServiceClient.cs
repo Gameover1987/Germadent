@@ -70,6 +70,12 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
         /// <returns></returns>
         RightDto[] GetRightsByRole(int roleId);
 
+        /// <summary>
+        /// Возвращает изображение пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
 
+        byte[] GetUserImage(int userId);
     }
 }

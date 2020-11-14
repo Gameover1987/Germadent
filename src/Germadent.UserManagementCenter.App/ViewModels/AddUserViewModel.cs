@@ -238,6 +238,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             _description = user.Description;
             _fileName = user.FileName;
 
+            _image = null;
+            if (_userId != 0)
+                _image = _umcServiceClient.GetUserImage(_userId);
+
             var roles = _umcServiceClient.GetRoles();
 
             foreach (var role in Roles)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.UserManagementCenter.Model;
 using Germadent.WebApi.DataAccess.UserManagement;
@@ -12,11 +13,13 @@ namespace Germadent.WebApi.Controllers.UserManagement
     {
         private readonly IUmcDbOperations _umcDbOperations;
         private readonly ILogger _logger;
+        private readonly IFileManager _fileManager;
 
-        public UsersController(IUmcDbOperations umcDbOperations, ILogger logger)
+        public UsersController(IUmcDbOperations umcDbOperations, ILogger logger, IFileManager fileManager)
         {
             _umcDbOperations = umcDbOperations;
             _logger = logger;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -94,6 +97,29 @@ namespace Germadent.WebApi.Controllers.UserManagement
                 var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
                 _umcDbOperations.SetUserImage(userId, fileName, stream);
                 return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+        [HttpGet]
+        [Route("fileDownload/{userId}")]
+        public IActionResult FileDownload(int userId)
+        {
+            try
+            {
+                _logger.Info(nameof(FileDownload));
+                var fullFileName = _umcDbOperations.GetUserImage(userId);
+                if (fullFileName == null)
+                    return null;
+
+                var stream = _fileManager.OpenFileAsStream(fullFileName);
+
+                var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
+                return fileStreamResult;
             }
             catch (Exception exception)
             {
