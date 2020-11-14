@@ -40,6 +40,7 @@ BEGIN
 		IF @dateBeginningNew <= @maxDateBeginning OR @dateEnd <= @maxDateEnd OR @dateBeginningNew > @dateEnd BEGIN
 		ROLLBACK
 		PRINT 'Даты начала или окончания цены меньше тех, которые уже есть в базе'
+		RETURN
 		END
 
 		ELSE BEGIN

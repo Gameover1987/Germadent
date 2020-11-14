@@ -24,6 +24,10 @@ BEGIN
 
 	SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
 
+	IF @maxDateBeginning IS NULL BEGIN
+		SET @maxDateBeginning = '17530101'
+	END
+
 	IF @dateBeginning > @maxDateBeginning BEGIN
 
 		UPDATE Prices
