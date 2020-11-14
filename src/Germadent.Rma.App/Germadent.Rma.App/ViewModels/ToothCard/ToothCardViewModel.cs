@@ -29,8 +29,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             Prosthetics = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
             SelectPtostheticsConditionCommand = new DelegateCommand(SelectProstheticConditionsCommandHandler, x => CanSelectProstheticConditionCommandHandler());
-            SelectPtostheticsTypeCommand = new DelegateCommand(SelectProstheticsTypeCommandHandler, x => CanSelectTypeOfProstheticsCommandHandler());
-            SelectMaterialCommand = new DelegateCommand(SelectMaterialCommandHandler, x => CanSelectMaterialCommandHandler());
             SelectBridgeCommand = new DelegateCommand(SelectBridgeCommandHandler, x => CanSelectBridgeCommandHandler());
             ClearCommand = new DelegateCommand(x => ClearCommandHandler(), x => CanClearCommandHandler());
             CopyDescriptionCommand = new DelegateCommand(x => CopyDescriptionCommandHandler(), x => CanCopyDescriptionCommandHandler());
@@ -44,9 +42,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ICommand SelectPtostheticsConditionCommand { get; }
 
-        public ICommand SelectPtostheticsTypeCommand { get; }
-
-        public ICommand SelectMaterialCommand { get; }
 
         public ICommand SelectBridgeCommand { get; }
 
@@ -65,8 +60,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         public void Initialize(ToothDto[] toothCard)
         {
             var prostheticConditions = _dictionaryRepository.GetItems(DictionaryType.ProstheticCondition);
-            var materials = _dictionaryRepository.GetItems(DictionaryType.Material);
-            var prosteticTypes = _dictionaryRepository.GetItems(DictionaryType.ProstheticType);
 
             foreach (var toothViewModel in Teeth)
             {
@@ -78,22 +71,22 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             for (int i = 18; i >= 11; i--)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
             }
 
             for (int i = 21; i <= 28; i++)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
             }
 
             for (int i = 38; i >= 31; i--)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
             }
 
             foreach (var teethViewModel in Teeth)
@@ -168,36 +161,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             foreach (var selectedTooth in SelectedTeeth)
             {
                 selectedTooth.ProstheticConditions.First(x => x.DisplayName == prostheticConditionViewModel.DisplayName).IsChecked = true;
-            }
-        }
-
-        private bool CanSelectTypeOfProstheticsCommandHandler()
-        {
-            return SelectedTeeth != null;
-        }
-
-        private void SelectProstheticsTypeCommandHandler(object obj)
-        {
-            var prostheticTypeViewModel = (CheckableDictionaryItemViewModel)obj;
-
-            foreach (var selectedTooth in SelectedTeeth)
-            {
-                selectedTooth.ProstheticTypes.First(x => x.DisplayName == prostheticTypeViewModel.DisplayName).IsChecked = true;
-            }
-        }
-
-        private bool CanSelectMaterialCommandHandler()
-        {
-            return SelectedTeeth != null;
-        }
-
-        private void SelectMaterialCommandHandler(object obj)
-        {
-            var materialViewModel = (CheckableDictionaryItemViewModel)obj;
-
-            foreach (var selectedTooth in SelectedTeeth)
-            {
-                selectedTooth.Materials.First(x => x.DisplayName == materialViewModel.DisplayName).IsChecked = true;
             }
         }
 

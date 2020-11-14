@@ -1,7 +1,7 @@
 ﻿
 namespace Germadent.Rma.Model
 {
-    public class ResponsiblePersonDto
+    public class ResponsiblePersonDto : IIdentityDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -9,12 +9,9 @@ namespace Germadent.Rma.Model
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
-    }
-
-    public class ResponsiblePersonDeleteResult
-    {
-        public int ResponsiblePersonId { get; set; }
-
-        public int Count { get; set; }
+        public int GetIdentificator()
+        {
+            return Id;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -24,5 +25,11 @@ namespace Germadent.Rma.App.ServiceClient
         void Initialize();
 
         event EventHandler<RepositoryChangedEventArgs<PriceGroupDto>> PriceGroupRepositoryChanged;
+
+        event EventHandler<RepositoryChangedEventArgs<CustomerDto>> CustomerRepositoryChanged;
+
+        event EventHandler<RepositoryChangedEventArgs<ResponsiblePersonDto>> ResponsiblePersonRepositoryChanged;
+
+        event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
     }
 }

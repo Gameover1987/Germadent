@@ -26,6 +26,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private decimal _priceModel;
         private PriceGroupDto _selectedPriceGroup;
         private DictionaryItemDto _selectedMaterial;
+        private DictionaryItemDto _selectedProstheticType;
 
         public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository, IDictionaryRepository dictionaryRepository)
         {
@@ -92,6 +93,20 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                     return;
                 _selectedMaterial = value;
                 OnPropertyChanged(() => SelectedMaterial);
+            }
+        }
+
+        public ObservableCollection<DictionaryItemDto> ProsthticTypes { get; } = new ObservableCollection<DictionaryItemDto>();
+
+        public DictionaryItemDto SelectedProsthticType
+        {
+            get { return _selectedProstheticType; }
+            set
+            {
+                if (_selectedProstheticType == value)
+                    return;
+                _selectedProstheticType = value;
+                OnPropertyChanged(() => SelectedProsthticType);
             }
         }
 
@@ -176,6 +191,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.Material))
             {
                 Materials.Add(dictionaryItemDto);
+            }
+
+            ProsthticTypes.Clear();
+            foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.ProstheticType))
+            {
+                ProsthticTypes.Add(dictionaryItemDto);
             }
 
             _name = pricePositionDto.Name;

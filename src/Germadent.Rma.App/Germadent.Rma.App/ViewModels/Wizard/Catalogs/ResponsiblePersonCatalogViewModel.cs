@@ -128,7 +128,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             if (responsiblePerson == null)
                 return;
 
-            ResponsiblePersons.Add(new ResponsiblePersonViewModel(responsiblePerson));
+            var addedResponsiblePerson = new ResponsiblePersonViewModel(responsiblePerson);
+            ResponsiblePersons.Add(addedResponsiblePerson);
+
+            SelectedResponsiblePerson = addedResponsiblePerson;
         }
 
         private bool CanEditResponsiblePersonCommandHandler()

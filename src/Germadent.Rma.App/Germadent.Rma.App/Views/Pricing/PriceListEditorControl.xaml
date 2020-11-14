@@ -25,6 +25,7 @@
                    Style="{StaticResource GroupNameStyle}"/>
 
         <ListBox Grid.Row="1" Grid.Column="0" Margin="0,6,0,0" Width="320"
+                 SelectionChanged="Selector_OnSelectionChanged"
                  ItemsSource="{Binding Groups}"
                  SelectedItem="{Binding SelectedGroup}"
                  ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">

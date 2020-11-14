@@ -11,14 +11,16 @@ namespace Germadent.Rma.App.ServiceClient.Repository
     public class ResponsiblePersonRepository : Repository<ResponsiblePersonDto>, IResponsiblePersonRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;
+        private readonly ISignalRClient _signalRClient;
 
-        public ResponsiblePersonRepository(IRmaServiceClient rmaServiceClient)
+        public ResponsiblePersonRepository(IRmaServiceClient rmaServiceClient, ISignalRClient signalRClient)
         {
             _rmaServiceClient = rmaServiceClient;
-            _rmaServiceClient.ResponsiblePersonRepositoryChanged += RmaServiceClientOnResponsiblePersonRepositoryChanged;
+            _signalRClient = signalRClient;
+            _signalRClient.ResponsiblePersonRepositoryChanged += SignalRClientOnResponsiblePersonRepositoryChanged;
         }
 
-        private void RmaServiceClientOnResponsiblePersonRepositoryChanged(object sender, ResponsiblePersonRepositoryChangedEventArgs e)
+        private void SignalRClientOnResponsiblePersonRepositoryChanged(object? sender, RepositoryChangedEventArgs<ResponsiblePersonDto> e)
         {
             ReLoad();
         }

@@ -28,5 +28,14 @@ namespace Germadent.Rma.App.Views.Pricing
             var editor = (IPriceListEditorViewModel)DataContext;
             editor.EditPricePositionCommand.TryExecute();
         }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = (ListBox) sender;
+            if (listBox == null)
+                return;
+
+            listBox.ScrollIntoView(listBox.SelectedItem);
+        }
     }
 }

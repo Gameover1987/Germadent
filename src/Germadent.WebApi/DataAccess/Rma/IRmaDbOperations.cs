@@ -90,7 +90,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        CustomerDeleteResult DeleteCustomer(int customerId);
+        DeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Обновляет данные по ответственному лицу
@@ -104,7 +104,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id);
+        DeleteResult DeleteResponsiblePerson(int id);
 
         /// <summary>
         /// Возвращает ценовые группы по типу филиала

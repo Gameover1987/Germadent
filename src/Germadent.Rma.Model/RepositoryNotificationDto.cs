@@ -7,7 +7,9 @@ namespace Germadent.Rma.Model
     public enum RepositoryType
     {
         PriceGroup,
-        PricePosition
+        PricePosition,
+        Customer,
+        ResponsiblePerson
     }
 
     public class RepositoryNotificationDto

@@ -12,10 +12,18 @@ namespace Germadent.Rma.App.ServiceClient.Repository
     public class PriceGroupRepository : Repository<PriceGroupDto>, IPriceGroupRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;
+        private readonly ISignalRClient _signalRClient;
 
-        public PriceGroupRepository(IRmaServiceClient rmaServiceClient)
+        public PriceGroupRepository(IRmaServiceClient rmaServiceClient, ISignalRClient signalRClient)
         {
             _rmaServiceClient = rmaServiceClient;
+            _signalRClient = signalRClient;
+            _signalRClient.PriceGroupRepositoryChanged += SignalRClientOnPriceGroupRepositoryChanged;
+        }
+
+        private void SignalRClientOnPriceGroupRepositoryChanged(object sender, RepositoryChangedEventArgs<PriceGroupDto> e)
+        {
+           ReLoad();
         }
 
         protected override PriceGroupDto[] GetItems()
@@ -35,10 +43,19 @@ namespace Germadent.Rma.App.ServiceClient.Repository
     public class PricePositionRepository : Repository<PricePositionDto>, IPricePositionRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;
+        private readonly ISignalRClient _signalRClient;
 
-        public PricePositionRepository(IRmaServiceClient rmaServiceClient)
+        public PricePositionRepository(IRmaServiceClient rmaServiceClient, ISignalRClient signalRClient)
         {
             _rmaServiceClient = rmaServiceClient;
+            _signalRClient = signalRClient;
+            _signalRClient.PricePositionRepositoryChanged += SignalRClientOnPricePositionRepositoryChanged;
+            
+        }
+
+        private void SignalRClientOnPricePositionRepositoryChanged(object? sender, RepositoryChangedEventArgs<PricePositionDto> e)
+        {
+            ReLoad();
         }
 
         protected override PricePositionDto[] GetItems()

@@ -104,7 +104,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        CustomerDeleteResult DeleteCustomer(int customerId);
+        DeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
@@ -132,7 +132,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="responsiblePersonId"></param>
         /// <returns></returns>
-        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId);
+        DeleteResult DeleteResponsiblePerson(int responsiblePersonId);
 
         /// <summary>
         /// Возвращает словарь по его названию
@@ -176,16 +176,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="branchType"></param>
         /// <returns></returns>
         PricePositionDto[] GetPricePositions(BranchType branchType);
-
-        /// <summary>
-        /// Собтие изменения репозитория заказчиков
-        /// </summary>
-        event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
-
-        /// <summary>
-        /// Событие изменения репозитория ответственных лиц
-        /// </summary>
-        event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
 
         /// <summary>
         /// Добавляет ценовую позицию

@@ -22,6 +22,10 @@
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control"
                     Command="{Binding AddResponsiblePersonCommand}"/>
+        <KeyBinding Key="F2" 
+                    Command="{Binding EditResponsiblePersonCommand}"/>
+        <KeyBinding Key="Delete" 
+                    Command="{Binding DeleteResponsiblePersonCommand}"/>
     </Window.InputBindings>
     
     <Grid Margin="12">
@@ -49,12 +53,13 @@
                     Command="{Binding DeleteResponsiblePersonCommand}"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+        <DataGrid x:Name="ResponsiblePersonsGrid" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+                  SelectionChanged="ResponsiblePersonsGrid_OnSelectionChanged"
                   ItemsSource="{Binding ResponsiblePersons}"
                   SelectedItem="{Binding SelectedResponsiblePerson}"
                   AlternationCount="2">
             <DataGrid.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding EditResponsiblePersonCommand}"/>
+                <KeyBinding Key="F2" Command="{Binding EditResponsiblePersonCommand}"/>
                 <KeyBinding Key="Delete" Command="{Binding DeleteResponsiblePersonCommand}"/>
             </DataGrid.InputBindings>
             <DataGrid.ContextMenu>

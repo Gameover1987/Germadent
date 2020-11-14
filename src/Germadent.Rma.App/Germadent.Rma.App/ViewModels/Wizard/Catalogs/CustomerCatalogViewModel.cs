@@ -127,8 +127,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             var customer = _catalogUIOperations.AddCustomer(new CustomerDto());
             if (customer == null)
                 return;
-            
-            Customers.Add(new CustomerViewModel(customer));
+
+            var addedCustomer = new CustomerViewModel(customer);
+            Customers.Add(addedCustomer);
+
+            SelectedCustomer = addedCustomer;
         }
 
         private bool CanEditCustomerCommandHandler()

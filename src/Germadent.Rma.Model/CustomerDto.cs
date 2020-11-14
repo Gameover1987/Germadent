@@ -1,6 +1,11 @@
 ﻿namespace Germadent.Rma.Model
 {
-    public class CustomerDto
+    public interface IIdentityDto
+    {
+        int GetIdentificator();
+    }
+
+    public class CustomerDto : IIdentityDto
     {
         public int Id { get; set; }
 
@@ -13,12 +18,10 @@
         public string WebSite { get; set; }
 
         public string Description { get; set; }
-    }
 
-    public class CustomerDeleteResult
-    {
-        public int CustomerId { get; set; }
-
-        public int Count { get; set; }
+        public int GetIdentificator()
+        {
+            return Id;
+        }
     }
 }

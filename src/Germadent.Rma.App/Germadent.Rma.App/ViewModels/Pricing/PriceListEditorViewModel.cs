@@ -3,11 +3,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Pricing;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
@@ -150,7 +148,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             var addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup);
 
-            Groups.Add(new PriceGroupViewModel(addedPriceGroup));
+            var priceGroupViewModel = new PriceGroupViewModel(addedPriceGroup);
+            Groups.Add(priceGroupViewModel);
+
+            SelectedGroup = priceGroupViewModel;
         }
 
         private bool CanEditPriceGroupCommandHandler()

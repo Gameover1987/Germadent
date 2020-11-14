@@ -22,6 +22,8 @@ namespace Germadent.Rma.App.ServiceClient
 
         public async void Dispose()
         {
+            if (_connection == null)
+                return;
             await _connection.DisposeAsync();
         }
 
@@ -37,15 +39,36 @@ namespace Germadent.Rma.App.ServiceClient
         }
 
         public event EventHandler<RepositoryChangedEventArgs<PriceGroupDto>> PriceGroupRepositoryChanged;
+        public event EventHandler<RepositoryChangedEventArgs<CustomerDto>> CustomerRepositoryChanged;
+        public event EventHandler<RepositoryChangedEventArgs<ResponsiblePersonDto>> ResponsiblePersonRepositoryChanged;
+        public event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
 
         private void OnNotification(string arg)
         {
             var notification = arg.DeserializeFromJson<RepositoryNotificationDto>();
+
+            if (notification.RepositoryType == RepositoryType.Customer)
+            {
+                var args = CreateRepositoryChangedEventArgs<CustomerDto>(notification);
+                CustomerRepositoryChanged?.Invoke(this, args);
+            }
+
+            if (notification.RepositoryType == RepositoryType.ResponsiblePerson)
+            {
+                var args = CreateRepositoryChangedEventArgs<ResponsiblePersonDto>(notification);
+                ResponsiblePersonRepositoryChanged?.Invoke(this, args);
+            }
+
             if (notification.RepositoryType == RepositoryType.PriceGroup)
             {
                 var args = CreateRepositoryChangedEventArgs<PriceGroupDto>(notification);
-
                 PriceGroupRepositoryChanged?.Invoke(this, args);
+            }
+
+            if (notification.RepositoryType == RepositoryType.PricePosition)
+            {
+                var args = CreateRepositoryChangedEventArgs<PricePositionDto>(notification);
+                PricePositionRepositoryChanged?.Invoke(this, args);
             }
         }
 

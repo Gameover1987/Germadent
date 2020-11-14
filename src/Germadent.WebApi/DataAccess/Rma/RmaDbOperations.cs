@@ -677,7 +677,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -693,9 +693,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     var count = command.Parameters["@resultCount"].Value.ToInt();
 
-                    return new ResponsiblePersonDeleteResult()
+                    return new DeleteResult()
                     {
-                        ResponsiblePersonId = responsiblePersonId,
+                        Id = responsiblePersonId,
                         Count = count
                     };
                 }
@@ -748,7 +748,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public DeleteResult DeleteCustomer(int customerId)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -764,9 +764,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     var count = command.Parameters["@resultCount"].Value.ToInt();
 
-                    return new CustomerDeleteResult
+                    return new DeleteResult
                     {
-                        CustomerId = customerId,
+                        Id = customerId,
                         Count = count
                     };
                 }

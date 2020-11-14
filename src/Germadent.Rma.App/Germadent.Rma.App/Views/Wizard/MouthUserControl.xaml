@@ -87,28 +87,6 @@
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                 </MenuItem>
-                                <MenuItem Header="Тип протезирования"
-                                          ItemsSource="{Binding ProstheticTypes}">
-                                    <MenuItem.ItemContainerStyle>
-                                        <Style TargetType="{x:Type MenuItem}">
-                                            <Setter Property="IsCheckable" Value="True"/>
-                                            <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectPtostheticsTypeCommand}"/>
-                                            <Setter Property="CommandParameter" Value="{Binding}"/>
-                                        </Style>
-                                    </MenuItem.ItemContainerStyle>
-                                </MenuItem>
-                                <MenuItem Header="Материал"
-                                          ItemsSource="{Binding Materials}">
-                                    <MenuItem.ItemContainerStyle>
-                                        <Style TargetType="{x:Type MenuItem}">
-                                            <Setter Property="IsCheckable" Value="True"/>
-                                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
-                                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectMaterialCommand}"/>
-                                            <Setter Property="CommandParameter" Value="{Binding}"/>
-                                        </Style>
-                                    </MenuItem.ItemContainerStyle>
-                                </MenuItem>
                                 <MenuItem Header="Мост" IsCheckable="True" IsChecked="{Binding HasBridge}"
                                           Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, Path=PlacementTarget.Tag.SelectBridgeCommand}"
                                           CommandParameter="{Binding}"

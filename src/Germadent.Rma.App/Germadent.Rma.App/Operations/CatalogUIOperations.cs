@@ -3,6 +3,7 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Operations
@@ -47,7 +48,7 @@ namespace Germadent.Rma.App.Operations
             return _rmaServiceClient.UpdateCustomer(updatedCustomer);
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public DeleteResult DeleteCustomer(int customerId)
         {
             var questionMsg = "Действительно хотите удалить заказчика?";
             if (_dialogAgent.ShowMessageDialog(questionMsg, Rma.App.Properties.Resources.AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
@@ -86,7 +87,7 @@ namespace Germadent.Rma.App.Operations
             return _rmaServiceClient.UpdateResponsiblePerson(updatedResponsblePerson);
         }
 
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             var questionMsg = "Действительно хотите удалить ответственное лицо?";
             if (_dialogAgent.ShowMessageDialog(questionMsg, Rma.App.Properties.Resources.AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)

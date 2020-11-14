@@ -191,7 +191,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public DeleteResult DeleteCustomer(int customerId)
         {
             throw new NotImplementedException();
         }
@@ -211,7 +211,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             throw new NotImplementedException();
         }
@@ -424,9 +424,6 @@ namespace Germadent.Rma.App.Mocks
                 }
             };
         }
-
-        public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
-        public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
       
 
         private DictionaryItemDto[] GetProstheticConditions()
