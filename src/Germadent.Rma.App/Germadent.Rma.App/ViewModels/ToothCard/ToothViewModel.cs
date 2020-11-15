@@ -76,7 +76,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (SelectedProstheticCondition == null)
                     return false;
 
-                if (_pricePositions == null || _pricePositions.Length == 0)
+                if (_pricePositions.IsNullOrEmpty())
                     return false;
 
                 return true;
@@ -100,7 +100,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (SelectedProstheticCondition == null)
                     descriptionBuilder.AppendLine("Выберите условие протезирования");
 
-                if (_pricePositions.Length == 0)
+                if (_pricePositions.IsNullOrEmpty())
                     descriptionBuilder.AppendLine("Выберите ценовую позицию");
 
                 return descriptionBuilder.ToString();
@@ -147,7 +147,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             };
         }
 
-        public bool CanClear => HasBridge || SelectedProstheticCondition != null && !_pricePositions.IsNullOrEmpty();
+        public bool CanClear => HasBridge || SelectedProstheticCondition != null || !_pricePositions.IsNullOrEmpty();
 
         public void Clear()
         {
