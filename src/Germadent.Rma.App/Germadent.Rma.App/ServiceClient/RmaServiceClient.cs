@@ -24,23 +24,23 @@ namespace Germadent.Rma.App.ServiceClient
             _signalRClient = signalRClient;
         }
 
-        public async void Authorize(string login, string password)
+        public void Authorize(string login, string password)
         {
-            _signalRClient.Initialize();
-
             var info = ExecuteHttpGet<AuthorizationInfoDto>(
-                _configuration.DataServiceUrl + string.Format("/api/userManagement/authorization/authorize/{0}/{1}", login, password));
+                _configuration.DataServiceUrl + string.Format("/api/auth/authorize/{0}/{1}", login, password));
 
             AuthorizationInfo = info;
+            AuthenticationToken = info.Token;
 
             if (AuthorizationInfo.IsLocked)
                 throw new UserMessageException("Учетная запись заблокирована.");
 
             if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
                 throw new UserMessageException("Отсутствует право на запуск приложения");
-        }
 
-        public AuthorizationInfoDto AuthorizationInfo { get; private set; }
+            _signalRClient.Initialize();
+        }
+        public AuthorizationInfoDto AuthorizationInfo { get; protected set; }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {

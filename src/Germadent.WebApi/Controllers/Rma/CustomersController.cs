@@ -1,13 +1,15 @@
 ﻿using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/Rma/Customers")]
     [ApiController]
+    [Route("api/Rma/Customers")]
+    [Authorize]
     public class CustomersController : CustomController
     {
         private readonly IRmaDbOperations _rmaDbOperations;
@@ -19,6 +21,7 @@ namespace Germadent.WebApi.Controllers.Rma
         }
 
         [HttpGet]
+        //[Authorize]
         public IActionResult GetCustomers(string mask)
         {
             return ExecuteAction(() => _rmaDbOperations.GetCustomers(mask));

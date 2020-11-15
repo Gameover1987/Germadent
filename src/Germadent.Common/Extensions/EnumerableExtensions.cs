@@ -19,7 +19,7 @@ namespace Germadent.Common.Extensions
             if (enumerable == null)
                 return true;
 
-            return enumerable.Any();
+            return !enumerable.Any();
         }
     }
 }

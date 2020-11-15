@@ -4,12 +4,15 @@ using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/Rma/Orders")]
     [ApiController]
+    [Route("api/Rma/Orders")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
@@ -22,7 +25,7 @@ namespace Germadent.WebApi.Controllers.Rma
             _fileManager = fileManager;
             _logger = logger;
         }
-
+        
         [HttpPost]
         [Route("getByFilter")]
         public IActionResult GetOrders(OrdersFilter filter)
@@ -39,7 +42,7 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
-
+        
         [HttpGet("{id:int}")]
         public IActionResult GetWorkOrderById(int id)
         {

@@ -3,6 +3,7 @@ using System.Net.Http;
 using Germadent.Common.Extensions;
 using Germadent.Common.Web;
 using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Deserializers;
 
 namespace Germadent.Common.Web
@@ -16,11 +17,20 @@ namespace Germadent.Common.Web
             _client.ThrowOnAnyError = true;
             _client.AddHandler("application/json", () => NewtonsoftJsonSerializer.Default);
         }
+
+        protected string AuthenticationToken { get; set; }
+
         protected T ExecuteHttpGet<T>(string api)
         {
-            var restRequest = new RestRequest(api, Method.GET);
-            restRequest.RequestFormat = DataFormat.Json;
-            var response = _client.Execute(restRequest, Method.GET);
+            var request = new RestRequest(api, Method.GET);
+            if (!AuthenticationToken.IsNullOrEmpty())
+            {
+                request.AddHeader("Authorization", string.Format("Bearer {0}", AuthenticationToken));
+                _client.Authenticator = new JwtAuthenticator(AuthenticationToken);
+                _client.Authenticator.Authenticate(_client, request);
+            }
+            request.RequestFormat = DataFormat.Json;
+            var response = _client.Execute(request, Method.GET);
             ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }
@@ -28,6 +38,13 @@ namespace Germadent.Common.Web
         protected T ExecuteHttpPost<T>(string api, object body)
         {
             var request = new RestRequest(api, Method.POST);
+
+            if (!AuthenticationToken.IsNullOrEmpty())
+            {
+                request.AddHeader("Authorization", string.Format("Bearer {0}", AuthenticationToken));
+                _client.Authenticator = new JwtAuthenticator(AuthenticationToken);
+                _client.Authenticator.Authenticate(_client, request);
+            }
             request.RequestFormat = DataFormat.Json;
             request.JsonSerializer = NewtonsoftJsonSerializer.Default;
             request.AddJsonBody(body);

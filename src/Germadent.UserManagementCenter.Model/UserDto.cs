@@ -13,6 +13,8 @@ namespace Germadent.UserManagementCenter.Model
         public bool IsLocked { get; set; }
 
         public RightDto[] Rights { get; set; }
+
+        public string Token { get; set; }
     }
 
     public class UserDto

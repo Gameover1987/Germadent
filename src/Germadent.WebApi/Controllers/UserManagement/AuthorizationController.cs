@@ -1,24 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Germadent.Common.Logging;
+using Germadent.WebApi.Auth;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Germadent.WebApi.Controllers.UserManagement
 {
-    [Route("api/userManagement/authorization")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
         private readonly IUmcDbOperations _umcDbOperations;
         private readonly ILogger _logger;
-        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
+        public AuthorizationController(IUmcDbOperations umcDbOperations, ILogger logger)
         {
             _umcDbOperations = umcDbOperations;
             _logger = logger;
-            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -30,7 +33,18 @@ namespace Germadent.WebApi.Controllers.UserManagement
                 _logger.Info(nameof(Authorize));
                 var authorizationInfoDto = _umcDbOperations.Authorize(login, password);
 
-                _hubContext.Clients.All.SendAsync("Send", "Preved from SignalR!","Param2");
+                var now = DateTime.UtcNow;
+                // создаем JWT-токен
+                var jwt = new JwtSecurityToken(
+                    //issuer: AuthOptions.ISSUER,
+                    //audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: GetIdentity(authorizationInfoDto.Login).Claims,
+                    expires: now.AddSeconds(10),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                authorizationInfoDto.Token = encodedJwt;
 
                 return Ok(authorizationInfoDto);
             }
@@ -39,6 +53,20 @@ namespace Germadent.WebApi.Controllers.UserManagement
                 _logger.Error(exception);
                 return BadRequest(exception);
             }
+        }
+
+        private ClaimsIdentity GetIdentity(string username)
+        {
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, username),
+                    //new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
+                };
+            ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+            return claimsIdentity;
+
         }
     }
 }

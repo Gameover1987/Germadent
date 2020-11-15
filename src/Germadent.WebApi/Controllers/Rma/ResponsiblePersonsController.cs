@@ -3,13 +3,15 @@ using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/Rma/ResponsiblePersons")]
     [ApiController]
+    [Route("api/Rma/ResponsiblePersons")]
+    [Authorize]
     public class ResponsiblePersonsController : CustomController
     {
         private readonly IRmaDbOperations _rmaDbOperations;
