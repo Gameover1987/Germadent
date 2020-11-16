@@ -6,6 +6,7 @@
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="Настройки фильтра заказ-нарядов"
         ShowInTaskbar="False"
