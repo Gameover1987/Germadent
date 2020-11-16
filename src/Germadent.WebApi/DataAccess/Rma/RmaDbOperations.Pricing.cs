@@ -313,5 +313,39 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.ExecuteNonQuery();
             }
         }
+
+        public ProductSetForPriceGroupDto[] GetProductSetForPriceGroup(BranchType branchType)
+        {
+            var cmdText = string.Format("select distinct PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProstheticsID, ProstheticsName, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var productSetCollection = new List<ProductSetForPriceGroupDto>();
+                    while (reader.Read())
+                    {
+                        var productSetEntity = new ProductSetForPriceGroupEntity();
+
+                        productSetEntity.PriceGroupId = reader[nameof(productSetEntity.PriceGroupId)].ToInt();
+                        productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
+                        productSetEntity.PricePositionCode = reader[nameof(productSetEntity.PricePositionCode)].ToString();
+                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToInt();
+                        productSetEntity.MaterialName = reader[nameof(productSetEntity.MaterialName)].ToString();
+                        productSetEntity.ProductId = reader[nameof(productSetEntity.ProductId)].ToInt();
+                        productSetEntity.ProductName = reader[nameof(productSetEntity.ProductName)].ToString();
+                        productSetEntity.PriceSTL = reader[nameof(productSetEntity.PriceSTL)].ToDecimal();
+                        productSetEntity.PriceModel = reader[nameof(productSetEntity.PriceModel)].ToDecimal();
+
+                        var productSetDto = _converter.ConvertToProductSetForPriceGroup(productSetEntity);
+                        productSetCollection.Add(productSetDto);
+                    }
+                    reader.Close();
+                    return productSetCollection.ToArray();
+                }
+            }
+        }
     }
 }

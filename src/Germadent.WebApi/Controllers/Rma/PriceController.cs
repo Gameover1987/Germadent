@@ -78,5 +78,12 @@ namespace Germadent.WebApi.Controllers.Rma
         {
             return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.DeletePricePosition(pricePositionId), RepositoryType.PricePosition, RepositoryAction.Delete);
         }
+
+        [HttpGet]
+        [Route("ProductSetForPriceGroup/{branchType:int}")]
+        public IActionResult GetProductSetForPriceGroup(int branchType)
+        {
+            return ExecuteAction(()=>_rmaDbOperations.GetProductSetForPriceGroup((BranchType)branchType));
+        }
     }
 }

@@ -225,6 +225,22 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
+        public ProductSetForPriceGroupDto ConvertToProductSetForPriceGroup(ProductSetForPriceGroupEntity entity)
+        {
+            return new ProductSetForPriceGroupDto
+            {
+                PriceGroupId = entity.PriceGroupId,
+                PricePositionId = entity.PricePositionId,
+                PricePositionCode = entity.PricePositionCode,
+                MaterialId = entity.MaterialId,
+                MaterialName = entity.MaterialName,
+                ProductId = entity.ProductId,
+                ProductName = entity.ProductName,
+                PriceSTL = entity.PriceSTL,
+                PriceModel = entity.PriceModel
+            };
+        }
+
         public ToothEntity[] ConvertFromToothDto(ToothDto toothDto)
         {
             var entities = new List<ToothEntity>();
