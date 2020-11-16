@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="800"

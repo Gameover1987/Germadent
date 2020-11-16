@@ -9,6 +9,7 @@
              xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
              xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
              xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryInfoWizardStepViewModel, IsDesignTimeCreatable=True}">
