@@ -13,10 +13,10 @@
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
-        SizeToContent="Height"
+        Height="400"
         MinWidth="500"
         Width="500"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddPricePositionViewModel}, IsDesignTimeCreatable=True}"
@@ -39,7 +39,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -70,7 +70,7 @@
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Изделие" VerticalAlignment="Center" Margin="0,6,0,0"/>
             <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="23"
-                      ItemsSource="{Binding ProsthticTypes}"
+                      ItemsSource="{Binding ProsthteticTypes}"
                       SelectedItem="{Binding SelectedProsthticType}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
@@ -83,14 +83,27 @@
             <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Left" Width="150"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Цена с STL" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceStl, UpdateSourceTrigger=PropertyChanged}" 
-                     HorizontalAlignment="Left" Width="150"/>
-
-            <TextBlock Grid.Row="6" Grid.Column="0" Text="Цена с модели" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="6" Grid.Column="1" Margin="6,6,0,0" Text="{Binding PriceModel, UpdateSourceTrigger=PropertyChanged}" 
-                     HorizontalAlignment="Left" Width="150"/>
-
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
+            <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+                      ItemsSource="{Binding Prices}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                <Setter Property="Background" Value="Red"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Width="*" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                                        Binding="{Binding Begin, StringFormat='dd MMMM yyyy', ConverterCulture=ru-RU}"/>
+                    <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                                        Binding="{Binding PriceStl}"/>
+                    <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                                        Binding="{Binding PriceModel}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
         <Separator Grid.Row="1" Margin="-12,12,-12,12"/>

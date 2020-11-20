@@ -198,8 +198,6 @@ namespace Germadent.WebApi.Entities.Conversion
                 UserCode = entity.PricePositionCode,
                 Name = entity.PricePositionName,
                 MaterialId = entity.MaterialId,
-                PriceModel = entity.PriceModel ?? 0,
-                PriceStl = entity.PriceStl ?? 0
             };
         }
 
@@ -209,7 +207,6 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 PricePositionId = entity.PricePositionId,
                 DateBeginning = entity.DateBeginning,
-                DateEnd = entity.DateEnd,
                 PriceSTL = entity.PriceSTL,
                 PriceModel = entity.PriceModel
             };

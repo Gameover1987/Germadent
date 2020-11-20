@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
@@ -11,15 +8,25 @@ namespace Germadent.Rma.App.Views.DesignMock
 {
     public class DesignMockAddPricePositionViewModel : AddPricePositionViewModel
     {
-        public DesignMockAddPricePositionViewModel() : base(new DesignMockPriceGroupRepository(), new DesignMockDictionaryRepository())
+        public DesignMockAddPricePositionViewModel() 
+            : base(new DesignMockPriceGroupRepository(), 
+            new DesignMockDictionaryRepository(),
+            new DesignMockDateTimeProvider(new DateTime(2020,11,20)))
         {
             Initialize(CardViewMode.Add, new PricePositionDto
             {
                 PriceGroupId = 1,
                 Name = "Preved position",
                 UserCode = "MC222",
-                PriceModel = 111,
-                PriceStl = 222
+                MaterialId = 1,
+                ProstheticTypeId = 1,
+                Prices = new[]
+                {
+                    new PriceDto{DateBeginning = new DateTime(2020, 10,1), PriceModel = 10, PriceSTL = 22},
+                    new PriceDto{DateBeginning = new DateTime(2020, 11,1), PriceModel = 11, PriceSTL = 33},
+                    new PriceDto{DateBeginning = new DateTime(2020, 12,1), PriceModel = 12, PriceSTL = 44},
+                    new PriceDto{DateBeginning = new DateTime(2021, 1,1), PriceModel = 15, PriceSTL = 55},
+                }
             }, new []{"111","222"}, BranchType.Laboratory);
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;
@@ -50,12 +52,23 @@ namespace Germadent.Rma.App.Views.DesignMock
     {
         public void Initialize()
         {
-            throw new NotImplementedException();
+            
         }
 
         public event EventHandler<EventArgs> Changed;
 
-        public DictionaryItemDto[] Items { get; }
+        public DictionaryItemDto[] Items
+        {
+            get
+            {
+                var items = new List<DictionaryItemDto>();
+                items.AddRange(GetTransparency());
+                items.AddRange(GetProstheticConditions());
+                items.AddRange(GetProstheticTypes());
+                items.AddRange(GetMaterials());
+                return items.ToArray();
+            }
+        }
 
         public DictionaryItemDto[] GetItems(DictionaryType dictionary)
         {
@@ -78,10 +91,10 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             return new DictionaryItemDto[]
             {
-                new DictionaryItemDto {Id = 0, Name = "Мамелоны"},
-                new DictionaryItemDto {Id = 1, Name = "Вторичный дентин"},
-                new DictionaryItemDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью "},
-                new DictionaryItemDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью "},
+                new DictionaryItemDto {Id = 0, Name = "Мамелоны", Dictionary = DictionaryType.Transparency},
+                new DictionaryItemDto {Id = 1, Name = "Вторичный дентин", Dictionary = DictionaryType.Transparency},
+                new DictionaryItemDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью ", Dictionary = DictionaryType.Transparency},
+                new DictionaryItemDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью ", Dictionary = DictionaryType.Transparency},
             };
         }
 
@@ -89,8 +102,8 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             var ptostheticsConditions = new[]
             {
-                new DictionaryItemDto{Name = "Культя", Id = 1},
-                new DictionaryItemDto{Name = "Имплант", Id = 2},
+                new DictionaryItemDto{Name = "Культя", Id = 1, Dictionary = DictionaryType.ProstheticCondition},
+                new DictionaryItemDto{Name = "Имплант", Id = 2, Dictionary = DictionaryType.ProstheticCondition},
             };
 
             return ptostheticsConditions;
@@ -100,12 +113,12 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             return new DictionaryItemDto[]
             {
-                new DictionaryItemDto {Name = "Каркас", Id = 1},
-                new DictionaryItemDto {Name = "Каркас винт. фикс", Id = 2},
-                new DictionaryItemDto {Name = "Абатмент", Id = 3},
-                new DictionaryItemDto {Name = "Полная анатомия", Id = 4},
-                new DictionaryItemDto {Name = "Временная конструкция", Id = 5},
-                new DictionaryItemDto {Name = "Другая конструкция", Id = 6},
+                new DictionaryItemDto {Name = "Каркас", Id = 1, Dictionary = DictionaryType.ProstheticType},
+                new DictionaryItemDto {Name = "Каркас винт. фикс", Id = 2, Dictionary = DictionaryType.ProstheticType},
+                new DictionaryItemDto {Name = "Абатмент", Id = 3, Dictionary = DictionaryType.ProstheticType},
+                new DictionaryItemDto {Name = "Полная анатомия", Id = 4, Dictionary = DictionaryType.ProstheticType},
+                new DictionaryItemDto {Name = "Временная конструкция", Id = 5, Dictionary = DictionaryType.ProstheticType},
+                new DictionaryItemDto {Name = "Другая конструкция", Id = 6, Dictionary = DictionaryType.ProstheticType},
             };
         }
 

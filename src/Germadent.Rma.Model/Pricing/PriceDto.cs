@@ -8,9 +8,7 @@ namespace Germadent.Rma.Model.Pricing
     {
         public int PricePositionId { get; set; }
 
-        public DateTime? DateBeginning { get; set; }
-
-        public DateTime DateEnd { get; set; }
+        public DateTime DateBeginning { get; set; }
 
         public decimal PriceSTL { get; set; }
 

@@ -43,16 +43,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             get { return _pricePositionDto.Name; }
         }
 
-        public decimal PriceStl
-        {
-            get { return _pricePositionDto.PriceStl; }
-        }
-
-        public decimal PriceModel
-        {
-            get { return _pricePositionDto.PriceModel; }
-        }
-
         public event EventHandler<PricePositionCheckedEventArgs> Checked;
 
         public PricePositionDto ToDto() => _pricePositionDto;

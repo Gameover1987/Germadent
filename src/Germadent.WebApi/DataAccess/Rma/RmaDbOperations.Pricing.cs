@@ -99,8 +99,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                     var price = new PriceDto
                     {
                         PricePositionId = pricePositionDto.PricePositionId,
-                        PriceModel = pricePositionDto.PriceModel,
-                        PriceSTL = pricePositionDto.PriceStl
+                        //PriceModel = pricePositionDto.PriceModel,
+                        //PriceSTL = pricePositionDto.PriceStl
                     };
 
                     AddPrice(price, connection);
@@ -129,8 +129,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                     var price = new PriceDto
                     {
                         PricePositionId = pricePositionDto.PricePositionId,
-                        PriceModel = pricePositionDto.PriceModel,
-                        PriceSTL = pricePositionDto.PriceStl
+                        //PriceModel = pricePositionDto.PriceModel,
+                        //PriceSTL = pricePositionDto.PriceStl
                     };
 
                     UpdatePrice(price, connection);
@@ -248,7 +248,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                         var priceEntity = new PriceEntity();
                         priceEntity.PricePositionId = reader[nameof(priceEntity.PricePositionId)].ToInt();
                         priceEntity.DateBeginning = reader[nameof(priceEntity.DateBeginning)].ToDateTime();
-                        priceEntity.DateEnd = reader[nameof(priceEntity.DateEnd)].ToDateTime();
                         priceEntity.PriceSTL = reader[nameof(priceEntity.PriceSTL)].ToDecimal();
                         priceEntity.PriceModel = reader[nameof(priceEntity.PriceModel)].ToDecimal();
 
@@ -308,7 +307,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateBeginningCurrent", SqlDbType.Date)).Value = price.DateBeginning.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
                 command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
-                command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
+                //command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
 
                 command.ExecuteNonQuery();
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Accessibility;
+using Germadent.Common;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -14,24 +15,65 @@ using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
+    public class PriceViewModel : ViewModelBase
+    {
+        private readonly PriceDto _priceDto;
+        private bool _isCurrent;
+
+        public PriceViewModel(PriceDto priceDto)
+        {
+            _priceDto = priceDto;
+        }
+
+        public DateTime Begin
+        {
+            get { return _priceDto.DateBeginning; }
+        }
+
+        public decimal PriceStl
+        {
+            get { return _priceDto.PriceSTL; }
+        }
+
+        public decimal PriceModel
+        {
+            get { return _priceDto.PriceModel; }
+        }
+
+        public bool IsCurrent
+        {
+            get { return _isCurrent; }
+            set
+            {
+                if (_isCurrent == value)
+                    return;
+                _isCurrent = value;
+                OnPropertyChanged(() => IsCurrent);
+            }
+            
+        }
+    }
+
     public class AddPricePositionViewModel : ValidationSupportableViewModel, IAddPricePositionViewModel
     {
         private readonly IPriceGroupRepository _priceGroupRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private BranchType _branchType;
         private string _userCode;
         private string[] _allUserCodes;
         private string _name;
-        private decimal _priceStl;
-        private decimal _priceModel;
+
         private PriceGroupDto _selectedPriceGroup;
         private DictionaryItemDto _selectedMaterial;
         private DictionaryItemDto _selectedProstheticType;
+        private PriceViewModel _selectedPrice;
 
-        public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository, IDictionaryRepository dictionaryRepository)
+        public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository, IDictionaryRepository dictionaryRepository, IDateTimeProvider dateTimeProvider)
         {
             _priceGroupRepository = priceGroupRepository;
             _dictionaryRepository = dictionaryRepository;
+            _dateTimeProvider = dateTimeProvider;
 
             AddValidationFor(() => Name)
                 .When(() => string.IsNullOrWhiteSpace(Name), () => "Укажите наименование ценовой позиции");
@@ -41,10 +83,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             AddValidationFor(() => UserCode)
                 .When(() => _allUserCodes.ContainsIgnoreCase(UserCode), () => "Укажите уникальный код");
 
-            AddValidationFor(() => PriceStl)
-                .When(() => PriceStl <= 0, () => "Укажите цену с STL отличную от нуля");
-            AddValidationFor(() => PriceModel)
-                .When(() => PriceStl <= 0, () => "Укажите цену с модели отличную от нуля");
+            //AddValidationFor(() => PriceStl)
+            //    .When(() => PriceStl <= 0, () => "Укажите цену с STL отличную от нуля");
+            //AddValidationFor(() => PriceModel)
+            //    .When(() => PriceStl <= 0, () => "Укажите цену с модели отличную от нуля");
 
             OkCommand = new DelegateCommand(CanOkCommandHandler);
         }
@@ -82,6 +124,18 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public ObservableCollection<PriceGroupDto> Groups { get; } = new ObservableCollection<PriceGroupDto>();
 
+        public PriceGroupDto SelectedPriceGroup
+        {
+            get { return _selectedPriceGroup; }
+            set
+            {
+                if (_selectedPriceGroup == value)
+                    return;
+                _selectedPriceGroup = value;
+                OnPropertyChanged(() => SelectedPriceGroup);
+            }
+        }
+
         public ObservableCollection<DictionaryItemDto> Materials { get; } = new ObservableCollection<DictionaryItemDto>();
 
         public DictionaryItemDto SelectedMaterial
@@ -96,7 +150,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public ObservableCollection<DictionaryItemDto> ProsthticTypes { get; } = new ObservableCollection<DictionaryItemDto>();
+        public ObservableCollection<DictionaryItemDto> ProsthteticTypes { get; } = new ObservableCollection<DictionaryItemDto>();
 
         public DictionaryItemDto SelectedProsthticType
         {
@@ -110,40 +164,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public PriceGroupDto SelectedPriceGroup
-        {
-            get { return _selectedPriceGroup; }
-            set
-            {
-                if (_selectedPriceGroup == value)
-                    return;
-                _selectedPriceGroup = value;
-                OnPropertyChanged(() => SelectedPriceGroup);
-            }
-        }
+        public ObservableCollection<PriceViewModel> Prices { get; } = new ObservableCollection<PriceViewModel>();
 
-        public decimal PriceStl
+        public PriceViewModel SelectedPrice
         {
-            get { return _priceStl; }
-            set
-            {
-                if (_priceStl == value)
-                    return;
-                _priceStl = value;
-                OnPropertyChanged(() => PriceStl);
-            }
-        }
-
-        public decimal PriceModel
-        {
-            get { return _priceModel; }
-            set
-            {
-                if (_priceModel == value)
-                    return;
-                _priceModel = value;
-                OnPropertyChanged(() => PriceModel);
-            }
+            get { return _selectedPrice; }
         }
 
         public IDelegateCommand OkCommand { get; }
@@ -165,9 +190,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return false;
 
             if (SelectedMaterial == null)
-                return false;
-
-            if (PriceModel <= 0 || PriceStl <= 0)
                 return false;
 
             return true;
@@ -193,18 +215,23 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 Materials.Add(dictionaryItemDto);
             }
 
-            ProsthticTypes.Clear();
+            ProsthteticTypes.Clear();
             foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.ProstheticType))
             {
-                ProsthticTypes.Add(dictionaryItemDto);
+                ProsthteticTypes.Add(dictionaryItemDto);
+            }
+
+            Prices.Clear();
+            foreach (var priceDto in pricePositionDto.Prices)
+            {
+                Prices.Add(new PriceViewModel(priceDto));
             }
 
             _name = pricePositionDto.Name;
             _userCode = pricePositionDto.UserCode;
             _selectedPriceGroup = Groups.FirstOrDefault(x => x.PriceGroupId == pricePositionDto.PriceGroupId);
             _selectedMaterial = Materials.FirstOrDefault(x => x.Id == pricePositionDto.MaterialId);
-            _priceStl = pricePositionDto.PriceStl;
-            _priceModel = pricePositionDto.PriceModel;
+            _selectedProstheticType = ProsthteticTypes.FirstOrDefault(x => x.Id == pricePositionDto.ProstheticTypeId);
         }
 
         public PricePositionDto GetPricePosition()
@@ -215,8 +242,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 Name = Name,
                 PriceGroupId = SelectedPriceGroup.PriceGroupId,
                 MaterialId = SelectedMaterial.Id,
-                PriceStl = PriceStl,
-                PriceModel = PriceModel,
                 UserCode = UserCode
             };
         }
