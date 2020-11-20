@@ -12,7 +12,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT lfs.UserID, lfs.stream_id, s.name, s.cached_file_size, s.creation_time, s.last_write_time
-	FROM LinksFileStreams lfs INNER JOIN StlAndPhotos s ON lfs.stream_id = s.stream_id
+	SELECT lfs.UserID, lfs.stream_id, p.name, p.cached_file_size, p.creation_time, p.last_write_time
+	FROM LinksFileStreams lfs INNER JOIN Pictures p ON lfs.stream_id = p.stream_id
 	WHERE lfs.UserID = @userId
 )

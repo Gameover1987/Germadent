@@ -40,7 +40,7 @@ namespace Germadent.WebApi.Controllers.UserManagement
                     //audience: AuthOptions.AUDIENCE,
                     notBefore: now,
                     claims: GetIdentity(authorizationInfoDto.Login).Claims,
-                    expires: now.AddSeconds(10),
+                    expires: now.AddDays(1),
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
                 var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 

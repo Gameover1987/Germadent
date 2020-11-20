@@ -17,7 +17,7 @@ BEGIN
 	DECLARE @streamId uniqueidentifier
 
 	-- Получение id файлового потока по имени файла и времени его создания
-	SET @streamId = (SELECT stream_id FROM StlAndPhotos	WHERE name = @fileName	AND creation_time = @creationTime)
+	SET @streamId = (SELECT stream_id FROM Pictures	WHERE name = @fileName	AND creation_time = @creationTime)
 
 	-- Проверка, если такая связь уже есть
 	IF EXISTS (SELECT stream_id FROM LinksFileStreams WHERE stream_id = @streamId AND UserID = @userId)
