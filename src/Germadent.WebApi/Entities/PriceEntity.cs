@@ -23,5 +23,10 @@ namespace Germadent.WebApi.Entities
         /// Цена с модели
         /// </summary>
         public decimal PriceModel { get; set; }
+
+        /// <summary>
+        /// Дата окончания цены
+        /// </summary>
+        public DateTime DateEnd { get; set; }
     }
 }
