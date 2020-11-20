@@ -12,12 +12,7 @@ namespace Germadent.WebApi.Entities
         /// <summary>
         /// Дата начала цены
         /// </summary>
-        public DateTime DateBeginning { get; set; }
-
-        /// <summary>
-        /// Дата окончания цены
-        /// </summary>
-        public DateTime DateEnd { get; set; }
+        public DateTime DateBeginning { get; set; }       
 
         /// <summary>
         /// Цена с stl
