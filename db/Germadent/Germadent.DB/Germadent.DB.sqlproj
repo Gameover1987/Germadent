@@ -247,10 +247,6 @@
     </Build>
     <Build Include="dbo\Sequences\SequenceNumberMC.sql" />
     <Build Include="Security\ofm.sql" />
-    <Build Include="dbo\FileTables\StlAndPhotos.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="Storage\GermadentFileStream.sql" />
     <Build Include="dbo\Functions\GetFileTableFullPath.sql">
       <AnsiNulls>On</AnsiNulls>
@@ -556,6 +552,14 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Functions\GetFileAttributesByUserId.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\FileTables\Pictures.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\MergePrices.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

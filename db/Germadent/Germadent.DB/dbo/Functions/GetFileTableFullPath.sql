@@ -16,7 +16,7 @@ BEGIN
 			@FullPath varchar(250)
 
 	
-	SET @FileTableName = 'StlAndPhotos'
+	SET @FileTableName = 'Pictures'
 	SELECT @FullPath = CONCAT(FileTableRootPath(),'\', @FileTableName)
 
 	

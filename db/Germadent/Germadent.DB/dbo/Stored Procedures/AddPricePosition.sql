@@ -9,6 +9,9 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 	@priceGroupId int,
 	@pricePositionName nvarchar(max),
 	@materialId int,
+	@dateBeginning date = NULL,
+	@priceSTL money,
+	@priceModel money,
 	@pricePositionId int output
 	
 AS
@@ -34,6 +37,9 @@ BEGIN
 	(@pricePositionCode, @priceGroupId, @pricePositionName, @materialId)
 
 	SET @pricePositionId = SCOPE_IDENTITY()
+
+	-- Добавление цены:
+	EXEC AddPrice @pricePositionId, @dateBeginning, @priceSTL, @priceModel
 	   
 END
 GO
