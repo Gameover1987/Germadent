@@ -13,9 +13,10 @@
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
-        Height="400"
-        MinWidth="500"
-        Width="500"
+        MinHeight="500"
+        Height="500"
+        MinWidth="600"
+        Width="600"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
@@ -46,8 +47,12 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование" VerticalAlignment="Center"/>
             <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Ценовая группа" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Height="23"
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Left" Width="150"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Ценовая группа" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="23"
                       ItemsSource="{Binding Groups}"
                       SelectedItem="{Binding SelectedPriceGroup}">
                 <ComboBox.ItemTemplate>
@@ -57,8 +62,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Материал" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <ComboBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="23"
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Материал" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="23"
                       ItemsSource="{Binding Materials}"
                       SelectedItem="{Binding SelectedMaterial}">
                 <ComboBox.ItemTemplate>
@@ -68,8 +73,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Изделие" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="23"
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделие" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Height="23"
                       ItemsSource="{Binding ProsthteticTypes}"
                       SelectedItem="{Binding SelectedProsthticType}">
                 <ComboBox.ItemTemplate>
@@ -79,31 +84,42 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
-                     HorizontalAlignment="Left" Width="150"/>
-
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
             <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+                      SelectedItem="{Binding SelectedPrice}"
                       ItemsSource="{Binding Prices}">
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
-                                <Setter Property="Background" Value="Red"></Setter>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Past}">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Current}">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Future}">
+                                <Setter Property="Opacity" Value="0.6"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Дата" Width="*" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                    <DataGridTextColumn Header="Дата" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding Begin, StringFormat='dd MMMM yyyy', ConverterCulture=ru-RU}"/>
-                    <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                    <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding PriceStl}"/>
-                    <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource BaseTextBlockCellStyle}"
+                    <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding PriceModel}"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+                <Button Content="Добавить" Width="100"
+                        Command="{Binding AddPriceCommand}"/>
+                <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                        Command="{Binding EditPriceCommand}"/>
+                <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                        Command="{Binding DeletePriceCommand}"/>
+            </StackPanel>
         </Grid>
 
         <Separator Grid.Row="1" Margin="-12,12,-12,12"/>

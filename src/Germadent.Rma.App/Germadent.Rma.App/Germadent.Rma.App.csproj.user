@@ -7,6 +7,9 @@
     <Compile Update="Views\Pricing\AddPricePositionWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Pricing\AddPriceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Pricing\PriceListEditorControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\Pricing\AddPricePositionWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pricing\AddPriceWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Pricing\PriceListEditorControl.xaml">

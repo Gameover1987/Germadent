@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Configuration;
@@ -90,6 +91,9 @@ namespace Germadent.Rma.App.Infrastructure
 
         private void RegisterViewModels()
         {
+            _container.RegisterType<IDateTimeProvider, DateTimeProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IUiTimer, UiTimer>(new TransientLifetimeManager());
+
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrderUIOperations, OrderUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICatalogUIOperations, CatalogUIOperations>(new ContainerControlledLifetimeManager());
@@ -112,6 +116,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IPriceListViewModel, PriceListViewModel>(new TransientLifetimeManager());
             _container.RegisterType<IPriceListEditorContainerViewModel, PriceListEditorContainerViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IAddPricePositionViewModel, AddPricePositionViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAddPriceViewModel, AddPriceViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceListEditorFactory, PriceListEditorFactory>(new ContainerControlledLifetimeManager());
         }
 

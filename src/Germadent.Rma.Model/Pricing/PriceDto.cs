@@ -6,6 +6,8 @@ namespace Germadent.Rma.Model.Pricing
 {
     public class PriceDto
     {
+        public int PriceId { get; set; }
+
         public int PricePositionId { get; set; }
 
         public DateTime DateBeginning { get; set; }

@@ -2,6 +2,11 @@
 {
     public class PricePositionDto : IIdentityDto
     {
+        public PricePositionDto()
+        {
+            Prices = new PriceDto[0];
+        }
+
         public int PricePositionId { get; set; }
 
         public int PriceGroupId { get; set; }

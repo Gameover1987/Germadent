@@ -26,8 +26,6 @@ namespace Germadent.UI.Infrastructure
             DefaultWindowTitle = string.Empty;
         }
 
-        #region Properties
-
         /// <summary>
         /// Заголовок окна по умолчанию для отображения в ShowMessageDialog если не удалось получить активное окно
         /// </summary>
@@ -57,10 +55,6 @@ namespace Germadent.UI.Infrastructure
             get { return _theActiveWindow ?? (_theActiveWindow = MainWindow); }
             set { _theActiveWindow = value; }
         }
-
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         /// Показать диалог.
@@ -297,10 +291,6 @@ namespace Germadent.UI.Infrastructure
             return inputBoxViewModel.InputString;
         }
 
-        #endregion
-
-        #region Protected methods
-
         protected virtual bool? ShowDialogInternal<T>(object dialogViewModel, Window owner) where T : Window, new()
         {
             if (!_dispatcher.CheckAccess())
@@ -435,8 +425,6 @@ namespace Germadent.UI.Infrastructure
                 return DefaultWindowTitle;
             }
         }
-
-        #endregion
 
         private static void ThrowArgumentExceptionInNotWindow(IWindow owner)
         {
