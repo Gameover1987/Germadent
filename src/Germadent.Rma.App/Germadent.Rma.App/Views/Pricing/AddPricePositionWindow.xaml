@@ -76,7 +76,7 @@
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделие" VerticalAlignment="Center" Margin="0,6,0,0"/>
             <ComboBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Height="23"
                       ItemsSource="{Binding ProsthteticTypes}"
-                      SelectedItem="{Binding SelectedProsthticType}">
+                      SelectedItem="{Binding SelectedProsthteicType}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
                         <TextBlock Text="{Binding Name}"/>
@@ -86,10 +86,12 @@
 
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
             <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+                      AlternationCount="2"
+                      IsReadOnly="True"
                       SelectedItem="{Binding SelectedPrice}"
                       ItemsSource="{Binding Prices}">
                 <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Past}">
                                 <Setter Property="Opacity" Value="0.6"/>

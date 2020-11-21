@@ -13,7 +13,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
     public class PriceViewModel : ViewModelBase
     {
-        private readonly PriceDto _priceDto;
+        private PriceDto _priceDto;
         private PriceKind _priceKind;
 
         public PriceViewModel(PriceDto priceDto)
@@ -49,5 +49,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         }
 
         public PriceDto ToDto() => _priceDto;
+
+        public void Update(PriceDto price)
+        {
+            _priceDto = price;
+            OnPropertyChanged();
+        }
     }
 }

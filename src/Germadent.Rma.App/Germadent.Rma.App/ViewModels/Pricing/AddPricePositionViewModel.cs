@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Germadent.Common;
 using Germadent.Common.Extensions;
@@ -58,12 +59,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             AddPriceCommand = new DelegateCommand(AddPriceCommandHandler);
             EditPriceCommand = new DelegateCommand(EditPriceCommandHandler, CanEditPriceCommandHandler);
             DeletePriceCommand = new DelegateCommand(DeletePriceCommandHandler, CanDeletePriceCommandHandler);
+
+            Prices.CollectionChanged += PricesOnCollectionChanged;
         }
 
-        public string Title
-        {
-            get { return GetTitle(ViewMode); }
-        }
+        public string Title => GetTitle(ViewMode);
 
         public CardViewMode ViewMode { get; set; }
 
@@ -121,7 +121,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public ObservableCollection<DictionaryItemDto> ProsthteticTypes { get; } = new ObservableCollection<DictionaryItemDto>();
 
-        public DictionaryItemDto SelectedProsthticType
+        public DictionaryItemDto SelectedProsthteicType
         {
             get { return _selectedProstheticType; }
             set
@@ -129,7 +129,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 if (_selectedProstheticType == value)
                     return;
                 _selectedProstheticType = value;
-                OnPropertyChanged(() => SelectedProsthticType);
+                OnPropertyChanged(() => SelectedProsthteicType);
             }
         }
 
@@ -172,6 +172,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return false;
 
             if (SelectedMaterial == null)
+                return false;
+
+            if (SelectedProsthteicType == null)
+                return false;
+
+            if (Prices.Count == 0)
+                return false;
+
+            if (Prices.Count(x => x.PriceKind == PriceKind.Current) == 0)
                 return false;
 
             return true;
@@ -226,11 +235,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         {
             return new PricePositionDto
             {
-                BranchType = _branchType,
                 Name = Name,
+                UserCode = UserCode,
+                BranchType = _branchType,
                 PriceGroupId = SelectedPriceGroup.PriceGroupId,
                 MaterialId = SelectedMaterial.Id,
-                UserCode = UserCode
+                ProstheticTypeId = SelectedProsthteicType.Id,
             };
         }
 
@@ -241,6 +251,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return;
 
             var price = _addPriceViewModel.GetPrice();
+            Prices.Add(new PriceViewModel(price));
         }
 
         private bool CanEditPriceCommandHandler()
@@ -255,6 +266,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return;
 
             var price = _addPriceViewModel.GetPrice();
+            SelectedPrice.Update(price);
         }
 
         private bool CanDeletePriceCommandHandler()
@@ -264,7 +276,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private void DeletePriceCommandHandler()
         {
-
+            Prices.Remove(SelectedPrice);
         }
 
         private string GetTitle(CardViewMode cardViewMode)
@@ -308,6 +320,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private void TimerOnTick(object? sender, EventArgs e)
         {
             ActualizePrices();
+
+            DelegateCommand.NotifyCanExecuteChangedForAll();
+        }
+
+        private void PricesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            ActualizePrices();
+
+            DelegateCommand.NotifyCanExecuteChangedForAll();
         }
     }
 }
