@@ -173,9 +173,9 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
         }
 
-        public ProductSetForPriceGroupDto[] GetProductSetForPrice(BranchType branchType)
+        public ProductDto[] GetProductSetForPrice(BranchType branchType)
         {
-            return ExecuteHttpGet<ProductSetForPriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/ProductSetForPriceGroup" + (int)branchType);
+            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/ProductSetForPriceGroup" + (int)branchType);
         }
 
         protected override void HandleError(IRestResponse response)

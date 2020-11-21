@@ -13,17 +13,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         }
 
         public PricePositionViewModel PricePosition { get; }
-    }
-
-    public class ProductFromSetCheckedEventArgs : EventArgs
-    {
-        public ProductFromSetCheckedEventArgs(ProductSetForPriceGroupViewModel product)
-        {
-            Product = product;
-        }
-
-        public ProductSetForPriceGroupViewModel Product { get; }
-    }
+    }   
 
     public interface IPriceListViewModel
     {

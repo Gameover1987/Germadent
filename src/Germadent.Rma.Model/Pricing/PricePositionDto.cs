@@ -1,10 +1,12 @@
 ﻿namespace Germadent.Rma.Model.Pricing
 {
+
     public class PricePositionDto : IIdentityDto
     {
         public PricePositionDto()
         {
             Prices = new PriceDto[0];
+            Products = new ProductDto[0];
         }
 
         public int PricePositionId { get; set; }
@@ -20,6 +22,8 @@
         public int ProstheticTypeId { get; set; }
 
         public BranchType BranchType { get; set; }
+
+        public ProductDto[] Products { get; set; }
 
         public PriceDto[] Prices { get; set; }
 

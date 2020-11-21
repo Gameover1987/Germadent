@@ -10,6 +10,7 @@
         xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
         xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
         xmlns:pricing1="clr-namespace:Germadent.Rma.Model.Pricing;assembly=Germadent.Rma.Model"
+        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
@@ -38,8 +39,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>              
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -73,16 +74,17 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделие" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <ComboBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" Height="23"
-                      ItemsSource="{Binding ProsthteticTypes}"
-                      SelectedItem="{Binding SelectedProsthteicType}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
-                        <TextBlock Text="{Binding Name}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделия" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0"                     
+                     ItemsSource="{Binding ProsthteticTypes}"
+                     ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
+                        <CheckBox Content="{Binding DisplayName}"
+                                  IsChecked="{Binding IsChecked}"/>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
             <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
@@ -98,6 +100,7 @@
                             </DataTrigger>
                             <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Current}">
                                 <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="ToolTip" Value="Текущая цена"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Future}">
                                 <Setter Property="Opacity" Value="0.6"/>

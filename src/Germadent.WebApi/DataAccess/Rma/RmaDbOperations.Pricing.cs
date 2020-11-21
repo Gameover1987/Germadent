@@ -313,7 +313,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public ProductSetForPriceGroupDto[] GetProductSetForPriceGroup(BranchType branchType)
+        public ProductDto[] GetProductSetForToothCard(BranchType branchType)
         {
             var cmdText = string.Format("select distinct PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProstheticsID, ProstheticsName, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -323,7 +323,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var productSetCollection = new List<ProductSetForPriceGroupDto>();
+                    var productSetCollection = new List<ProductDto>();
                     while (reader.Read())
                     {
                         var productSetEntity = new ProductSetForPriceGroupEntity();

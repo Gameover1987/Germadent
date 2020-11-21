@@ -83,7 +83,7 @@ namespace Germadent.WebApi.Controllers.Rma
         [Route("ProductSetForPriceGroup/{branchType:int}")]
         public IActionResult GetProductSetForPriceGroup(int branchType)
         {
-            return ExecuteAction(()=>_rmaDbOperations.GetProductSetForPriceGroup((BranchType)branchType));
+            return ExecuteAction(()=>_rmaDbOperations.GetProductSetForToothCard((BranchType)branchType));
         }
     }
 }

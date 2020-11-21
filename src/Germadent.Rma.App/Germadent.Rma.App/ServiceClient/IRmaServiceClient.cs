@@ -202,6 +202,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="branchType"></param>
         /// <returns></returns>
-        ProductSetForPriceGroupDto[] GetProductSetForPrice(BranchType branchType);
+        ProductDto[] GetProductSetForPrice(BranchType branchType);
     }
 }

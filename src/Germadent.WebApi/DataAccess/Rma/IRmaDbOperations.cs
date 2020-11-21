@@ -173,6 +173,6 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="branchType"></param>
         /// <returns></returns>
-        ProductSetForPriceGroupDto[] GetProductSetForPriceGroup(BranchType branchType);
+        ProductDto[] GetProductSetForToothCard(BranchType branchType);
     }
 }

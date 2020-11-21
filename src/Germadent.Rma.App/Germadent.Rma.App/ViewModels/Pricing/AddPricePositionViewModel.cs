@@ -5,6 +5,7 @@ using System.Linq;
 using Germadent.Common;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views.Pricing;
 using Germadent.Rma.Model;
@@ -26,11 +27,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private BranchType _branchType;
         private string _userCode;
         private string[] _allUserCodes;
+        private int _pricePositionId;
         private string _name;
 
         private PriceGroupDto _selectedPriceGroup;
-        private DictionaryItemDto _selectedMaterial;
-        private DictionaryItemDto _selectedProstheticType;
+        private DictionaryItemDto _selectedMaterial;     
         private PriceViewModel _selectedPrice;
 
         public AddPricePositionViewModel(IPriceGroupRepository priceGroupRepository,
@@ -119,19 +120,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public ObservableCollection<DictionaryItemDto> ProsthteticTypes { get; } = new ObservableCollection<DictionaryItemDto>();
-
-        public DictionaryItemDto SelectedProsthteicType
-        {
-            get { return _selectedProstheticType; }
-            set
-            {
-                if (_selectedProstheticType == value)
-                    return;
-                _selectedProstheticType = value;
-                OnPropertyChanged(() => SelectedProsthteicType);
-            }
-        }
+        public ObservableCollection<CheckableDictionaryItemViewModel> ProsthteticTypes { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
         public ObservableCollection<PriceViewModel> Prices { get; } = new ObservableCollection<PriceViewModel>();
 
@@ -174,7 +163,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             if (SelectedMaterial == null)
                 return false;
 
-            if (SelectedProsthteicType == null)
+            if (ProsthteticTypes.All(x => x.IsChecked == false))
                 return false;
 
             if (Prices.Count == 0)
@@ -188,7 +177,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public void Initialize(CardViewMode viewMode, PricePositionDto pricePositionDto, string[] allUserCodes, BranchType branchType)
         {
-            ResetValidation();
+            ResetValidation();          
             _timer.Stop();
             _timer.Initialize(TimeSpan.FromSeconds(2));
 
@@ -209,9 +198,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
 
             ProsthteticTypes.Clear();
+            var prostheticIDs = pricePositionDto.Products.Select(x => x.ProstheticTypeId).ToArray();
             foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.ProstheticType))
             {
-                ProsthteticTypes.Add(dictionaryItemDto);
+                var item = new CheckableDictionaryItemViewModel(dictionaryItemDto);
+                item.IsChecked = prostheticIDs.Contains(dictionaryItemDto.Id);
+                ProsthteticTypes.Add(item);
             }
 
             Prices.Clear();
@@ -222,17 +214,18 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             ActualizePrices();
 
+            _pricePositionId = pricePositionDto.PricePositionId;
             _name = pricePositionDto.Name;
             _userCode = pricePositionDto.UserCode;
             _selectedPriceGroup = Groups.FirstOrDefault(x => x.PriceGroupId == pricePositionDto.PriceGroupId);
-            _selectedMaterial = Materials.FirstOrDefault(x => x.Id == pricePositionDto.MaterialId);
-            _selectedProstheticType = ProsthteticTypes.FirstOrDefault(x => x.Id == pricePositionDto.ProstheticTypeId);
+            _selectedMaterial = Materials.FirstOrDefault(x => x.Id == pricePositionDto.MaterialId);          
 
             _timer.Start();
         }
 
         public PricePositionDto GetPricePosition()
         {
+            var currentPrice = Prices.Where(x => x.PriceKind == PriceKind.Current).First().ToDto();
             return new PricePositionDto
             {
                 Name = Name,
@@ -240,7 +233,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 BranchType = _branchType,
                 PriceGroupId = SelectedPriceGroup.PriceGroupId,
                 MaterialId = SelectedMaterial.Id,
-                ProstheticTypeId = SelectedProsthteicType.Id,
+                Products = ProsthteticTypes.Where(x => x.IsChecked).Select(x => new ProductDto
+                {
+                    PriceGroupId = SelectedPriceGroup.PriceGroupId,
+                    ProstheticTypeId = x.Item.Id,
+                    MaterialId = SelectedMaterial.Id,
+                    UserCode = UserCode,
+                    PriceModel = currentPrice.PriceModel,
+                    PriceStl = currentPrice.PriceSTL
+                }).ToArray(),
+                Prices = Prices.Select(x => x.ToDto()).ToArray()
             };
         }
 
@@ -317,7 +319,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             pastPrices.Last().PriceKind = PriceKind.Current;
         }
 
-        private void TimerOnTick(object? sender, EventArgs e)
+        private void TimerOnTick(object sender, EventArgs e)
         {
             ActualizePrices();
 

@@ -301,14 +301,14 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Культевые вкладки",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Культевая вкладка CoCr"},
-                    new PricePositionDto {Name = "Культевая вкладка разборная CoCr"},
-                    new PricePositionDto {Name = "Культевая вкладка металлокерамическая"},
-                    new PricePositionDto {Name = "Культевая вкладка ZrO2 VITA"},
-                    new PricePositionDto {Name = "Культевая вкладка Ti"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Культевая вкладка CoCr"},
+                //    new PricePositionDto {Name = "Культевая вкладка разборная CoCr"},
+                //    new PricePositionDto {Name = "Культевая вкладка металлокерамическая"},
+                //    new PricePositionDto {Name = "Культевая вкладка ZrO2 VITA"},
+                //    new PricePositionDto {Name = "Культевая вкладка Ti"},
+                //}
             };
         }
 
@@ -317,17 +317,17 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Временные конструкции",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Временная коронка РММА"},
-                    new PricePositionDto {Name = "Временная коронка РММА multicolor"},
-                    new PricePositionDto {Name = "Временная коронка VITA CAD - Temp"},
-                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor"},
-                    new PricePositionDto {Name = "Временная коронка РММА на имплантате"},
-                    new PricePositionDto {Name = "Временная коронка РММА multicolor на имплантате"},
-                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp на имплантате"},
-                    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor на имплантате"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Временная коронка РММА"},
+                //    new PricePositionDto {Name = "Временная коронка РММА multicolor"},
+                //    new PricePositionDto {Name = "Временная коронка VITA CAD - Temp"},
+                //    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor"},
+                //    new PricePositionDto {Name = "Временная коронка РММА на имплантате"},
+                //    new PricePositionDto {Name = "Временная коронка РММА multicolor на имплантате"},
+                //    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp на имплантате"},
+                //    new PricePositionDto {Name = "Временная коронка VITA CAD – Temp multicolor на имплантате"},
+                //}
             };
         }
 
@@ -336,15 +336,15 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Абатменты",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Ортос)"},
-                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace MEDENTiKA)"},
-                    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Straumann)"},
-                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Ортос)"},
-                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase MEDENTiKA)"},
-                    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Straumann)"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Ортос)"},
+                //    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace MEDENTiKA)"},
+                //    new PricePositionDto {Name = "Индивидуальный абатмент Ti (PreFace Straumann)"},
+                //    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Ортос)"},
+                //    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase MEDENTiKA)"},
+                //    new PricePositionDto {Name = "Индивидуальный абатмент ZrO2 (TiBase Straumann)"},
+                //}
             };
         }
 
@@ -353,12 +353,12 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Металлокерамические конструкции",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Металлокерамическая коронка CAD CAM VITA VM 13"},
-                    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате CAD CAM VITA VM 13"},
-                    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате винтовая фиксация CAD CAM VITA VM 13"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Металлокерамическая коронка CAD CAM VITA VM 13"},
+                //    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате CAD CAM VITA VM 13"},
+                //    new PricePositionDto {Name = "Металлокерамическая коронка на имплантате винтовая фиксация CAD CAM VITA VM 13"},
+                //}
             };
         }
 
@@ -367,18 +367,18 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Конструкции из ZrO2",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) VITA AKZENT PLUS"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) VITA"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) VITA"},
-                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте VITA AKZENT PLUS"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте VITA"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте VITA"},
-                    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте винтовая фиксация VITA AKZENT PLUS"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте винтовая фиксация VITA"},
-                    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте винтовая фиксация VITA"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) VITA AKZENT PLUS"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) VITA"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) VITA"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте VITA AKZENT PLUS"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте VITA"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте VITA"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 полная анатомия (окрашиваниe) на импланте винтовая фиксация VITA AKZENT PLUS"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (редуцированиe) на импланте винтовая фиксация VITA"},
+                //    new PricePositionDto {Name = "Коронка ZrO2 (нанесениe) на импланте винтовая фиксация VITA"},
+                //}
             };
         }
 
@@ -387,13 +387,13 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Дисиликат лития",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (VITA SUPRINITY)"},
-                    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (VITA SUPRINITY)"},
-                    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (E-MAX)"},
-                    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (E-MAX)"}
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (VITA SUPRINITY)"},
+                //    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (VITA SUPRINITY)"},
+                //    new PricePositionDto {Name = "Вкладка/накладка,коронка/винир (окрашивание)  Коронка/винир на имплантате (окрашивание) (E-MAX)"},
+                //    new PricePositionDto {Name = "Коронка/винир (редуцирование) Коронка/винир (редуцирования на имплантате) (E-MAX)"}
+                //}
             };
         }
 
@@ -402,13 +402,13 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Полевошпатная керамика VITA",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, коронка/винир (окрашиваниe) MARK  II"},
-                    new PricePositionDto {Name = "Коронка/винир (редуцирование) MARK  II"},
-                    new PricePositionDto {Name = "Коронка/винир TriLuxe forte"},
-                    new PricePositionDto {Name = "Коронка/винир RealLife"}
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, коронка/винир (окрашиваниe) MARK  II"},
+                //    new PricePositionDto {Name = "Коронка/винир (редуцирование) MARK  II"},
+                //    new PricePositionDto {Name = "Коронка/винир TriLuxe forte"},
+                //    new PricePositionDto {Name = "Коронка/винир RealLife"}
+                //}
             };
         }
 
@@ -417,11 +417,11 @@ namespace Germadent.Rma.App.Mocks
             return new PriceGroupDto
             {
                 Name = "Полевошпатная керамика VITA",
-                Positions = new PricePositionDto[]
-                {
-                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC monocolor"},
-                    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC multicolor"},
-                }
+                //Positions = new PricePositionDto[]
+                //{
+                //    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC monocolor"},
+                //    new PricePositionDto {Name = "Вкладка/накладка окклюзионная, Коронка/винир, Коронка/винир на имплантате VITA ENAMIC multicolor"},
+                //}
             };
         }
       
@@ -491,7 +491,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public ProductSetForPriceGroupDto[] GetProductSetForPrice(BranchType branchType)
+        public ProductDto[] GetProductSetForPrice(BranchType branchType)
         {
             throw new NotImplementedException();
         }
