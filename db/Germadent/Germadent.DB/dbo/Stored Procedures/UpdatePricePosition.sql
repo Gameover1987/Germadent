@@ -9,13 +9,15 @@ CREATE PROCEDURE [dbo].[UpdatePricePosition]
 	@pricePositionCode nvarchar(20),
 	@priceGroupId int,
 	@pricePositionName nvarchar(max),
-	@materialId int
---	@jsonStringProduct nvarchar(max)
+	@materialId int,
+	@jsonStringProduct nvarchar(max)
 
 AS
 BEGIN
 	
 	SET NOCOUNT ON;
+
+	BEGIN TRAN
 
     UPDATE PricePositions
 	SET PricePositionCode = @pricePositionCode,
@@ -24,7 +26,9 @@ BEGIN
 		MaterialID = @materialId
 	WHERE PricePositionID = @pricePositionId
 
---	EXEC AddOrUpdateProductSet @jsonStringProduct
+	EXEC AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+
+	COMMIT
 
 END
 GO

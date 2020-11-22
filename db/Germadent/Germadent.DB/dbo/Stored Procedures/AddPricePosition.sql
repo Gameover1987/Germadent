@@ -7,11 +7,13 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 	
 	@pricePositionCode nvarchar(20),
 	@priceGroupId int,
-	@pricePositionName nvarchar(max),
+	@pricePositionName nvarchar(MAX),
 	@materialId int,
-	@dateBeginning date = NULL,
-	@priceSTL money,
-	@priceModel money,
+	--@dateBeginning date = NULL,
+	--@priceSTL money,
+	--@priceModel money,
+	@jsonStringProduct nvarchar(MAX),
+	@jsonStringPrices nvarchar(MAX),
 	@pricePositionId int output
 	
 AS
@@ -30,6 +32,7 @@ BEGIN
 		REVERT
 	END
 	
+	BEGIN TRAN
 	-- Собственно вставка, сначала - в основную таблицу:
 	INSERT INTO PricePositions
 	(PricePositionCode, PriceGroupID, PricePositionName, MaterialID)
@@ -38,8 +41,14 @@ BEGIN
 
 	SET @pricePositionId = SCOPE_IDENTITY()
 
+	-- Добавление набора изделий:
+	EXEC AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+	
 	-- Добавление цены:
-	EXEC AddPrice @pricePositionId, @dateBeginning, @priceSTL, @priceModel
+--	EXEC AddPrice @pricePositionId, @dateBeginning, @priceSTL, @priceModel
+	EXEC AddOrUpdatePrices @pricePositionId, @jsonStringPrices
+
+	COMMIT
 	   
 END
 GO

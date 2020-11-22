@@ -5,20 +5,15 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddOrUpdateProductSet] 
 	
+	@pricePositionId int,
 	@jsonStringProduct nvarchar(max)
 	
 AS
 BEGIN
 	
 	SET NOCOUNT ON;
-
-    -- Достаём нужный id
-	DECLARE @pricePositionId int
-
-	SET @pricePositionId = (SELECT DISTINCT PricePositionID
-								FROM OPENJSON (@jsonStringProduct)
-								WITH (PricePositionId int))
-
+	
+	BEGIN TRAN
 	-- Чистим набор от старого содержимого
 	DELETE
 	FROM ProductSet
@@ -27,9 +22,11 @@ BEGIN
 	-- Наполняем новым содержимым, распарсив строку json
 	INSERT INTO ProductSet
 	(PricePositionID, ProductID)
-	SELECT PricePositionID, ProductID
+	SELECT PricePositionID = @pricePositionId, ProductID
 	FROM OPENJSON (@jsonStringProduct)
-	WITH (PricePositionId int, ProductId int)
+	WITH (ProductId int)
+
+	COMMIT
 
 	-- Удаляем незначащие записи
 	DELETE
