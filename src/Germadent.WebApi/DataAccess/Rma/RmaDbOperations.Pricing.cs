@@ -315,7 +315,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public ProductDto[] GetProductSetForToothCard(BranchType branchType)
         {
-            var cmdText = string.Format("select distinct PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProstheticsID, ProstheticsName, PriceSTL, PriceModel from GetPriceListForBranch({0})", branchType);
+            var cmdText = string.Format("select distinct PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProstheticsID, ProstheticsName, PriceSTL, PriceModel from GetPriceListForBranch({0})", (int)branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -328,13 +328,17 @@ namespace Germadent.WebApi.DataAccess.Rma
                     {
                         var productSetEntity = new ProductSetForPriceGroupEntity();
 
+                        var productId = reader["ProstheticsID"];
+                        if (productId == DBNull.Value)
+                            continue;
+
                         productSetEntity.PriceGroupId = reader[nameof(productSetEntity.PriceGroupId)].ToInt();
                         productSetEntity.PricePositionId = reader[nameof(productSetEntity.PricePositionId)].ToInt();
                         productSetEntity.PricePositionCode = reader[nameof(productSetEntity.PricePositionCode)].ToString();
-                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToInt();
+                        productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToIntOrNull();
                         productSetEntity.MaterialName = reader[nameof(productSetEntity.MaterialName)].ToString();
-                        productSetEntity.ProductId = reader[nameof(productSetEntity.ProductId)].ToInt();
-                        productSetEntity.ProductName = reader[nameof(productSetEntity.ProductName)].ToString();
+                        productSetEntity.ProductId = productId.ToInt();
+                        productSetEntity.ProductName = reader["ProstheticsName"].ToString();
                         productSetEntity.PriceSTL = reader[nameof(productSetEntity.PriceSTL)].ToDecimal();
                         productSetEntity.PriceModel = reader[nameof(productSetEntity.PriceModel)].ToDecimal();
 

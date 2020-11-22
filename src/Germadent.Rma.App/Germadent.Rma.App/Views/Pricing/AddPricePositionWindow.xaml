@@ -14,10 +14,10 @@
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
-        MinHeight="500"
-        Height="500"
-        MinWidth="600"
-        Width="600"
+        MinHeight="700"
+        Height="700"
+        MinWidth="700"
+        Width="700"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
@@ -41,7 +41,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>              
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -80,14 +80,14 @@
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
-                        <CheckBox Content="{Binding DisplayName}"
+                        <CheckBox Content="{Binding DisplayName}" Margin="3,0,3,0"
                                   IsChecked="{Binding IsChecked}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
-            <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+            <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" Height="150"
                       AlternationCount="2"
                       IsReadOnly="True"
                       SelectedItem="{Binding SelectedPrice}"

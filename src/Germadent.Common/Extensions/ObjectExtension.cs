@@ -9,6 +9,14 @@ namespace Germadent.Common.Extensions
             return int.Parse(obj.ToString());
         }
 
+        public static int? ToIntOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToInt();
+        }
+
         public static decimal ToDecimal(this object obj)
         {
             if (obj == null || obj == DBNull.Value)

@@ -198,10 +198,10 @@ namespace Germadent.Rma.App.ServiceClient
         DeleteResult DeletePricePosition(int pricePositionId);
 
         /// <summary>
-        /// Возвращает набор изделий с материалами и ценами для ценовой группы
+        /// Возвращает набор изделий с материалами и ценами для филиала
         /// </summary>
         /// <param name="branchType"></param>
         /// <returns></returns>
-        ProductDto[] GetProductSetForPrice(BranchType branchType);
+        ProductDto[] GetProductByBranch(BranchType branchType);
     }
 }

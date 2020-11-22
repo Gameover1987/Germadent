@@ -228,13 +228,11 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 PriceGroupId = entity.PriceGroupId,
                 PricePositionId = entity.PricePositionId,
-                //PricePositionCode = entity.PricePositionCode,
-                //MaterialId = entity.MaterialId,
-                //MaterialName = entity.MaterialName,
-                //ProductId = entity.ProductId,
-                //ProductName = entity.ProductName,
-                //PriceSTL = entity.PriceSTL,
-                //PriceModel = entity.PriceModel
+                UserCode = entity.PricePositionCode,
+                MaterialId = entity.MaterialId,
+                ProstheticTypeId = entity.ProductId,
+                PriceStl = entity.PriceSTL,
+                PriceModel = entity.PriceModel
             };
         }
 

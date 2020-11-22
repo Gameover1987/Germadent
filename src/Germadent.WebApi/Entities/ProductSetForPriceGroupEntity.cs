@@ -20,7 +20,7 @@
         /// <summary>
         /// Идентификатор материала
         /// </summary>
-        public int MaterialId { get; set; }
+        public int? MaterialId { get; set; }
 
         /// <summary>
         /// Наименование материала
