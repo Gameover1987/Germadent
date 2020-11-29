@@ -11,20 +11,21 @@ CREATE PROCEDURE [dbo].[AddOrUpdateProductSet]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT ON
+	SET XACT_ABORT ON;
 	
 	BEGIN TRAN
-	-- Чистим набор от старого содержимого
-	DELETE
-	FROM ProductSet
-	WHERE PricePositionID = @pricePositionId
+		-- Чистим набор от старого содержимого
+		DELETE
+		FROM ProductSet
+		WHERE PricePositionID = @pricePositionId
 
-	-- Наполняем новым содержимым, распарсив строку json
-	INSERT INTO ProductSet
-	(PricePositionID, ProductID)
-	SELECT PricePositionID = @pricePositionId, ProductID
-	FROM OPENJSON (@jsonStringProduct)
-	WITH (ProductId int)
+		-- Наполняем новым содержимым, распарсив строку json
+		INSERT INTO ProductSet
+		(PricePositionID, ProductID)
+		SELECT PricePositionID = @pricePositionId, ProductID
+		FROM OPENJSON (@jsonStringProduct)
+		WITH (ProductId int)
 
 	COMMIT
 

@@ -25,24 +25,32 @@ BEGIN
 		  {"DateBeginning": "20210101", "PriceSTL": 300, "PriceModel": 400, "DateEnd": null}
 		]';
 */
-	SET NOCOUNT ON;
-	BEGIN TRAN	
-	--Удаление всех прежних цен:
-	DELETE
-	FROM Prices
-	WHERE PricePositionID = @pricePositionId
-
-	-- Наполняем новым содержимым, распарсив строку json:
-	INSERT INTO Prices
-	(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
-	SELECT PricePositionID = @pricePositionId, DateBeginning, PriceSTL, PriceModel, DateEnd
-		FROM OPENJSON (@jsonStringPrices)
-		WITH (DateBeginning date, PriceSTL money, PriceModel money, DateEnd date)
+	SET NOCOUNT ON
+	SET	XACT_ABORT ON;
 	
-	COMMIT
+		BEGIN TRAN	
+		--Удаление всех прежних цен:
+		DELETE
+		FROM Prices
+		WHERE PricePositionID = @pricePositionId
 
+		-- Наполняем новым содержимым, распарсив строку json:
+		INSERT INTO Prices
+		(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
+		SELECT PricePositionID = @pricePositionId, DateBeginning, PriceSTL, PriceModel, DateEnd
+			FROM OPENJSON (@jsonStringPrices)
+			WITH (DateBeginning date, PriceSTL money, PriceModel money, DateEnd date)
+	
+		COMMIT
+	
+	-- Удаление нулевых цен
 	DELETE
 	FROM Prices
 	WHERE PriceModel = 0 OR PriceModel IS NULL
 		
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdatePrices] TO [gdl_user]
+    AS [dbo];
+

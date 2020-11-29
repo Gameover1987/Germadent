@@ -44,3 +44,8 @@ BEGIN
 	AND AttributeID IS NULL
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateAttributesSet] TO [gdl_user]
+    AS [dbo];
+
