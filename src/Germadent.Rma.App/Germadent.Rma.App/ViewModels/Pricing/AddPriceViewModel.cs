@@ -75,7 +75,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             ViewMode = price.PriceId == 0 ? CardViewMode.Add : CardViewMode.Edit;
 
             _dateBeginning = price.DateBeginning;
-            _priceStl = price.PriceSTL;
+            _priceStl = price.PriceStl;
             _priceModel = price.PriceModel;
         }
 
@@ -85,7 +85,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             {
                 DateBeginning = DateBeginning,
                 PriceModel = PriceModel,
-                PriceSTL = PriceStl
+                PriceStl = PriceStl
             };
         }
 

@@ -225,7 +225,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public PricePositionDto GetPricePosition()
         {
-            var currentPrice = Prices.Where(x => x.PriceKind == PriceKind.Current).First().ToDto();
             return new PricePositionDto
             {
                 Name = Name,
@@ -235,12 +234,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 MaterialId = SelectedMaterial.Id,
                 Products = ProsthteticTypes.Where(x => x.IsChecked).Select(x => new ProductDto
                 {
-                    PriceGroupId = SelectedPriceGroup.PriceGroupId,
+                    ProstheticTypeName = x.Item.Name,
                     ProstheticTypeId = x.Item.Id,
                     MaterialId = SelectedMaterial.Id,
-                    UserCode = UserCode,
-                    PriceModel = currentPrice.PriceModel,
-                    PriceStl = currentPrice.PriceSTL
                 }).ToArray(),
                 Prices = Prices.Select(x => x.ToDto()).ToArray()
             };

@@ -28,7 +28,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public decimal PriceStl
         {
-            get { return _priceDto.PriceSTL; }
+            get { return _priceDto.PriceStl; }
         }
 
         public decimal PriceModel

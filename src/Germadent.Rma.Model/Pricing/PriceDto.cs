@@ -12,7 +12,7 @@ namespace Germadent.Rma.Model.Pricing
 
         public DateTime DateBeginning { get; set; }
 
-        public decimal PriceSTL { get; set; }
+        public decimal PriceStl { get; set; }
 
         public decimal PriceModel { get; set; }
     }

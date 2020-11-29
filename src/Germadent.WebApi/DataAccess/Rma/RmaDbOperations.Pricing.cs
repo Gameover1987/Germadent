@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.WebApi.Entities;
+using Newtonsoft.Json;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -80,6 +82,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
         {
+            var jsonStringProduct = pricePositionDto.Products.SerializeToJson(Formatting.Indented);
+            var jsonStringPrices = pricePositionDto.Prices.SerializeToJson(Formatting.Indented);
+
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -90,20 +95,12 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
                     command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
                     command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+                    command.Parameters.Add(new SqlParameter("@jsonStringProduct", SqlDbType.NVarChar)).Value = jsonStringProduct;
+                    command.Parameters.Add(new SqlParameter("@jsonStringPrices", SqlDbType.NVarChar)).Value = jsonStringPrices;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-
                     command.ExecuteNonQuery();
 
                     pricePositionDto.PricePositionId = command.Parameters["@pricePositionId"].Value.ToInt();
-
-                    var price = new PriceDto
-                    {
-                        PricePositionId = pricePositionDto.PricePositionId,
-                        //PriceModel = pricePositionDto.PriceModel,
-                        //PriceSTL = pricePositionDto.PriceStl
-                    };
-
-                    AddPrice(price, connection);
 
                     return pricePositionDto;
                 }
@@ -195,7 +192,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            var cmdText = string.Format("select distinct PricePositionID,PriceGroupID, PricePositionCode, PricePositionName, MaterialID, DateBeginning, PriceSTL, PriceModel from GetPriceListForBranch({0})", (int)branchType);
+            var selectPricesCmd = "select * from Prices";
+            var prostheticTypesByPricePositionsCmd = "select * from GetProductSetsForPricePositions()";
+            var cmdText = string.Format("select distinct PricePositionID, PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0}) \r\n{1} \r\n{2}", (int)branchType, selectPricesCmd, prostheticTypesByPricePositionsCmd);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -203,6 +202,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 {
                     var reader = command.ExecuteReader();
                     var pricePositionCollection = new List<PricePositionDto>();
+
+                    // Get price positions
                     while (reader.Read())
                     {
                         var pricePositionEntity = new PricePositionEntity();
@@ -215,8 +216,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         pricePositionEntity.PriceGroupId = reader[nameof(pricePositionEntity.PriceGroupId)].ToInt();
                         pricePositionEntity.PricePositionCode = reader[nameof(pricePositionEntity.PricePositionCode)].ToString();
                         pricePositionEntity.PricePositionName = reader[nameof(pricePositionEntity.PricePositionName)].ToString();
-                        pricePositionEntity.PriceStl = reader[nameof(pricePositionEntity.PriceStl)].ToDecimal();
-                        pricePositionEntity.PriceModel = reader[nameof(pricePositionEntity.PriceModel)].ToDecimal();
+
                         var materialId = reader[nameof(pricePositionEntity.MaterialId)];
                         if (materialId != DBNull.Value)
                             pricePositionEntity.MaterialId = materialId.ToInt();
@@ -225,7 +225,42 @@ namespace Germadent.WebApi.DataAccess.Rma
                         pricePositionDto.BranchType = branchType;
                         pricePositionCollection.Add(pricePositionDto);
                     }
+
+                    // Get prices
+                    reader.NextResult();
+
+                    var allPrices = new List<PriceDto>();
+                    while (reader.Read())
+                    {
+                        var priceEntity = new PriceEntity();
+                        priceEntity.PricePositionId = reader[nameof(PriceEntity.PricePositionId)].ToInt();
+                        priceEntity.DateBeginning = reader[nameof(PriceEntity.DateBeginning)].ToDateTime();
+                        priceEntity.PriceSTL = reader[nameof(PriceEntity.PriceSTL)].ToDecimal();
+                        priceEntity.PriceModel = reader[nameof(PriceEntity.PriceModel)].ToDecimal();
+                        allPrices.Add(_converter.ConvertToPrice(priceEntity));
+                    }
+
+                    // Get products
+                    reader.NextResult();
+
+                    var allProducts = new List<ProductDto>();
+                    while (reader.Read())
+                    {
+                        var productEntity = new ProductEntity();
+                        productEntity.PricePositionId = reader[nameof(ProductEntity.PricePositionId)].ToInt();
+                        productEntity.ProstheticsName = reader[nameof(ProductEntity.ProstheticsName)].ToString();
+                        productEntity.ProductId = reader[nameof(ProductEntity.ProductId)].ToInt();
+                        allProducts.Add(_converter.ConvertToProduct(productEntity));
+                    }
+
                     reader.Close();
+
+                    // Проставляем цены и наборы изделий для каждой ценовой позиции
+                    foreach (var pricePositionDto in pricePositionCollection)
+                    {
+                        pricePositionDto.Prices = allPrices.Where(x => x.PricePositionId == pricePositionDto.PricePositionId).ToArray();
+                        pricePositionDto.Products = allProducts.Where(x => x.PricePositionId == pricePositionDto.PricePositionId).ToArray();
+                    }
 
                     return pricePositionCollection.ToArray();
                 }
@@ -291,7 +326,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = (int)price.PricePositionId;
                 command.Parameters.Add(new SqlParameter("@dateBeginning", SqlDbType.Date)).Value = price.DateBeginning.GetValueOrDbNull();
-                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceStl;
                 command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
 
                 command.ExecuteNonQuery();
@@ -305,7 +340,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = price.PricePositionId;
                 command.Parameters.Add(new SqlParameter("@dateBeginningCurrent", SqlDbType.Date)).Value = price.DateBeginning.GetValueOrDbNull();
-                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceSTL;
+                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceStl;
                 command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
                 //command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
 

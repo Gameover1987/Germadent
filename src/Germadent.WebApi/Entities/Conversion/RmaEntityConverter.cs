@@ -207,7 +207,7 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 PricePositionId = entity.PricePositionId,
                 DateBeginning = entity.DateBeginning,
-                PriceSTL = entity.PriceSTL,
+                PriceStl = entity.PriceSTL,
                 PriceModel = entity.PriceModel
             };
         }
@@ -216,9 +216,9 @@ namespace Germadent.WebApi.Entities.Conversion
         {
             return new ProductDto
             {
-                //ProductId = entity.ProductId,
-                //PricePositionId = entity.PricePositionId,
-                //Name = entity.ProstheticsName,
+                ProstheticTypeId = entity.ProductId,
+                PricePositionId = entity.PricePositionId,
+                ProstheticTypeName = entity.ProstheticsName
             };
         }
 
@@ -226,13 +226,9 @@ namespace Germadent.WebApi.Entities.Conversion
         {
             return new ProductDto
             {
-                PriceGroupId = entity.PriceGroupId,
                 PricePositionId = entity.PricePositionId,
-                UserCode = entity.PricePositionCode,
                 MaterialId = entity.MaterialId,
                 ProstheticTypeId = entity.ProductId,
-                PriceStl = entity.PriceSTL,
-                PriceModel = entity.PriceModel
             };
         }
 

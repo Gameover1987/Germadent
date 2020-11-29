@@ -22,7 +22,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             
         }
 
-        private void SignalRClientOnPricePositionRepositoryChanged(object? sender, RepositoryChangedEventArgs<PricePositionDto> e)
+        private void SignalRClientOnPricePositionRepositoryChanged(object sender, RepositoryChangedEventArgs<PricePositionDto> e)
         {
             ReLoad();
         }

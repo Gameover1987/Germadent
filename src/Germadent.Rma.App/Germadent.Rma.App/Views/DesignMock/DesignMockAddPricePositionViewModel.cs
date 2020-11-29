@@ -27,10 +27,10 @@ namespace Germadent.Rma.App.Views.DesignMock
                 ProstheticTypeId = 1,
                 Prices = new[]
                 {
-                    new PriceDto{DateBeginning = new DateTime(2020, 10,1), PriceModel = 10, PriceSTL = 22},
-                    new PriceDto{DateBeginning = new DateTime(2020, 11,1), PriceModel = 11, PriceSTL = 33},
-                    new PriceDto{DateBeginning = new DateTime(2020, 12,1), PriceModel = 12, PriceSTL = 44},
-                    new PriceDto{DateBeginning = new DateTime(2021, 1,1), PriceModel = 15, PriceSTL = 55},
+                    new PriceDto{DateBeginning = new DateTime(2020, 10,1), PriceModel = 10, PriceStl = 22},
+                    new PriceDto{DateBeginning = new DateTime(2020, 11,1), PriceModel = 11, PriceStl = 33},
+                    new PriceDto{DateBeginning = new DateTime(2020, 12,1), PriceModel = 12, PriceStl = 44},
+                    new PriceDto{DateBeginning = new DateTime(2021, 1,1), PriceModel = 15, PriceStl = 55},
                 }
             }, new []{"111","222"}, BranchType.Laboratory);
 

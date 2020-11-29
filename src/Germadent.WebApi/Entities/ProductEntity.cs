@@ -7,9 +7,9 @@ namespace Germadent.WebApi.Entities
 {
     public class ProductEntity
     {
-        public int PricePositionId { get; set; }
-
         public int ProductId { get; set; }
+
+        public int PricePositionId { get; set; }
 
         public string ProstheticsName { get; set; }
     }
