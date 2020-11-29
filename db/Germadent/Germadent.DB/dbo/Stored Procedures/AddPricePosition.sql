@@ -8,10 +8,7 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 	@pricePositionCode nvarchar(20),
 	@priceGroupId int,
 	@pricePositionName nvarchar(MAX),
-	@materialId int,
-	--@dateBeginning date = NULL,
-	--@priceSTL money,
-	--@priceModel money,
+	@materialId int,	
 	@jsonStringProduct nvarchar(MAX),
 	@jsonStringPrices nvarchar(MAX),
 	@pricePositionId int output

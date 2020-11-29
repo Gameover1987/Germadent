@@ -1,5 +1,5 @@
 ﻿-- =============================================
--- Author:		Name
+-- Author:		Алексей Колосенок
 -- Create date: 03.11.2020
 -- Description:	Добавление или изменение набора изделий для ценовой позиции
 -- =============================================
@@ -13,7 +13,19 @@ BEGIN
 	
 	SET NOCOUNT ON
 	SET XACT_ABORT ON;
-	
+	/*
+	declare 
+		@pricePositionId int,
+		@jsonStringProduct nvarchar(max)
+
+		set @pricePositionId = 137
+		set @jsonStringProduct = 
+		'[
+		 {"PricePositionId": null, "ProductId": 2},
+		 {"PricePositionId": null, "ProductId": 14},
+		 {"PricePositionId": null, "ProductId": 18}
+		]';
+	*/
 	BEGIN TRAN
 		-- Чистим набор от старого содержимого
 		DELETE
@@ -23,9 +35,9 @@ BEGIN
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO ProductSet
 		(PricePositionID, ProductID)
-		SELECT PricePositionID = @pricePositionId, ProductID
+		SELECT PricePositionID = @pricePositionId, ProstheticTypeId
 		FROM OPENJSON (@jsonStringProduct)
-		WITH (ProductId int)
+		WITH (ProstheticTypeId int)
 
 	COMMIT
 
