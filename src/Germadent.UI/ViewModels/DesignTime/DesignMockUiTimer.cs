@@ -10,7 +10,6 @@ namespace Germadent.UI.ViewModels.DesignTime
         public event EventHandler<EventArgs> Tick;
         public void Initialize(TimeSpan interval)
         {
-            throw new NotImplementedException();
         }
 
         public void Start()

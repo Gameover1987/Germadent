@@ -1,0 +1,41 @@
+﻿<Application x:Class="Germadent.DataGenerator.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Germadent.DataGenerator.App"
+             ShutdownMode="OnExplicitShutdown"
+             Startup="App_OnStartup"
+             Exit="App_OnExit">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ButtonDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DataGridDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ScrollBarDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/ListBoxDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TextBoxDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TextBlockDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/DatePickerDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/TabControlDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Germadent.UI;component/Theme/Converters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StlnButtonStyle}"/>
+            <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StlnRadioButtonStyle}"/>
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource StlnCheckBoxStyle}"/>
+            <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource StlnDataGridStyle}"/>
+            <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource StlnListBoxStyle}"/>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
+            <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource StlnPasswordBoxStyle}"/>
+            <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource StlnDatePickerStyle}"/>
+            <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource stlnTabControlStyle}"/>
+            <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource MainTabItemStyle}"/>
+            <Style TargetType="{x:Type TextBlock}">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.6"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
