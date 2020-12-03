@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[PricePositions] (
     [PricePositionID]   INT            IDENTITY (1, 1) NOT NULL,
-    [PriceGroupID]      INT            NULL,
+    [PriceGroupID]      INT            NOT NULL,
     [PricePositionCode] NVARCHAR (50)  NOT NULL,
     [PricePositionName] NVARCHAR (MAX) NOT NULL,
     [MaterialID]        INT            NULL,
@@ -8,6 +8,8 @@
     CONSTRAINT [FK_PricePositions_Materials] FOREIGN KEY ([MaterialID]) REFERENCES [dbo].[Materials] ([MaterialID]),
     CONSTRAINT [FK_PricePositions_PriceGroups] FOREIGN KEY ([PriceGroupID]) REFERENCES [dbo].[PriceGroups] ([PriceGroupID])
 );
+
+
 
 
 

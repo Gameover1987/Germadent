@@ -35,9 +35,9 @@ BEGIN
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO ProductSet
 		(PricePositionID, ProductID)
-		SELECT PricePositionID = @pricePositionId, ProstheticTypeId
+		SELECT PricePositionID = @pricePositionId, ProductId
 		FROM OPENJSON (@jsonStringProduct)
-		WITH (ProstheticTypeId int)
+		WITH (ProductId int)
 
 	COMMIT
 

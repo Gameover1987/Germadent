@@ -1,10 +1,10 @@
 ﻿CREATE VIEW dbo.ToothCard_View
 AS
-SELECT   tc.WorkOrderID, tc.ToothNumber, wo.DocNumber, tc.MaterialID AS Expr1, dbo.PricePositions.PricePositionCode, dbo.TypesOfProsthetics.ProstheticsName
+SELECT   tc.WorkOrderID, tc.ToothNumber, wo.DocNumber, tc.MaterialID AS Expr1, dbo.PricePositions.PricePositionCode, p.ProductName
 FROM      dbo.ToothCard AS tc INNER JOIN
                 dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
                 dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID INNER JOIN
-                dbo.TypesOfProsthetics ON tc.ProstheticsID = dbo.TypesOfProsthetics.ProstheticsID INNER JOIN
+                dbo.Products AS p ON tc.ProductID = p.ProductID INNER JOIN
                 dbo.PricePositions ON tc.PricePositionID = dbo.PricePositions.PricePositionID AND m.MaterialID = dbo.PricePositions.MaterialID
 WHERE   (m.FlagUnused IS NULL) OR
                 (m.FlagUnused <> 1)
@@ -90,7 +90,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 9
                Left = 289
-               Bottom = 217
+               Bottom = 313
                Right = 470
             End
             DisplayFlags = 280
@@ -98,10 +98,10 @@ Begin DesignProperties =
          End
          Begin Table = "m"
             Begin Extent = 
-               Top = 105
-               Left = 602
-               Bottom = 242
-               Right = 783
+               Top = 81
+               Left = 732
+               Bottom = 218
+               Right = 913
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -110,28 +110,28 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 8
                Left = 4
-               Bottom = 360
+               Bottom = 373
                Right = 203
             End
             DisplayFlags = 280
-            TopColumn = 1
+            TopColumn = 6
          End
-         Begin Table = "PricePositions"
+         Begin Table = "p"
             Begin Extent = 
-               Top = 0
-               Left = 841
-               Bottom = 168
-               Right = 1040
+               Top = 183
+               Left = 518
+               Bottom = 338
+               Right = 699
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "TypesOfProsthetics"
+         Begin Table = "PricePositions"
             Begin Extent = 
-               Top = 168
-               Left = 823
-               Bottom = 271
-               Right = 1011
+               Top = 0
+               Left = 990
+               Bottom = 168
+               Right = 1189
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -143,22 +143,28 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+      End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 2338
          Alias = 898
          Table = 1540
-         Output = 727
-         Append = 1400
-         NewValue = 1170
-         SortType = 1354
-         SortOrder = 1411
-         GroupBy = 1350
-         Filter = 1354
-         Or = 1350
-         Or = 1350
-         Or = 1', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+  ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
+
+
 
 
 
@@ -172,11 +178,22 @@ Begin DesignProperties =
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'350
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'       Output = 727
+         Append = 1400
+         NewValue = 1170
+         SortType = 1354
+         SortOrder = 1411
+         GroupBy = 1350
+         Filter = 1354
+         Or = 1350
+         Or = 1350
+         Or = 1350
       End
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 
 
 

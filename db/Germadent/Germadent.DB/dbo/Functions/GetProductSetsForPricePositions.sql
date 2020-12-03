@@ -11,7 +11,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT ps.*, p.ProstheticsName
+	SELECT ps.*, p.ProductName
 	FROM ProductSet ps
-	INNER JOIN TypesOfProsthetics p ON ps.ProductID = P.ProstheticsID
+	INNER JOIN Products p ON ps.ProductID = p.ProductID
 )
