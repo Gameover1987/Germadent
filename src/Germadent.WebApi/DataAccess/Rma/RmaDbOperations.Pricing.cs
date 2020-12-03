@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
@@ -13,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
-    public partial class RmaDbOperations : IRmaDbOperations
+    public partial class RmaDbOperations
     {
         public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
         {

@@ -166,7 +166,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanAddPriceGroupCommandHandler()
         {
-            return CanEditPriceList;
+            return CanEditPriceList && !IsBusy;
         }
 
         private async void AddPriceGroupCommandHandler()
@@ -200,17 +200,28 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanEditPriceGroupCommandHandler()
         {
-            return CanEditPriceList && SelectedGroup != null;
+            return CanEditPriceList && SelectedGroup != null && !IsBusy;
         }
 
-        private void EditPriceGroupCommandHandler()
+        private async void EditPriceGroupCommandHandler()
         {
             var priceGroupName = _dialogAgent.ShowInputBox("Изменение названия ценовой группы", "Ценовая группа", SelectedGroup.DisplayName);
             if (priceGroupName == null)
                 return;
 
             SelectedGroup.DisplayName = priceGroupName;
-            _serviceClient.UpdatePriceGroup(SelectedGroup.ToDto());
+            BusyReason = "Обновление ценовой группы";
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    _serviceClient.UpdatePriceGroup(SelectedGroup.ToDto());
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
         }
 
         private bool CanDeletePriceGroupCommandHandler()
@@ -228,45 +239,82 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             return true;
         }
 
-        private void DeletePriceGroupCommandHandler()
+        private async void DeletePriceGroupCommandHandler()
         {
             var message = "Вы действительно хотите удалить ценовую группу?";
             if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            _serviceClient.DeletePriceGroup(SelectedGroup.PriceGroupId);
+            try
+            {
+                BusyReason = "Удаление ценовой группы";
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    _serviceClient.DeletePriceGroup(SelectedGroup.PriceGroupId);
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
 
             Groups.Remove(SelectedGroup);
         }
 
         private bool CanAddPricePositionCommandHandler()
         {
-            return CanEditPriceList && SelectedGroup != null;
+            return CanEditPriceList && SelectedGroup != null && !IsBusy;
         }
-        private void AddPricePositionCommandHandler()
+        private async void AddPricePositionCommandHandler()
         {
             var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
             _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto { PriceGroupId = SelectedGroup.PriceGroupId }, allUserCodes, BranchType);
             if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
                 return;
 
-            var pricePositionDto = _serviceClient.AddPricePosition(_addPricePositionViewModel.GetPricePosition());
+            BusyReason = "Добавление ценовой группы";
+            PricePositionDto pricePositionDto = null;
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    pricePositionDto = _serviceClient.AddPricePosition(_addPricePositionViewModel.GetPricePosition());
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
+
             Positions.Add(new PricePositionViewModel(pricePositionDto));
         }
 
         private bool CanEditPricePositionCommandHandler()
         {
-            return CanEditPriceList && SelectedPosition != null && SelectedGroup != null;
+            return CanEditPriceList && SelectedPosition != null && SelectedGroup != null && !IsBusy;
         }
 
-        private void EditPricePositionCommandHandler()
+        private async void EditPricePositionCommandHandler()
         {
             var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
             _addPricePositionViewModel.Initialize(CardViewMode.Edit, SelectedPosition.ToDto(), allUserCodes, BranchType);
             if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
                 return;
 
-            var pricePositionDto = _serviceClient.UpdatePricePosition(_addPricePositionViewModel.GetPricePosition());
+            BusyReason = "Обновление ценовой позиции";
+            PricePositionDto pricePositionDto = null;
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    pricePositionDto = _serviceClient.UpdatePricePosition(_addPricePositionViewModel.GetPricePosition());
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
+
             SelectedPosition.Update(pricePositionDto);
         }
 
@@ -275,13 +323,24 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             return CanEditPriceList && SelectedPosition != null;
         }
 
-        private void DeletePricePositionCommandHandler()
+        private async void DeletePricePositionCommandHandler()
         {
             var message = "Вы действительно хотите удалить ценовую позицию?";
             if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            _serviceClient.DeletePricePosition(SelectedPosition.PricePositionId);
+            BusyReason = "Удаление ценовой позиции";
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    _serviceClient.DeletePricePosition(SelectedPosition.PricePositionId);
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
 
             Positions.Remove(SelectedPosition);
         }

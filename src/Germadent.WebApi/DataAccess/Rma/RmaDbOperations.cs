@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using Germadent.Common.Extensions;
-using Germadent.Common.FileSystem;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.WebApi.Configuration;
@@ -293,7 +291,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
                         toothEntity.ConditionId = reader[nameof(toothEntity.ConditionId)].ToInt();
                         toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
-                        toothEntity.ProstheticsId = reader[nameof(toothEntity.ProstheticsId)].ToInt();
+                        toothEntity.ProductId = reader[nameof(toothEntity.ProductId)].ToInt();
                         toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
                         toothEntity.Price = reader[nameof(toothEntity.Price)].ToDecimal();
                         toothEntity.HasBridge = reader[nameof(toothEntity.HasBridge)].ToBool();
@@ -471,7 +469,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public DictionaryItemDto[] GetProstheticTypes()
         {
-            var cmdText = "select * from GetTypesOfProsthetics()";
+            var cmdText = "select * from GetProducts()";
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -484,7 +482,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     while (reader.Read())
                     {
                         var prostheticTypeEntity = new DictionaryItemEntity();
-                        prostheticTypeEntity.Id = int.Parse(reader["ProstheticsId"].ToString());
+                        prostheticTypeEntity.Id = int.Parse(reader["ProductId"].ToString());
                         prostheticTypeEntity.Name = reader["ProstheticsName"].ToString().Trim();
                         prostheticTypeEntity.DictionaryName = DictionaryType.ProstheticType.GetDescription();
                         prostheticTypeEntity.DictionaryType = DictionaryType.ProstheticType;
