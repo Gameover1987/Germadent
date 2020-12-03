@@ -32,16 +32,20 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrder]
 AS
 BEGIN
 
+	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
-	BEGIN
+	BEGIN TRAN
 		DECLARE @max_Id int
 		SELECT @max_Id = ISNULL(MAX(WorkOrderID), 0)
 		FROM WorkOrder
 
 		EXEC IdentifierAlignment WorkOrder, @max_Id
 		REVERT		
-	END
+	COMMIT
+
+
+	BEGIN TRAN
 
 	-- Генерируем номер документа, для каждого типа филиала свой:	
 	IF @branchTypeID = 1 BEGIN
@@ -75,7 +79,7 @@ BEGIN
 		VALUES
 			(@workOrderID, @transparenceID, @colorAndFeatures)
 	END
-
+	COMMIT
 END
 GO
 GRANT EXECUTE
