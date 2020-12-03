@@ -33,8 +33,8 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         MaterialId = 1,
                         MaterialName = "ZrO",
-                        ProstheticsId = 1,
-                        ProstheticsName = "Каркас",
+                        ProductId = 1,
+                        ProductName = "Каркас",
                         ToothNumber = 11
                     },
                     new ToothDto
@@ -42,8 +42,8 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         MaterialId = 2,
                         MaterialName = "PMMA mono",
-                        ProstheticsId = 3,
-                        ProstheticsName = "Абатмент",
+                        ProductId = 3,
+                        ProductName = "Абатмент",
                         ToothNumber = 12
                     },
                 }
@@ -65,8 +65,8 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         MaterialId = 1,
                         MaterialName = "ZrO",
-                        ProstheticsId = 1,
-                        ProstheticsName = "Каркас",
+                        ProductId = 1,
+                        ProductName = "Каркас",
                         ToothNumber = 11
                     },
                     new ToothDto
@@ -74,8 +74,8 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         MaterialId = 2,
                         MaterialName = "PMMA mono",
-                        ProstheticsId = 3,
-                        ProstheticsName = "Абатмент",
+                        ProductId = 3,
+                        ProductName = "Абатмент",
                         ToothNumber = 12
                     },
                 }

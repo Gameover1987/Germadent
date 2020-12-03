@@ -20,8 +20,8 @@ namespace Germadent.Rma.Model
             if (tooth.ConditionName != null)
                 descriptionBuilder.Append(string.Format("{0}/", tooth.ConditionName));
 
-            if (tooth.ProstheticsName != null)
-                descriptionBuilder.Append(string.Format("{0}/", tooth.ProstheticsName));
+            if (tooth.ProductName != null)
+                descriptionBuilder.Append(string.Format("{0}/", tooth.ProductName));
 
             if (tooth.MaterialName != null)
                 descriptionBuilder.Append(string.Format("{0}/", tooth.MaterialName));

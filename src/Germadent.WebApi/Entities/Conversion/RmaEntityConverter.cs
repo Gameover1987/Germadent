@@ -69,8 +69,8 @@ namespace Germadent.WebApi.Entities.Conversion
                 toothDto.HasBridge = prototype.HasBridge;
                 toothDto.MaterialId = prototype.MaterialId;
                 toothDto.MaterialName = prototype.MaterialName;
-                toothDto.ProstheticsId = prototype.ProductId;
-                toothDto.ProstheticsName = prototype.ProstheticsName;
+                toothDto.ProductId = prototype.ProductId;
+                toothDto.ProductName = prototype.ProductName;
                 toothDto.ConditionId = prototype.ConditionId;
                 toothDto.ConditionName = prototype.ConditionName;
 
@@ -229,8 +229,8 @@ namespace Germadent.WebApi.Entities.Conversion
                     PricePositionId = pricePosition.PricePositionId,
                     ConditionId = toothDto.ConditionId,
                     MaterialId = pricePosition.MaterialId,
-                    ProductId = toothDto.ProstheticsId,
-                    ProstheticsName = toothDto.ProstheticsName,
+                    ProductId = toothDto.ProductId,
+                    ProductName = toothDto.ProductName,
                     ToothNumber = toothDto.ToothNumber
                 };
                 entities.Add(entity);

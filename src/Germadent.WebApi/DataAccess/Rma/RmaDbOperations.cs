@@ -292,7 +292,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         toothEntity.ConditionId = reader[nameof(toothEntity.ConditionId)].ToInt();
                         toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
                         toothEntity.ProductId = reader[nameof(toothEntity.ProductId)].ToInt();
-                        toothEntity.ProstheticsName = reader[nameof(toothEntity.ProstheticsName)].ToString();
+                        toothEntity.ProductName = reader[nameof(toothEntity.ProductName)].ToString();
                         toothEntity.Price = reader[nameof(toothEntity.Price)].ToDecimal();
                         toothEntity.HasBridge = reader[nameof(toothEntity.HasBridge)].ToBool();
                         toothEntity.PricePositionId = reader[nameof(toothEntity.PricePositionId)].ToInt();
@@ -532,7 +532,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             var toothCard = GetToothCard(id);
 
             var prosteticsCollection = toothCard
-                .GroupBy(x => x.ProstheticsName)
+                .GroupBy(x => x.ProductName)
                 .Select(x => new { quantity = x.Count(), pName = x.Key })
                 .ToArray();
 

@@ -13,9 +13,9 @@ namespace Germadent.Rma.Model
 
         public string ConditionName { get; set; }
 
-        public int ProstheticsId { get; set; }
+        public int ProductId { get; set; }
 
-        public string ProstheticsName { get; set; }
+        public string ProductName { get; set; }
 
         public int? MaterialId { get; set; }
 
@@ -30,8 +30,8 @@ namespace Germadent.Rma.Model
         public override string ToString()
         {
             return string.Format(
-                "WorkOrderId={0}, TootoNumber={1}, MaterialId={2}, MaterialName={3}, ProstheticsId={4}, ProstheticsName={5}, Price{6}, HasBridge={7}",
-                WorkOrderId, ToothNumber, MaterialId, MaterialName, ProstheticsId, ProstheticsName, Price, HasBridge);
+                "WorkOrderId={0}, TootoNumber={1}, MaterialId={2}, MaterialName={3}, ProductId={4}, ProductName={5}, Price{6}, HasBridge={7}",
+                WorkOrderId, ToothNumber, MaterialId, MaterialName, ProductId, ProductName, Price, HasBridge);
         }
     }
 }

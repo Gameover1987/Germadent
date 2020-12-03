@@ -22,7 +22,7 @@
 
         public int? MaterialId { get; set; }
 
-        public string ProstheticsName { get; set; }
+        public string ProductName { get; set; }
 
         public int ProductId { get; set; }
 
