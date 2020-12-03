@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Germadent.Common;
-using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
@@ -14,13 +13,11 @@ namespace Germadent.Rma.App.ServiceClient
     public class RmaServiceClient : ServiceClientBase, IRmaServiceClient
     {
         private readonly IConfiguration _configuration;
-        private readonly IFileManager _fileManager;
         private readonly ISignalRClient _signalRClient;
 
-        public RmaServiceClient(IConfiguration configuration, IFileManager fileManager, ISignalRClient signalRClient)
+        public RmaServiceClient(IConfiguration configuration, ISignalRClient signalRClient)
         {
             _configuration = configuration;
-            _fileManager = fileManager;
             _signalRClient = signalRClient;
         }
 
@@ -138,18 +135,21 @@ namespace Germadent.Rma.App.ServiceClient
 
         public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
         {
+            //Thread.Sleep(3000);
             var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
             return addedPriceGroup;
         }
 
         public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
         {
+           // Thread.Sleep(3000);
             var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
             return updatedPriceGroup;
         }
 
         public DeleteResult DeletePriceGroup(int priceGroupId)
         {
+           // Thread.Sleep(3000);
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
         }
 
@@ -160,22 +160,25 @@ namespace Germadent.Rma.App.ServiceClient
 
         public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
         {
+            //Thread.Sleep(3000);
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
         }
 
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
         {
+            //Thread.Sleep(3000);
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
         }
 
         public DeleteResult DeletePricePosition(int pricePositionId)
         {
+            //Thread.Sleep(3000);
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
         }
 
-        public ProductDto[] GetProductByBranch(BranchType branchType)
+        public ProductDto[] GetProducts()
         {
-            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts/" + (int)branchType);
+            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts");
         }
 
         protected override void HandleError(IRestResponse response)

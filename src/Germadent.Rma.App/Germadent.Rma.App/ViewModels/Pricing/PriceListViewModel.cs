@@ -15,21 +15,21 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private BranchType _branchType;
 
         private readonly IPriceGroupRepository _priceGroupRepository;
-        private readonly IPricePositionRepository _pricePositionRepository;
+        private readonly IProductRepository _productRepository;
 
         private PriceGroupViewModel _selectedGroup;
 
         private readonly ICollectionView _pricePositionsView;
 
-        public PriceListViewModel(IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository)
+        public PriceListViewModel(IPriceGroupRepository priceGroupRepository, IProductRepository productRepository)
         {
             _priceGroupRepository = priceGroupRepository;
-            _pricePositionRepository = pricePositionRepository;
+            _productRepository = productRepository;
 
             Groups = new ObservableCollection<PriceGroupViewModel>();
-            Positions = new ObservableCollection<PricePositionViewModel>();
+            Products = new ObservableCollection<ProductViewModel>();
 
-            _pricePositionsView = CollectionViewSource.GetDefaultView(Positions);
+            _pricePositionsView = CollectionViewSource.GetDefaultView(Products);
             _pricePositionsView.Filter = PricePositionFilter;
         }
 
@@ -58,7 +58,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public ObservableCollection<PricePositionViewModel> Positions { get; }
+        public ObservableCollection<ProductViewModel> Products { get; }
 
         public void Initialize(BranchType branchType)
         {
@@ -73,34 +73,34 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             SelectedGroup = Groups.FirstOrDefault();
 
-            Positions.ForEach(x => x.Checked -= PricePositionOnChecked);
-            Positions.Clear();
-            var positions = _pricePositionRepository.Items.Where(x => x.BranchType == _branchType).ToArray();
+            Products.ForEach(x => x.Checked -= PricePositionOnChecked);
+            Products.Clear();
+            var positions = _productRepository.Items.Where(x => x.BranchType == _branchType).ToArray();
             foreach (var pricePositionDto in positions)
             {
-                var pricePositionViewModel = new PricePositionViewModel(pricePositionDto);
+                var pricePositionViewModel = new ProductViewModel(pricePositionDto);
                 pricePositionViewModel.Checked += PricePositionOnChecked;
-                Positions.Add(pricePositionViewModel);
+                Products.Add(pricePositionViewModel);
             }
         }
 
         public void Setup(ToothDto toothDto)
         {
-            Positions.ForEach(x => x.SetIsChecked(false));
+            Products.ForEach(x => x.SetIsChecked(false));
             Groups.ForEach(x => x.HasChanges = false);
 
-            if (toothDto.PricePositions == null)
+            if (toothDto.Products == null)
                 return;
 
-            foreach (var pricePositionDto in toothDto.PricePositions)
+            foreach (var productDto in toothDto.Products)
             {
-                var positionViewModel = Positions.First(x => x.PricePositionId == pricePositionDto.PricePositionId);
-                positionViewModel.SetIsChecked(true);
+                var productViewModel = Products.First(x => x.PricePositionId == productDto.PricePositionId);
+                productViewModel.SetIsChecked(true);
             }
 
             var groupsWithChanges = Groups
                 .Where(group =>
-                    Positions
+                    Products
                         .Where(x => x.IsChecked)
                         .Select(x => x.PriceGroupId)
                         .Contains(group.PriceGroupId))
@@ -111,10 +111,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         public event EventHandler PricePositionsChecked;
         public event EventHandler ProductChecked;
 
-        private void PricePositionOnChecked(object sender, PricePositionCheckedEventArgs e)
+        private void PricePositionOnChecked(object sender, ProductCheckedEventArgs e)
         {
-            var group = Groups.First(x => x.PriceGroupId == e.PricePosition.PriceGroupId);
-            group.HasChanges = Positions.Where(x => x.PriceGroupId == group.PriceGroupId).Any(x => x.IsChecked);
+            var group = Groups.First(x => x.PriceGroupId == e.Product.PriceGroupId);
+            group.HasChanges = Products.Where(x => x.PriceGroupId == group.PriceGroupId).Any(x => x.IsChecked);
 
             PricePositionsChecked?.Invoke(this, e);
         }

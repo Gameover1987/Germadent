@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockPriceListViewModel : PriceListViewModel
     {
         public DesignMockPriceListViewModel()
-            : base(new DesignMockPriceGroupRepository(), new DesignMockPricePositionRepository())
+            : base(new DesignMockPriceGroupRepository(), new DesignMockProductRepository())
         {
             Initialize(BranchType.Laboratory);
 

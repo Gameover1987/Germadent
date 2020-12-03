@@ -5,14 +5,14 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
-    public class PricePositionCheckedEventArgs : EventArgs
+    public class ProductCheckedEventArgs : EventArgs
     {
-        public PricePositionCheckedEventArgs(PricePositionViewModel pricePosition)
+        public ProductCheckedEventArgs(ProductViewModel product)
         {
-            PricePosition = pricePosition;
+            Product = product;
         }
 
-        public PricePositionViewModel PricePosition { get; }
+        public ProductViewModel Product{ get; }
     }   
 
     public interface IPriceListViewModel
@@ -21,9 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         void Setup(ToothDto toothDto);
 
-        ObservableCollection<PricePositionViewModel> Positions { get; }
-
-        event EventHandler PricePositionsChecked;
+        ObservableCollection<ProductViewModel> Products { get; }
 
         event EventHandler ProductChecked;
     }

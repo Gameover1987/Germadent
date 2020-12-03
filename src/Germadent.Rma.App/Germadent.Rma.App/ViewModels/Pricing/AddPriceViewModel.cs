@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
+using Germadent.UI.ViewModels.Validation;
 using NLog.LayoutRenderers.Wrappers;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
@@ -16,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         PriceDto GetPrice();
     }
 
-    public class AddPriceViewModel : ViewModelBase, IAddPriceViewModel
+    public class AddPriceViewModel : ValidationSupportableViewModel, IAddPriceViewModel
     {
         private DateTime _dateBeginning;
         private decimal _priceStl;
@@ -24,7 +27,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public AddPriceViewModel()
         {
+            AddValidationFor(() => PriceStl)
+                .When(() => PriceStl <= 0, () => "Укажите цену отличную от нуля");
+            AddValidationFor(() => PriceModel)
+                .When(() => PriceModel <= 0, () => "Укажите цену отличную от нуля");
 
+            OkCommand = new DelegateCommand(CanOK);
         }
 
         public string Title
@@ -70,6 +78,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
+        public ICommand OkCommand { get; }
+
         public void Initialize(PriceDto price)
         {
             ViewMode = price.PriceId == 0 ? CardViewMode.Add : CardViewMode.Edit;
@@ -102,6 +112,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 default:
                     throw new NotImplementedException("Неизвестный режим представления");
             }
+        }
+
+        private bool CanOK()
+        {
+            return PriceModel > 0 && PriceStl > 0;
         }
     }
 }

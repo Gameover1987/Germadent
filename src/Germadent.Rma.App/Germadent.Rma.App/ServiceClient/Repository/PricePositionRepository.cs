@@ -54,10 +54,9 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         protected override ProductDto[] GetItems()
         {
-            var productsMc = _rmaServiceClient.GetProductByBranch(BranchType.MillingCenter).ToArray();
-            var productsLab = _rmaServiceClient.GetProductByBranch(BranchType.Laboratory).ToArray();
+            var products = _rmaServiceClient.GetProducts().ToArray();
 
-            return productsMc.Concat(productsLab).ToArray();
+            return products;
         }
     }
 }

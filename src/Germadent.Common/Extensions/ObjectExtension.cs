@@ -25,6 +25,14 @@ namespace Germadent.Common.Extensions
             return decimal.Parse(obj.ToString());
         }
 
+        public static decimal? ToDecimalOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToDecimal();
+        }
+
         public static DateTime ToDateTime(this object obj)
         {
             return DateTime.Parse(obj.ToString());

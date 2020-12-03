@@ -209,17 +209,15 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             _clipboard.CopyToClipboard(Description);
         }
 
-        public void AttachPricePositions(PricePositionViewModel[] pricePositions)
+        public void AttachPricePositions(ProductViewModel[] products)
         {
             if (SelectedTeeth == null || !SelectedTeeth.Any())
                 return;
 
             foreach (var toothViewModel in SelectedTeeth)
             {
-                toothViewModel.AttachPricePositions(pricePositions);
+                toothViewModel.AttachPricePositions(products);
             }
-
-            //SelectedTeeth.Last().AttachPricePositions(pricePositions);
         }
     }
 }

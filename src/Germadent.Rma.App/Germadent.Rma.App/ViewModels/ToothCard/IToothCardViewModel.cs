@@ -83,6 +83,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         /// <summary>
         /// Связывает прайс с выбранными зубами
         /// </summary>
-        void AttachPricePositions(PricePositionViewModel[] pricePositions);
+        void AttachPricePositions(ProductViewModel[] products);
     }
 }

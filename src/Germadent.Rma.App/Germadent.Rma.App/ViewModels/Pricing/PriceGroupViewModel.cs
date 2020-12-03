@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model.Pricing;
+﻿using System;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
@@ -11,7 +12,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public PriceGroupViewModel(PriceGroupDto priceGroupDto)
         {
-            _priceGroupDto = priceGroupDto;
+            _priceGroupDto = priceGroupDto ?? throw new ArgumentNullException(nameof(priceGroupDto));
         }
 
         public int PriceGroupId => _priceGroupDto.PriceGroupId;

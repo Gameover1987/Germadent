@@ -7,6 +7,7 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
              xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
@@ -108,6 +109,18 @@
                                    Binding="{Binding PriceModel}"/>
            </DataGrid.Columns>
         </DataGrid>
+
+        <Border Grid.Column="0" Grid.Row="0" Background="LightGray" Opacity="0.6"
+                Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+                Grid.ColumnSpan="2" Grid.RowSpan="2">
+        </Border>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Orientation="Vertical" VerticalAlignment="Center"
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
+            <controls:BusyIndicator Width="32" Height="32" Fill="Gray" IsBusy="{Binding IsBusy}"/>
+            <TextBlock Text="{Binding BusyReason}" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+        </StackPanel>
+
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="12,6,0,0">
             <Button Content="Добавить" Width="100"

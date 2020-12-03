@@ -30,7 +30,5 @@ namespace Germadent.WebApi.Entities.Conversion
         ProductDto ConvertToProduct(ProductEntity entity);
 
         ToothEntity[] ConvertFromToothDto(ToothDto toothDto);
-
-        ProductDto ConvertToProductSetForPriceGroup(ProductSetForPriceGroupEntity entity);
     }
 }

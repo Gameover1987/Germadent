@@ -74,21 +74,6 @@ namespace Germadent.WebApi.Entities.Conversion
                 toothDto.ConditionId = prototype.ConditionId;
                 toothDto.ConditionName = prototype.ConditionName;
 
-                var pricePositions = new List<PricePositionDto>();
-                foreach (var toothEntity in grouping)
-                {
-                    pricePositions.Add(new PricePositionDto
-                    {
-                        PricePositionId = toothEntity.PricePositionId,
-                        PriceGroupId = toothEntity.PriceGroupId,
-                        MaterialId = toothEntity.MaterialId,
-                        UserCode = toothEntity.PricePositionCode,
-                        Name = toothEntity.PricePositionName
-                    });
-                }
-
-                toothDto.PricePositions = pricePositions.ToArray();
-
                 toothCollection.Add(toothDto);
             }
 
@@ -216,26 +201,23 @@ namespace Germadent.WebApi.Entities.Conversion
         {
             return new ProductDto
             {
-                ProstheticTypeId = entity.ProductId,
+                ProductId = entity.ProductId,
                 PricePositionId = entity.PricePositionId,
-                ProstheticTypeName = entity.ProstheticsName
-            };
-        }
-
-        public ProductDto ConvertToProductSetForPriceGroup(ProductSetForPriceGroupEntity entity)
-        {
-            return new ProductDto
-            {
-                PricePositionId = entity.PricePositionId,
+                BranchType = entity.BranchTypeId,
                 MaterialId = entity.MaterialId,
-                ProstheticTypeId = entity.ProductId,
+                PriceModel = entity.PriceModel,
+                PriceStl = entity.PriceStl ?? 0,
+                MaterialName = entity.MaterialName,
+                PriceGroupId = entity.PriceGroupId,
+                ProductName = entity.ProductName,
+                PricePositionCode = entity.PricePositionCode
             };
         }
 
         public ToothEntity[] ConvertFromToothDto(ToothDto toothDto)
         {
             var entities = new List<ToothEntity>();
-            foreach (var pricePosition in toothDto.PricePositions)
+            foreach (var pricePosition in toothDto.Products)
             {
                 var entity = new ToothEntity
                 {

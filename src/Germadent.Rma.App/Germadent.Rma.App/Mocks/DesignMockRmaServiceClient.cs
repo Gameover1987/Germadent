@@ -491,7 +491,7 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public ProductDto[] GetProductByBranch(BranchType branchType)
+        public ProductDto[] GetProducts()
         {
             throw new NotImplementedException();
         }

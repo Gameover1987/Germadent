@@ -54,7 +54,7 @@
 
             <TextBlock  Grid.Row="0" Text="Ценовые позиции" Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Margin="0,6,0,0"
-                     ItemsSource="{Binding Positions}"
+                     ItemsSource="{Binding Products}"
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PricePositionViewModel}">

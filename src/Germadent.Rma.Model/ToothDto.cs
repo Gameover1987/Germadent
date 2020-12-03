@@ -25,7 +25,7 @@ namespace Germadent.Rma.Model
 
         public bool HasBridge { get; set; }
 
-        public PricePositionDto[] PricePositions { get; set; }
+        public ProductDto[] Products { get; set; }
 
         public override string ToString()
         {

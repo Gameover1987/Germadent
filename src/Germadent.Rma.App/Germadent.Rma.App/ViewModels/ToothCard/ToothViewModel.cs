@@ -5,7 +5,6 @@ using System.Text;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
@@ -14,7 +13,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
     {
         private bool _hasBridge;
         private bool _isChanged;
-        private PricePositionViewModel[] _pricePositions;
+        private ProductViewModel[] _products;
 
         public ToothViewModel(DictionaryItemDto[] prostheticConditions)
         {
@@ -76,7 +75,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (SelectedProstheticCondition == null)
                     return false;
 
-                if (_pricePositions.IsNullOrEmpty())
+                if (_products.IsNullOrEmpty())
                     return false;
 
                 return true;
@@ -100,7 +99,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (SelectedProstheticCondition == null)
                     descriptionBuilder.AppendLine("Выберите условие протезирования");
 
-                if (_pricePositions.IsNullOrEmpty())
+                if (_products.IsNullOrEmpty())
                     descriptionBuilder.AppendLine("Выберите ценовую позицию");
 
                 return descriptionBuilder.ToString();
@@ -111,11 +110,11 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public event EventHandler<ToothCleanUpEventArgs> ToothCleanup; 
 
-        public void AttachPricePositions(PricePositionViewModel[] pricePositions)
+        public void AttachPricePositions(ProductViewModel[] products)
         {
-            _pricePositions = pricePositions;
+            _products = products;
 
-            if (_pricePositions.Any())
+            if (_products.Any())
                 IsChanged = true;
         }
 
@@ -130,7 +129,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             _hasBridge = toothDto.HasBridge;
 
-            _pricePositions = toothDto.PricePositions.Select(x => new PricePositionViewModel(x) { IsChecked = true }).ToArray();
+            _products = toothDto.Products.Select(x => new ProductViewModel(x) { IsChecked = true }).ToArray();
 
             OnPropertyChanged();
         }
@@ -142,18 +141,18 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 ToothNumber = Number,
                 ConditionId = SelectedProstheticCondition?.Item.Id ?? 0,
                 ConditionName = SelectedProstheticCondition?.DisplayName,
-                PricePositions = _pricePositions?.Select(x => x.ToDto()).ToArray(),
+                Products = _products?.Select(x => x.ToDto()).ToArray(),
                 HasBridge = HasBridge
             };
         }
 
-        public bool CanClear => HasBridge || SelectedProstheticCondition != null || !_pricePositions.IsNullOrEmpty();
+        public bool CanClear => HasBridge || SelectedProstheticCondition != null || !_products.IsNullOrEmpty();
 
         public void Clear()
         {
             HasBridge = false;
             ProstheticConditions.ForEach(x => x.ResetIsChanged());
-            _pricePositions = null;
+            _products = null;
 
             IsChanged = false;
 
@@ -167,7 +166,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private bool GetIsChecked()
         {
-            return HasBridge || SelectedProstheticCondition != null || !_pricePositions.IsNullOrEmpty();
+            return HasBridge || SelectedProstheticCondition != null || !_products.IsNullOrEmpty();
         }
 
         private void ProstheticConditionViewModelOnChecked(object sender, EventArgs e)

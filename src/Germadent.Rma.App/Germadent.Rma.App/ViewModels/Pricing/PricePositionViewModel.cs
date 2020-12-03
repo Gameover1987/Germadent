@@ -8,8 +8,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
     {
         private PricePositionDto _pricePositionDto;
 
-        private bool _isChecked;
-
         public PricePositionViewModel(PricePositionDto pricePositionDto)
         {
             _pricePositionDto = pricePositionDto;
@@ -18,20 +16,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         public int PricePositionId => _pricePositionDto.PricePositionId;
 
         public int PriceGroupId => _pricePositionDto.PriceGroupId;
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-
-                Checked?.Invoke(this, new PricePositionCheckedEventArgs(this));
-            }
-        }
 
         public string UserCode
         {
@@ -43,15 +27,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             get { return _pricePositionDto.Name; }
         }
 
-        public event EventHandler<PricePositionCheckedEventArgs> Checked;
-
         public PricePositionDto ToDto() => _pricePositionDto;
-
-        public void SetIsChecked(bool isChecked)
-        {
-            _isChecked = isChecked;
-            OnPropertyChanged(() => IsChecked);
-        }
 
         public void Update(PricePositionDto pricePositionDto)
         {

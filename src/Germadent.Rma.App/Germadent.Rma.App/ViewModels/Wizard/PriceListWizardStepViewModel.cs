@@ -37,7 +37,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ToothCard.ToothCleanup += ToothCardOnToothCleanup;
 
             PriceList.Initialize(order.BranchType);
-            PriceList.PricePositionsChecked += PriceList_PricePositionChecked;
+            PriceList.ProductChecked += PriceList_ProductChecked;
         }
 
         private void ToothCardOnToothCleanup(object sender, ToothCleanUpEventArgs e)
@@ -50,9 +50,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             PriceList.Setup(e.SelectedTooth?.ToDto());
         }
 
-        private void PriceList_PricePositionChecked(object sender, EventArgs e)
+        private void PriceList_ProductChecked(object sender, EventArgs e)
         {
-            ToothCard.AttachPricePositions(PriceList.Positions.Where(x => x.IsChecked).ToArray());
+            ToothCard.AttachPricePositions(PriceList.Products.Where(x => x.IsChecked).ToArray());
         }
 
         public override void AssemblyOrder(OrderDto order)

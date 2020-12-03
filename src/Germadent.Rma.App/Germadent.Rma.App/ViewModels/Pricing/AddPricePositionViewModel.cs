@@ -198,7 +198,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
 
             ProsthteticTypes.Clear();
-            var prostheticIDs = pricePositionDto.Products.Select(x => x.ProstheticTypeId).ToArray();
+            var prostheticIDs = pricePositionDto.Products.Select(x => x.ProductId).ToArray();
             foreach (var dictionaryItemDto in _dictionaryRepository.Items.Where(x => x.Dictionary == DictionaryType.ProstheticType))
             {
                 var item = new CheckableDictionaryItemViewModel(dictionaryItemDto);
@@ -227,6 +227,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         {
             return new PricePositionDto
             {
+                PricePositionId = _pricePositionId,
                 Name = Name,
                 UserCode = UserCode,
                 BranchType = _branchType,
@@ -234,8 +235,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 MaterialId = SelectedMaterial.Id,
                 Products = ProsthteticTypes.Where(x => x.IsChecked).Select(x => new ProductDto
                 {
-                    ProstheticTypeName = x.Item.Name,
-                    ProstheticTypeId = x.Item.Id,
+                    ProductName = x.Item.Name,
+                    ProductId = x.Item.Id,
                     MaterialId = SelectedMaterial.Id,
                 }).ToArray(),
                 Prices = Prices.Select(x => x.ToDto()).ToArray()

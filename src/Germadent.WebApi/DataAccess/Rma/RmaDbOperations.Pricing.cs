@@ -109,6 +109,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
         {
+            var jsonStringProduct = pricePositionDto.Products.SerializeToJson(Formatting.Indented);
+            var jsonStringPrices = pricePositionDto.Prices.SerializeToJson(Formatting.Indented);
+
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -120,17 +123,10 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
                     command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
                     command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+                    command.Parameters.Add(new SqlParameter("@jsonStringProduct", SqlDbType.NVarChar)).Value = jsonStringProduct;
+                    command.Parameters.Add(new SqlParameter("@jsonStringPrices", SqlDbType.NVarChar)).Value = jsonStringPrices;
 
                     command.ExecuteNonQuery();
-
-                    var price = new PriceDto
-                    {
-                        PricePositionId = pricePositionDto.PricePositionId,
-                        //PriceModel = pricePositionDto.PriceModel,
-                        //PriceSTL = pricePositionDto.PriceStl
-                    };
-
-                    UpdatePrice(price, connection);
 
                     return pricePositionDto;
                 }
@@ -246,10 +242,12 @@ namespace Germadent.WebApi.DataAccess.Rma
                     var allProducts = new List<ProductDto>();
                     while (reader.Read())
                     {
-                        var productEntity = new ProductEntity();
-                        productEntity.PricePositionId = reader[nameof(ProductEntity.PricePositionId)].ToInt();
-                        productEntity.ProstheticsName = reader[nameof(ProductEntity.ProstheticsName)].ToString();
-                        productEntity.ProductId = reader[nameof(ProductEntity.ProductId)].ToInt();
+                        var productEntity = new ProductEntity
+                        {
+                            PricePositionId = reader[nameof(ProductEntity.PricePositionId)].ToInt(),
+                            ProductId = reader[nameof(ProductEntity.ProductId)].ToInt(),
+                            //BranchType = (BranchType)reader[nameof(ProductEntity.BranchType)].ToInt(),
+                        };
                         allProducts.Add(_converter.ConvertToProduct(productEntity));
                     }
 
@@ -296,9 +294,9 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public ProductDto[] GetProductSetForPricePosition(int pricePositionId)
+        public ProductDto[] GetProducts()
         {
-            var cmdText = string.Format("SELECT * FROM GetProductSetForPricePosition({0})", pricePositionId);
+            var cmdText = "select distinct BranchTypeID, PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProductID, ProductName, PriceSTL, PriceModel from GetPriceListForBranch(NULL)";
             using var connection = new SqlConnection(_configuration.ConnectionString);
             connection.Open();
 
@@ -309,43 +307,21 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 var productEntity = new ProductEntity();
 
-                productEntity.ProductId = reader[nameof(productEntity.ProductId)].ToInt();
-                productEntity.PricePositionId = reader[nameof(productEntity.PricePositionId)].ToInt();
-                productEntity.ProstheticsName = reader[nameof(productEntity.ProstheticsName)].ToString();
+                productEntity.ProductId = reader[nameof(ProductEntity.ProductId)].ToInt();
+                productEntity.BranchTypeId = (BranchType)reader[nameof(ProductEntity.BranchTypeId)].ToInt();
+                productEntity.MaterialId = reader[nameof(ProductEntity.MaterialId)].ToIntOrNull();
+                productEntity.MaterialName = reader[nameof(ProductEntity.MaterialName)].ToString();
+                productEntity.PriceGroupId = reader[nameof(ProductEntity.PriceGroupId)].ToInt();
+                productEntity.PricePositionCode = reader[nameof(ProductEntity.PricePositionCode)].ToString();
+                productEntity.PriceStl = reader[nameof(ProductEntity.PriceStl)].ToDecimalOrNull();
+                productEntity.PriceModel = reader[nameof(ProductEntity.PriceModel)].ToDecimal();
+                productEntity.PricePositionId = reader[nameof(ProductEntity.PricePositionId)].ToInt();
+                productEntity.ProductName = reader[nameof(ProductEntity.ProductName)].ToString();
 
                 products.Add(_converter.ConvertToProduct(productEntity));
             }
 
             return products.ToArray();
-        }
-
-        private static void AddPrice(PriceDto price, SqlConnection connection)
-        {
-            using (var command = new SqlCommand("AddPrice", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = (int)price.PricePositionId;
-                command.Parameters.Add(new SqlParameter("@dateBeginning", SqlDbType.Date)).Value = price.DateBeginning.GetValueOrDbNull();
-                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceStl;
-                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        private static void UpdatePrice(PriceDto price, SqlConnection connection)
-        {
-            using (var command = new SqlCommand("UpdatePrice", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = price.PricePositionId;
-                command.Parameters.Add(new SqlParameter("@dateBeginningCurrent", SqlDbType.Date)).Value = price.DateBeginning.GetValueOrDbNull();
-                command.Parameters.Add(new SqlParameter("@priceSTL", SqlDbType.Money)).Value = price.PriceStl;
-                command.Parameters.Add(new SqlParameter("@priceModel", SqlDbType.Money)).Value = price.PriceModel;
-                //command.Parameters.Add(new SqlParameter("@dateEnd", SqlDbType.Date)).Value = price.DateEnd;
-
-                command.ExecuteNonQuery();
-            }
         }
 
         public ProductDto[] GetProductSetForToothCard(BranchType branchType)
@@ -361,7 +337,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     var productSetCollection = new List<ProductDto>();
                     while (reader.Read())
                     {
-                        var productSetEntity = new ProductSetForPriceGroupEntity();
+                        var productSetEntity = new ProductEntity();
 
                         var productId = reader["ProstheticsID"];
                         if (productId == DBNull.Value)
@@ -374,11 +350,11 @@ namespace Germadent.WebApi.DataAccess.Rma
                         productSetEntity.MaterialName = reader[nameof(productSetEntity.MaterialName)].ToString();
                         productSetEntity.ProductId = productId.ToInt();
                         productSetEntity.ProductName = reader["ProstheticsName"].ToString();
-                        productSetEntity.PriceSTL = reader[nameof(productSetEntity.PriceSTL)].ToDecimal();
+                        productSetEntity.PriceStl = reader[nameof(productSetEntity.PriceStl)].ToDecimal();
                         productSetEntity.PriceModel = reader[nameof(productSetEntity.PriceModel)].ToDecimal();
 
-                        var productSetDto = _converter.ConvertToProductSetForPriceGroup(productSetEntity);
-                        productSetCollection.Add(productSetDto);
+                        //var productSetDto = _converter.ConvertToProductSetForPriceGroup(productSetEntity);
+                        //productSetCollection.Add(productSetDto);
                     }
                     reader.Close();
                     return productSetCollection.ToArray();

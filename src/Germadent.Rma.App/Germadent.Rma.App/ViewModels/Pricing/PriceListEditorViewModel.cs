@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -28,10 +30,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private PricePositionViewModel _selectedPricePosition;
 
         private readonly ICollectionView _positionsView;
+        private bool _isBusy;
+        private string _busyReason;
 
-        public PriceListEditorViewModel(IUserManager userManager, 
-            IPriceGroupRepository priceGroupRepository, 
-            IPricePositionRepository pricePositionRepository, 
+        public PriceListEditorViewModel(IUserManager userManager,
+            IPriceGroupRepository priceGroupRepository,
+            IPricePositionRepository pricePositionRepository,
             IShowDialogAgent dialogAgent,
             IRmaServiceClient serviceClient,
             IAddPricePositionViewModel addPricePositionViewModel)
@@ -121,6 +125,33 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            private set
+            {
+                if (_isBusy == value)
+                    return;
+
+                _isBusy = value;
+                OnPropertyChanged(() => IsBusy);
+            }
+        }
+
+        public string BusyReason
+        {
+            get { return _busyReason; }
+            private set
+            {
+                if (_busyReason == value)
+                    return;
+                _busyReason = value;
+                OnPropertyChanged(() => BusyReason);
+
+                IsBusy = value != null;
+            }
+        }
+
         public IDelegateCommand AddPriceGroupCommand { get; }
 
         public IDelegateCommand EditPriceGroupCommand { get; }
@@ -138,7 +169,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             return CanEditPriceList;
         }
 
-        private void AddPriceGroupCommandHandler()
+        private async void AddPriceGroupCommandHandler()
         {
             var priceGroupName = _dialogAgent.ShowInputBox("Добавление ценовой группы", "Ценовая группа");
             if (priceGroupName == null)
@@ -146,7 +177,20 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             var priceGroup = new PriceGroupDto { BranchType = BranchType, Name = priceGroupName };
 
-            var addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup);
+            BusyReason = "Добавление ценовой группы";
+
+            PriceGroupDto addedPriceGroup = null;
+            try
+            {
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup);
+                });
+            }
+            finally
+            {
+                BusyReason = null;
+            }
 
             var priceGroupViewModel = new PriceGroupViewModel(addedPriceGroup);
             Groups.Add(priceGroupViewModel);
@@ -202,7 +246,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private void AddPricePositionCommandHandler()
         {
             var allUserCodes = Positions.Select(x => x.UserCode).ToArray();
-            _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto{PriceGroupId = SelectedGroup.PriceGroupId}, allUserCodes, BranchType);
+            _addPricePositionViewModel.Initialize(CardViewMode.Add, new PricePositionDto { PriceGroupId = SelectedGroup.PriceGroupId }, allUserCodes, BranchType);
             if (_dialogAgent.ShowDialog<AddPricePositionWindow>(_addPricePositionViewModel) == false)
                 return;
 

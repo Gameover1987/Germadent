@@ -124,7 +124,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Возвращает набор изделий для ценовой позиции
         /// </summary>
         /// <returns></returns>
-        ProductDto[] GetProductSetForPricePosition(int pricePositionId);
+        ProductDto[] GetProducts();
 
         /// <summary>
         /// Добавляет ценовую группу
