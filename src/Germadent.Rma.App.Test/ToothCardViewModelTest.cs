@@ -60,8 +60,8 @@ namespace Germadent.Rma.App.Test
                     HasBridge = true,
                     MaterialId = 1,
                     MaterialName = "ZrO",
-                    ProstheticsId = 1,
-                    ProstheticsName = "Каркас",
+                    ProductId = 1,
+                    ProductName = "Каркас",
                     ToothNumber = 11
                 },
                 new ToothDto
@@ -69,8 +69,8 @@ namespace Germadent.Rma.App.Test
                     HasBridge = true,
                     MaterialId = 1,
                     MaterialName = "ZrO",
-                    ProstheticsId = 1,
-                    ProstheticsName = "Каркас",
+                    ProductId = 1,
+                    ProductName = "Каркас",
                     ToothNumber = 12
                 },
             };

@@ -39,7 +39,7 @@ namespace Germadent.Rma.App.Test
             {
                 ToothNumber = number,
                 ConditionName = prostheticCondition,
-                ProstheticsName = prostheticType,
+                ProductName = prostheticType,
                 MaterialName = material
             };
         }

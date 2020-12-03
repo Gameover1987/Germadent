@@ -483,7 +483,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     {
                         var prostheticTypeEntity = new DictionaryItemEntity();
                         prostheticTypeEntity.Id = int.Parse(reader["ProductId"].ToString());
-                        prostheticTypeEntity.Name = reader["ProstheticsName"].ToString().Trim();
+                        prostheticTypeEntity.Name = reader["ProductName"].ToString().Trim();
                         prostheticTypeEntity.DictionaryName = DictionaryType.ProstheticType.GetDescription();
                         prostheticTypeEntity.DictionaryType = DictionaryType.ProstheticType;
 

@@ -14,10 +14,10 @@ namespace Germadent.Rma.App.Test
         /// </summary>
         /// <param name="hasBridge"></param>
         /// <param name="material"></param>
-        /// <param name="prostheticType"></param>
+        /// <param name="productType"></param>
         [DataRow(true, "ZrO", "Каркас")]
         [DataRow(false, "E.MAX", "другая конструкция")]
-        public void ShouldInitializeFromDto(bool hasBridge, string material, string prostheticType)
+        public void ShouldInitializeFromDto(bool hasBridge, string material, string productType)
         {
             // Given
             var target = CreateTarget();
@@ -27,7 +27,7 @@ namespace Germadent.Rma.App.Test
             {
                 HasBridge = hasBridge,
                 MaterialName = material,
-                ProstheticsName = prostheticType
+                ProductName = productType
             });
 
             // Then

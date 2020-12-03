@@ -347,7 +347,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         productSetEntity.MaterialId = reader[nameof(productSetEntity.MaterialId)].ToIntOrNull();
                         productSetEntity.MaterialName = reader[nameof(productSetEntity.MaterialName)].ToString();
                         productSetEntity.ProductId = productId.ToInt();
-                        productSetEntity.ProductName = reader["ProstheticsName"].ToString();
+                        productSetEntity.ProductName = reader["ProductName"].ToString();
                         productSetEntity.PriceStl = reader[nameof(productSetEntity.PriceStl)].ToDecimal();
                         productSetEntity.PriceModel = reader[nameof(productSetEntity.PriceModel)].ToDecimal();
 
