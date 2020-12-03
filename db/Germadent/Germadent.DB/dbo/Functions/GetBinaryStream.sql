@@ -15,7 +15,7 @@ BEGIN
 	@fileStream varbinary(max)
 
 	SELECT @fileStream = file_stream
-	FROM StlAndPhotos
+	FROM Pictures
 	WHERE stream_id = (SELECT stream_id FROM LinksFileStreams WHERE UserID = @userId)
 
 	RETURN @fileStream

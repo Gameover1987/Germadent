@@ -31,12 +31,16 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	
 AS
 BEGIN
+
+	SET NOCOUNT, XACT_ABORT ON;
+
 	-- Никаких изменений, если заказ-наряд закрыт
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
 		BEGIN
 			RETURN
 		END
 
+	BEGIN TRAN
 	-- Изменение основной таблицы
 	UPDATE WorkOrder
 	SET  DocNumber = @docNumber
@@ -71,6 +75,11 @@ BEGIN
 		WHERE WorkOrderDLID = @workOrderID
 	END
 	
+	-- Убираем метку о "блокировке" заказ-наряда
+	EXEC UserReadingWO @workOrderID
+
+	COMMIT
+
 	-- Напоминаем программе дату и время создания заказ-наряда
 	SELECT @created = Created FROM WorkOrder WHERE WorkOrderID = @workOrderID
 
