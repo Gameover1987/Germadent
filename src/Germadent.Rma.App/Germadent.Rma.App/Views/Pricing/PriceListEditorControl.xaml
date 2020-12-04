@@ -111,6 +111,7 @@
         </DataGrid>
 
         <Border Grid.Column="0" Grid.Row="0" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="2"
+                Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
                 Grid.ColumnSpan="2" Grid.RowSpan="2">
             <StackPanel Orientation="Vertical">
                 <controls:BusyIndicator Width="32" Height="32" Fill="Gray" IsBusy="{Binding IsBusy}"/>

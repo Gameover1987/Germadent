@@ -31,19 +31,11 @@ namespace Germadent.Rma.App.Mocks
                     new ToothDto
                     {
                         HasBridge = true,
-                        MaterialId = 1,
-                        MaterialName = "ZrO",
-                        ProductId = 1,
-                        ProductName = "Каркас",
                         ToothNumber = 11
                     },
                     new ToothDto
                     {
                         HasBridge = true,
-                        MaterialId = 2,
-                        MaterialName = "PMMA mono",
-                        ProductId = 3,
-                        ProductName = "Абатмент",
                         ToothNumber = 12
                     },
                 }
@@ -63,19 +55,11 @@ namespace Germadent.Rma.App.Mocks
                     new ToothDto
                     {
                         HasBridge = true,
-                        MaterialId = 1,
-                        MaterialName = "ZrO",
-                        ProductId = 1,
-                        ProductName = "Каркас",
                         ToothNumber = 11
                     },
                     new ToothDto
                     {
                         HasBridge = true,
-                        MaterialId = 2,
-                        MaterialName = "PMMA mono",
-                        ProductId = 3,
-                        ProductName = "Абатмент",
                         ToothNumber = 12
                     },
                 }

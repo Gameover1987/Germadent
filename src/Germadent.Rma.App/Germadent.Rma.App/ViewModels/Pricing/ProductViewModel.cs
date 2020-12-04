@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Germadent.Common.Extensions;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
@@ -30,9 +31,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             }
         }
 
-        public int PricePositionId
+        public int ProductId
         {
-            get { return _productDto.PricePositionId; }
+            get { return _productDto.ProductId; }
         }
 
         public int PriceGroupId
@@ -40,9 +41,25 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             get { return _productDto.PriceGroupId; }
         }
 
-        public string DisplayName
+        public string Caption
         {
-            get { return _productDto.ProductName; }
+            get
+            {
+                if (MaterialName.IsNullOrWhiteSpace())
+                    return _productDto.ProductName;
+
+                return string.Format("{0} / {1}", _productDto.ProductName, _productDto.MaterialName);
+            }
+        }
+
+        public string UserCode
+        {
+            get { return _productDto.PricePositionCode; }
+        }
+
+        public string MaterialName
+        {
+            get { return _productDto.MaterialName; }
         }
 
         public event EventHandler<ProductCheckedEventArgs> Checked;

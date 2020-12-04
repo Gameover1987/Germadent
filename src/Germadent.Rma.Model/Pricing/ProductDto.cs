@@ -38,11 +38,6 @@
         public string ProductName { get; set; }
 
         /// <summary>
-        /// Тип филиала
-        /// </summary>
-        public BranchType BranchType { get; set; }
-
-        /// <summary>
         /// Актуальная цена при наличии stl-файла
         /// </summary>
         public decimal PriceStl { get; set; }

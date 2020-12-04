@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.App.Operations;
+﻿using Germadent.Common;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
@@ -20,8 +20,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IRmaServiceClient _serviceClient;
         private readonly IAddPricePositionViewModel _addPricePositionViewModel;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public PriceListEditorFactory(IPriceGroupRepository priceGroupRepository, IPricePositionRepository pricePositionRepository, IUserManager userManager, IShowDialogAgent dialogAgent, IRmaServiceClient serviceClient, IAddPricePositionViewModel addPricePositionViewModel)
+        public PriceListEditorFactory(IPriceGroupRepository priceGroupRepository, 
+            IPricePositionRepository pricePositionRepository, 
+            IUserManager userManager,
+            IShowDialogAgent dialogAgent, 
+            IRmaServiceClient serviceClient, 
+            IAddPricePositionViewModel addPricePositionViewModel,
+            IDateTimeProvider dateTimeProvider)
         {
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
@@ -29,11 +36,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _dialogAgent = dialogAgent;
             _serviceClient = serviceClient;
             _addPricePositionViewModel = addPricePositionViewModel;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public IPriceListEditorViewModel CreateEditor(BranchType branchType)
         {
-            var editor = new PriceListEditorViewModel(_userManager, _priceGroupRepository, _pricePositionRepository, _dialogAgent, _serviceClient, _addPricePositionViewModel);
+            var editor = new PriceListEditorViewModel(_userManager, _priceGroupRepository, _pricePositionRepository, _dialogAgent, _serviceClient, _addPricePositionViewModel, _dateTimeProvider);
             editor.BranchType = branchType;
             return editor;
         }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Germadent.Common;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
@@ -26,6 +27,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IRmaServiceClient _serviceClient;
         private readonly IAddPricePositionViewModel _addPricePositionViewModel;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private PriceGroupViewModel _selectedGroup;
         private PricePositionViewModel _selectedPricePosition;
 
@@ -38,13 +40,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             IPricePositionRepository pricePositionRepository,
             IShowDialogAgent dialogAgent,
             IRmaServiceClient serviceClient,
-            IAddPricePositionViewModel addPricePositionViewModel)
+            IAddPricePositionViewModel addPricePositionViewModel,
+            IDateTimeProvider dateTimeProvider)
         {
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
             _dialogAgent = dialogAgent;
             _serviceClient = serviceClient;
             _addPricePositionViewModel = addPricePositionViewModel;
+            _dateTimeProvider = dateTimeProvider;
 
             Groups = new ObservableCollection<PriceGroupViewModel>();
             Positions = new ObservableCollection<PricePositionViewModel>();
@@ -91,7 +95,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             var positions = _pricePositionRepository.Items.Where(x => x.BranchType == BranchType).ToArray();
             foreach (var pricePositionDto in positions)
             {
-                Positions.Add(new PricePositionViewModel(pricePositionDto));
+                Positions.Add(new PricePositionViewModel(pricePositionDto, _dateTimeProvider));
             }
         }
 
@@ -286,7 +290,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 BusyReason = null;
             }
 
-            Positions.Add(new PricePositionViewModel(pricePositionDto));
+            var pricePositionViewModel = new PricePositionViewModel(pricePositionDto, _dateTimeProvider);
+            Positions.Add(pricePositionViewModel);
+            SelectedPosition = pricePositionViewModel;
         }
 
         private bool CanEditPricePositionCommandHandler()

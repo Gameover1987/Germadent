@@ -139,9 +139,9 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             return new ToothDto()
             {
                 ToothNumber = Number,
+                Products = _products?.Select(x => x.ToDto()).ToArray(),
                 ConditionId = SelectedProstheticCondition?.Item.Id ?? 0,
                 ConditionName = SelectedProstheticCondition?.DisplayName,
-                Products = _products?.Select(x => x.ToDto()).ToArray(),
                 HasBridge = HasBridge
             };
         }

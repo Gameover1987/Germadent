@@ -54,25 +54,50 @@ namespace Germadent.WebApi.Entities.Conversion
             return orderDto;
         }
 
-        public ToothDto[] ConvertToToothCard(ToothEntity[] entities)
+        public ToothDto[] ConvertToToothCard(ToothEntity[] entities, bool getStlPrice)
         {
-            var groupings = entities.GroupBy(x => x.ToothNumber).ToArray();
+            var groupsByToothNumber = entities.GroupBy(x => x.ToothNumber).ToArray();
 
             var toothCollection = new List<ToothDto>();
 
-            foreach (var grouping in groupings)
+            foreach (var grouping in groupsByToothNumber)
             {
                 var toothDto = new ToothDto();
                 var prototype = grouping.First();
                 toothDto.WorkOrderId = prototype.WorkOrderId;
                 toothDto.ToothNumber = prototype.ToothNumber;
                 toothDto.HasBridge = prototype.HasBridge;
-                toothDto.MaterialId = prototype.MaterialId;
-                toothDto.MaterialName = prototype.MaterialName;
-                toothDto.ProductId = prototype.ProductId;
-                toothDto.ProductName = prototype.ProductName;
                 toothDto.ConditionId = prototype.ConditionId;
                 toothDto.ConditionName = prototype.ConditionName;
+
+                var groupsByProduct = grouping.GroupBy(x => x.ProductId).ToArray();
+                var products = new List<ProductDto>();
+                foreach (var groupByProduct in groupsByProduct)
+                {
+                    var prototypeByProduct = groupByProduct.First();
+                    var productDto = new ProductDto
+                    {
+                        MaterialId = prototypeByProduct.MaterialId,
+                        MaterialName = prototypeByProduct.MaterialName,
+                        PriceGroupId = prototypeByProduct.PriceGroupId,
+                        PricePositionCode = prototypeByProduct.PricePositionCode,
+                        PricePositionId = prototypeByProduct.PricePositionId,
+                        ProductId = prototypeByProduct.ProductId,
+                        ProductName = prototypeByProduct.ProductName
+                    };
+                    if (getStlPrice)
+                    {
+                        productDto.PriceStl = prototypeByProduct.Price;
+                    }
+                    else
+                    {
+                        productDto.PriceModel = prototypeByProduct.Price;
+                    }
+
+                    products.Add(productDto);
+                }
+
+                toothDto.Products = products.ToArray();
 
                 toothCollection.Add(toothDto);
             }
@@ -203,7 +228,6 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 ProductId = entity.ProductId,
                 PricePositionId = entity.PricePositionId,
-                BranchType = entity.BranchTypeId,
                 MaterialId = entity.MaterialId,
                 PriceModel = entity.PriceModel,
                 PriceStl = entity.PriceStl ?? 0,
@@ -214,24 +238,25 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
-        public ToothEntity[] ConvertFromToothDto(ToothDto toothDto)
+        public ToothEntity[] ConvertFromToothDto(ToothDto toothDto, bool setPriceStl)
         {
             var entities = new List<ToothEntity>();
-            foreach (var pricePosition in toothDto.Products)
+            foreach (var product in toothDto.Products)
             {
                 var entity = new ToothEntity
                 {
                     WorkOrderId = toothDto.WorkOrderId,
+                    PriceGroupId = product.PriceGroupId,
+                    PricePositionCode = product.PricePositionCode,
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
                     ConditionName = toothDto.ConditionName,
                     HasBridge = toothDto.HasBridge,
-                    MaterialName = toothDto.MaterialName,
-                    Price = toothDto.Price,
-                    PricePositionId = pricePosition.PricePositionId,
+                    PricePositionId = product.PricePositionId,
                     ConditionId = toothDto.ConditionId,
-                    MaterialId = pricePosition.MaterialId,
-                    ProductId = toothDto.ProductId,
-                    ProductName = toothDto.ProductName,
-                    ToothNumber = toothDto.ToothNumber
+                    MaterialId = product.MaterialId,
+                    ToothNumber = toothDto.ToothNumber,
+                    Price = setPriceStl ? product.PriceStl : product.PriceModel
                 };
                 entities.Add(entity);
             }

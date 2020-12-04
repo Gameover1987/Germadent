@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private PriceGroupViewModel _selectedGroup;
 
-        private readonly ICollectionView _pricePositionsView;
+        private readonly ICollectionView _productsView;
 
         public PriceListViewModel(IPriceGroupRepository priceGroupRepository, IProductRepository productRepository)
         {
@@ -29,16 +29,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             Groups = new ObservableCollection<PriceGroupViewModel>();
             Products = new ObservableCollection<ProductViewModel>();
 
-            _pricePositionsView = CollectionViewSource.GetDefaultView(Products);
-            _pricePositionsView.Filter = PricePositionFilter;
+            _productsView = CollectionViewSource.GetDefaultView(Products);
+            _productsView.Filter = ProductFilter;
         }
 
-        private bool PricePositionFilter(object obj)
+        private bool ProductFilter(object obj)
         {
             if (SelectedGroup == null)
                 return false;
 
-            var pricePosition = (PricePositionViewModel) obj;
+            var pricePosition = (ProductViewModel) obj;
             return SelectedGroup.PriceGroupId == pricePosition.PriceGroupId;
         }
 
@@ -54,7 +54,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 _selectedGroup = value;
                 OnPropertyChanged(() => SelectedGroup);
 
-                _pricePositionsView.Refresh();
+                _productsView.Refresh();
             }
         }
 
@@ -73,14 +73,14 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             SelectedGroup = Groups.FirstOrDefault();
 
-            Products.ForEach(x => x.Checked -= PricePositionOnChecked);
+            Products.ForEach(x => x.Checked -= ProductOnChecked);
             Products.Clear();
-            var positions = _productRepository.Items.Where(x => x.BranchType == _branchType).ToArray();
-            foreach (var pricePositionDto in positions)
+            var products = _productRepository.Items.ToArray();
+            foreach (var productDto in products)
             {
-                var pricePositionViewModel = new ProductViewModel(pricePositionDto);
-                pricePositionViewModel.Checked += PricePositionOnChecked;
-                Products.Add(pricePositionViewModel);
+                var productViewModel = new ProductViewModel(productDto);
+                productViewModel.Checked += ProductOnChecked;
+                Products.Add(productViewModel);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             foreach (var productDto in toothDto.Products)
             {
-                var productViewModel = Products.First(x => x.PricePositionId == productDto.PricePositionId);
+                var productViewModel = Products.First(x => x.ProductId == productDto.ProductId);
                 productViewModel.SetIsChecked(true);
             }
 
@@ -107,16 +107,15 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 .ToArray();
             groupsWithChanges.ForEach(x => x.HasChanges = true);
         }
-
-        public event EventHandler PricePositionsChecked;
+        
         public event EventHandler ProductChecked;
 
-        private void PricePositionOnChecked(object sender, ProductCheckedEventArgs e)
+        private void ProductOnChecked(object sender, ProductCheckedEventArgs e)
         {
             var group = Groups.First(x => x.PriceGroupId == e.Product.PriceGroupId);
             group.HasChanges = Products.Where(x => x.PriceGroupId == group.PriceGroupId).Any(x => x.IsChecked);
 
-            PricePositionsChecked?.Invoke(this, e);
+            ProductChecked?.Invoke(this, e);
         }
     }
 }

@@ -57,7 +57,7 @@
                      ItemsSource="{Binding Products}"
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type pricing:PricePositionViewModel}">
+                    <DataTemplate DataType="{x:Type pricing:ProductViewModel}">
                         <Grid>
                             <CheckBox IsChecked="{Binding IsChecked}" Margin="3,0,0,0">
                                 <Grid Margin="-3,0,0,0">
@@ -65,7 +65,7 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"                   
+                                    <TextBlock Grid.Column="0" Text="{Binding Caption}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"                   
                                                helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
                                     <TextBlock Grid.Column="1" Text="{Binding UserCode}"/>
                                 </Grid>

@@ -20,12 +20,6 @@ namespace Germadent.Rma.Model
             if (tooth.ConditionName != null)
                 descriptionBuilder.Append(string.Format("{0}/", tooth.ConditionName));
 
-            if (tooth.ProductName != null)
-                descriptionBuilder.Append(string.Format("{0}/", tooth.ProductName));
-
-            if (tooth.MaterialName != null)
-                descriptionBuilder.Append(string.Format("{0}/", tooth.MaterialName));
-
             if (tooth.HasBridge)
                 descriptionBuilder.Append("Мост");
 

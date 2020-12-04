@@ -26,19 +26,11 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProductId = 1,
-                    ProductName = "Каркас",
                     ToothNumber = 11
                 },
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProductId = 1,
-                    ProductName = "Каркас",
                     ToothNumber = 12
                 },
             };
