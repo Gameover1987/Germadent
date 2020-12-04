@@ -4,6 +4,7 @@ using System.Linq;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
+using Germadent.Rma.Model.Pricing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
@@ -58,19 +59,13 @@ namespace Germadent.Rma.App.Test
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProductId = 1,
-                    ProductName = "Каркас",
+                    Products = new ProductDto[0],
                     ToothNumber = 11
                 },
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProductId = 1,
-                    ProductName = "Каркас",
+                    Products = new ProductDto[0],
                     ToothNumber = 12
                 },
             };

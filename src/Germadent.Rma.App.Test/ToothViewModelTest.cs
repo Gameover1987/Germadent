@@ -26,8 +26,6 @@ namespace Germadent.Rma.App.Test
             target.Initialize(new ToothDto
             {
                 HasBridge = hasBridge,
-                MaterialName = material,
-                ProductName = productType
             });
 
             // Then

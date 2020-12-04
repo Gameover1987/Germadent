@@ -12,6 +12,6 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public event EventHandler<EventArgs> Changed;
-        public ProductDto[] Items { get; }
+        public ProductDto[] Items { get{return new ProductDto[0];} }
     }
 }

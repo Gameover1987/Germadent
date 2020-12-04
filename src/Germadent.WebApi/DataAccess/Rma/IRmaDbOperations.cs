@@ -167,12 +167,5 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="priceGroupId"></param>
         /// <returns></returns>
         DeleteResult DeletePricePosition(int priceGroupId);
-
-        /// <summary>
-        /// Возвращает набор изделий с материалами и ценами для ценовой группы
-        /// </summary>
-        /// <param name="branchType"></param>
-        /// <returns></returns>
-        ProductDto[] GetProductSetForToothCard(BranchType branchType);
     }
 }
