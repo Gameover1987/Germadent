@@ -31,5 +31,7 @@ namespace Germadent.Rma.App.ServiceClient
         event EventHandler<RepositoryChangedEventArgs<ResponsiblePersonDto>> ResponsiblePersonRepositoryChanged;
 
         event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
+
+        event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
     }
 }

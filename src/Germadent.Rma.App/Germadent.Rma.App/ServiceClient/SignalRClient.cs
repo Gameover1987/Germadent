@@ -42,6 +42,7 @@ namespace Germadent.Rma.App.ServiceClient
         public event EventHandler<RepositoryChangedEventArgs<CustomerDto>> CustomerRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<ResponsiblePersonDto>> ResponsiblePersonRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
+        public event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
 
         private void OnNotification(string arg)
         {
@@ -69,6 +70,12 @@ namespace Germadent.Rma.App.ServiceClient
             {
                 var args = CreateRepositoryChangedEventArgs<PricePositionDto>(notification);
                 PricePositionRepositoryChanged?.Invoke(this, args);
+            }
+
+            if (notification.RepositoryType == RepositoryType.Product)
+            {
+                var args = CreateRepositoryChangedEventArgs<ProductDto>(notification);
+                ProductRepositoryChanged?.Invoke(this, args);
             }
         }
 

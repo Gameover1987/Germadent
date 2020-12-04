@@ -75,14 +75,16 @@ namespace Germadent.WebApi.Controllers
         protected void SendUpdateNotification(RepositoryType repositoryType, object updatedItem)
         {
             var repositoryNotificationDto = new RepositoryNotificationDto(repositoryType);
-            repositoryNotificationDto.ChangedItems = new[] { updatedItem };
+            if (updatedItem != null)
+                repositoryNotificationDto.ChangedItems = new[] { updatedItem };
             _hubContext.Clients.All.SendAsync("Send", repositoryNotificationDto.SerializeToJson());
         }
 
         protected void SendAddNotification(RepositoryType repositoryType, object addedItem)
         {
             var repositoryNotificationDto = new RepositoryNotificationDto(repositoryType);
-            repositoryNotificationDto.AddedItems = new[] { addedItem };
+            if (addedItem != null)
+                repositoryNotificationDto.AddedItems = new[] { addedItem };
             _hubContext.Clients.All.SendAsync("Send", repositoryNotificationDto.SerializeToJson());
         }
 

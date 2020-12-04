@@ -50,6 +50,12 @@ namespace Germadent.Rma.App.ServiceClient.Repository
         {
             _rmaServiceClient = rmaServiceClient;
             _signalRClient = signalRClient;
+            _signalRClient.ProductRepositoryChanged += SignalRClientOnProductRepositoryChanged;
+        }
+
+        private void SignalRClientOnProductRepositoryChanged(object? sender, RepositoryChangedEventArgs<ProductDto> e)
+        {
+            ReLoad();
         }
 
         protected override ProductDto[] GetItems()

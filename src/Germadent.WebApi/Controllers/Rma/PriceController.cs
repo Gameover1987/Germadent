@@ -62,21 +62,27 @@ namespace Germadent.WebApi.Controllers.Rma
         [Route("AddPricePosition")]
         public IActionResult AddPricePosition(PricePositionDto pricePositionDto)
         {
-            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.AddPricePosition(pricePositionDto), RepositoryType.PricePosition, RepositoryAction.Add);
+            var result = ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.AddPricePosition(pricePositionDto), RepositoryType.PricePosition, RepositoryAction.Add);
+            SendAddNotification(RepositoryType.Product, null);
+            return result;
         }
 
         [HttpPost]
         [Route("UpdatePricePosition")]
         public IActionResult UpdatePricePosition(PricePositionDto pricePositionDto)
         {
-            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.UpdatePricePosition(pricePositionDto), RepositoryType.PricePosition, RepositoryAction.Update);
+            var result = ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.UpdatePricePosition(pricePositionDto), RepositoryType.PricePosition, RepositoryAction.Update);
+            SendUpdateNotification(RepositoryType.Product, null);
+            return result;
         }
 
         [HttpDelete]
         [Route("DeletePricePosition/{pricePositionId:int}")]
         public IActionResult DeletePricePosition(int pricePositionId)
         {
-            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.DeletePricePosition(pricePositionId), RepositoryType.PricePosition, RepositoryAction.Delete);
+            var result = ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.DeletePricePosition(pricePositionId), RepositoryType.PricePosition, RepositoryAction.Delete);
+            SendDeleteNotification(RepositoryType.Product, pricePositionId);
+            return result;
         }
 
         [HttpGet]

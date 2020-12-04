@@ -8,6 +8,7 @@ namespace Germadent.Rma.Model
     {
         PriceGroup,
         PricePosition,
+        Product,
         Customer,
         ResponsiblePerson
     }

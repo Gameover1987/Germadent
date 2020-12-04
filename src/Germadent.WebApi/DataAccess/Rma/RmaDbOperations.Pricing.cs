@@ -305,7 +305,11 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 var productEntity = new ProductEntity();
 
-                productEntity.ProductId = reader[nameof(ProductEntity.ProductId)].ToInt();
+                var productId = reader[nameof(ProductEntity.ProductId)];
+                if (productId == DBNull.Value)
+                    continue;
+
+                productEntity.ProductId = productId.ToInt();
                 productEntity.BranchTypeId = (BranchType)reader[nameof(ProductEntity.BranchTypeId)].ToInt();
                 productEntity.MaterialId = reader[nameof(ProductEntity.MaterialId)].ToIntOrNull();
                 productEntity.MaterialName = reader[nameof(ProductEntity.MaterialName)].ToString();
