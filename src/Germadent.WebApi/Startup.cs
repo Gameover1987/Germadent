@@ -37,23 +37,6 @@ namespace Germadent.WebApi
         {
             var key = Encoding.ASCII.GetBytes("SECRET");
 
-            //services.AddAuthentication(x =>
-            //    {
-            //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    })
-            //    .AddJwtBearer(x =>
-            //    {
-            //        x.RequireHttpsMetadata = true;
-            //        x.SaveToken = true;
-            //        x.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuerSigningKey = true,
-            //            IssuerSigningKey = new SymmetricSecurityKey(key),
-            //            ValidateIssuer = false,
-            //            ValidateAudience = false
-            //        };
-            //    });
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,7 +60,6 @@ namespace Germadent.WebApi
             services.AddSignalR();
             services.AddSingleton<IServiceConfiguration, ServiceConfiguration>();
             services.AddSingleton<IRmaDbOperations, RmaDbOperations>();
-            services.AddSingleton<IAddWorOrderCommand, AddWorkOrderCommand>();
             services.AddSingleton<IUmcDbOperations, UmcDbOperations>();
             services.AddSingleton<IRmaEntityConverter, RmaEntityConverter>();
             services.AddSingleton<IUmcEntityConverter, UmcEntityConverter>();

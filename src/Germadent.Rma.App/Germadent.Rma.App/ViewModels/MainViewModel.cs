@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -24,6 +24,20 @@ using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
+    public class OrderLiteComparerByDateTime : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            if (x == null || y == null)
+                return 0;
+
+            var order1 = (OrderLiteViewModel) x;
+            var order2 = (OrderLiteViewModel)y;
+
+            return DateTime.Compare(order2.Model.Created, order1.Model.Created);
+        }
+    }
+
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaServiceClient _rmaOperations;
@@ -40,7 +54,7 @@ namespace Germadent.Rma.App.ViewModels
         private bool _isBusy;
         private string _searchString;
 
-        private readonly ICollectionView _collectionView;
+        private ListCollectionView _collectionView;
 
         private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
@@ -79,8 +93,10 @@ namespace Germadent.Rma.App.ViewModels
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
 
-            _collectionView = CollectionViewSource.GetDefaultView(Orders);
+            _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
+            _collectionView.CustomSort = new OrderLiteComparerByDateTime();
             _collectionView.Filter = Filter;
+
 
             CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
         }
@@ -89,8 +105,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             get
             {
-                return string.Format("{0} - {1} ({2})", Resources.AppTitle, _userManager.AuthorizationInfo.FullName,
-                    _userManager.AuthorizationInfo.Login);
+                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.FullName} ({_userManager.AuthorizationInfo.Login})";
             }
         }
 

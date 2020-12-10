@@ -25,8 +25,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             _clipboard = clipboard;
 
             Teeth = new ObservableCollection<ToothViewModel>();
-            Materials = new ObservableCollection<CheckableDictionaryItemViewModel>();
-            Prosthetics = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
             SelectPtostheticsConditionCommand = new DelegateCommand(SelectProstheticConditionsCommandHandler, x => CanSelectProstheticConditionCommandHandler());
             SelectBridgeCommand = new DelegateCommand(SelectBridgeCommandHandler, x => CanSelectBridgeCommandHandler());
@@ -36,12 +34,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ObservableCollection<ToothViewModel> Teeth { get; }
 
-        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; }
-
-        public ObservableCollection<CheckableDictionaryItemViewModel> Prosthetics { get; }
-
         public ICommand SelectPtostheticsConditionCommand { get; }
-
 
         public ICommand SelectBridgeCommand { get; }
 

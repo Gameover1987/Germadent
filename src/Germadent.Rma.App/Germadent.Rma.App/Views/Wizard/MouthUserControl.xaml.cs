@@ -64,7 +64,21 @@ namespace Germadent.Rma.App.Views.Wizard
             Task.Run(() =>
             {
                 Thread.Sleep(25);
-                Dispatcher.BeginInvoke(new Action(() => { RenderMouth(); }));
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    RenderMouth();
+
+                    _mouthListBox.SelectedItems.Clear();
+                    var firstChangedTooth = _toothCard.Teeth.FirstOrDefault(x => x.IsChanged);
+                    if (firstChangedTooth != null) {
+                        
+                        _mouthListBox.SelectedItems.Add(firstChangedTooth);
+                    }
+                    else
+                    {
+                        _mouthListBox.SelectedItems.Add(_toothCard.Teeth.First(x => x.Number == 11));
+                    }
+                }));
             });
         }
 

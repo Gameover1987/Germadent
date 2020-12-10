@@ -94,7 +94,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             foreach (var productDto in toothDto.Products)
             {
-                var productViewModel = Products.First(x => x.ProductId == productDto.ProductId);
+                var productViewModel = Products.First(x => x.ProductId == productDto.ProductId && x.PriceGroupId == productDto.PriceGroupId && x.UserCode == productDto.PricePositionCode);
                 productViewModel.SetIsChecked(true);
             }
 
@@ -106,6 +106,11 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                         .Contains(group.PriceGroupId))
                 .ToArray();
             groupsWithChanges.ForEach(x => x.HasChanges = true);
+
+            if (groupsWithChanges.Any())
+            {
+                SelectedGroup = groupsWithChanges.First();
+            }
         }
         
         public event EventHandler ProductChecked;

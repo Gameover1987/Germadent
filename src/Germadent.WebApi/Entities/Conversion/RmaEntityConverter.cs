@@ -70,28 +70,28 @@ namespace Germadent.WebApi.Entities.Conversion
                 toothDto.ConditionId = prototype.ConditionId;
                 toothDto.ConditionName = prototype.ConditionName;
 
-                var groupsByProduct = grouping.GroupBy(x => x.ProductId).ToArray();
+                //var groupsByProduct = grouping.GroupBy(x => x.PricePositionId).ToArray();
                 var products = new List<ProductDto>();
-                foreach (var groupByProduct in groupsByProduct)
+                foreach (var toothEntity in grouping)
                 {
-                    var prototypeByProduct = groupByProduct.First();
+                    //var prototypeByProduct = groupByProduct.First();
                     var productDto = new ProductDto
                     {
-                        MaterialId = prototypeByProduct.MaterialId,
-                        MaterialName = prototypeByProduct.MaterialName,
-                        PriceGroupId = prototypeByProduct.PriceGroupId,
-                        PricePositionCode = prototypeByProduct.PricePositionCode,
-                        PricePositionId = prototypeByProduct.PricePositionId,
-                        ProductId = prototypeByProduct.ProductId,
-                        ProductName = prototypeByProduct.ProductName
+                        MaterialId = toothEntity.MaterialId,
+                        MaterialName = toothEntity.MaterialName,
+                        PriceGroupId = toothEntity.PriceGroupId,
+                        PricePositionCode = toothEntity.PricePositionCode,
+                        PricePositionId = toothEntity.PricePositionId,
+                        ProductId = toothEntity.ProductId,
+                        ProductName = toothEntity.ProductName
                     };
                     if (getStlPrice)
                     {
-                        productDto.PriceStl = prototypeByProduct.Price;
+                        productDto.PriceStl = toothEntity.Price;
                     }
                     else
                     {
-                        productDto.PriceModel = prototypeByProduct.Price;
+                        productDto.PriceModel = toothEntity.Price;
                     }
 
                     products.Add(productDto);

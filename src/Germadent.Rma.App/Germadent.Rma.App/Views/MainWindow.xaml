@@ -6,6 +6,8 @@
         xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
@@ -85,7 +87,8 @@
                             Key="C" Modifiers="Control+Shift"/>
             </DataGrid.InputBindings>
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}"
+                       d:DataContext="{d:DesignInstance Type=viewModels:OrderLiteViewModel, IsDesignTimeCreatable=True}">
                     <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
                     <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
                     <Setter Property="ContextMenu">
@@ -101,6 +104,18 @@
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsClosed}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsSelected}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Background" Value="LightGray"/>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding IsClosed}" Value="True">
+                            <Setter Property="ToolTip" Value="Данный заказ наряд закрыт, его можно открыть на просмотр или распечатать"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>

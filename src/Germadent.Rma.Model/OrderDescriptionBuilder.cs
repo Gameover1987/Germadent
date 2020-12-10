@@ -30,6 +30,9 @@ namespace Germadent.Rma.Model
 
         public static string GetToothCardDescription(ToothDto[] toothCollection)
         {
+            if (toothCollection.Length == 0)
+                return null;
+
             var groups = toothCollection.GroupBy(GetToothDescriptionWithoutNumber).ToArray();
 
             var toothCardBuilder = new StringBuilder();
