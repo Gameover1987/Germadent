@@ -86,6 +86,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public void Setup(ToothDto toothDto)
         {
+            if (toothDto == null)
+                return;
+
             Products.ForEach(x => x.SetIsChecked(false));
             Groups.ForEach(x => x.HasChanges = false);
 
