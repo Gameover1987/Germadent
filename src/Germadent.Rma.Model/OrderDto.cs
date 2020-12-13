@@ -49,6 +49,8 @@ namespace Germadent.Rma.Model
 
         public DateTime? FittingDate { get; set; }
 
+        public DateTime? DateOfCompletion { get; set; }
+
         public string WorkDescription { get; set; }
 
         public string ColorAndFeatures { get; set; }
@@ -63,6 +65,10 @@ namespace Germadent.Rma.Model
 
         public bool WorkAccepted { get; set; }
 
+        public bool Stl { get; set; }
+
+        public bool Cashless { get; set; }
+
         public int Transparency { get; set; }
 
         public string Understaff { get; set; }
@@ -75,7 +81,6 @@ namespace Germadent.Rma.Model
 
         public string MaterialsStr { get; set; }
 
-        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
-        public DateTime? DateOfCompletion { get; set; }
+        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }        
     }
 }

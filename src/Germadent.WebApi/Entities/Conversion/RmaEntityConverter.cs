@@ -34,6 +34,8 @@ namespace Germadent.WebApi.Entities.Conversion
                 Transparency = entity.Transparency,
                 WorkDescription = entity.WorkDescription,
                 WorkAccepted = entity.FlagWorkAccept,
+                Stl = entity.FlagStl,
+                Cashless = entity.FlagCashless,
                 Understaff = entity.Understaff,
                 ProstheticArticul = entity.ProstheticArticul,
                 MaterialsStr = entity.MaterialsEnum,

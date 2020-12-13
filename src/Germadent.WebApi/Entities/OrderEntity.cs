@@ -78,6 +78,16 @@ namespace Germadent.WebApi.Entities
         public bool FlagWorkAccept { get; set; }
 
         /// <summary>
+        /// Флаг наличия stl-файла
+        /// </summary>
+        public bool FlagStl { get; set; }
+
+        /// <summary>
+        /// Флаг безналичного расчёта
+        /// </summary>
+        public bool FlagCashless { get; set; }
+
+        /// <summary>
         /// Дата закрытия заказа
         /// </summary>
         public DateTime? Closed { get; set; }

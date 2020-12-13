@@ -41,7 +41,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private static OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
         {
-            using (var command = new SqlCommand("AddNewWorkOrder", connection))
+            using (var command = new SqlCommand("AddWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)order.BranchType;
@@ -53,6 +53,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@flagStl", SqlDbType.Bit)).Value = order.Stl;
+                command.Parameters.Add(new SqlParameter("@flagCashless", SqlDbType.Bit)).Value = order.Cashless;
                 command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
@@ -190,6 +192,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@customerID", SqlDbType.Int)).Value = order.CustomerId;
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId == 0 ? (object)DBNull.Value : order.ResponsiblePersonId;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
+                command.Parameters.Add(new SqlParameter("@flagStl", SqlDbType.Bit)).Value = order.Stl;
+                command.Parameters.Add(new SqlParameter("@flagCashless", SqlDbType.Bit)).Value = order.Cashless;
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
@@ -249,6 +253,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                             DocNumber = reader["DocNumber"].ToString(),
                             ColorAndFeatures = reader["ColorAndFeatures"].ToString(),
                             FlagWorkAccept = reader["FlagWorkAccept"].ToBool(),
+                            FlagStl = reader["FlagStl"].ToBool(),
+                            FlagCashless = reader["FlagCashless"].ToBool(),
                             Created = reader["Created"].ToDateTime(),
                             ImplantSystem = reader["ImplantSystem"].ToString(),
                             IndividualAbutmentProcessing = reader["IndividualAbutmentProcessing"].ToString(),
@@ -694,7 +700,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddNewRespPerson", connection))
+                using (var command = new SqlCommand("AddRespPerson", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@rp_position", SqlDbType.NVarChar)).Value = responsiblePerson.Position;
@@ -765,7 +771,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddNewCustomer", connection))
+                using (var command = new SqlCommand("AddCustomer", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = customer.Name;
