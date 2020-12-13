@@ -15,6 +15,8 @@
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            CONSTRAINT [DF_WorkOrder_WorkAccept] DEFAULT ((1)) NOT NULL,
+    [FlagStl]             BIT            NULL,
+    [FlagCashless]        BIT            NULL,
     [OfficeAdminID]       INT            NULL,
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
@@ -26,6 +28,8 @@
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
     CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([ReaderUserID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 

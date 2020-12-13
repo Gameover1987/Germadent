@@ -3,7 +3,7 @@
 -- Create date: 30.11.2019
 -- Description:	Создание заказ-наряда
 -- =============================================
-CREATE PROCEDURE [dbo].[AddNewWorkOrder] 
+CREATE PROCEDURE [dbo].[AddWorkOrder] 
 	
 	@branchTypeID int,
 	@customerID int = NULL,
@@ -14,6 +14,8 @@ CREATE PROCEDURE [dbo].[AddNewWorkOrder]
 	@dateComment nvarchar(50) = NULL,
 	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
+	@flagStl bit = NULL,
+	@flagCashless bit = 1,
 	@officeAdminID int = NULL,
 	@officeAdminName nvarchar(50) = NULL,	
 	@fittingDate datetime = NULL,
@@ -59,9 +61,9 @@ BEGIN
 	SET	@created = GETDATE()
 
 	INSERT INTO WorkOrder
-		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, OfficeAdminID, OfficeAdminName)
+		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID,  OfficeAdminName)
 	VALUES 
-		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @officeAdminID, @officeAdminName)
+		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID, @officeAdminName)
 
 	SET @workOrderID = SCOPE_IDENTITY()
 
@@ -83,6 +85,6 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddNewWorkOrder] TO [gdl_user]
+    ON OBJECT::[dbo].[AddWorkOrder] TO [gdl_user]
     AS [dbo];
 

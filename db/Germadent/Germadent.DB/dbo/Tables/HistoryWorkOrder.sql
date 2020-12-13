@@ -18,12 +18,16 @@
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            NULL,
+    [FlagStl]             BIT            NULL,
+    [FlagCashless]        BIT            NULL,
     [OfficeAdminID]       INT            NULL,
     [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
     [ReaderUserID]        INT            NULL,
     [ReadingDateTime]     DATETIME       NULL
 );
+
+
 
 
 

@@ -3,7 +3,7 @@
 -- Create date: 12.12.2019
 -- Description:	Создание нового заказчика
 -- =============================================
-CREATE PROCEDURE [dbo].[AddNewCustomer] 
+CREATE PROCEDURE [dbo].[AddCustomer] 
 	
 	@customerName nvarchar(70),
 	@customerPhone nvarchar(250) = NULL,
@@ -29,7 +29,7 @@ BEGIN
 	-- Собственно вставка:
 	
 	INSERT INTO Customers
-	(CustomerName, CustomerPhone, CustomerEmail, CustomerWebsite, CustomerDescription)
+	(CustomerName, CustomerPhone, CustomerEmail, CustomerWebSite, CustomerDescription)
 	values
 	(@customerName, @customerPhone, @customerEmail, @customerWebSite, @customerDescription)
 
@@ -38,6 +38,6 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddNewCustomer] TO [gdl_user]
+    ON OBJECT::[dbo].[AddCustomer] TO [gdl_user]
     AS [dbo];
 

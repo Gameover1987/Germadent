@@ -3,7 +3,7 @@
 -- Create date: 12.12.2019
 -- Description:	Создание нового ответственного лица (доктора или техника) для заказчика
 -- =============================================
-CREATE PROCEDURE [dbo].[AddNewRespPerson] 
+CREATE PROCEDURE [dbo].[AddRespPerson] 
 	
 	@rp_position nvarchar(30),
 	@responsiblePerson nvarchar(150),
@@ -39,6 +39,6 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[AddNewRespPerson] TO [gdl_user]
+    ON OBJECT::[dbo].[AddRespPerson] TO [gdl_user]
     AS [dbo];
 

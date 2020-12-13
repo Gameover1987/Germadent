@@ -11,6 +11,8 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @customerID int
 	, @responsiblePersonId int
 	, @flagWorkAccept bit
+	, @flagStl bit
+	, @flagCashless bit
 	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
@@ -55,6 +57,8 @@ BEGIN
 		, ProstheticArticul = @prostheticArticul
 		, WorkDescription = @workDescription
 		, FlagWorkAccept = @flagWorkAccept
+		, FlagStl = @flagStl
+		, FlagCashless = @flagCashless
 --		, OfficeAdminID = @officeAdminID
 		, OfficeAdminName = @officeAdminName	
 	WHERE WorkOrderID = @workOrderID
