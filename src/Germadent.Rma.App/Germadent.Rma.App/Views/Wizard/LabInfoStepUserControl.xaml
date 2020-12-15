@@ -12,7 +12,8 @@
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryInfoWizardStepViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=designMock:DesignMockLaboratoryInfoWizardStepViewModel, IsDesignTimeCreatable=True}"
+             FocusManager.FocusedElement="{Binding ElementName=CustomerAutoCompleteBox}">
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -45,7 +46,7 @@
         <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}">
             <TextBlock Text="Заказчик" Margin="0,1,0,0"/>
         </Border>
-        <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+        <controls:AutoCompleteTextBox x:Name="CustomerAutoCompleteBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                                       Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
                                       DisplayMember="DisplayName"
                                       Provider="{Binding CustomerSuggestionProvider}">

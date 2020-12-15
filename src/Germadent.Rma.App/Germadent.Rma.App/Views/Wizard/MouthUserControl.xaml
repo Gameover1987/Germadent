@@ -103,7 +103,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid  Width="30" Height="30" Margin="-1,-1,0,0">
-                            <Rectangle StrokeThickness="1" RadiusX="2" RadiusY="2">
+                            <Rectangle StrokeThickness="2" RadiusX="2" RadiusY="2">
                                 <Rectangle.Style>
                                     <Style TargetType="{x:Type Rectangle}">
                                         <Setter Property="Fill" Value="White"/>
