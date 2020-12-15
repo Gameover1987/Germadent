@@ -35,6 +35,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0"
@@ -117,9 +118,20 @@
         <TextBlock Grid.Column="0" Grid.Row="7" Text="Комментарий по времени"/>
         <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="8" Orientation="Horizontal" Margin="6,6,0,0">
-            <RadioButton Content="STL"/>
-            <RadioButton Content="Модель" Margin="6,0,0,0"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Цена"/>
+        <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Модель" Margin="0,0,0,0"
+                         IsChecked="{Binding Stl, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="STL"  Margin="6,0,0,0"
+                         IsChecked="{Binding Stl}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Тип расчета"/>
+        <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Наличный"
+                         IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="Безналичный" Margin="6,0,0,0"
+                         IsChecked="{Binding Cashless}"/>
         </StackPanel>
     </Grid>
 </UserControl>

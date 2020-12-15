@@ -38,6 +38,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InfoTextBorderStyle}">
@@ -130,6 +132,22 @@
 
         <TextBlock Grid.Column="0" Grid.Row="9" Text="Комментарий"/>
         <TextBox Grid.Column="1" Grid.Row="9" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="Цена"/>
+        <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Модель" Margin="0,0,0,0"
+                         IsChecked="{Binding Stl, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="STL"  Margin="6,0,0,0"
+                         IsChecked="{Binding Stl}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Тип расчета"/>
+        <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Наличный"
+                         IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="Безналичный" Margin="6,0,0,0"
+                         IsChecked="{Binding Cashless}"/>
+        </StackPanel>
 
     </Grid>
 </UserControl>
