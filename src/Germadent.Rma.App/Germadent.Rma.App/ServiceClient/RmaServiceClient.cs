@@ -181,6 +181,11 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts");
         }
 
+        public AttributeDto[] GetAttributes()
+        {
+            return ExecuteHttpGet<AttributeDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Attributes/GetAttributesAndValues");
+        }
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

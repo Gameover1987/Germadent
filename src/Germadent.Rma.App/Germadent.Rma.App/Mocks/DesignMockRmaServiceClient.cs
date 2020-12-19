@@ -479,5 +479,10 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public AttributeDto[] GetAttributes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

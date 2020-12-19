@@ -32,6 +32,4 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             return products;
         }
     }
-
-    //public class AttributeRepository : 
 }

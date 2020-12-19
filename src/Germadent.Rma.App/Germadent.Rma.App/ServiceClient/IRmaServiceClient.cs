@@ -202,5 +202,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         ProductDto[] GetProducts();
+
+        /// <summary>
+        /// Возвращает список атрибутов и их значений
+        /// </summary>
+        /// <returns></returns>
+        AttributeDto[] GetAttributes();
     }
 }

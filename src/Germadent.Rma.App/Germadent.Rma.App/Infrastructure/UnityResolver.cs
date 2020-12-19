@@ -138,6 +138,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IPriceGroupRepository, PriceGroupRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPricePositionRepository, PricePositionRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IProductRepository, ProductRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAttributeRepository, AttributeRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());
         }
 

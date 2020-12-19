@@ -12,6 +12,7 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly IPriceGroupRepository _priceGroupRepository;
         private readonly IPricePositionRepository _pricePositionRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IAttributeRepository _attributeRepository;
         private readonly ILogger _logger;
 
         public AppInitializer(ICustomerRepository customerRepository,
@@ -20,6 +21,7 @@ namespace Germadent.Rma.App.Infrastructure
             IPriceGroupRepository priceGroupRepository,
             IPricePositionRepository pricePositionRepository,
             IProductRepository productRepository,
+            IAttributeRepository attributeRepository,
             ILogger logger)
         {
             _customerRepository = customerRepository;
@@ -28,6 +30,7 @@ namespace Germadent.Rma.App.Infrastructure
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
             _productRepository = productRepository;
+            _attributeRepository = attributeRepository;
             _logger = logger;
         }
 
@@ -52,6 +55,9 @@ namespace Germadent.Rma.App.Infrastructure
 
                 SendMessage("Инициализация репозитория изделий ...");
                 _productRepository.Initialize();
+
+                SendMessage("Инициализация репозитория атрибутов ...");
+                _attributeRepository.Initialize();
 
                 InitializationCompleted?.Invoke(this, EventArgs.Empty);
             }
