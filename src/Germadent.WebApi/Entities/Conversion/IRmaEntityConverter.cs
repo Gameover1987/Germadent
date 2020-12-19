@@ -15,8 +15,6 @@ namespace Germadent.WebApi.Entities.Conversion
 
         AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity);
 
-        ReportListDto ConvertToExcel(ExcelEntity entity);
-
         CustomerDto ConvertToCustomer(CustomerEntity entity);
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);

@@ -7,7 +7,7 @@ namespace Germadent.Rma.App.Views.DesignMock
     public class DesignMockPriceListWizardStepViewModel : PriceListWizardStepViewModel
     {
         public DesignMockPriceListWizardStepViewModel() 
-            : base(new ToothCardViewModel(new DesignMockDictionaryRepository(), new ClipboardHelper()), new DesignMockPriceListViewModel())
+            : base(new ToothCardViewModel(new DesignMockDictionaryRepository(), new DesignMockProductRepository(), new ClipboardHelper()), new DesignMockPriceListViewModel())
         {
         }
     }

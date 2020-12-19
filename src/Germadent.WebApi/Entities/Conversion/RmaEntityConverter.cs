@@ -146,25 +146,6 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
-        public ReportListDto ConvertToExcel(ExcelEntity entity)
-        {
-            return new ReportListDto
-            {
-                Created = entity.Created,
-                DocNumber = entity.DocNumber,
-                Customer = entity.Customer,
-                EquipmentSubstring = entity.EquipmentSubstring,
-                Patient = entity.Patient,
-                ProstheticSubstring = entity.ProstheticSubstring,
-                MaterialsStr = entity.MaterialsStr,
-                ColorAndFeatures = entity.ColorAndFeatures,
-                CarcassColor = entity.CarcassColor,
-                ImplantSystem = entity.ImplantSystem,
-                Quantity = entity.Quantity,
-                ProstheticArticul = entity.ProstheticArticul
-            };
-        }
-
         public CustomerDto ConvertToCustomer(CustomerEntity entity)
         {
             return new CustomerDto

@@ -84,9 +84,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
         {
-            // TODO: Alexey Kolosenok
-            var setPriceStl = false;
-            var toothEntities = orderDto.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, setPriceStl)).ToArray();
+            var toothEntities = orderDto.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, orderDto.Stl)).ToArray();
             var toothCardJson = toothEntities.SerializeToJson(Formatting.Indented);
 
             var cmdText = "AddOrUpdateToothCardInWO";
@@ -222,7 +220,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         public OrderDto GetOrderDetails(int id)
         {
             var orderDto = GetWorkOrderById(id);
-            orderDto.ToothCard = GetToothCard(id);
+            orderDto.ToothCard = GetToothCard(id, orderDto.Stl);
             return orderDto;
         }           
 
@@ -325,15 +323,12 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private ToothDto[] GetToothCard(int id)
+        private ToothDto[] GetToothCard(int id, bool getPricesAsStl)
         {
             var cmdText = string.Format("select * from GetToothCardByWOId({0})", id);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-
-                var additionalEquipments = GetAdditionalEquipmentByWorkOrder(id, connection);
-                var getPricesAsStl = GetPricesAsStl(additionalEquipments);
 
                 using (var command = new SqlCommand(cmdText, connection))
                 {
@@ -368,11 +363,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     return toothDtoCollection;
                 }
             }
-        }
-
-        private static bool GetPricesAsStl(AdditionalEquipmentDto[] additionalEquipmentDtos)
-        {
-            return false;
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
@@ -592,50 +582,55 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public ReportListDto[] GetWorkReport(int id)
         {
-            throw new NotImplementedException("Work report");
-            //var orderDto = GetWorkOrderById(id);
+            var orderDto = GetWorkOrderById(id);
 
-            //var toothCard = GetToothCard(id);
+            var toothCard = GetToothCard(id, orderDto.Stl);
 
-            //var prosteticsCollection = toothCard
-            //    .GroupBy(x => x.ProductName)
-            //    .Select(x => new { quantity = x.Count(), pName = x.Key })
-            //    .ToArray();
+            var products = toothCard
+                .SelectMany(x => x.Products)
+                .GroupBy(x => x.ProductName)
+                .Select(x => new
+                {
+                    ProductName = x.Key,
+                    Quantity = x.Count(),
+                    TotalPrice = x.Sum(y => y.PriceModel == 0 ? y.PriceStl : y.PriceModel) 
+                })
+                .ToArray();
 
-            //var equipmentNames = new[]
-            //{
-            //    "STL", "Слепок", "Модель"
-            //};
+            var equipmentNames = new[]
+            {
+                "STL", "Слепок", "Модель"
+            };
 
-            //var equipments = orderDto.AdditionalEquipment
-            //    .Where(x => equipmentNames.Contains(x.EquipmentName))
-            //    .Select(x => x.EquipmentName)
-            //    .ToArray();
+            var equipments = orderDto.AdditionalEquipment
+                .Where(x => equipmentNames.Contains(x.EquipmentName))
+                .Select(x => x.EquipmentName)
+                .ToArray();
 
-            //var reports = new List<ReportListDto>();
-            //foreach (var prosthetics in prosteticsCollection)
-            //{
-            //    var entity = new ExcelEntity
-            //    {
-            //        Created = orderDto.Created,
-            //        DocNumber = orderDto.DocNumber,
-            //        Customer = orderDto.Customer,
-            //        EquipmentSubstring = string.Join("; ", equipments),
-            //        Patient = orderDto.Patient,
-            //        ProstheticSubstring = prosthetics.pName,
-            //        MaterialsStr = orderDto.MaterialsStr,
-            //        ColorAndFeatures = orderDto.ColorAndFeatures,
-            //        CarcassColor = orderDto.CarcassColor,
-            //        ImplantSystem = orderDto.ImplantSystem,
-            //        Quantity = prosthetics.quantity,
-            //        ProstheticArticul = orderDto.ProstheticArticul
-            //    };
-            //    var reportDto = _converter.ConvertToExcel(entity);
-            //    reports.Add(reportDto);
-            //}
+            var reports = new List<ReportListDto>();
+            foreach (var product in products)
+            {
+                var reportListDto = new ReportListDto
+                {
+                    Created = orderDto.Created,
+                    DocNumber = orderDto.DocNumber,
+                    Customer = orderDto.Customer,
+                    EquipmentSubstring = string.Join("; ", equipments),
+                    Patient = orderDto.Patient,
+                    ProstheticSubstring = product.ProductName,
+                    MaterialsStr = orderDto.MaterialsStr,
+                    ColorAndFeatures = orderDto.ColorAndFeatures,
+                    CarcassColor = orderDto.CarcassColor,
+                    ImplantSystem = orderDto.ImplantSystem,
+                    Quantity = product.Quantity,
+                    ProstheticArticul = orderDto.ProstheticArticul,
+                    TotalPrice = orderDto.Cashless ? 0: product.TotalPrice,
+                    TotalPriceCashless = orderDto.Cashless ? product.TotalPrice : 0
+                };
+                reports.Add(reportListDto);
+            }
 
-            //return reports.ToArray();
-
+            return reports.ToArray();
         }
 
         public CustomerDto[] GetCustomers(string name)
