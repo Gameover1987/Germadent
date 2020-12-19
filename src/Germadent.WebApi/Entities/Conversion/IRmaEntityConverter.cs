@@ -19,6 +19,8 @@ namespace Germadent.WebApi.Entities.Conversion
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
 
+        AttributeDto ConvertToAttribute(AttributesEntity entity);
+
         PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity);
 
         PricePositionDto ConvertToPricePosition(PricePositionEntity entity);

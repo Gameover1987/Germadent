@@ -1,6 +1,13 @@
-﻿namespace Germadent.WebApi.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Germadent.Rma.Model
 {
-    public class AttributesEntity
+    /// <summary>
+    /// Атрибут 
+    /// </summary>
+    public class AttributeDto
     {
         /// <summary>
         /// Идентификатор атрибута

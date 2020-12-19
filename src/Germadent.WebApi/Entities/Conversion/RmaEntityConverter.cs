@@ -172,6 +172,19 @@ namespace Germadent.WebApi.Entities.Conversion
             };
         }
 
+        public AttributeDto ConvertToAttribute(AttributesEntity entity)
+        {
+            return new AttributeDto
+            {
+                AttributeId = entity.AttributeId,
+                AttributeKeyName = entity.AttributeKeyName,
+                AttributeName = entity.AttributeName,
+                AttributeValue = entity.AttributeValue,
+                AttributeValueId = entity.AttributeValueId,
+                IsObsolete = entity.IsObsolete
+            };
+        }
+
         public PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity)
         {
             return new PriceGroupDto

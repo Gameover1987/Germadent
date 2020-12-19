@@ -761,6 +761,34 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
+        public AttributeDto[] GetAllAttributesAndValues()
+        {
+            var cmdText = "select * from GetAttributesAndValues()";
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var commamd = new SqlCommand(cmdText, connection))
+                {
+                    var reader = commamd.ExecuteReader();
+                    var attributes = new List<AttributeDto>();
+                    while (reader.Read())
+                    {
+                        var entity = new AttributesEntity();
+                        entity.AttributeId = reader[nameof(AttributesEntity.AttributeId)].ToInt();
+                        entity.AttributeKeyName = reader[nameof(AttributesEntity.AttributeKeyName)].ToString();
+                        entity.AttributeName = reader[nameof(AttributesEntity.AttributeName)].ToString();
+                        entity.AttributeValue = reader[nameof(AttributesEntity.AttributeValue)].ToString();
+                        entity.AttributeValueId = reader[nameof(AttributesEntity.AttributeValueId)].ToInt();
+                        entity.IsObsolete = reader[nameof(AttributesEntity.IsObsolete)].ToBool();
+
+                        attributes.Add(_converter.ConvertToAttribute(entity));
+                    }
+
+                    return attributes.ToArray();
+                }
+            }
+        }
+
         public CustomerDto AddCustomer(CustomerDto customer)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))

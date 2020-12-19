@@ -49,7 +49,7 @@ namespace Germadent.Rma.App.Test
 
                 });
 
-            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IClipboardHelper>());
+            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IProductRepository>(), Mock.Of<IClipboardHelper>());
         }
 
         private static ToothDto[] CreateToothCard()
