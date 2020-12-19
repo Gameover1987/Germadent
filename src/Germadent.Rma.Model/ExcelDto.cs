@@ -16,5 +16,10 @@ namespace Germadent.Rma.Model
         public string ImplantSystem { get; set; }
         public int Quantity { get; set; }
         public string ProstheticArticul { get; set; }
+
+        public decimal TotalPrice { get; set; }
+
+        public decimal TotalPriceCashless { get; set; }
+
     }
 }

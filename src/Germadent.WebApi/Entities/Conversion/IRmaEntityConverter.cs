@@ -15,11 +15,11 @@ namespace Germadent.WebApi.Entities.Conversion
 
         AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity);
 
-        ReportListDto ConvertToExcel(ExcelEntity entity);
-
         CustomerDto ConvertToCustomer(CustomerEntity entity);
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
+
+        AttributeDto ConvertToAttribute(AttributesEntity entity);
 
         PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity);
 

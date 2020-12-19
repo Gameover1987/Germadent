@@ -159,6 +159,8 @@ namespace Germadent.Rma.App.Views.DesignMock
             ResponsiblePersonPhone = "+7913 453 45 38";
             DateComment = "Какой то комментарий к срокам";
             Created = DateTime.Now;
+            Cashless = true;
+            Stl = false;
         }
     }
 }

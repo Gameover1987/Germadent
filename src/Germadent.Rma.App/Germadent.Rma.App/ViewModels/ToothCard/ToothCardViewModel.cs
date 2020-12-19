@@ -16,12 +16,14 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
     public class ToothCardViewModel : ViewModelBase, IToothCardViewModel
     {
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IClipboardHelper _clipboard;
         private ToothViewModel[] _selectedTeeth;
 
-        public ToothCardViewModel(IDictionaryRepository dictionaryRepository, IClipboardHelper clipboard)
+        public ToothCardViewModel(IDictionaryRepository dictionaryRepository, IProductRepository productRepository, IClipboardHelper clipboard)
         {
             _dictionaryRepository = dictionaryRepository;
+            _productRepository = productRepository;
             _clipboard = clipboard;
 
             Teeth = new ObservableCollection<ToothViewModel>();
@@ -64,22 +66,22 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             for (int i = 18; i >= 11; i--)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             for (int i = 21; i <= 28; i++)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             for (int i = 38; i >= 31; i--)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             foreach (var teethViewModel in Teeth)

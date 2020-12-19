@@ -167,5 +167,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="priceGroupId"></param>
         /// <returns></returns>
         DeleteResult DeletePricePosition(int priceGroupId);
+
+        /// <summary>
+        /// Возвращает набор всех атрибутов и их значений
+        /// </summary>
+        /// <returns></returns>
+        AttributeDto[] GetAllAttributesAndValues();
     }
 }

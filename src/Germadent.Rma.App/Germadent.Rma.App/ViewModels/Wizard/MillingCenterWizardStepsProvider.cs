@@ -21,6 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IPriceListViewModel _priceListViewModel;
         private readonly IClipboardHelper _clipboardHelper;
 
@@ -31,6 +32,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository,
             IDictionaryRepository dictionaryRepository,
+            IProductRepository productRepository,
             IPriceListViewModel priceListViewModel,
             IClipboardHelper clipboardHelper)
         {
@@ -41,6 +43,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _customerRepository = customerRepository;
             _responsiblePersonRepository = responsiblePersonRepository;
             _dictionaryRepository = dictionaryRepository;
+            _productRepository = productRepository;
             _priceListViewModel = priceListViewModel;
             _clipboardHelper = clipboardHelper;
         }
@@ -52,7 +55,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new IWizardStepViewModel[]
             {
                 new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository),
-                new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, _clipboardHelper), _priceListViewModel),
+                new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, _productRepository, _clipboardHelper), _priceListViewModel),
                 new MillingCenterAdditionalEquipmentViewModel(_dictionaryRepository),
             };
         }

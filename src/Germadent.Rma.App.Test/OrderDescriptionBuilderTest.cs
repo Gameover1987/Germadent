@@ -6,6 +6,7 @@ namespace Germadent.Rma.App.Test
     [TestClass]
     public class OrderDescriptionBuilderTest
     {
+        [TestMethod]
         [DataSource(nameof(_testCase1))]
         public void ShouldGetToothCardDescription(ToothDto[] toothCollection, string expectedDescription)
         {

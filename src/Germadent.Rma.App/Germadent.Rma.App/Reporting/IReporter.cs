@@ -16,7 +16,6 @@ namespace Germadent.Rma.App.Reporting
 
         public ClipboardReporter(IClipboardHelper clipboard, IRmaServiceClient rmaServiceClient)
         {
-            //TODO Nekrasov:нул
             _clipboard = clipboard;
             _rmaServiceClient = rmaServiceClient;
         }
@@ -31,7 +30,7 @@ namespace Germadent.Rma.App.Reporting
 
             foreach (var report in reports)
             {
-                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, report.CarcassColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ProstheticArticul, "\t", report.ImplantSystem + "\n").Trim();
+                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, report.CarcassColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ProstheticArticul, "\t", report.TotalPriceCashless, report.TotalPrice, report.ImplantSystem + "\n").Trim();
                 builder.AppendLine(line);
             }
 

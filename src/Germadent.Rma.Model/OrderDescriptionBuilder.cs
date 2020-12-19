@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using Germadent.Common.Extensions;
 
 namespace Germadent.Rma.Model
 {
@@ -23,9 +21,26 @@ namespace Germadent.Rma.Model
             if (tooth.HasBridge)
                 descriptionBuilder.Append("Мост");
 
+            descriptionBuilder.Append(GetDescriptionByProducts(tooth));
+
             var toothDescription = descriptionBuilder.ToString().Trim(' ', '/');
 
             return toothDescription.ToString();
+        }
+
+        private static string GetDescriptionByProducts(ToothDto tooth)
+        {
+            if (tooth.Products.IsNullOrEmpty())
+                return string.Empty;
+
+            var descriptionBuilder = new StringBuilder();
+            foreach (var product in tooth.Products)
+            {
+                descriptionBuilder.Append(string.Format("{0} / {1}, ", product.ProductName, product.MaterialName));
+            }
+
+            var result = string.Format(" ({0})", descriptionBuilder.ToString().Trim(' ', ','));
+            return result;
         }
 
         public static string GetToothCardDescription(ToothDto[] toothCollection)
