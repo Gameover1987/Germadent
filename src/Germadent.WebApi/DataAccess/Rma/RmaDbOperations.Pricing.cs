@@ -113,7 +113,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddPricePosition", connection))
+                using (var command = new SqlCommand("UpdatePricePosition", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = pricePositionDto.PricePositionId;
