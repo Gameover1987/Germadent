@@ -76,10 +76,26 @@ namespace Germadent.WebApi.DataAccess.Rma
                 order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
+
+            order.Attributes.ForEach(x => x.WorkOrderId = order.WorkOrderId);
+            AddOrUpdateAttributesSet(order, connection);
+
             order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
             AddOrUpdateAdditionalEquipmentInWO(order, connection);
 
             return order;
+        }
+
+        private static void AddOrUpdateAttributesSet(OrderDto order, SqlConnection connection)
+        {
+            var jsonString = order.Attributes.SerializeToJson(Formatting.Indented);
+
+            using (var command = new SqlCommand("AddOrUpdateAttributesSet", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = jsonString;
+                command.ExecuteNonQuery();
+            }
         }
 
         private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
@@ -214,6 +230,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
 
+            AddOrUpdateAttributesSet(order, connection);
+
             AddOrUpdateAdditionalEquipmentInWO(order, connection);
         }
 
@@ -294,6 +312,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 }
 
                 order.AdditionalEquipment = GetAdditionalEquipmentByWorkOrder(workOrderId, connection);
+                order.Attributes = GetAttributesByWoId(workOrderId, connection);
                 return order;
             }
         }
@@ -319,6 +338,33 @@ namespace Germadent.WebApi.DataAccess.Rma
                     }
 
                     return additionalEquipmentEntities.Select(x => _converter.ConvertToAdditionalEquipment(x)).ToArray();
+                }
+            }
+        }
+
+        private AttributeDto[] GetAttributesByWoId(int workOrderId, SqlConnection connection)
+        {
+            var cmdText = "select * from GetAttributesValuesByWOId(@workOrderId)";
+
+            using (var command = new SqlCommand(cmdText, connection))
+            {
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                using (var reader = command.ExecuteReader())
+                {
+                    var attributes = new List<AttributesEntity>();
+                    while (reader.Read())
+                    {
+                        var entity = new AttributesEntity();
+                        entity.AttributeId = reader[nameof(AttributesEntity.AttributeId)].ToInt();
+                        entity.AttributeKeyName = reader[nameof(AttributesEntity.AttributeKeyName)].ToString();
+                        entity.AttributeName = reader[nameof(AttributesEntity.AttributeName)].ToString();
+                        entity.AttributeValue = reader[nameof(AttributesEntity.AttributeValue)].ToString();
+                        entity.AttributeValueId = reader[nameof(AttributesEntity.AttributeValueId)].ToInt();
+
+                        attributes.Add(entity);
+                    }
+
+                    return attributes.Select(x => _converter.ConvertToAttribute(x)).ToArray();
                 }
             }
         }

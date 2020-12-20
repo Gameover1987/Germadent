@@ -36,8 +36,8 @@
                 <wizardUi:MillingCenterProjectStepUserControl/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentViewModel}">
-                <wizardUi:MillingCenterAdditionalEquipmentUserControl/>
+            <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentWizardStepViewModel}">
+                <wizardUi:MillingCenterAdditionalEquipmentStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:PriceListWizardStepViewModel}">

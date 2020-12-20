@@ -57,9 +57,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             return new IWizardStepViewModel[]
             {
-                new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository, _attributeRepository ),
+                new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository ),
                 new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, _productRepository, _clipboardHelper), _priceListViewModel),
-                new MillingCenterAdditionalEquipmentViewModel(_dictionaryRepository),
+                new MillingCenterAdditionalEquipmentWizardStepViewModel(_dictionaryRepository, _attributeRepository),
             };
         }
     }

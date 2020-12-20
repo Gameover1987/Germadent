@@ -15,6 +15,7 @@ namespace Germadent.Rma.Model
             ToothCard = new ToothDto[0];
             Transparency = 7; // Не определено
             AdditionalEquipment = new AdditionalEquipmentDto[0];
+            Attributes = new AttributeDto[0];
         }
 
         public int WorkOrderId { get; set; }
@@ -82,5 +83,7 @@ namespace Germadent.Rma.Model
         public string MaterialsStr { get; set; }
 
         public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }        
+
+        public AttributeDto[] Attributes { get; set; }
     }
 }

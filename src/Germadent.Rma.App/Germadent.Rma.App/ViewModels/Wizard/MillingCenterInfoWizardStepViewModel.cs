@@ -28,22 +28,19 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _dateComment;
         private bool _stl;
         private bool _cashless;
-        private AttributeDto _selectedCarcassColor;
 
         public MillingCenterInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
             ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonsSuggestionsProvider,
             ICustomerRepository customerRepository,
-            IResponsiblePersonRepository responsiblePersonRepository,
-            IAttributeRepository attributeRepository)
+            IResponsiblePersonRepository responsiblePersonRepository)
         {
             _catalogSelectionOperations = catalogSelectionOperations;
             _catalogUIOperations = catalogUIOperations;
             _customerRepository = customerRepository;
             _customerRepository.Changed += CustomerRepositoryOnChanged;
             _responsiblePersonRepository = responsiblePersonRepository;
-            _attributeRepository = attributeRepository;
             _responsiblePersonRepository.Changed += ResponsiblePersonRepositoryOnChanged;
 
             CustomerSuggestionProvider = customerSuggestionProvider;
@@ -193,20 +190,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
-        public ObservableCollection<AttributeDto> CarcassColors { get; } = new ObservableCollection<AttributeDto>();
-
-        public AttributeDto SelectedCarcassColor
-        {
-            get { return _selectedCarcassColor; }
-            set
-            {
-                if (_selectedCarcassColor == value)
-                    return;
-                _selectedCarcassColor = value;
-                OnPropertyChanged(() => SelectedCarcassColor);
-            }
-        }
-
         public bool Stl
         {
             get { return _stl; }
@@ -255,18 +238,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _dateComment = order.DateComment;
             _stl = order.Stl;
             _cashless = order.Cashless;
-
-            CarcassColors.Clear();
-            var carcassColors = _attributeRepository
-                .Items
-                .Where(x => x.AttributeKeyName == AttributeKeyNames.CarcassColor)
-                .ToArray();
-            foreach (var attributeDto in carcassColors)
-            {
-                CarcassColors.Add(attributeDto);
-            }
-
-            SelectedCarcassColor = CarcassColors.FirstOrDefault(x => x.AttributeKeyName == order.CarcassColor);
         }
 
         public override void AssemblyOrder(OrderDto order)

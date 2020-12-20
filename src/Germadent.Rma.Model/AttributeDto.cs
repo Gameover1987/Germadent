@@ -15,6 +15,11 @@ namespace Germadent.Rma.Model
     public class AttributeDto
     {
         /// <summary>
+        /// Идентификатор заказ-наряда
+        /// </summary>
+        public int WorkOrderId { get; set; }
+
+        /// <summary>
         /// Идентификатор атрибута
         /// </summary>
         public int AttributeId { get; set; }
