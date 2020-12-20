@@ -18,11 +18,12 @@ BEGIN
 	set @pricePositionId = 136
 	set	@jsonStringPrices = 
 		'[
-		  {"DateBeginning": "2020-07-19", "PriceSTL": 22, "PriceModel": 44, "DateEnd": "2020-08-01"},
-		  {"DateBeginning": "2020-08-01", "PriceSTL": 100, "PriceModel": 200, "DateEnd": "2020-11-22"},
-		  {"DateBeginning": "2020-11-22", "PriceSTL": 200, "PriceModel": 300, "DateEnd": "2020-12-01"},
-		  {"DateBeginning": "2020-12-01", "PriceSTL": 220, "PriceModel": 330, "DateEnd": "2021-01-01"},
-		  {"DateBeginning": "20210101", "PriceSTL": 300, "PriceModel": 400, "DateEnd": null}
+		  {"DateBeginning": "20210301", "PriceStl": 300, "PriceModel": 400},
+		  {"DateBeginning": "2020-07-19", "PriceStl": 22, "PriceModel": 44},
+		  {"DateBeginning": "2020-08-01", "PriceStl": 100, "PriceModel": 200},
+		  {"DateBeginning": "2020-11-22", "PriceStl": null, "PriceModel": 300},
+		  {"DateBeginning": "2020-12-01", "PriceStl": 220, "PriceModel": 330},
+		  {"DateBeginning": "20210101", "PriceStl": 300, "PriceModel": 400}
 		]';
 */
 	SET NOCOUNT ON
@@ -34,12 +35,22 @@ BEGIN
 		FROM Prices
 		WHERE PricePositionID = @pricePositionId
 
-		-- Наполняем новым содержимым, распарсив строку json:
+		CREATE TABLE #PricesCollection (RowNumber int, DateBeginning date, PriceSTL money, PriceModel money)
+		
+		-- Наполняем временную таблицу содержимым строки json, отсортировав и пронумеровав строки:
+		INSERT INTO #PricesCollection (RowNumber, DateBeginning, PriceSTL, PriceModel)
+		SELECT ROW_NUMBER() OVER(ORDER BY DateBeginning) AS RowNumber, DateBeginning, PriceSTL, PriceModel
+					FROM OPENJSON (@jsonStringPrices)
+					WITH (DateBeginning date, PriceStl money, PriceModel money)
+		
+		-- Добавление поля DateEnd как копии поля DateBeginning со смещением вверх и вставка строк в основную таблицу:
 		INSERT INTO Prices
-		(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
-		SELECT PricePositionID = @pricePositionId, DateBeginning, PriceSTL, PriceModel, DateEnd
-			FROM OPENJSON (@jsonStringPrices)
-			WITH (DateBeginning date, PriceSTL money, PriceModel money, DateEnd date)
+				(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
+		SELECT PricePositionID = @pricePositionId, prc.DateBeginning, prc.PriceSTL, prc.PriceModel, d.DateBeginning as DateEnd
+		FROM #PricesCollection prc
+			LEFT JOIN #PricesCollection d ON prc.RowNumber = d.RowNumber - 1
+
+		DROP TABLE #PricesCollection
 	
 		COMMIT
 	

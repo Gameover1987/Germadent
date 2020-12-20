@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.AttributesValues_View
 AS
-SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, a.FlagRequired, a.Purpose, v.AttributeValue, a.FlagObsolete
+SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, a.IsObsolete
 FROM      dbo.Attributes AS a INNER JOIN
                 dbo.AttrValues AS v ON a.AttributeID = v.AttributeID
 GO
@@ -81,20 +81,20 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "a"
             Begin Extent = 
-               Top = 6
-               Left = 40
-               Bottom = 194
-               Right = 236
+               Top = 0
+               Left = 36
+               Bottom = 188
+               Right = 232
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "v"
             Begin Extent = 
-               Top = 6
-               Left = 276
-               Bottom = 174
-               Right = 518
+               Top = 0
+               Left = 401
+               Bottom = 141
+               Right = 585
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -137,6 +137,10 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
+
+
+
+
 
 
 

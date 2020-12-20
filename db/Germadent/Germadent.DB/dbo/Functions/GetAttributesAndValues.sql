@@ -12,7 +12,7 @@ AS
 RETURN 
 (
 	
-	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, a.FlagObsolete, v.AttrValueID, v.AttributeValue
+	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, a.IsObsolete, v.AttributeValueID, v.AttributeValue
 	FROM Attributes a INNER JOIN AttrValues v ON a.AttributeID = v.AttributeID
 	
 )

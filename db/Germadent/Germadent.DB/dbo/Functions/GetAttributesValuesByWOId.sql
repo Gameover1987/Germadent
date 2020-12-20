@@ -12,11 +12,11 @@ AS
 RETURN 
 (
 	
-	SELECT s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, STRING_AGG(v.AttrValueID, '; ') AS AttrValueID, STRING_AGG(v.AttributeValue, '; ') AS AttributeValue
+	SELECT s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, STRING_AGG(v.AttributeValueID, '; ') AS AttributeValueID, STRING_AGG(v.AttributeValue, '; ') AS AttributeValue
 	FROM Attributes a 
 		INNER JOIN AttrValues v ON a.AttributeID = v.AttributeID
-		INNER JOIN AttributesSet s ON v.AttrValueID = s.AttrValueID
+		INNER JOIN AttributesSet s ON v.AttributeValueID = s.AttributeValueID
 	WHERE s.WorkOrderID = @worklOrderId
-	GROUP BY s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
+	GROUP BY s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, v.AttributeValue
 
 )
