@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
@@ -136,13 +138,23 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             _hasBridge = toothDto.HasBridge;
 
-            var productIdsByTooth = toothDto.Products.Select(y => y.ProductId);
+            //var productIdsByTooth = toothDto.Products.Select(y => y.ProductId);
 
-            _products = _productRepository
-                .Items
-                .Where(x => productIdsByTooth.Contains(x.ProductId))
-                .Select(x => new ProductViewModel(x) {IsChecked = true})
-                .ToArray();
+            //_products = _productRepository
+            //    .Items
+            //    .Where(x => productIdsByTooth.Contains(x.ProductId))
+            //    .Select(x => new ProductViewModel(x) {IsChecked = true})
+            //    .ToArray();
+
+            var products = new List<ProductDto>();
+            foreach (var productDto in toothDto.Products)
+            {
+                var productFromRepository = _productRepository.Items.First(x =>
+                    x.ProductId == productDto.ProductId && x.PricePositionId == productDto.PricePositionId);
+                products.Add(productFromRepository);
+            }
+
+            _products = products.Select(x => new ProductViewModel(x)).ToArray();
 
             OnPropertyChanged();
         }
