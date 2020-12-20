@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Germadent.Rma.Model
 {
+    public class AttributeKeyNames
+    {
+        public const string CarcassColor = "CarcassColor";
+    }
+
     /// <summary>
     /// Атрибут 
     /// </summary>
