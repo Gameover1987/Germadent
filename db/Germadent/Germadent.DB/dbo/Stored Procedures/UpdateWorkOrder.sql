@@ -7,7 +7,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	
 	@branchTypeID int
 	, @workOrderID int
-	, @docNumber nvarchar(10)
+--	, @docNumber nvarchar(10)
 	, @customerID int
 	, @responsiblePersonId int
 	, @flagWorkAccept bit
@@ -17,18 +17,18 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
 --	, @officeAdminID int
-	, @officeAdminName nvarchar(50)
+--	, @officeAdminName nvarchar(50)
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint	
 	, @fittingDate datetime
 	, @dateOfCompletion datetime
-	, @additionalInfo nvarchar(70)
-	, @carcassColor nvarchar(30)
-	, @implantSystem nvarchar(70)
-	, @individualAbutmentProcessing nvarchar(70)
-	, @understaff nvarchar(100)
-	, @colorAndFeatures nvarchar(100)
+--	, @additionalInfo nvarchar(70)
+--	, @carcassColor nvarchar(30)
+--	, @implantSystem nvarchar(70)
+--	, @individualAbutmentProcessing nvarchar(70)
+--	, @understaff nvarchar(100)
+--	, @colorAndFeatures nvarchar(100)
 	, @created datetime output
 	
 AS
@@ -45,8 +45,8 @@ BEGIN
 	BEGIN TRAN
 	-- Изменение основной таблицы
 	UPDATE WorkOrder
-	SET  DocNumber = @docNumber
-		, CustomerID = @customerID
+	SET  --DocNumber = @docNumber
+		 CustomerID = @customerID
 		, PatientFullName = @patientFullName
 		, PatientGender = @patientGender
 		, PatientAge = @patientAge
@@ -60,9 +60,9 @@ BEGIN
 		, FlagStl = @flagStl
 		, FlagCashless = @flagCashless
 --		, OfficeAdminID = @officeAdminID
-		, OfficeAdminName = @officeAdminName	
+--		, OfficeAdminName = @officeAdminName	
 	WHERE WorkOrderID = @workOrderID
-	
+	/*
 	-- Изменение подчинённых таблиц в зависимости от типа филиала
 	IF @branchTypeID = 1 BEGIN
 		UPDATE WorkOrderMC
@@ -78,7 +78,7 @@ BEGIN
 		SET ColorAndFeatures = @colorAndFeatures
 		WHERE WorkOrderDLID = @workOrderID
 	END
-	
+	*/
 	-- Убираем метку о "блокировке" заказ-наряда
 	EXEC UserReadingWO @workOrderID
 

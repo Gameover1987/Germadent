@@ -2,7 +2,7 @@
 AS
 SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.OfficeAdminName, wo.Closed, 
                 wdl.TransparenceID, rp.RP_Position, rp.ResponsiblePerson, wo.PatientFullName, wo.PatientAge, wo.FittingDate, wo.DateOfCompletion, wdl.ColorAndFeatures, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, 
-                wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.Quantity
+                wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID LEFT OUTER JOIN
                 dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
@@ -92,7 +92,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 286
-               Bottom = 455
+               Bottom = 517
                Right = 485
             End
             DisplayFlags = 280
@@ -142,7 +142,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 211
                Left = 743
-               Bottom = 333
+               Bottom = 354
                Right = 924
             End
             DisplayFlags = 280
@@ -153,11 +153,13 @@ Begin DesignProperties =
                Top = 228
                Left = 1039
                Bottom = 336
-               Right = 1229
+               Right = 1214
             End
             DisplayFlags = 280
             TopColumn = 0
      ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 

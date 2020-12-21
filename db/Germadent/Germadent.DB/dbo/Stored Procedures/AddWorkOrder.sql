@@ -17,16 +17,16 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
 	@officeAdminID int = NULL,
-	@officeAdminName nvarchar(50) = NULL,	
+--	@officeAdminName nvarchar(50) = NULL,	
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
-	@additionalInfo nvarchar(70) = NULL,
-	@carcassColor nvarchar(30) = NULL,
-	@implantSystem nvarchar(70) = NULL,
-	@individualAbutmentProcessing nvarchar(70) = NULL,
-	@understaff nvarchar(100) = NULL,
-	@transparenceID int = NULL,
-	@colorAndFeatures nvarchar(100) = NULL,
+--	@additionalInfo nvarchar(70) = NULL,
+--	@carcassColor nvarchar(30) = NULL,
+--	@implantSystem nvarchar(70) = NULL,
+--	@individualAbutmentProcessing nvarchar(70) = NULL,
+--	@understaff nvarchar(100) = NULL,
+--	@transparenceID int = NULL,
+--	@colorAndFeatures nvarchar(100) = NULL,
 	@workOrderID int output,
 	@docNumber nvarchar(10) output,
 	@created datetime output
@@ -46,7 +46,6 @@ BEGIN
 		REVERT		
 	COMMIT
 
-
 	BEGIN TRAN
 
 	-- Генерируем номер документа, для каждого типа филиала свой:	
@@ -61,12 +60,12 @@ BEGIN
 	SET	@created = GETDATE()
 
 	INSERT INTO WorkOrder
-		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID,  OfficeAdminName)
+		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID) --,  OfficeAdminName
 	VALUES 
-		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID, @officeAdminName)
+		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID) --, @officeAdminName
 
 	SET @workOrderID = SCOPE_IDENTITY()
-
+	/*
 	-- Затем - в подчинённые, для каждого типа филиала - в свою:
 	IF @branchTypeID = 1 BEGIN
 		INSERT INTO WorkOrderMC
@@ -81,6 +80,7 @@ BEGIN
 		VALUES
 			(@workOrderID, @transparenceID, @colorAndFeatures)
 	END
+	*/
 	COMMIT
 END
 GO

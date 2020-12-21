@@ -11,6 +11,6 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT EquipmentID, EquipmentName, InOut
+	SELECT EquipmentID, EquipmentName
 	FROM Equipments
 )

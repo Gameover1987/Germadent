@@ -6,17 +6,13 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddOrUpdateToothCardInWO] 
 	
+	@workOrderId int,
 	@jsonString varchar(MAX)
 
 AS
 BEGIN
 	
-	-- Достаём нужный id
-	DECLARE @workOrderId int
-
-	SET 	 @workOrderId = (SELECT DISTINCT WorkOrderID
-							FROM OPENJSON (@jsonString)
-								WITH (WorkOrderId int))
+	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
@@ -24,17 +20,20 @@ BEGIN
 			RETURN
 		END
 
-	-- Чистим зубную карту от старого содержимого
-	DELETE
-	FROM ToothCard
-	WHERE WorkOrderID = @workOrderId
+	BEGIN TRAN
+		-- Чистим зубную карту от старого содержимого
+		DELETE
+		FROM ToothCard
+		WHERE WorkOrderID = @workOrderId
 
-	-- Наполняем новым содержимым, распарсив строку json
-	INSERT INTO ToothCard
-		(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge)
-	SELECT WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge
-	FROM OPENJSON (@jsonString)
-		WITH (WorkOrderId int, ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProductId int, Price money, HasBridge bit)
+		-- Наполняем новым содержимым, распарсив строку json
+		INSERT INTO ToothCard
+			(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge)
+		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge
+		FROM OPENJSON (@jsonString)
+			WITH (ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProductId int, Price money, HasBridge bit)
+
+	COMMIT
 
 	-- Удаляем незначащие записи
 	DELETE

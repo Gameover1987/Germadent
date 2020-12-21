@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.AttributesValues_View
 AS
-SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, a.IsObsolete
+SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, v.AttributeValue, a.IsObsolete
 FROM      dbo.Attributes AS a INNER JOIN
                 dbo.AttrValues AS v ON a.AttributeID = v.AttributeID
 GO
