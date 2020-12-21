@@ -142,7 +142,8 @@ namespace Germadent.WebApi.Entities.Conversion
                 WorkOrderId = entity.WorkOrderId,
                 EquipmentId = entity.EquipmentId,
                 EquipmentName = entity.EquipmentName,
-                Quantity = entity.Quantity
+                QuantityIn = entity.QuantityIn,
+                QuantityOut = entity.QuantityOut
             };
         }
 

@@ -73,7 +73,7 @@ namespace Germadent.Rma.Model
             var builder = new StringBuilder();
             foreach (var dto in order.AdditionalEquipment)
             {
-                builder.AppendLine(string.Format("{0} - {1}, ", dto.EquipmentName, dto.Quantity));
+                builder.AppendLine(string.Format("{0} - {1}, ", dto.EquipmentName, dto.QuantityIn));
             }
 
             return builder.ToString().Trim(' ', ',');

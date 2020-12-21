@@ -35,13 +35,13 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new AdditionalEquipmentDto
             {
                 EquipmentId = EquipmentId,
-                Quantity = Quantity
+                QuantityIn = Quantity
             };
         }
 
         public void Initialize(AdditionalEquipmentDto additionalEquipmentDto)
         {
-            Quantity = additionalEquipmentDto.Quantity;
+            Quantity = additionalEquipmentDto.QuantityIn;
         }
     }
 }
