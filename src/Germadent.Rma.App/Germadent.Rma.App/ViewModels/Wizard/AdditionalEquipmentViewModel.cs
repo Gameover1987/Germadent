@@ -5,7 +5,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class AdditionalEquipmentViewModel : ViewModelBase
     {     
-        private int _quantity;
+        private int _quantityIn;
+
+        private int _quantityOut;
 
         public AdditionalEquipmentViewModel(DictionaryItemDto dictionaryItemDto)
         {
@@ -17,16 +19,29 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public string DisplayName { get; }
 
-        public int Quantity
+        public int QuantityIn
         {
-            get => _quantity;
+            get => _quantityIn;
             set
             {
-                if (_quantity == value)
+                if (_quantityIn == value)
                     return;
 
-                _quantity = value;
-                OnPropertyChanged(() => Quantity);
+                _quantityIn = value;
+                OnPropertyChanged(() => QuantityIn);
+            }
+        }
+
+        public int QuantityOut
+        {
+            get => _quantityOut;
+            set
+            {
+                if (_quantityOut == value)
+                    return;
+
+                _quantityOut = value;
+                OnPropertyChanged(() => QuantityOut);
             }
         }
 
@@ -35,13 +50,15 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             return new AdditionalEquipmentDto
             {
                 EquipmentId = EquipmentId,
-                QuantityIn = Quantity
+                QuantityIn = QuantityIn,
+                QuantityOut = QuantityOut
             };
         }
 
         public void Initialize(AdditionalEquipmentDto additionalEquipmentDto)
         {
-            Quantity = additionalEquipmentDto.QuantityIn;
+            QuantityIn = additionalEquipmentDto.QuantityIn;
+            QuantityOut = additionalEquipmentDto.QuantityOut;
         }
     }
 }

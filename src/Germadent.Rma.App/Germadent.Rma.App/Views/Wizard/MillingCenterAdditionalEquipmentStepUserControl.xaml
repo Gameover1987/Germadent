@@ -12,6 +12,7 @@
     <Grid IsSharedSizeScope="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -19,52 +20,64 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Дополнительная оснастка" FontSize="10"/>
-        <DataGrid Grid.Row="1" Grid.Column="0" IsReadOnly="False" Margin="0,6,0,0" Width="300"
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" IsReadOnly="False" Margin="0,6,0,0" Width="300"
                   ItemsSource="{Binding Equipments}"
                   AlternationCount="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Оснастка" Binding="{Binding DisplayName, Mode=OneWay}" IsReadOnly="True" MinWidth="150"
                                     ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
-                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*">
+                <DataGridTextColumn Header="Поступило" Binding="{Binding QuantityIn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Margin" Value="3"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>                    
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Докомплект" Binding="{Binding QuantityOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Атрибуты" FontSize="10" Margin="12,0,0,0"/>
 
-        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="12,6,0,0" ItemsSource="{Binding Attributes}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type wizard:AttributeViewModel}">
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+        <ScrollViewer  Grid.Row="1" Grid.Column="1" Margin="12,6,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Attributes}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type wizard:AttributeViewModel}">
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding AttributeName}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Text="{Binding AttributeName}" VerticalAlignment="Center"/>
 
-                        <ComboBox Grid.Column="1" Margin="6,0,0,0" 
-                                  ItemsSource="{Binding Values}"
-                                  SelectedItem="{Binding SelectedValue}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type model:AttributeDto}">
-                                    <TextBlock Text="{Binding AttributeValue}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            <ComboBox Grid.Column="1" Margin="6,0,0,0" 
+                                      ItemsSource="{Binding Values}"
+                                      SelectedItem="{Binding SelectedValue}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type model:AttributeDto}">
+                                        <TextBlock Text="{Binding AttributeValue}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                        <Button Grid.Column="2" Style="{StaticResource XButtonStyle}" Height="15" Width="15" Background="Transparent" 
-                                Command="{Binding CleanupCommand}"
-                                ToolTip="Очистить" Margin="6,0,0,0"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            <Button Grid.Column="2" Style="{StaticResource XButtonStyle}" Height="15" Width="15" Background="Transparent" 
+                                    Command="{Binding CleanupCommand}"
+                                    ToolTip="Очистить" Margin="6,0,0,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <TextBox Grid.Column="1" Grid.Row="2" Height="60" VerticalAlignment="Bottom" Margin="12,6,6,0" VerticalContentAlignment="Top" TextWrapping="Wrap" 
+                 Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}"/>
+
     </Grid>
 </UserControl>

@@ -56,16 +56,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@flagStl", SqlDbType.Bit)).Value = order.Stl;
                 command.Parameters.Add(new SqlParameter("@flagCashless", SqlDbType.Bit)).Value = order.Cashless;
                 command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
-//                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
-//                command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo;
-//                command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor;
-//                command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem;
-//                command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing;
-//                command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff;
-//                command.Parameters.Add(new SqlParameter("@transparenceId", SqlDbType.Int)).Value = order.Transparency;
-//                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
@@ -205,7 +197,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)order.BranchType;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-//                command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar)).Value = order.DocNumber;
                 command.Parameters.Add(new SqlParameter("@customerID", SqlDbType.Int)).Value = order.CustomerId;
                 command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = order.ResponsiblePersonId == 0 ? (object)DBNull.Value : order.ResponsiblePersonId;
                 command.Parameters.Add(new SqlParameter("@flagWorkAccept", SqlDbType.Bit)).Value = order.WorkAccepted;
@@ -214,18 +205,11 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
-//                command.Parameters.Add(new SqlParameter("@officeAdminName", SqlDbType.NVarChar)).Value = order.OfficeAdminName;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.Bit)).Value = (int)order.Gender;
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion.GetValueOrDbNull();
-//                command.Parameters.Add(new SqlParameter("@additionalInfo", SqlDbType.NVarChar)).Value = order.AdditionalInfo == null ? (object)DBNull.Value : order.AdditionalInfo;
-//                command.Parameters.Add(new SqlParameter("@carcassColor", SqlDbType.NVarChar)).Value = order.CarcassColor == null ? (object)DBNull.Value : order.CarcassColor;
-//                command.Parameters.Add(new SqlParameter("@implantSystem", SqlDbType.NVarChar)).Value = order.ImplantSystem.GetValueOrDbNull();
-//                command.Parameters.Add(new SqlParameter("@individualAbutmentProcessing", SqlDbType.NVarChar)).Value = order.IndividualAbutmentProcessing == null ? (object)DBNull.Value : order.IndividualAbutmentProcessing;
-//                command.Parameters.Add(new SqlParameter("@understaff", SqlDbType.NVarChar)).Value = order.Understaff == null ? (object)DBNull.Value : order.Understaff;
-//                command.Parameters.Add(new SqlParameter("@colorAndFeatures", SqlDbType.NVarChar)).Value = order.ColorAndFeatures == null ? (object)DBNull.Value : order.ColorAndFeatures;
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();
@@ -268,9 +252,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             CustomerName = reader["CustomerName"].ToString(),
                             AdditionalInfo = reader["AdditionalInfo"].ToString(),
                             BranchTypeId = reader["BranchTypeId"].ToInt(),
-//                            CarcassColor = reader["CarcassColor"].ToString(),
                             DocNumber = reader["DocNumber"].ToString(),
-//                            ColorAndFeatures = reader["ColorAndFeatures"].ToString(),
                             FlagWorkAccept = reader["FlagWorkAccept"].ToBool(),
                             FlagStl = reader["FlagStl"].ToBool(),
                             FlagCashless = reader["FlagCashless"].ToBool(),
@@ -278,7 +260,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                             ImplantSystem = reader["ImplantSystem"].ToString(),
                             IndividualAbutmentProcessing = reader["IndividualAbutmentProcessing"].ToString(),
                             Patient = reader["PatientFullName"].ToString(),
-//                            Understaff = reader["Understaff"].ToString(),
                             WorkDescription = reader["WorkDescription"].ToString(),
                             Status = reader["Status"].ToInt(),
                             ResponsiblePersonId = reader["ResponsiblePersonId"].ToInt(),
@@ -287,7 +268,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                             TechnicPhone = reader["TechnicPhone"].ToString(),
                             PatientGender = reader["PatientGender"].ToBool(),
                             Age = reader["PatientAge"].ToInt(),
-//                            Transparency = reader["TransparenceId"].ToInt(),
                             ProstheticArticul = reader["ProstheticArticul"].ToString(),
                             MaterialsEnum = reader["MaterialsEnum"].ToString(),
                             DateComment = reader["DateComment"].ToString(),

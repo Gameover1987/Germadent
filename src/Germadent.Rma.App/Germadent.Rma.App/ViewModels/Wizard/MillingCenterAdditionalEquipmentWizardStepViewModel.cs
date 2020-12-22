@@ -10,6 +10,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         private readonly IDictionaryRepository _dictionaryRepository;
         private readonly IAttributeRepository _attributeRepository;
+        private string _workDescription;
 
         public MillingCenterAdditionalEquipmentWizardStepViewModel(IDictionaryRepository dictionaryRepository, IAttributeRepository attributeRepository)
         {
@@ -24,6 +25,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public ObservableCollection<AdditionalEquipmentViewModel> Equipments { get; } = new ObservableCollection<AdditionalEquipmentViewModel>();
 
         public ObservableCollection<AttributeViewModel> Attributes { get; } = new ObservableCollection<AttributeViewModel>();
+
+        public string WorkDescription
+        {
+            get => _workDescription;
+            set
+            {
+                if (_workDescription == value)
+                    return;
+                _workDescription = value;
+                OnPropertyChanged(() => WorkDescription);
+            }
+        }
 
         public override void Initialize(OrderDto order)
         {
@@ -51,13 +64,14 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 var attributeViewModel = new AttributeViewModel(attributeGroup.First().AttributeName, selectedValue == null ? 0 : selectedValue.AttributeValueId, attributeGroup.ToArray());
                 Attributes.Add(attributeViewModel);
             }
+            _workDescription = order.WorkDescription;
         }
 
         public override void AssemblyOrder(OrderDto order)
         {
             order.AdditionalEquipment = Equipments.Select(x => x.ToDto()).ToArray();
             order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-
+            order.WorkDescription = WorkDescription;
             order.Attributes = Attributes.Where(x => x.SelectedValue != null).Select(x => x.SelectedValue).ToArray();
             order.Attributes.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }
