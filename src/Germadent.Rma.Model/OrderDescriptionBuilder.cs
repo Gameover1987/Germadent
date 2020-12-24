@@ -103,7 +103,7 @@ namespace Germadent.Rma.Model
             var builder = new StringBuilder();
             foreach (var dto in order.Attributes.Where(x => x.AttributeKeyName == attrKeyName))
             {
-                builder.AppendLine(string.Format(dto.AttributeValue, ", "));
+                builder.Append(string.Format(dto.AttributeValue, ", "));
             }
 
             return builder.ToString().Trim(' ', ',');
