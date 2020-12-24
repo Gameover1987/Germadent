@@ -10,7 +10,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
     {
         private readonly IDictionaryRepository _dictionaryRepository;
         private string _workDescription;
-        private string _colorAndFeatures;
         private string _prostheticArticul;
 
         private DictionaryItemDto _selectedTransparency;
@@ -35,18 +34,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 OnPropertyChanged(() => WorkDescription);
             }
         }
-
-        public string ColorAndFeatures
-        {
-            get => _colorAndFeatures;
-            set {
-                if (_colorAndFeatures == value)
-                    return;
-                _colorAndFeatures = value;
-                OnPropertyChanged(() => ColorAndFeatures);
-            }
-        }
-
+               
         public string ProstheticArticul
         {
             get => _prostheticArticul;
@@ -76,7 +64,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void Initialize(OrderDto order)
         {
             _workDescription = order.WorkDescription;
-            _colorAndFeatures = order.ColorAndFeatures;
             _prostheticArticul = order.ProstheticArticul;
 
             Transparences.Clear();
@@ -91,7 +78,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public override void AssemblyOrder(OrderDto order)
         {
             order.WorkDescription = WorkDescription;
-            order.ColorAndFeatures = ColorAndFeatures;
             order.Transparency = SelectedTransparency.Id;
             order.ProstheticArticul = ProstheticArticul;
         }

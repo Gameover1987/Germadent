@@ -24,27 +24,27 @@ namespace Germadent.Rma.App.Reporting
         {
             var printableOrder = new PrintableOrder
             {
-                AdditionalInfo = order.AdditionalInfo,
+                AdditionalInfo = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "AdditionalInfo"),
                 BranchType = GetBranchTypeName(order.BranchType),
                 FittingDate = order.FittingDate,
                 DateOfCompletion = order.DateOfCompletion,
                 DateComment = order.DateComment,
                 DocNumber = order.DocNumber,
-                CarcassColor = order.CarcassColor,
+                CarcassColor = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ConstructionColor"),
                 Closed = order.Closed,
-                ColorAndFeatures = order.ColorAndFeatures,
+                ColorAndFeatures = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ConstructionColor"),
                 ResponsiblePerson = order.ResponsiblePerson,
                 IndividualAbutmentProcessing = order.IndividualAbutmentProcessing,
                 Created = order.Created,
                 CustomerName = order.Customer,
-                Understaff = order.Understaff,
-                ImplantSystem = order.ImplantSystem,
+                Understaff = OrderDescriptionBuilder.GetUnderstaff(order),
+                ImplantSystem = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ImplantSystem"),
                 FlagWorkAccept = order.WorkAccepted.ToYesNo(),
                 OfficeAdmin = order.OfficeAdminName,
                 PatientFullName = order.Patient,
                 PatientGender = GetGenderName(order.Gender),
                 TechnicPhone = order.ResponsiblePersonPhone,
-                TransparenceName = order.BranchType == BranchType.Laboratory ? GetTransparenceName(order.Transparency) : null,
+                TransparenceName = order.BranchType == BranchType.Laboratory ? OrderDescriptionBuilder.GetAttributesValuesToReport(order, "Trasparency") : null,
                 WorkOrderID = order.WorkOrderId,
                 ProstheticArticul = order.ProstheticArticul,
                 WorkDescription = order.WorkDescription,
@@ -92,12 +92,6 @@ namespace Germadent.Rma.App.Reporting
                     //TODO Nekrasov:same shit
                     throw new ArgumentException(nameof(gender));
             }
-        }
-
-        private string GetTransparenceName(int transparenceId)
-        {
-            var transparences = _dictionaryRepository.GetItems(DictionaryType.Transparency);
-            return transparences.First(x => x.Id == transparenceId).Name;
         }
     }
 }

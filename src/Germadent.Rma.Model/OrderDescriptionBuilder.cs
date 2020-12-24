@@ -73,7 +73,37 @@ namespace Germadent.Rma.Model
             var builder = new StringBuilder();
             foreach (var dto in order.AdditionalEquipment)
             {
+                if (dto.QuantityIn > 0)
                 builder.AppendLine(string.Format("{0} - {1}, ", dto.EquipmentName, dto.QuantityIn));
+            }
+
+            return builder.ToString().Trim(' ', ',');
+        }
+
+        public static string GetUnderstaff(OrderDto order)
+        {
+            if (order.AdditionalEquipment == null)
+                return null;
+
+            var builder = new StringBuilder();
+            foreach (var dto in order.AdditionalEquipment)
+            {
+                if (dto.QuantityOut > 0)
+                    builder.AppendLine(string.Format("{0} - {1}, ", dto.EquipmentName, dto.QuantityOut));
+            }
+
+            return builder.ToString().Trim(' ', ',');
+        }
+
+        public static string GetAttributesValuesToReport(OrderDto order, string attrKeyName)
+        {
+            if (order.Attributes == null)
+                return null;
+
+            var builder = new StringBuilder();
+            foreach (var dto in order.Attributes.Where(x => x.AttributeKeyName == attrKeyName))
+            {
+                builder.AppendLine(string.Format(dto.AttributeValue, ", "));
             }
 
             return builder.ToString().Trim(' ', ',');
