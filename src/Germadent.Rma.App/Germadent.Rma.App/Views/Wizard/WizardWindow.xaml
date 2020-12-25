@@ -24,10 +24,6 @@
                 <wizardUi:LabInfoStepUserControl/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type wizard:LaboratoryProjectWizardStepViewModel}">
-                <wizardUi:LabProjectStepUserControl/>
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type wizard:MillingCenterInfoWizardStepViewModel}">
                 <wizardUi:MillingCenterInfoStepUserControl/>
             </DataTemplate>

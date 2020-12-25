@@ -12,7 +12,6 @@ namespace Germadent.Rma.App.Views.DesignMock
             return new IWizardStepViewModel[]
             {
                 new DesignMockLaboratoryInfoWizardStepViewModel(),
-                new DesignMockLaboratoryProjectWizardStepViewModel(),
             };
         }
     }
