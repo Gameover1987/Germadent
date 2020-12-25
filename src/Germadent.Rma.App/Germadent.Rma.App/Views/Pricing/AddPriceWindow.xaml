@@ -15,8 +15,7 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddPriceViewModel}, IsDesignTimeCreatable=True}"
-        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddPriceViewModel}, IsDesignTimeCreatable=True}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
