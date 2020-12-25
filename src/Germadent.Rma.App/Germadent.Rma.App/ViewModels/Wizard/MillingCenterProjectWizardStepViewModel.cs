@@ -83,18 +83,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
-        public bool WorkAccepted
-        {
-            get => _workAccepted;
-            set
-            {
-                if (_workAccepted == value)
-                    return;
-                _workAccepted = value;
-                OnPropertyChanged(() => WorkAccepted);
-            }
-        }
-
         public string ProstheticArticul
         {
             get => _prostheticArticul;
@@ -131,7 +119,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.CarcassColor = CarcassColor;
             order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
             order.Understaff = Understaff;
-            order.WorkAccepted = WorkAccepted;
             order.ProstheticArticul = ProstheticArticul;
 
             order.ToothCard = ToothCard.ToDto();

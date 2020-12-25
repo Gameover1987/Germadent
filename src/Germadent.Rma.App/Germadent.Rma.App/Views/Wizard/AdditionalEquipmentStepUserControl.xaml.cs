@@ -5,9 +5,9 @@ namespace Germadent.Rma.App.Views.Wizard
     /// <summary>
     /// Interaction logic for MillingCenterAdditionalEquipment.xaml
     /// </summary>
-    public partial class MillingCenterAdditionalEquipmentStepUserControl : UserControl
+    public partial class AdditionalEquipmentStepUserControl : UserControl
     {
-        public MillingCenterAdditionalEquipmentStepUserControl()
+        public AdditionalEquipmentStepUserControl()
         {
             InitializeComponent();
         }

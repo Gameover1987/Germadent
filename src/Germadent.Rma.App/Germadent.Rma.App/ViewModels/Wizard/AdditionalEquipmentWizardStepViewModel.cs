@@ -6,13 +6,15 @@ using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
-    public class MillingCenterAdditionalEquipmentWizardStepViewModel : WizardStepViewModelBase
+    public class AdditionalEquipmentWizardStepViewModel : WizardStepViewModelBase
     {
         private readonly IDictionaryRepository _dictionaryRepository;
         private readonly IAttributeRepository _attributeRepository;
-        private string _workDescription;
 
-        public MillingCenterAdditionalEquipmentWizardStepViewModel(IDictionaryRepository dictionaryRepository, IAttributeRepository attributeRepository)
+        private string _workDescription;
+        private bool _workAccepted;
+
+        public AdditionalEquipmentWizardStepViewModel(IDictionaryRepository dictionaryRepository, IAttributeRepository attributeRepository)
         {
             _dictionaryRepository = dictionaryRepository;
             _attributeRepository = attributeRepository;
@@ -25,7 +27,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public ObservableCollection<AdditionalEquipmentViewModel> Equipments { get; } = new ObservableCollection<AdditionalEquipmentViewModel>();
 
         public ObservableCollection<AttributeViewModel> Attributes { get; } = new ObservableCollection<AttributeViewModel>();
-
+        
         public string WorkDescription
         {
             get => _workDescription;
@@ -35,6 +37,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                     return;
                 _workDescription = value;
                 OnPropertyChanged(() => WorkDescription);
+            }
+        }
+
+        public bool WorkAccepted
+        {
+            get => _workAccepted;
+            set
+            {
+                if (_workAccepted == value)
+                    return;
+                _workAccepted = value;
+                OnPropertyChanged(() => WorkAccepted);
             }
         }
 
@@ -64,6 +78,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 var attributeViewModel = new AttributeViewModel(attributeGroup.First().AttributeName, selectedValue == null ? 0 : selectedValue.AttributeValueId, attributeGroup.ToArray());
                 Attributes.Add(attributeViewModel);
             }
+
+            _workAccepted = order.WorkAccepted;
             _workDescription = order.WorkDescription;
         }
 
@@ -72,6 +88,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.AdditionalEquipment = Equipments.Select(x => x.ToDto()).ToArray();
             order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
             order.WorkDescription = WorkDescription;
+            order.WorkAccepted = WorkAccepted;
             order.Attributes = Attributes.Where(x => x.SelectedValue != null).Select(x => x.SelectedValue).ToArray();
             order.Attributes.ForEach(x => x.WorkOrderId = order.WorkOrderId);
         }

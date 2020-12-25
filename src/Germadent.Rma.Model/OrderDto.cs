@@ -16,6 +16,7 @@ namespace Germadent.Rma.Model
             Transparency = 7; // Не определено
             AdditionalEquipment = new AdditionalEquipmentDto[0];
             Attributes = new AttributeDto[0];
+            WorkAccepted = true;
         }
 
         public int WorkOrderId { get; set; }
