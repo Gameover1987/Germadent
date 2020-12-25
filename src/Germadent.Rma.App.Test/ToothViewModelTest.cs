@@ -1,8 +1,10 @@
 ﻿using Germadent.Rma.Model;
 using System.Linq;
 using FluentAssertions;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Germadent.Rma.App.Test
 {
@@ -15,6 +17,7 @@ namespace Germadent.Rma.App.Test
         /// <param name="hasBridge"></param>
         /// <param name="material"></param>
         /// <param name="productType"></param>
+        [TestMethod]
         [DataRow(true, "ZrO", "Каркас")]
         [DataRow(false, "E.MAX", "другая конструкция")]
         public void ShouldInitializeFromDto(bool hasBridge, string material, string productType)
@@ -32,6 +35,7 @@ namespace Germadent.Rma.App.Test
             Assert.AreEqual(hasBridge, target.HasBridge);
         }
 
+        [TestMethod]
         [DataRow(10, 1, "ZrO", 1, "Каркас", true)]
         public void ShouldGetDto(int toothNumber, bool hasBridge)
         {
@@ -54,6 +58,7 @@ namespace Germadent.Rma.App.Test
         /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
+        [TestMethod]
         [DataRow("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
         [DataRow(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
         [DataRow(null, null, "ZrO", true, "0 - ZrO/Мост")]
@@ -77,7 +82,11 @@ namespace Germadent.Rma.App.Test
 
         private ToothViewModel CreateTarget()
         {
-            return new ToothViewModel(GetProstheticConditions());
+            var dictionaryRepositoryMock = new Mock<IDictionaryRepository>();
+            dictionaryRepositoryMock.Setup(x => x.GetItems(It.IsAny<DictionaryType>()))
+                .Returns(GetProstheticConditions);
+
+            return new ToothViewModel(dictionaryRepositoryMock.Object, Mock.Of<IProductRepository>());
         }
 
         private static DictionaryItemDto[] GetProstheticConditions()

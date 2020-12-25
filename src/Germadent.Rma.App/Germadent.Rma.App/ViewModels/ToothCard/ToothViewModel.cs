@@ -138,14 +138,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
             _hasBridge = toothDto.HasBridge;
 
-            //var productIdsByTooth = toothDto.Products.Select(y => y.ProductId);
-
-            //_products = _productRepository
-            //    .Items
-            //    .Where(x => productIdsByTooth.Contains(x.ProductId))
-            //    .Select(x => new ProductViewModel(x) {IsChecked = true})
-            //    .ToArray();
-
             var products = new List<ProductDto>();
             foreach (var productDto in toothDto.Products)
             {
