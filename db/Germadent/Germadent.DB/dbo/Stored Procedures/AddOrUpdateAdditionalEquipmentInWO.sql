@@ -6,7 +6,7 @@
 CREATE PROCEDURE [dbo].[AddOrUpdateAdditionalEquipmentInWO] 
 	
 	@workOrderId int,
-	@jsonEquipments varchar(MAX)
+	@jsonEquipmentsString varchar(MAX)
 
 AS
 BEGIN
@@ -29,7 +29,7 @@ BEGIN
 		INSERT INTO AdditionalEquipment
 		(WorkOrderID, EquipmentID, QuantityIn, QuantityOut)
 		SELECT WorkOrderID = @workOrderId, EquipmentID, QuantityIn, QuantityOut
-		FROM OPENJSON (@jsonEquipments)
+		FROM OPENJSON (@jsonEquipmentsString)
 			WITH (EquipmentId int, QuantityIn int, QuantityOut int)
     
 	COMMIT

@@ -17,16 +17,11 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
 	@officeAdminID int = NULL,
---	@officeAdminName nvarchar(50) = NULL,	
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
---	@additionalInfo nvarchar(70) = NULL,
---	@carcassColor nvarchar(30) = NULL,
---	@implantSystem nvarchar(70) = NULL,
---	@individualAbutmentProcessing nvarchar(70) = NULL,
---	@understaff nvarchar(100) = NULL,
---	@transparenceID int = NULL,
---	@colorAndFeatures nvarchar(100) = NULL,
+--	@jsonToothCardString varchar(MAX),
+	@jsonEquipmentsString varchar(MAX),
+	@jsonAttributesString varchar(MAX),
 	@workOrderID int output,
 	@docNumber nvarchar(10) output,
 	@created datetime output
@@ -48,39 +43,28 @@ BEGIN
 
 	BEGIN TRAN
 
-	-- Генерируем номер документа, для каждого типа филиала свой:	
-	IF @branchTypeID = 1 BEGIN
-		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-MC', '~', YEAR(GETDATE())-2000)
-			END
-	ELSE IF @branchTypeID = 2 BEGIN
-		SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-DL', '~', YEAR(GETDATE())-2000)
-			END
+		-- Генерируем номер документа, для каждого типа филиала свой:	
+		IF @branchTypeID = 1 BEGIN
+			SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-MC', '~', YEAR(GETDATE())-2000)
+				END
+		ELSE IF @branchTypeID = 2 BEGIN
+			SET @docNumber = CONCAT(CAST((NEXT VALUE FOR dbo.SequenceWorkOrderNumber) AS nvarchar(8)), '-DL', '~', YEAR(GETDATE())-2000)
+				END
 
-	-- Собственно вставка, сначала в основную таблицу:
-	SET	@created = GETDATE()
+		-- Собственно вставка, сначала в основную таблицу:
+		SET	@created = GETDATE()
 
-	INSERT INTO WorkOrder
-		(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID) --,  OfficeAdminName
-	VALUES 
-		(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID) --, @officeAdminName
+		INSERT INTO WorkOrder
+			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID)
+		VALUES 
+			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID)
 
-	SET @workOrderID = SCOPE_IDENTITY()
-	/*
-	-- Затем - в подчинённые, для каждого типа филиала - в свою:
-	IF @branchTypeID = 1 BEGIN
-		INSERT INTO WorkOrderMC
-			(WorkOrderMCID, AdditionalInfo, CarcassColor, ImplantSystem, IndividualAbutmentProcessing, Understaff)
-		VALUES
-			(@workOrderID, @additionalInfo, @carcassColor, @implantSystem, @individualAbutmentProcessing, @understaff)
-	END
+		SET @workOrderID = SCOPE_IDENTITY()
 
-	ELSE IF @branchTypeID = 2 BEGIN
-		INSERT INTO WorkOrderDL
-			(WorkOrderDLID, TransparenceID, ColorAndFeatures)
-		VALUES
-			(@workOrderID, @transparenceID, @colorAndFeatures)
-	END
-	*/
+--		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
+		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+	
 	COMMIT
 END
 GO
