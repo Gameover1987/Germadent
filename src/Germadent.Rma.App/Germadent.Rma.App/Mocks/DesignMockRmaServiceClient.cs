@@ -221,9 +221,6 @@ namespace Germadent.Rma.App.Mocks
                 case DictionaryType.ProstheticType:
                     return GetProstheticTypes();
 
-                case DictionaryType.Transparency:
-                    return GetTransparences();
-
                 default:
                     throw new NotImplementedException("Неизвестный тип словаря");
             }

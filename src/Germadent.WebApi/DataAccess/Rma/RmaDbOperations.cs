@@ -76,7 +76,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                        
             return order;
         }
-                
 
         private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
         {
@@ -139,9 +138,6 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                 case DictionaryType.ProstheticType:
                     return GetProstheticTypes();
-
-                case DictionaryType.Transparency:
-                    return GetTransparences();
 
                 default:
                     throw new NotImplementedException("Неизвестный тип словаря");
@@ -445,6 +441,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 return orders;
             }
         }
+
         public DictionaryItemDto[] GetMaterials()
         {
             var cmdText = "select * from GetMaterialsList()";
@@ -470,32 +467,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                }
-            }
-        }
-
-        public DictionaryItemDto[] GetTransparences()
-        {
-            var cmdText = "select * from GetTransparencesList()";
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-                using (var commamd = new SqlCommand(cmdText, connection))
-                {
-                    var reader = commamd.ExecuteReader();
-                    var transparencesEntities = new List<DictionaryItemEntity>();
-                    while (reader.Read())
-                    {
-                        var transparenceEntity = new DictionaryItemEntity();
-                        transparenceEntity.Id = int.Parse(reader["TransparenceId"].ToString());
-                        transparenceEntity.Name = reader["TransparenceName"].ToString();
-                        transparenceEntity.DictionaryName = DictionaryType.Transparency.GetDescription();
-                        transparenceEntity.DictionaryType = DictionaryType.Transparency;
-
-                        transparencesEntities.Add(transparenceEntity);
-                    }
-                    var transparences = transparencesEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                    return transparences;
                 }
             }
         }
@@ -623,8 +594,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     Patient = orderDto.Patient,
                     ProstheticSubstring = product.ProductName,
                     MaterialsStr = orderDto.MaterialsStr,
-     //               ColorAndFeatures = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
-                    CarcassColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
+                    ConstructionColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
                     ImplantSystem = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ImplantSystem"),
                     Quantity = product.Quantity,
                     ProstheticArticul = orderDto.ProstheticArticul,

@@ -61,8 +61,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             get
             {
-                var items = new List<DictionaryItemDto>();
-                items.AddRange(GetTransparency());
+                var items = new List<DictionaryItemDto>();                
                 items.AddRange(GetProstheticConditions());
                 items.AddRange(GetProstheticTypes());
                 items.AddRange(GetMaterials());
@@ -74,8 +73,6 @@ namespace Germadent.Rma.App.Views.DesignMock
         {
             switch (dictionary)
             {
-                case DictionaryType.Transparency:
-                    return GetTransparency();
                 case DictionaryType.ProstheticCondition:
                     return GetProstheticConditions();
                 case DictionaryType.ProstheticType:
@@ -86,18 +83,7 @@ namespace Germadent.Rma.App.Views.DesignMock
                     throw new NotImplementedException("GetItems");
             }
         }
-
-        private DictionaryItemDto[] GetTransparency()
-        {
-            return new DictionaryItemDto[]
-            {
-                new DictionaryItemDto {Id = 0, Name = "Мамелоны", Dictionary = DictionaryType.Transparency},
-                new DictionaryItemDto {Id = 1, Name = "Вторичный дентин", Dictionary = DictionaryType.Transparency},
-                new DictionaryItemDto {Id = 2, Name = "Зубы с сильно выраженной прозрачностью ", Dictionary = DictionaryType.Transparency},
-                new DictionaryItemDto {Id = 3, Name = "Зубы со слабоо выраженной прозрачностью ", Dictionary = DictionaryType.Transparency},
-            };
-        }
-
+                
         private DictionaryItemDto[] GetProstheticConditions()
         {
             var ptostheticsConditions = new[]
