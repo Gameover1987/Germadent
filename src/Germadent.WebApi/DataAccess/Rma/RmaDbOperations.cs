@@ -41,6 +41,9 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private static OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
         {
+            var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
+            var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+
             using (var command = new SqlCommand("AddWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -58,6 +61,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
+                command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
+                command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
@@ -68,28 +73,10 @@ namespace Germadent.WebApi.DataAccess.Rma
                 order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
-
-            order.Attributes.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-            AddOrUpdateAttributesSet(order, connection);
-
-            order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-            AddOrUpdateAdditionalEquipmentInWO(order, connection);
-
+                       
             return order;
         }
-
-        private static void AddOrUpdateAttributesSet(OrderDto order, SqlConnection connection)
-        {
-            var jsonString = order.Attributes.SerializeToJson(Formatting.Indented);
-
-            using (var command = new SqlCommand("AddOrUpdateAttributesSet", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonStringAttributes", SqlDbType.NVarChar)).Value = jsonString;
-                command.ExecuteNonQuery();
-            }
-        }
+                
 
         private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
         {
@@ -102,7 +89,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = orderDto.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = toothCardJson;
+                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
 
                 command.ExecuteNonQuery();
             }
@@ -174,24 +161,13 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.ExecuteNonQuery();
             }
         }      
-
-        private static void AddOrUpdateAdditionalEquipmentInWO(OrderDto order, SqlConnection connection)
-        {
-            using (var command = new SqlCommand("AddOrUpdateAdditionalEquipmentInWO", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-
-                var jsonEquipments = order.AdditionalEquipment.SerializeToJson();
-
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonEquipments", SqlDbType.NVarChar)).Value = jsonEquipments;
-
-                command.ExecuteNonQuery();
-            }
-        }
+             
 
         private static void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
+            var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
+            var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+
             using (var command = new SqlCommand("UpdateWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -211,15 +187,13 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
-
+                command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
+                command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
                 command.ExecuteNonQuery();
 
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
 
-            AddOrUpdateAttributesSet(order, connection);
-
-            AddOrUpdateAdditionalEquipmentInWO(order, connection);
         }
 
         public OrderDto GetOrderDetails(int id)
