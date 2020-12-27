@@ -32,17 +32,15 @@ namespace Germadent.WebApi.DataAccess.Rma
                 connection.Open();
                 outputOrder = AddWorkOrder(order, connection);
 
-                order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-                AddOrUpdateToothCard(order, connection);
-
                 return outputOrder;
             }
         }
 
-        private static OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
+        private OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
         {
             var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
             var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+            var toothCardJson = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
 
             using (var command = new SqlCommand("AddWorkOrder", connection))
             {
@@ -63,6 +61,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
                 command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
                 command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
+                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
@@ -77,31 +76,12 @@ namespace Germadent.WebApi.DataAccess.Rma
             return order;
         }
 
-        private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
-        {
-            var toothEntities = orderDto.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, orderDto.Stl)).ToArray();
-            var toothCardJson = toothEntities.SerializeToJson(Formatting.Indented);
-
-            var cmdText = "AddOrUpdateToothCardInWO";
-
-            using (var command = new SqlCommand(cmdText, connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = orderDto.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
-
-                command.ExecuteNonQuery();
-            }
-        }
-
         public void UpdateOrder(OrderDto order)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
                 UpdateWorkOrder(order, connection);
-
-                AddOrUpdateToothCard(order, connection);
             }
         }
 
@@ -159,10 +139,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         }      
              
 
-        private static void UpdateWorkOrder(OrderDto order, SqlConnection connection)
+        private void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
             var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
             var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+            var toothCardJson = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
 
             using (var command = new SqlCommand("UpdateWorkOrder", connection))
             {
@@ -185,6 +166,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
                 command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
+                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
                 command.ExecuteNonQuery();
 
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
