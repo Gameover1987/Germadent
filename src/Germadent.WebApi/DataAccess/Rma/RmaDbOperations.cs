@@ -32,15 +32,16 @@ namespace Germadent.WebApi.DataAccess.Rma
                 connection.Open();
                 outputOrder = AddWorkOrder(order, connection);
 
-                order.ToothCard.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-                AddOrUpdateToothCard(order, connection);
-
                 return outputOrder;
             }
         }
 
-        private static OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
+        private OrderDto AddWorkOrder(OrderDto order, SqlConnection connection)
         {
+            var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
+            var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+            var toothCardJson = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
+
             using (var command = new SqlCommand("AddWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -58,6 +59,9 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
+                command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
+                command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
+                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@docNumber", SqlDbType.NVarChar) { Direction = ParameterDirection.Output, Size = 10 });
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
@@ -68,44 +72,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 order.DocNumber = command.Parameters["@docNumber"].Value.ToString();
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
-
-            order.Attributes.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-            AddOrUpdateAttributesSet(order, connection);
-
-            order.AdditionalEquipment.ForEach(x => x.WorkOrderId = order.WorkOrderId);
-            AddOrUpdateAdditionalEquipmentInWO(order, connection);
-
+                       
             return order;
-        }
-
-        private static void AddOrUpdateAttributesSet(OrderDto order, SqlConnection connection)
-        {
-            var jsonString = order.Attributes.SerializeToJson(Formatting.Indented);
-
-            using (var command = new SqlCommand("AddOrUpdateAttributesSet", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonStringAttributes", SqlDbType.NVarChar)).Value = jsonString;
-                command.ExecuteNonQuery();
-            }
-        }
-
-        private void AddOrUpdateToothCard(OrderDto orderDto, SqlConnection connection)
-        {
-            var toothEntities = orderDto.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, orderDto.Stl)).ToArray();
-            var toothCardJson = toothEntities.SerializeToJson(Formatting.Indented);
-
-            var cmdText = "AddOrUpdateToothCardInWO";
-
-            using (var command = new SqlCommand(cmdText, connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = orderDto.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = toothCardJson;
-
-                command.ExecuteNonQuery();
-            }
         }
 
         public void UpdateOrder(OrderDto order)
@@ -114,8 +82,6 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 connection.Open();
                 UpdateWorkOrder(order, connection);
-
-                AddOrUpdateToothCard(order, connection);
             }
         }
 
@@ -153,9 +119,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                 case DictionaryType.ProstheticType:
                     return GetProstheticTypes();
 
-                case DictionaryType.Transparency:
-                    return GetTransparences();
-
                 default:
                     throw new NotImplementedException("Неизвестный тип словаря");
             }
@@ -174,24 +137,14 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.ExecuteNonQuery();
             }
         }      
+             
 
-        private static void AddOrUpdateAdditionalEquipmentInWO(OrderDto order, SqlConnection connection)
+        private void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
-            using (var command = new SqlCommand("AddOrUpdateAdditionalEquipmentInWO", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
+            var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
+            var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
+            var toothCardJson = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
 
-                var jsonEquipments = order.AdditionalEquipment.SerializeToJson();
-
-                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = order.WorkOrderId;
-                command.Parameters.Add(new SqlParameter("@jsonEquipments", SqlDbType.NVarChar)).Value = jsonEquipments;
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        private static void UpdateWorkOrder(OrderDto order, SqlConnection connection)
-        {
             using (var command = new SqlCommand("UpdateWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -211,15 +164,14 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@created", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
-
+                command.Parameters.Add(new SqlParameter("@jsonEquipmentsString", SqlDbType.NVarChar)).Value = jsonEquipmentsString;
+                command.Parameters.Add(new SqlParameter("@jsonAttributesString", SqlDbType.NVarChar)).Value = jsonAttributesString;
+                command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = toothCardJson;
                 command.ExecuteNonQuery();
 
                 order.Created = command.Parameters["@created"].Value.ToDateTime();
             }
 
-            AddOrUpdateAttributesSet(order, connection);
-
-            AddOrUpdateAdditionalEquipmentInWO(order, connection);
         }
 
         public OrderDto GetOrderDetails(int id)
@@ -471,6 +423,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 return orders;
             }
         }
+
         public DictionaryItemDto[] GetMaterials()
         {
             var cmdText = "select * from GetMaterialsList()";
@@ -496,32 +449,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                }
-            }
-        }
-
-        public DictionaryItemDto[] GetTransparences()
-        {
-            var cmdText = "select * from GetTransparencesList()";
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-                using (var commamd = new SqlCommand(cmdText, connection))
-                {
-                    var reader = commamd.ExecuteReader();
-                    var transparencesEntities = new List<DictionaryItemEntity>();
-                    while (reader.Read())
-                    {
-                        var transparenceEntity = new DictionaryItemEntity();
-                        transparenceEntity.Id = int.Parse(reader["TransparenceId"].ToString());
-                        transparenceEntity.Name = reader["TransparenceName"].ToString();
-                        transparenceEntity.DictionaryName = DictionaryType.Transparency.GetDescription();
-                        transparenceEntity.DictionaryType = DictionaryType.Transparency;
-
-                        transparencesEntities.Add(transparenceEntity);
-                    }
-                    var transparences = transparencesEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
-                    return transparences;
                 }
             }
         }
@@ -649,8 +576,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     Patient = orderDto.Patient,
                     ProstheticSubstring = product.ProductName,
                     MaterialsStr = orderDto.MaterialsStr,
-     //               ColorAndFeatures = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
-                    CarcassColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
+                    ConstructionColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
                     ImplantSystem = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ImplantSystem"),
                     Quantity = product.Quantity,
                     ProstheticArticul = orderDto.ProstheticArticul,

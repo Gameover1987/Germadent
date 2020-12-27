@@ -9,12 +9,7 @@
         /// Материал
         /// </summary>
         Material,
-
-        /// <summary>
-        /// Прозрачность
-        /// </summary>
-        Transparency,
-
+                
         /// <summary>
         /// Оснастка
         /// </summary>

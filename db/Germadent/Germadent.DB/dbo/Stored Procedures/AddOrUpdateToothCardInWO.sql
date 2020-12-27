@@ -7,7 +7,7 @@
 CREATE PROCEDURE [dbo].[AddOrUpdateToothCardInWO] 
 	
 	@workOrderId int,
-	@jsonString varchar(MAX)
+	@jsonToothCardString varchar(MAX)
 
 AS
 BEGIN
@@ -30,7 +30,7 @@ BEGIN
 		INSERT INTO ToothCard
 			(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge)
 		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge
-		FROM OPENJSON (@jsonString)
+		FROM OPENJSON (@jsonToothCardString)
 			WITH (ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProductId int, Price money, HasBridge bit)
 
 	COMMIT

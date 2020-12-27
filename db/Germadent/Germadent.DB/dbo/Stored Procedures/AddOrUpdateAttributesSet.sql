@@ -6,7 +6,7 @@
 CREATE PROCEDURE [dbo].[AddOrUpdateAttributesSet]
 	
 	@workOrderId int,
-	@jsonStringAttributes varchar(MAX)
+	@jsonAttributesString varchar(MAX)
 
 AS
 BEGIN
@@ -30,7 +30,7 @@ BEGIN
 		INSERT INTO AttributesSet
 			(WorkOrderID, ToothNumber, AttributeID, AttributeValueID)
 		SELECT WorkOrderID = @workOrderId, ToothNumber, AttributeID, AttributeValueID
-			FROM OPENJSON (@jsonStringAttributes)
+			FROM OPENJSON (@jsonAttributesString)
 			WITH (ToothNumber tinyint, AttributeId int, AttributeValueId int)
 
 	COMMIT

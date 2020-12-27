@@ -11,8 +11,7 @@ namespace Germadent.Rma.Model
         public string Patient { get; set; }
         public string ProstheticSubstring { get; set; }
         public string MaterialsStr { get; set; }
-        public string ColorAndFeatures { get; set; }
-        public string CarcassColor { get; set; }
+        public string ConstructionColor { get; set; }
         public string ImplantSystem { get; set; }
         public int Quantity { get; set; }
         public string ProstheticArticul { get; set; }
