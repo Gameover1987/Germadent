@@ -116,6 +116,11 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto AddUser(UserDto userDto)
         {
+            var rolesJson = userDto.Roles
+                .Select(x => new { userDto.UserId, x.RoleId })
+                .ToArray()
+                .SerializeToJson(formatting: Formatting.Indented);
+
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -131,7 +136,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                     command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-
+                    command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
+                    
                     command.ExecuteNonQuery();
 
                     userDto.UserId = command.Parameters["@userId"].Value.ToInt();
