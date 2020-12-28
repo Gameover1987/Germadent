@@ -13,6 +13,7 @@ CREATE PROCEDURE [dbo].[umc_AddUser]
 	@password nvarchar(MAX),
 	@isLocked bit = NULL,
 	@description nvarchar(MAX) = NULL,
+	@jsonString varchar(MAX),
 	@userId int output
 
 AS
@@ -38,6 +39,18 @@ BEGIN
 	(@login, @password, @familyName, @firstName, @patronymic, @phone, @isLocked, @description)
 
 	SET @userId = SCOPE_IDENTITY()
+
+	-- Чистим набор ролей от старого содержимого
+	DELETE
+	FROM UsersAndRoles
+	WHERE UserID = @userId
+
+	-- Наполняем набор новым содержимым, распарсив строку json
+	INSERT INTO UsersAndRoles
+	(UserID, RoleID)
+	SELECT UserID = @userId, RoleID
+	FROM OPENJSON(@jsonString)
+	WITH(RoleId int)
 
 END
 GO

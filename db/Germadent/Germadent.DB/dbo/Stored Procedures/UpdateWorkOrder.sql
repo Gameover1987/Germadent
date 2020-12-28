@@ -20,7 +20,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @patientAge tinyint	
 	, @fittingDate datetime
 	, @dateOfCompletion datetime
---	, @jsonToothCardString varchar(MAX),
+	, @jsonToothCardString varchar(MAX)
 	, @jsonEquipmentsString varchar(MAX)
 	, @jsonAttributesString varchar(MAX)
 	, @created datetime output
@@ -55,7 +55,7 @@ BEGIN
 
 		WHERE WorkOrderID = @workOrderID
 		
---		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
 

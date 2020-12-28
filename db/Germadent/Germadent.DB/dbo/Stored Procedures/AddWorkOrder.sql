@@ -19,7 +19,7 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@officeAdminID int = NULL,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
---	@jsonToothCardString varchar(MAX),
+	@jsonToothCardString varchar(MAX),
 	@jsonEquipmentsString varchar(MAX),
 	@jsonAttributesString varchar(MAX),
 	@workOrderID int output,
@@ -61,7 +61,7 @@ BEGIN
 
 		SET @workOrderID = SCOPE_IDENTITY()
 
---		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
 	
