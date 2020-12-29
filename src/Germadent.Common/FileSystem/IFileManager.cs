@@ -9,13 +9,19 @@ namespace Germadent.Common.FileSystem
 
         Stream OpenFileAsStream(string path);
 
+        string ReadAllText(string path);
+
         FileInfo Save(byte[] data, string filePath);
 
         FileInfo Save(Stream stream, string filePath);
 
+        void SaveAsText(string data, string path);
+
         string GetShortFileName(string fullFileName);
 
         void OpenFileByOS(string fileName);
+
+        bool Exists(string path);
     }
 
     public class FileManager : IFileManager
@@ -29,6 +35,11 @@ namespace Germadent.Common.FileSystem
         public Stream OpenFileAsStream(string path)
         {
             return File.OpenRead(path);
+        }
+
+        public string ReadAllText(string path)
+        {
+            return File.ReadAllText(path);
         }
 
         public FileInfo Save(byte[] data, string filePath)
@@ -48,6 +59,11 @@ namespace Germadent.Common.FileSystem
             return new FileInfo(filePath);
         }
 
+        public void SaveAsText(string data, string path)
+        {
+            File.WriteAllText(path, data);
+        }
+
         public string GetShortFileName(string fullFileName)
         {
             return Path.GetFileName(fullFileName);
@@ -63,6 +79,11 @@ namespace Germadent.Common.FileSystem
                 }
             };
             process.Start();
+        }
+
+        public bool Exists(string path)
+        {
+            return File.Exists(path);
         }
     }
 }

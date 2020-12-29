@@ -10,6 +10,11 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {
     public class DesignMockFileManager : IFileManager
     {
+        public void SaveAsText(string data, string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public string GetShortFileName(string fullFileName)
         {
             throw new System.NotImplementedException();
@@ -20,7 +25,17 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             throw new System.NotImplementedException();
         }
 
+        public string ReadAllText(string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OpenFileByOS(string fileName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Exists(string path)
         {
             throw new System.NotImplementedException();
         }

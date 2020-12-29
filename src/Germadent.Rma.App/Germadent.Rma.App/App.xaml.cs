@@ -24,8 +24,6 @@ namespace Germadent.Rma.App
             AppDomain.CurrentDomain.UnhandledException+= CurrentDomainOnUnhandledException;
 
             var authorizationViewModel = _resolver.GetAuthorizationViewModel();
-            authorizationViewModel.UserName = "slava";
-            authorizationViewModel.Password = "123";
             var authorizationWindow = new AuthorizationWindow();
             authorizationWindow.DataContext = authorizationViewModel;
             if (authorizationWindow.ShowDialog() == false)

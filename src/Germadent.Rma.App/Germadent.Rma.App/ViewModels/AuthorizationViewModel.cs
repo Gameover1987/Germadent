@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 using Germadent.Common;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.UI.Infrastructure;
@@ -11,14 +12,18 @@ namespace Germadent.Rma.App.ViewModels
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
         private readonly IRmaServiceClient _serviceClient;
+        private readonly IUserSettingsManager _userSettingsManager;
 
-        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient)
+        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient, IUserSettingsManager userSettingsManager)
             : base(agent)
         {
             _serviceClient = serviceClient;
+            _userSettingsManager = userSettingsManager;
 
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
+
+            UserName = userSettingsManager.LastLogin;
         }
 
         private BitmapImage GetApplicationIcon()
@@ -33,6 +38,8 @@ namespace Germadent.Rma.App.ViewModels
             try
             {
                 _serviceClient.Authorize(UserName, Password);
+                _userSettingsManager.LastLogin = UserName;
+                _userSettingsManager.Save();
             }
             catch (Exception e)
             {
