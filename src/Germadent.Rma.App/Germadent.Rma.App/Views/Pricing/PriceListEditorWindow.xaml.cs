@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using Germadent.Rma.App.ViewModels.Pricing;
 
 namespace Germadent.Rma.App.Views.Pricing

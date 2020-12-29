@@ -1,4 +1,5 @@
-﻿using Germadent.Rma.Model;
+﻿using System;
+using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
@@ -10,6 +11,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         IDelegateCommand EditPriceGroupCommand { get; }
 
         IDelegateCommand EditPricePositionCommand { get; }
+
+        bool IsBusy { get; }
+
+        string BusyReason { get; }
+
+        event EventHandler<EventArgs> IsBusyChanged;
 
         void Initialize();
     }

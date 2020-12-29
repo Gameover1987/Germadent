@@ -139,6 +139,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
                 _isBusy = value;
                 OnPropertyChanged(() => IsBusy);
+
+                IsBusyChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -155,6 +157,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 IsBusy = value != null;
             }
         }
+
+        public event EventHandler<EventArgs> IsBusyChanged;
 
         public IDelegateCommand AddPriceGroupCommand { get; }
 

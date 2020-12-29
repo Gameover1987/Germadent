@@ -110,16 +110,6 @@
            </DataGrid.Columns>
         </DataGrid>
 
-        <Border Grid.Column="0" Grid.Row="0" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="2"
-                Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
-                Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <StackPanel Orientation="Vertical">
-                <controls:BusyIndicator Width="32" Height="32" Fill="Gray" IsBusy="{Binding IsBusy}"/>
-                <TextBlock Text="{Binding BusyReason}" Margin="0,6,0,0" HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-
-
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="12,6,0,0">
             <Button Content="Добавить" Width="100"
                     Command="{Binding AddPricePositionCommand}"/>
