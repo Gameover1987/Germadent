@@ -44,10 +44,10 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <controls:BusyIndicator Grid.Column="0" IsBusy="{Binding IsBusy}" Fill="Gray"
+            <controls:BusyIndicator Grid.Column="0" IsBusy="{Binding IsBusy, Delay=200, IsAsync=True}" Fill="Gray"
                                     Width="24" Height="24" Margin="-6"/>
 
-            <TextBlock Grid.Column="1" Text="{Binding BusyReason}" Margin="12,0,0,0"
+            <TextBlock Grid.Column="1" Text="{Binding BusyReason, Delay=200, IsAsync=True}" Margin="12,0,0,0"
                        VerticalAlignment="Center"/>
 
             <Button Grid.Column="2" Width="100" Content="Закрыть" HorizontalAlignment="Right" IsCancel="True" Margin="6,0,0,0" Height="23"/>

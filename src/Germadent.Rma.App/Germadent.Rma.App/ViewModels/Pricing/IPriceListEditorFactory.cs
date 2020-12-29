@@ -1,4 +1,5 @@
 ﻿using Germadent.Common;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
@@ -21,6 +22,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private readonly IRmaServiceClient _serviceClient;
         private readonly IAddPricePositionViewModel _addPricePositionViewModel;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly ICommandExceptionHandler _commandExceptionHandler;
 
         public PriceListEditorFactory(IPriceGroupRepository priceGroupRepository, 
             IPricePositionRepository pricePositionRepository, 
@@ -28,7 +30,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             IShowDialogAgent dialogAgent, 
             IRmaServiceClient serviceClient, 
             IAddPricePositionViewModel addPricePositionViewModel,
-            IDateTimeProvider dateTimeProvider)
+            IDateTimeProvider dateTimeProvider, 
+            ICommandExceptionHandler commandExceptionHandler)
         {
             _priceGroupRepository = priceGroupRepository;
             _pricePositionRepository = pricePositionRepository;
@@ -37,11 +40,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _serviceClient = serviceClient;
             _addPricePositionViewModel = addPricePositionViewModel;
             _dateTimeProvider = dateTimeProvider;
+            _commandExceptionHandler = commandExceptionHandler;
         }
 
         public IPriceListEditorViewModel CreateEditor(BranchType branchType)
         {
-            var editor = new PriceListEditorViewModel(_userManager, _priceGroupRepository, _pricePositionRepository, _dialogAgent, _serviceClient, _addPricePositionViewModel, _dateTimeProvider);
+            var editor = new PriceListEditorViewModel(_userManager, _priceGroupRepository, _pricePositionRepository, _dialogAgent, _serviceClient, _addPricePositionViewModel, _dateTimeProvider, _commandExceptionHandler);
             editor.BranchType = branchType;
             return editor;
         }

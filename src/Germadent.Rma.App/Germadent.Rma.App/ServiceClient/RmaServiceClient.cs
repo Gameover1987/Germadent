@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading;
 using Germadent.Common;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
@@ -136,21 +135,18 @@ namespace Germadent.Rma.App.ServiceClient
 
         public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
         {
-            Thread.Sleep(3000);
             var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
             return addedPriceGroup;
         }
 
         public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
         {
-           Thread.Sleep(3000);
             var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
             return updatedPriceGroup;
         }
 
         public DeleteResult DeletePriceGroup(int priceGroupId)
         {
-           Thread.Sleep(3000);
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
         }
 
@@ -161,19 +157,16 @@ namespace Germadent.Rma.App.ServiceClient
 
         public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
         {
-            Thread.Sleep(3000);
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
         }
 
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
         {
-            Thread.Sleep(3000);
             return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
         }
 
         public DeleteResult DeletePricePosition(int pricePositionId)
         {
-            Thread.Sleep(3000);
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
         }
 
