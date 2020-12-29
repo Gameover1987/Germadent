@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.Reporting;
@@ -41,6 +42,7 @@ namespace Germadent.Rma.App.ViewModels
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaServiceClient _rmaOperations;
+        private readonly IEnvironment _environment;
         private readonly IOrderUIOperations _orderUIOperations;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
@@ -59,6 +61,7 @@ namespace Germadent.Rma.App.ViewModels
         private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
         public MainViewModel(IRmaServiceClient rmaOperations,
+            IEnvironment environment,
             IOrderUIOperations orderUIOperations,
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
@@ -70,6 +73,7 @@ namespace Germadent.Rma.App.ViewModels
             IUserManager userManager)
         {
             _rmaOperations = rmaOperations;
+            _environment = environment;
             _orderUIOperations = orderUIOperations;
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
@@ -92,6 +96,8 @@ namespace Germadent.Rma.App.ViewModels
             ShowCustomersDictionaryCommand = new DelegateCommand(ShowCustomersDictionaryCommandHandler);
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
+            LogOutCommand = new DelegateCommand(LogOutCommandHandler);
+            ExitCommand = new DelegateCommand(ExitCommandHandler);
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -157,6 +163,10 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand ShowResponsiblePersonsDictionaryCommand { get; }
 
         public IDelegateCommand ShowPriceListEditorCommand { get; }
+
+        public IDelegateCommand LogOutCommand { get; }
+
+        public IDelegateCommand ExitCommand { get; }
 
         public string SearchString
         {
@@ -326,6 +336,22 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowPriceListEditorCommandHandler()
         {
             _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
+        }
+
+        private void LogOutCommandHandler()
+        {
+            if (_dialogAgent.ShowMessageDialog("Выйти из приложения, и зайти под другим пользователем?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
+            _environment.Restart();
+        }
+
+        private void ExitCommandHandler()
+        {
+            if (_dialogAgent.ShowMessageDialog("Выйти из приложения?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
+            _environment.Shutdown();
         }
     }
 }

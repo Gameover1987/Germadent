@@ -1,5 +1,6 @@
 ﻿using System;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels;
@@ -9,10 +10,24 @@ using Germadent.UI.ViewModels.DesignTime;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
+    public class DesignMockEnvironment : IEnvironment
+    {
+        public void Restart()
+        {
+            
+        }
+
+        public void Shutdown()
+        {
+            
+        }
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockRmaServiceClient(), 
+            : base(new DesignMockRmaServiceClient(),
+                new DesignMockEnvironment(), 
                 new DesignMockWindowManager(), 
                 new DesignMockShowDialogAgent(), 
                 new DesignMockCustomerCatalogViewModel(),

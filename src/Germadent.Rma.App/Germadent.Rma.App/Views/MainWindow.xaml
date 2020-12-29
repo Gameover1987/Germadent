@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
         mc:Ignorable="d"
         Title="{Binding Title}" 
@@ -19,8 +17,15 @@
         d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding ExitCommand}"
+                    Key="F10"/>
+        <KeyBinding Command="{Binding LogOutCommand}"
+                    Key="L" Modifiers="Control+Alt"/>
+    </Window.InputBindings>
     <Grid Margin="12">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -29,7 +34,40 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+        <Menu Grid.Row="0" Margin="-6,-6,-6,6">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Создать заказ-наряд для ЗТЛ"
+                          Command="{Binding CreateLabOrderCommand}"/>
+                <MenuItem Header="Создать заказ-наряд для ФЦ"
+                          Command="{Binding CreateLabOrderCommand}"/>
+                <Separator/>
+                <MenuItem Header="Редактировать заказ-наряд"
+                          InputGestureText="Enter"
+                          Command="{Binding OpenOrderCommand}"/>
+                <MenuItem Header="Закрыть заказ-наряд" 
+                          InputGestureText="Ctrl+Shift+C"
+                          Command="{Binding CloseOrderCommand}"/>
+                <MenuItem Header="Распечатать заказ-наряд" 
+                          InputGestureText="Ctrl+P"
+                          Command="{Binding PrintOrderCommand}"/>
+                <Separator/>
+                <MenuItem Header="Заказчики" 
+                          Command="{Binding ShowCustomersDictionaryCommand}"/>
+                <MenuItem Header="Ответственные лица"
+                          Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
+                <MenuItem Header="Прайслисты"
+                          Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Command="{Binding ShowPriceListEditorCommand}"/>
+                <Separator/>
+                <MenuItem Header="Зайти под другим пользователем"
+                          Command="{Binding LogOutCommand}"/>
+                <MenuItem Header="Выйти"
+                          InputGestureText="F10"
+                          Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
             <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,0,0,0"
                                      LabelText="Поиск заказ-нарядов" 
                                      SearchEventTimeDelay="00:00:3"
@@ -61,7 +99,7 @@
                     Command="{Binding ShowPriceListEditorCommand}"/>
         </StackPanel>
 
-        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
+        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   EnableColumnVirtualization="True"
@@ -83,7 +121,7 @@
                             Key="Enter"/>
                 <KeyBinding Command="{Binding PrintOrderCommand}"
                             Key="P" Modifiers="Control"/>
-                <KeyBinding Command="{Binding PrintOrderCommand}"
+                <KeyBinding Command="{Binding CloseOrderCommand}"
                             Key="C" Modifiers="Control+Shift"/>
             </DataGrid.InputBindings>
             <DataGrid.RowStyle>
@@ -141,7 +179,7 @@
         <controls:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"
                                 Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,3,0,0">
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,3,0,0">
             <TextBlock Text="Записей:"/>
             <TextBlock Text="{Binding Orders.Count}" Margin="3,0,0,0"/>
         </StackPanel>

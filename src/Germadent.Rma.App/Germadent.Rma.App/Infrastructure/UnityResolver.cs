@@ -95,6 +95,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IUiTimer, UiTimer>(new TransientLifetimeManager());
 
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IEnvironment, WpfEnvironment>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrderUIOperations, OrderUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICatalogUIOperations, CatalogUIOperations>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICatalogSelectionUIOperations, CatalogSelectionUIOperations>(new ContainerControlledLifetimeManager());
