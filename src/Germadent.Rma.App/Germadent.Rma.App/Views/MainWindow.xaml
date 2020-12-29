@@ -34,8 +34,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Margin="-6,-6,-6,6">
-            <MenuItem Header="Файл">
+        <Menu Grid.Row="0" Margin="-6,-6,-6,6" Grid.ColumnSpan="2">
+            <MenuItem Header="Программа">
+                <MenuItem Header="Зайти под другим пользователем"
+                          InputGestureText="Ctrl+Alt+L"
+                          Command="{Binding LogOutCommand}"/>
+                <MenuItem Header="Выйти"
+                          InputGestureText="F10"
+                          Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Заказ-наряды">
                 <MenuItem Header="Создать заказ-наряд для ЗТЛ"
                           Command="{Binding CreateLabOrderCommand}"/>
                 <MenuItem Header="Создать заказ-наряд для ФЦ"
@@ -50,7 +58,10 @@
                 <MenuItem Header="Распечатать заказ-наряд" 
                           InputGestureText="Ctrl+P"
                           Command="{Binding PrintOrderCommand}"/>
-                <Separator/>
+                <MenuItem Header="Копировать в Excel" 
+                          Command="{Binding CopyOrderToClipboardCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Справочники">
                 <MenuItem Header="Заказчики" 
                           Command="{Binding ShowCustomersDictionaryCommand}"/>
                 <MenuItem Header="Ответственные лица"
@@ -58,12 +69,6 @@
                 <MenuItem Header="Прайслисты"
                           Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
                           Command="{Binding ShowPriceListEditorCommand}"/>
-                <Separator/>
-                <MenuItem Header="Зайти под другим пользователем"
-                          Command="{Binding LogOutCommand}"/>
-                <MenuItem Header="Выйти"
-                          InputGestureText="F10"
-                          Command="{Binding ExitCommand}"/>
             </MenuItem>
         </Menu>
 
