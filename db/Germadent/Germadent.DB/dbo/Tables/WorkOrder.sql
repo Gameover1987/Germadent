@@ -22,12 +22,16 @@
     [Closed]              DATETIME       NULL,
     [ReaderUserID]        INT            NULL,
     [ReadingDateTime]     DATETIME       NULL,
+    [LastEditor]          INT            NULL,
+    [LastEditTime]        DATETIME       NULL,
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
     CONSTRAINT [FK_WorkOrder_BranchTypes] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]),
     CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
     CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([ReaderUserID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 

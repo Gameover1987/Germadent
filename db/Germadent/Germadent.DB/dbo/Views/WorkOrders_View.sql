@@ -1,12 +1,11 @@
 ﻿CREATE VIEW dbo.WorkOrders_View
 AS
 SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.OfficeAdminName, wo.Closed, 
-                wdl.TransparenceID, rp.RP_Position, rp.ResponsiblePerson, wo.PatientFullName, wo.PatientAge, wo.FittingDate, wo.DateOfCompletion, wdl.ColorAndFeatures, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, 
-                wmc.IndividualAbutmentProcessing, wmc.Understaff, wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
+                rp.RP_Position, rp.ResponsiblePerson, wo.PatientFullName, wo.PatientAge, wo.FittingDate, wo.DateOfCompletion, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, 
+                wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID LEFT OUTER JOIN
                 dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
-                dbo.WorkOrderDL AS wdl ON wo.WorkOrderID = wdl.WorkOrderDLID LEFT OUTER JOIN
                 dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID LEFT OUTER JOIN
                 dbo.AdditionalEquipment AS ae ON wo.WorkOrderID = ae.WorkOrderID LEFT OUTER JOIN
                 dbo.Equipments AS e ON ae.EquipmentID = e.EquipmentID
@@ -92,7 +91,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 286
-               Bottom = 517
+               Bottom = 553
                Right = 485
             End
             DisplayFlags = 280
@@ -118,16 +117,6 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "wdl"
-            Begin Extent = 
-               Top = 287
-               Left = 536
-               Bottom = 426
-               Right = 711
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
          Begin Table = "wmc"
             Begin Extent = 
                Top = 7
@@ -140,24 +129,39 @@ Begin DesignProperties =
          End
          Begin Table = "ae"
             Begin Extent = 
-               Top = 211
-               Left = 743
-               Bottom = 354
-               Right = 924
+               Top = 236
+               Left = 680
+               Bottom = 379
+               Right = 861
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "e"
             Begin Extent = 
-               Top = 228
-               Left = 1039
-               Bottom = 336
-               Right = 1214
+               Top = 224
+               Left = 961
+               Bottom = 340
+               Right = 1136
             End
             DisplayFlags = 280
             TopColumn = 0
-     ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+      Begin ColumnWidths = 10
+         Width = 284
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Wid', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 
@@ -185,19 +189,7 @@ GRANT SELECT
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'    End
-      End
-   End
-   Begin SQLPane = 
-   End
-   Begin DataPane = 
-      Begin ParameterDefaults = ""
-      End
-      Begin ColumnWidths = 9
-         Width = 284
-         Width = 1426
-         Width = 1426
-         Width = 1426
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'th = 1426
          Width = 1426
          Width = 1426
          Width = 1426
@@ -224,6 +216,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'    End
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 

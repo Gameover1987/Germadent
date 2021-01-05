@@ -38,18 +38,11 @@ SELECT wo.WorkOrderID,
 		--	CONCAT(e.FamilyName,' ', LEFT(e.Name, 1), '.', LEFT(e.Patronymic, 1), '.') AS OfficeAdmin,
 			ISNULL(rp.ResponsiblePerson, '') AS TechnicFullName,
 			ISNULL(rp.RP_Phone, '') AS TechnicPhone,
-			ISNULL(wmc.AdditionalInfo, '') AS AdditionalInfo,
-			ISNULL(wmc.CarcassColor, '') AS CarcassColor,
-			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
-			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
-			ISNULL(wmc.Understaff, '') AS Understaff,
 			ISNULL(rp.ResponsiblePerson, '') AS DoctorFullName,
 			wo.PatientGender,
 			ISNULL(wo.PatientAge, 0) AS PatientAge,
 			wo.DateOfCompletion,
 			wo.FittingDate,
-			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
-			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM 	WorkOrder wo 
@@ -58,7 +51,6 @@ SELECT wo.WorkOrderID,
 			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
 			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
-			LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

@@ -17,3 +17,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_AttributesSet_WorkOrderID]
+    ON [dbo].[AttributesSet]([WorkOrderID] ASC);
+
