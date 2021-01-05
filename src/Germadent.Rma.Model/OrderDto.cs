@@ -13,7 +13,6 @@ namespace Germadent.Rma.Model
             Gender = Gender.Male;
             OfficeAdminName = " ";
             ToothCard = new ToothDto[0];
-            Transparency = 7; // Не определено
             AdditionalEquipment = new AdditionalEquipmentDto[0];
             Attributes = new AttributeDto[0];
             WorkAccepted = true;
@@ -55,25 +54,11 @@ namespace Germadent.Rma.Model
 
         public string WorkDescription { get; set; }
 
-        public string ColorAndFeatures { get; set; }
-
-        public string AdditionalInfo { get; set; }
-
-        public string CarcassColor { get; set; }
-
-        public string ImplantSystem { get; set; }
-
-        public string IndividualAbutmentProcessing { get; set; }
-
         public bool WorkAccepted { get; set; }
 
         public bool Stl { get; set; }
 
         public bool Cashless { get; set; }
-
-        public int Transparency { get; set; }
-
-        public string Understaff { get; set; }
 
         public string OfficeAdminName { get; set; }
 

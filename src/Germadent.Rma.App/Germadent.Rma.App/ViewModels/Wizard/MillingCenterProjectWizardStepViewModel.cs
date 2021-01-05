@@ -6,11 +6,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 {
     public class MillingCenterProjectWizardStepViewModel : WizardStepViewModelBase, IToothCardContainer
     {
-        private string _implantSystem;
-        private string _carcassColor;
-        private string _additionalMillingInfo;
-        private string _individualAbutmentProcessing;
-        private string _understaff;
         private bool _workAccepted;
         private string _prostheticArticul;
 
@@ -23,65 +18,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override string DisplayName => "Проект";
 
-        public string AdditionalMillingInfo
-        {
-            get => _additionalMillingInfo;
-            set
-            {
-                if (_additionalMillingInfo == value)
-                    return;
-                _additionalMillingInfo = value;
-                OnPropertyChanged(() => AdditionalMillingInfo);
-            }
-        }
 
-        public string ImplantSystem
-        {
-            get => _implantSystem;
-            set
-            {
-                if (_implantSystem == value)
-                    return;
-                _implantSystem = value;
-                OnPropertyChanged(() => ImplantSystem);
-            }
-        }
-
-        public string CarcassColor
-        {
-            get => _carcassColor;
-            set
-            {
-                if (_carcassColor == value)
-                    return;
-                _carcassColor = value;
-                OnPropertyChanged(() => CarcassColor);
-            }
-        }
-
-        public string IndividualAbutmentProcessing
-        {
-            get => _individualAbutmentProcessing;
-            set
-            {
-                if (_individualAbutmentProcessing == value)
-                    return;
-                _individualAbutmentProcessing = value;
-                OnPropertyChanged(() => IndividualAbutmentProcessing);
-            }
-        }
-
-        public string Understaff
-        {
-            get => _understaff;
-            set
-            {
-                if (_understaff == value)
-                    return;
-                _understaff = value;
-                OnPropertyChanged(() => Understaff);
-            }
-        }
+        
 
         public string ProstheticArticul
         {
@@ -99,11 +37,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override void Initialize(OrderDto order)
         {
-            _additionalMillingInfo = order.AdditionalInfo;
-            _implantSystem = order.ImplantSystem;
-            _carcassColor = order.CarcassColor;
-            _individualAbutmentProcessing = order.IndividualAbutmentProcessing;
-            _understaff = order.Understaff;
             _workAccepted = order.WorkAccepted;
             _prostheticArticul = order.ProstheticArticul;
 
@@ -114,11 +47,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         public override void AssemblyOrder(OrderDto order)
         {
-            order.AdditionalInfo = AdditionalMillingInfo;
-            order.ImplantSystem = ImplantSystem;
-            order.CarcassColor = CarcassColor;
-            order.IndividualAbutmentProcessing = IndividualAbutmentProcessing;
-            order.Understaff = Understaff;
             order.ProstheticArticul = ProstheticArticul;
 
             order.ToothCard = ToothCard.ToDto();

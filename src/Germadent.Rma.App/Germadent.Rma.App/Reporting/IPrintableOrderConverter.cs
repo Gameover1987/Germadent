@@ -34,7 +34,6 @@ namespace Germadent.Rma.App.Reporting
                 Closed = order.Closed,
                 ColorAndFeatures = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ConstructionColor"),
                 ResponsiblePerson = order.ResponsiblePerson,
-                IndividualAbutmentProcessing = order.IndividualAbutmentProcessing,
                 Created = order.Created,
                 CustomerName = order.Customer,
                 Understaff = OrderDescriptionBuilder.GetUnderstaff(order),
