@@ -50,7 +50,6 @@ SELECT wo.WorkOrderID,
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
-			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

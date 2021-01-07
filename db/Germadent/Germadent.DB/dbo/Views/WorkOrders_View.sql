@@ -1,12 +1,10 @@
 ﻿CREATE VIEW dbo.WorkOrders_View
 AS
 SELECT   wo.WorkOrderID, wo.BranchTypeID, wo.Status, wo.DocNumber, wo.CustomerID, cs.CustomerName, wo.ResponsiblePersonID, wo.Created, wo.WorkDescription, wo.FlagWorkAccept, wo.OfficeAdminID, wo.OfficeAdminName, wo.Closed, 
-                rp.RP_Position, rp.ResponsiblePerson, wo.PatientFullName, wo.PatientAge, wo.FittingDate, wo.DateOfCompletion, wmc.AdditionalInfo, wmc.CarcassColor, wmc.ImplantSystem, wmc.IndividualAbutmentProcessing, wmc.Understaff, 
-                wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
+                rp.RP_Position, rp.ResponsiblePerson, wo.PatientFullName, wo.PatientAge, wo.FittingDate, wo.DateOfCompletion, wo.DateComment, wo.ProstheticArticul, wo.PatientGender, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
 FROM      dbo.WorkOrder AS wo INNER JOIN
                 dbo.Customers AS cs ON wo.CustomerID = cs.CustomerID LEFT OUTER JOIN
                 dbo.ResponsiblePersons AS rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID LEFT OUTER JOIN
-                dbo.WorkOrderMC AS wmc ON wo.WorkOrderID = wmc.WorkOrderMCID LEFT OUTER JOIN
                 dbo.AdditionalEquipment AS ae ON wo.WorkOrderID = ae.WorkOrderID LEFT OUTER JOIN
                 dbo.Equipments AS e ON ae.EquipmentID = e.EquipmentID
 GO
@@ -117,32 +115,22 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "wmc"
-            Begin Extent = 
-               Top = 7
-               Left = 685
-               Bottom = 193
-               Right = 936
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
          Begin Table = "ae"
             Begin Extent = 
-               Top = 236
-               Left = 680
-               Bottom = 379
-               Right = 861
+               Top = 60
+               Left = 668
+               Bottom = 203
+               Right = 849
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "e"
             Begin Extent = 
-               Top = 224
-               Left = 961
-               Bottom = 340
-               Right = 1136
+               Top = 35
+               Left = 960
+               Bottom = 151
+               Right = 1135
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -159,7 +147,21 @@ Begin DesignProperties =
          Width = 1426
          Width = 1426
          Width = 1426
-         Wid', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 898
+         Ta', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 
@@ -189,19 +191,7 @@ GRANT SELECT
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'th = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-         Width = 1426
-      End
-   End
-   Begin CriteriaPane = 
-      Begin ColumnWidths = 11
-         Column = 1440
-         Alias = 898
-         Table = 1169
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'ble = 1169
          Output = 727
          Append = 1400
          NewValue = 1170
@@ -216,6 +206,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'th = 1426
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'WorkOrders_View';
+
+
 
 
 
