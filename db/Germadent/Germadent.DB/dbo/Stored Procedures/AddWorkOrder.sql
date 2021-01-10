@@ -16,7 +16,7 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@workDescription nvarchar(250) = NULL,
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
-	@officeAdminID int = NULL,
+	@officeAdminID int = 4,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
 	@jsonToothCardString varchar(MAX),

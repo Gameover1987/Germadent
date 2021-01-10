@@ -18,7 +18,6 @@
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
     [OfficeAdminID]       INT            NULL,
-    [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
     [ReaderUserID]        INT            NULL,
     [ReadingDateTime]     DATETIME       NULL,
@@ -30,6 +29,8 @@
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
     CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([ReaderUserID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 
@@ -108,7 +109,6 @@ BEGIN
 		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND i.FlagWorkAccept = d.FlagWorkAccept
 		AND ISNULL(i.OfficeAdminID, -19999) = ISNULL(d.OfficeAdminID, -19999)
-		AND ISNULL(i.OfficeAdminName, 'empty') = ISNULL(d.OfficeAdminName, 'empty')
 		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
 		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
 		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')

@@ -21,13 +21,14 @@
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
     [OfficeAdminID]       INT            NULL,
-    [OfficeAdminName]     NVARCHAR (50)  NULL,
     [Closed]              DATETIME       NULL,
     [ReaderUserID]        INT            NULL,
     [ReadingDateTime]     DATETIME       NULL,
     [LastEditor]          INT            NULL,
     [LastEditTime]        DATETIME       NULL
 );
+
+
 
 
 
