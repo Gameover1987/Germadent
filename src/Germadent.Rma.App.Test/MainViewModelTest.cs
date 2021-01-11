@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
@@ -32,6 +33,7 @@ namespace Germadent.Rma.App.Test
             mockRmaOperations.Setup(x => x.GetOrders(It.IsAny<OrdersFilter>())).Returns(orders.ToArray());
             var mockClipboard = new Mock<IClipboardHelper>();
             var target = new MainViewModel(mockRmaOperations.Object,
+                Mock.Of<IEnvironment>(),
                 Mock.Of<IOrderUIOperations>(),
                 Mock.Of<IShowDialogAgent>(),
                 Mock.Of<ICustomerCatalogViewModel>(),
