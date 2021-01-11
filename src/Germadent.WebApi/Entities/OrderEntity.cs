@@ -73,6 +73,11 @@ namespace Germadent.WebApi.Entities
         public string WorkDescription { get; set; }
 
         /// <summary>
+        /// ФИО администратора
+        /// </summary>
+        public string OfficeAdminName { get; set; }
+
+        /// <summary>
         /// Флаг согласования работ
         /// </summary>
         public bool FlagWorkAccept { get; set; }
