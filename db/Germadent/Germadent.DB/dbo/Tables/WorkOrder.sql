@@ -8,7 +8,6 @@
     [PatientFullName]     NVARCHAR (150) NULL,
     [PatientGender]       BIT            NULL,
     [PatientAge]          TINYINT        NULL,
-    [Created]             DATETIME       NOT NULL,
     [FittingDate]         DATETIME       NULL,
     [DateOfCompletion]    DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
@@ -17,18 +16,17 @@
     [FlagWorkAccept]      BIT            CONSTRAINT [DF_WorkOrder_WorkAccept] DEFAULT ((1)) NOT NULL,
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
-    [OfficeAdminID]       INT            NULL,
+    [Created]             DATETIME       NOT NULL,
+    [CreatorID]           INT            NULL,
     [Closed]              DATETIME       NULL,
-    [ReaderUserID]        INT            NULL,
-    [ReadingDateTime]     DATETIME       NULL,
-    [LastEditor]          INT            NULL,
-    [LastEditTime]        DATETIME       NULL,
     CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED ([WorkOrderID] ASC),
     CONSTRAINT [FK_WorkOrder_BranchTypes] FOREIGN KEY ([BranchTypeID]) REFERENCES [dbo].[BranchTypes] ([BranchTypeID]),
     CONSTRAINT [FK_WorkOrder_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
-    CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([ReaderUserID]) REFERENCES [dbo].[Users] ([UserID])
+    CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([CreatorID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 
@@ -92,7 +90,7 @@ GO
 -- Description:	История действий пользователей с заказ-нарядами
 -- =============================================
 CREATE TRIGGER [dbo].[WorkOrderHistory] 
-   ON  [dbo].[WorkOrder] 
+   ON  dbo.WorkOrder 
    AFTER INSERT,UPDATE,DELETE
 AS 
 BEGIN
@@ -108,7 +106,7 @@ BEGIN
 		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
 		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND i.FlagWorkAccept = d.FlagWorkAccept
-		AND ISNULL(i.OfficeAdminID, -19999) = ISNULL(d.OfficeAdminID, -19999)
+		AND ISNULL(i.CreatorID, -19999) = ISNULL(d.CreatorID, -19999)
 		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
 		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
 		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')

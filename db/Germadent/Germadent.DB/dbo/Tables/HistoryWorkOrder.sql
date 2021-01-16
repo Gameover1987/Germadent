@@ -11,7 +11,6 @@
     [PatientFullName]     NVARCHAR (150) NULL,
     [PatientGender]       BIT            NULL,
     [PatientAge]          TINYINT        NULL,
-    [Created]             DATETIME       NULL,
     [FittingDate]         DATETIME       NULL,
     [DateOfCompletion]    DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
@@ -20,13 +19,12 @@
     [FlagWorkAccept]      BIT            NULL,
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
-    [OfficeAdminID]       INT            NULL,
-    [Closed]              DATETIME       NULL,
-    [ReaderUserID]        INT            NULL,
-    [ReadingDateTime]     DATETIME       NULL,
-    [LastEditor]          INT            NULL,
-    [LastEditTime]        DATETIME       NULL
+    [Created]             DATETIME       NULL,
+    [CreatorID]           INT            NULL,
+    [Closed]              DATETIME       NULL
 );
+
+
 
 
 

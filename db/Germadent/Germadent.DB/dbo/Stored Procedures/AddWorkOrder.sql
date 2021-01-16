@@ -16,7 +16,7 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@workDescription nvarchar(250) = NULL,
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
-	@officeAdminID int = 4,
+	@creatorId int,
 	@fittingDate datetime = NULL,
 	@dateOfCompletion datetime = NULL,
 	@jsonToothCardString varchar(MAX),
@@ -55,9 +55,9 @@ BEGIN
 		SET	@created = GETDATE()
 
 		INSERT INTO WorkOrder
-			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  OfficeAdminID)
+			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  CreatorID)
 		VALUES 
-			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @officeAdminID)
+			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @creatorId)
 
 		SET @workOrderID = SCOPE_IDENTITY()
 

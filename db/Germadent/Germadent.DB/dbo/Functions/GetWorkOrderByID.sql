@@ -32,9 +32,7 @@ SELECT wo.WorkOrderID,
 			wo.FlagStl,
 			wo.FlagCashless,
 			wo.Closed,
-			wo.ReaderUserID,
-			wo.ReadingDateTime,
-			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS OfficeAdminName,
+			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName,
 			ISNULL(rp.ResponsiblePerson, '') AS TechnicFullName,
 			ISNULL(rp.RP_Phone, '') AS TechnicPhone,
 			ISNULL(rp.ResponsiblePerson, '') AS DoctorFullName,
@@ -48,7 +46,7 @@ SELECT wo.WorkOrderID,
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-			LEFT JOIN Users u ON wo.OfficeAdminID = u.UserID
+			LEFT JOIN Users u ON wo.CreatorID = u.UserID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )
