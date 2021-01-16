@@ -2,10 +2,12 @@
     [TechnologyOperationID] INT     NOT NULL,
     [QualifyingRank]        TINYINT NULL,
     [Rate]                  MONEY   NOT NULL,
-    [DateBegin]             DATE    NOT NULL,
+    [DateBeginning]         DATE    NOT NULL,
     [DateEnd]               DATE    NULL,
     CONSTRAINT [FK_Rates_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID])
 );
+
+
 
 
 
