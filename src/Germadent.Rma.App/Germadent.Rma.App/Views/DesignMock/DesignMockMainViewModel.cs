@@ -23,6 +23,21 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
     }
 
+    public class DesignMockUserSettingsManager : IUserSettingsManager
+    {
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string LastLogin { get; set; }
+        public ColumnInfo[] Columns { get; set; }
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
@@ -36,7 +51,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockPrintModule(), 
                 new MockLogger(), 
                 new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()), 
-                new DesignMockUserManager())
+                new DesignMockUserManager(),
+                new DesignMockUserSettingsManager() )
         {
         }
     }

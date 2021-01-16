@@ -114,6 +114,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 TechnicFullName = entity.TechnicFullName,
                 Status = entity.Status,
                 Created = entity.Created,
+                CreatorFullName = entity.CreatorFullName,
                 Closed = entity.Closed,
             };
         }

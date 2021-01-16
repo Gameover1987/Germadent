@@ -25,6 +25,29 @@ using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
+    public class ContextMenuItemViewModel : ViewModelBase
+    {
+        private bool _isChecked;
+
+        public string Header { get; set; }
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked == value)
+                    return;
+                _isChecked = value;
+                OnPropertyChanged(() => IsChecked);
+            }
+        }
+
+        public object Parameter { get; set; }
+
+        public IDelegateCommand Command { get; set; }
+    }
+
     public class OrderLiteComparerByDateTime : IComparer
     {
         public int Compare(object x, object y)
@@ -52,6 +75,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
         private readonly IUserManager _userManager;
+        private readonly IUserSettingsManager _userSettingsManager;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -70,7 +94,8 @@ namespace Germadent.Rma.App.ViewModels
             IPrintModule printModule,
             ILogger logger,
             IReporter reporter, 
-            IUserManager userManager)
+            IUserManager userManager,
+            IUserSettingsManager userSettingsManager)
         {
             _rmaOperations = rmaOperations;
             _environment = environment;
@@ -83,6 +108,7 @@ namespace Germadent.Rma.App.ViewModels
             _logger = logger;
             _reporter = reporter;
             _userManager = userManager;
+            _userSettingsManager = userSettingsManager;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -98,6 +124,7 @@ namespace Germadent.Rma.App.ViewModels
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
+            ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -131,6 +158,13 @@ namespace Germadent.Rma.App.ViewModels
                 OnPropertyChanged(() => SelectedOrder);
             }
         }
+
+        public IUserSettingsManager SettingsManager
+        {
+            get { return _userSettingsManager; }
+        }
+
+        public event EventHandler ColumnSettingsChanged;
 
         public bool IsBusy
         {
@@ -168,6 +202,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public IDelegateCommand ExitCommand { get; }
 
+        public IDelegateCommand ChangeColumnsVisibilityCommand { get; }
+
         public string SearchString
         {
             get => _searchString;
@@ -181,6 +217,8 @@ namespace Germadent.Rma.App.ViewModels
                 RefreshView();
             }
         }
+
+        public ObservableCollection<ContextMenuItemViewModel> ColumnContextMenuItems { get; } = new ObservableCollection<ContextMenuItemViewModel>();
 
         private bool Filter(object obj)
         {
@@ -199,6 +237,26 @@ namespace Germadent.Rma.App.ViewModels
         public void Initialize()
         {
             FillOrders();
+
+            ColumnContextMenuItems.Clear();
+            foreach (var columnInfo in  _userSettingsManager.Columns)
+            {
+                ColumnContextMenuItems.Add(new ContextMenuItemViewModel
+                {
+                    Command = ChangeColumnsVisibilityCommand,
+                    Header = columnInfo.DisplayName,
+                    Parameter = columnInfo,
+                    IsChecked = columnInfo.IsVisible
+                });
+            }
+        }
+
+        private void ChangeColumnsVisibilityCommandHandler(object sender)
+        {
+            var columnInfo = (ColumnInfo)sender;
+            columnInfo.IsVisible = !columnInfo.IsVisible;
+
+            ColumnSettingsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateLabOrderCommandHandler()

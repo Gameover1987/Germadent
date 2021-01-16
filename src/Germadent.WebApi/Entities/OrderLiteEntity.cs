@@ -48,6 +48,11 @@ namespace Germadent.WebApi.Entities
         public DateTime Created { get; set; }
 
         /// <summary>
+        /// ФИО пользователя
+        /// </summary>
+        public string CreatorFullName { get; set; }
+
+        /// <summary>
         /// Дата закрытия
         /// </summary>
         public DateTime? Closed { get; set; }

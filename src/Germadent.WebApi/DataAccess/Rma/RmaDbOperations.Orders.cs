@@ -45,7 +45,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
                 command.Parameters.Add(new SqlParameter("@flagStl", SqlDbType.Bit)).Value = order.Stl;
                 command.Parameters.Add(new SqlParameter("@flagCashless", SqlDbType.Bit)).Value = order.Cashless;
-  //              command.Parameters.Add(new SqlParameter("@officeAdminId", SqlDbType.Int)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@createdBy", SqlDbType.Int)).Value = order.CreatedBy;
                 command.Parameters.Add(new SqlParameter("@fittingDate", SqlDbType.DateTime)).Value = order.FittingDate;
                 command.Parameters.Add(new SqlParameter("@dateOfCompletion", SqlDbType.DateTime)).Value = order.DateOfCompletion;
                 command.Parameters.Add(new SqlParameter("@jsonToothCardString", SqlDbType.NVarChar)).Value = jsonToothCardString;
@@ -268,6 +268,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     orderLite.DoctorFullName = reader[nameof(orderLite.DoctorFullName)].ToString();
                     orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
                     orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
+                    orderLite.CreatorFullName = reader[nameof(orderLite.CreatorFullName)].ToString();
 
                     var closed = reader[nameof(orderLite.Closed)];
                     if (closed != DBNull.Value)

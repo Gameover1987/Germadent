@@ -57,14 +57,17 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);           
+            order.CreatedBy = AuthorizationInfo.UserId;
+            order.OfficeAdminName = AuthorizationInfo.FullName;
+
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
 
             return addedOrder;
         }
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);          
+            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
 
             return updatedOrder;
         }

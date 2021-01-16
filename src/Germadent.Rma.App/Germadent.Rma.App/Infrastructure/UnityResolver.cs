@@ -73,7 +73,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();
             _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
             _container.RegisterType<IUserManager, RmaUserManager>();
-            _container.RegisterType<IUserSettingsManager, UserSettingsManager>();
+            _container.RegisterType<IUserSettingsManager, UserSettingsManager>(new ContainerControlledLifetimeManager());
 
             if (_configuration.WorkMode == WorkMode.Server)
             {

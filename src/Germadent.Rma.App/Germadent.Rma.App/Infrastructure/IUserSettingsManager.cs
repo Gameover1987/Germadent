@@ -11,12 +11,9 @@ namespace Germadent.Rma.App.Infrastructure
     {
         string LastLogin { get; set; }
 
-        void Save();
-    }
+        ColumnInfo[] Columns { get; set; }
 
-    public class UserSettings
-    {
-        public string LastLogin { get; set; }
+        void Save();
     }
 
     public class UserSettingsManager : IUserSettingsManager
@@ -29,6 +26,8 @@ namespace Germadent.Rma.App.Infrastructure
         {
             _fileManager = fileManager;
 
+            InitializeColumnsByDefault();
+
             if (!_fileManager.Exists(SettingsFile))
                 return;
 
@@ -36,9 +35,13 @@ namespace Germadent.Rma.App.Infrastructure
             var userSettings = userSettingsJson.DeserializeFromJson<UserSettings>();
 
             LastLogin = userSettings.LastLogin;
+
+            if (userSettings.Columns != null)
+                Columns = userSettings.Columns;
         }
 
         public string LastLogin { get; set; }
+        public ColumnInfo[] Columns { get; set; }
 
         public void Save()
         {
@@ -50,7 +53,24 @@ namespace Germadent.Rma.App.Infrastructure
         {
             return new UserSettings
             {
-                LastLogin = LastLogin
+                LastLogin = LastLogin,
+                Columns = Columns
+            };
+        }
+
+        private void InitializeColumnsByDefault()
+        {
+            Columns = new ColumnInfo[]
+            {
+                new ColumnInfo {DisplayIndex = 0, Name = "General_ColumnIdentifier", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 1, Name = "General_ColumnDocNumber", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 2, Name = "General_ColumnCreated", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 3, Name = "General_ColumnBranchType", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 4, Name = "General_ColumnCustomer", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 5, Name = "General_ColumnPatient", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 6, Name = "General_ColumnDoctor", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 7, Name = "General_ColumnCreator", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 8, Name = "General_ColumnClosed", IsVisible = true},
             };
         }
 

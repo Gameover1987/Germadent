@@ -6,10 +6,11 @@
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
-        Width="1024"
+        Width="1200"
         MinHeight="600"
         Height="900"
         WindowStartupLocation="CenterScreen"
@@ -17,6 +18,32 @@
         d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
+    <Window.Resources>
+        <Style x:Key="MenuItemViewModelStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Header" Value="{Binding Header}" />
+            <Setter Property="IsCheckable" Value="True"/>
+            <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=TwoWay}"/>
+            <Setter Property="Command" Value="{Binding Command}" />
+            <Setter Property="CommandParameter" Value="{Binding Parameter}" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <!-- Контекстное меню для колонок -->
+        <ContextMenu x:Key="DataGridColumnHeaderContextMenu"
+                     DataContext="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                     ItemsSource="{Binding ColumnContextMenuItems}">
+            <ContextMenu.ItemContainerStyle>
+                <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemViewModelStyle}">
+                    <Setter Property="StaysOpenOnClick" Value="True" />
+                </Style>
+            </ContextMenu.ItemContainerStyle>
+        </ContextMenu>
+
+        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+            <Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}"/>
+        </Style>
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Command="{Binding ExitCommand}"
                     Key="F10"/>
@@ -163,20 +190,31 @@
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnIdentifier"
                                     Binding="{Binding Model.WorkOrderId}"/>
                 <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnDocNumber"
                                     Binding="{Binding Model.DocNumber}"/>
-                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
-                                    Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
-                <DataGridTextColumn Header="Создан" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                <DataGridTextColumn Header="Дата создания" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnCreated"
                                     Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnBranchType"
+                                    Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
                 <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnCustomer"
                                     Binding="{Binding Model.CustomerName}"/>
                 <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnPatient"
                                     Binding="{Binding Model.PatientFnp}"/>
                 <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnDoctor"
                                     Binding="{Binding Model.DoctorFullName}"/>
+                <DataGridTextColumn Header="Создатель" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnCreator"
+                                    Binding="{Binding Model.CreatorFullName}"/>
                 <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnClosed"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
             </DataGrid.Columns>
         </DataGrid>
