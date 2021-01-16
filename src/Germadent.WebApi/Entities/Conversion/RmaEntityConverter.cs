@@ -27,7 +27,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 ResponsiblePersonPhone = entity.TechnicPhone,
                 Gender = entity.PatientGender ? Gender.Male : Gender.Female,
                 WorkDescription = entity.WorkDescription,
-                OfficeAdminName = entity.OfficeAdminName,
+                CreatorFullName = entity.CreatorFullName,
                 WorkAccepted = entity.FlagWorkAccept,
                 Stl = entity.FlagStl,
                 Cashless = entity.FlagCashless,

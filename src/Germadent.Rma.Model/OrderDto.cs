@@ -11,7 +11,7 @@ namespace Germadent.Rma.Model
         {
             Created = DateTime.Now;
             Gender = Gender.Male;
-            OfficeAdminName = " ";
+            CreatorFullName = " ";
             ToothCard = new ToothDto[0];
             AdditionalEquipment = new AdditionalEquipmentDto[0];
             Attributes = new AttributeDto[0];
@@ -60,9 +60,9 @@ namespace Germadent.Rma.Model
 
         public bool Cashless { get; set; }
 
-        public string OfficeAdminName { get; set; }
+        public string CreatorFullName { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int CreatorId { get; set; }
 
         public ToothDto[] ToothCard { get; set; }
 

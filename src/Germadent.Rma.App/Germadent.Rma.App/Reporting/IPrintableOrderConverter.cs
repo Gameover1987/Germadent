@@ -39,7 +39,7 @@ namespace Germadent.Rma.App.Reporting
                 Understaff = OrderDescriptionBuilder.GetUnderstaff(order),
                 ImplantSystem = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ImplantSystem"),
                 FlagWorkAccept = order.WorkAccepted.ToYesNo(),
-                OfficeAdminName = order.OfficeAdminName,
+                OfficeAdminName = order.CreatorFullName,
                 PatientFullName = order.Patient,
                 PatientGender = GetGenderName(order.Gender),
                 TechnicPhone = order.ResponsiblePersonPhone,

@@ -75,7 +75,7 @@ namespace Germadent.WebApi.Entities
         /// <summary>
         /// ФИО администратора
         /// </summary>
-        public string OfficeAdminName { get; set; }
+        public string CreatorFullName { get; set; }
 
         /// <summary>
         /// Флаг согласования работ

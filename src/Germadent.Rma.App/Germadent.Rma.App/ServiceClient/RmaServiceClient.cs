@@ -57,9 +57,8 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
-            order.CreatedBy = AuthorizationInfo.UserId;
-            order.OfficeAdminName = AuthorizationInfo.FullName;
-
+            order.CreatorId = AuthorizationInfo.UserId;
+            
             var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
 
             return addedOrder;
