@@ -121,7 +121,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         attributes.Add(_converter.ConvertToAttribute(entity));
                     }
 
-                    return attributes.ToArray();
+                    return attributes.OrderBy(x => x.AttributeValue).ToArray();
                 }
             }
         }
@@ -150,7 +150,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     }
                     reader.Close();
 
-                    return materials.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
+                    return materials.Select(x => _converter.ConvertToDictionaryItem(x)).OrderBy(x => x.Name).ToArray();
                 }
             }
         }
@@ -205,7 +205,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     }
                     reader.Close();
 
-                    return prostheticTypeEntities.Select(x => _converter.ConvertToDictionaryItem(x)).ToArray();
+                    return prostheticTypeEntities.Select(x => _converter.ConvertToDictionaryItem(x)).OrderBy(x => x.Name).ToArray();
                 }
             }
         }
