@@ -59,8 +59,6 @@ BEGIN
 		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
 
-		-- Убираем метку о "блокировке" заказ-наряда
-		EXEC UserReadingWO @workOrderID
 
 	COMMIT
 
