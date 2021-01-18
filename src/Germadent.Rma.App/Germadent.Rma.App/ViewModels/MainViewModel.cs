@@ -138,7 +138,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             get
             {
-                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.FullName} ({_userManager.AuthorizationInfo.Login})";
+                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
             }
         }
 
@@ -261,7 +261,11 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateLabOrderCommandHandler()
         {
-            var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto { BranchType = BranchType.Laboratory }, WizardMode.Create);
+            var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto
+            {
+                BranchType = BranchType.Laboratory,
+                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+            }, WizardMode.Create);
 
             if (labOrder == null)
                 return;
@@ -269,12 +273,15 @@ namespace Germadent.Rma.App.ViewModels
             var orderLiteViewModel = new OrderLiteViewModel(labOrder.ToOrderLite());
             Orders.Add(orderLiteViewModel);
             SelectedOrder = orderLiteViewModel;
-            FillOrders();
         }
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto { BranchType = BranchType.MillingCenter }, WizardMode.Create);
+            var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto
+            {
+                BranchType = BranchType.MillingCenter,
+                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+            }, WizardMode.Create);
 
             if (millingCenterOrder == null)
                 return;
@@ -282,7 +289,6 @@ namespace Germadent.Rma.App.ViewModels
             var orderLiteViewModel = new OrderLiteViewModel(millingCenterOrder.ToOrderLite());
             Orders.Add(orderLiteViewModel);
             SelectedOrder = orderLiteViewModel;
-            FillOrders();
         }
 
         private void FilterOrdersCommandHandler()
@@ -370,7 +376,6 @@ namespace Germadent.Rma.App.ViewModels
                 return;
 
             orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
-            FillOrders();
         }
 
         private void CopyOrderToClipboardCommandHandler()

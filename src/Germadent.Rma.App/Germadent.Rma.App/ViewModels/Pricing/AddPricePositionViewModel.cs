@@ -60,6 +60,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             AddPriceCommand = new DelegateCommand(AddPriceCommandHandler);
             EditPriceCommand = new DelegateCommand(EditPriceCommandHandler, CanEditPriceCommandHandler);
             DeletePriceCommand = new DelegateCommand(DeletePriceCommandHandler, CanDeletePriceCommandHandler);
+            ClearMaterialCommad = new DelegateCommand(ClearMaterialCommadHandler, CanClearMaterialCommadHandler);
 
             Prices.CollectionChanged += PricesOnCollectionChanged;
         }
@@ -144,6 +145,8 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public IDelegateCommand DeletePriceCommand { get; }
 
+        public IDelegateCommand ClearMaterialCommad { get; }
+
         private bool CanOkCommandHandler()
         {
             return !HasErrors && IsValid();
@@ -158,9 +161,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 return false;
 
             if (SelectedPriceGroup == null)
-                return false;
-
-            if (SelectedMaterial == null)
                 return false;
 
             if (ProsthteticTypes.All(x => x.IsChecked == false))
@@ -276,6 +276,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         private void DeletePriceCommandHandler()
         {
             Prices.Remove(SelectedPrice);
+        }
+
+        private bool CanClearMaterialCommadHandler()
+        {
+            return SelectedMaterial != null;
+        }
+
+        private void ClearMaterialCommadHandler()
+        {
+            SelectedMaterial = null;
         }
 
         private string GetTitle(CardViewMode cardViewMode)

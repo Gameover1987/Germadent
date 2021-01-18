@@ -2,7 +2,7 @@
 {
     public static class OrderDtoExtenisons
     {
-        public static OrderLiteDto ToOrderLite(this  OrderDto orderDto)
+        public static OrderLiteDto ToOrderLite(this OrderDto orderDto)
         {
             return new OrderLiteDto
             {
@@ -14,7 +14,8 @@
                 PatientFnp = orderDto.Patient,
                 DoctorFullName = orderDto.ResponsiblePerson,
                 Status = orderDto.Status,
-                DocNumber = orderDto.DocNumber
+                DocNumber = orderDto.DocNumber,
+                CreatorFullName = orderDto.CreatorFullName
             };
         }
     }

@@ -64,20 +64,33 @@
             </ComboBox>
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Материал" VerticalAlignment="Center" Margin="0,6,0,0"/>
-            <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" Height="23"
-                      ItemsSource="{Binding Materials}"
-                      SelectedItem="{Binding SelectedMaterial}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
-                        <TextBlock Text="{Binding Name}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <Grid Grid.Row="3" Grid.Column="1" Margin="6,6,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Height="23" Grid.Column="0"
+                          ItemsSource="{Binding Materials}"
+                          SelectedItem="{Binding SelectedMaterial}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Grid.Column="1" Content="Очистить" Margin="6,0,0,0"
+                        Command="{Binding ClearMaterialCommad}"/>
+            </Grid>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделия" Margin="0,6,0,0"/>
             <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0"                     
-                     ItemsSource="{Binding ProsthteticTypes}"
-                     ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                     ItemsSource="{Binding ProsthteticTypes}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
                         <CheckBox Content="{Binding DisplayName}" Margin="3,0,3,0"

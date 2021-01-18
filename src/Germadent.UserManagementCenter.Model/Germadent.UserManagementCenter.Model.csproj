@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
+  </ItemGroup>  
 
 </Project>
