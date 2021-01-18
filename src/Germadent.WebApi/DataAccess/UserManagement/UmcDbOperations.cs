@@ -137,7 +137,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                     command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
-                    
+
                     command.ExecuteNonQuery();
 
                     userDto.UserId = command.Parameters["@userId"].Value.ToInt();
@@ -150,7 +150,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
                 return userDto;
             }
-        }       
+        }
 
         private void UpdateUserImpl(UserDto userDto, SqlConnection connection)
         {
@@ -407,11 +407,10 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             entity.UserId = reader["UserId"].ToInt();
                             entity.IsLocked = reader["IsLocked"].ToBool();
 
-                            var firstName = reader["FirstName"].ToString();
-                            var familyName = reader["FamilyName"].ToString();
-                            var patronymic = reader["Patronymic"].ToString();
+                            entity.FirstName = reader["FirstName"].ToString();
+                            entity.LastName = reader["FamilyName"].ToString();
+                            entity.Patronymic = reader["Patronymic"].ToString();
 
-                            entity.FullName = string.Format("{0} {1} {2}", familyName, firstName, patronymic);
                             entity.RightId = reader["rightId"].ToInt();
                             entity.RightName = reader["RightName"].ToString();
                             entity.ApplicationName = reader["ApplicationName"].ToString();
@@ -423,13 +422,15 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
                     if (authorizartionEntities.Count == 0)
                     {
-                        throw new UserNotAuthorizedException( string.Format("Пользователь с логином '{0}' не авторизован!", login));
+                        throw new UserNotAuthorizedException(string.Format("Пользователь с логином '{0}' не авторизован!", login));
                     }
 
                     var groupings = authorizartionEntities.GroupBy(x => x.UserId).ToArray();
 
                     authorizationInfo.UserId = groupings.First().First().UserId;
-                    authorizationInfo.FullName = groupings.First().First().FullName;
+                    authorizationInfo.FirstName = groupings.First().First().FirstName;
+                    authorizationInfo.LastName = groupings.First().First().LastName;
+                    authorizationInfo.Patronymic = groupings.First().First().Patronymic;
                     authorizationInfo.Login = groupings.First().First().Login;
                     authorizationInfo.IsLocked = groupings.First().First().IsLocked;
 

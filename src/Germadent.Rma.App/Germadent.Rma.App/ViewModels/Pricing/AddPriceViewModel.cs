@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Commands;
-using Germadent.UI.ViewModels;
 using Germadent.UI.ViewModels.Validation;
-using NLog.LayoutRenderers.Wrappers;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
@@ -27,8 +22,6 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         public AddPriceViewModel()
         {
-            AddValidationFor(() => PriceStl)
-                .When(() => PriceStl <= 0, () => "Укажите цену отличную от нуля");
             AddValidationFor(() => PriceModel)
                 .When(() => PriceModel <= 0, () => "Укажите цену отличную от нуля");
 
@@ -116,7 +109,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
         private bool CanOK()
         {
-            return PriceModel > 0 && PriceStl > 0;
+            return PriceModel > 0;
         }
     }
 }
