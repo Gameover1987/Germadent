@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="logo_umc.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Unity" Version="5.11.6" />
   </ItemGroup>
@@ -15,6 +19,12 @@
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
     <ProjectReference Include="..\Germadent.UI\Germadent.UI.csproj" />
     <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo_umc.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

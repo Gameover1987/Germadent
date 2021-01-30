@@ -6,6 +6,13 @@ namespace Germadent.UserManagementCenter.App.Mocks
 {
     public class DesignMockUserManagementCenterOperations : IUmcServiceClient
     {
+        public void Authorize(string login, string password)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
+
         public UserDto[] GetUsers()
         {
             var users = new UserDto[]
