@@ -294,7 +294,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private void ChangeUserImageCommandHandler()
         {
             var fileName = string.Empty;
-            var filter = "Изображения|*.png";
+            var filter = "Изображения|*.jpg";
             if (_dialogAgent.ShowOpenFileDialog(filter, out fileName) == false)
                 return;
 

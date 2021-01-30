@@ -42,7 +42,8 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
                 Mock.Of<IReporter>(),
-                Mock.Of<IUserManager>());
+                Mock.Of<IUserManager>(),
+                Mock.Of<IUserSettingsManager>());
 
             ThreadTaskExtensions.IsSyncRun = true;
 
