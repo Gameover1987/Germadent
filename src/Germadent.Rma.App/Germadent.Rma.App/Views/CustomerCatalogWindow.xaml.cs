@@ -49,5 +49,13 @@ namespace Germadent.Rma.App.Views
 
             DialogResult = true;
         }
+
+        private void CustomerGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CustomerGrid.SelectedItem == null)
+                return;
+
+            CustomerGrid.ScrollIntoView(CustomerGrid.SelectedItem);
+        }
     }
 }

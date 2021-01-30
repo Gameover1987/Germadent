@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Germadent.Common.Logging;
 using Germadent.UI.Infrastructure;
 

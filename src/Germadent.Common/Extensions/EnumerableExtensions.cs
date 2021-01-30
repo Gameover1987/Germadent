@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Germadent.Common.Extensions
 {
@@ -11,6 +12,14 @@ namespace Germadent.Common.Extensions
             {
                 action(item);
             }
+        }
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            if (enumerable == null)
+                return true;
+
+            return !enumerable.Any();
         }
     }
 }

@@ -3,13 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
-        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-        xmlns:viewmodels="clr-namespace:Germadent.Rma.App.ViewModels"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
-        xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
         xmlns:views="clr-namespace:Germadent.Rma.App.Views"
-        xmlns:wizard1="clr-namespace:Germadent.Rma.App.Views.Wizard"
+        xmlns:wizardUi="clr-namespace:Germadent.Rma.App.Views.Wizard"
+        xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         mc:Ignorable="d"
         Title="{Binding Title}"
         ShowInTaskbar="False"
@@ -23,23 +21,23 @@
     <Window.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type wizard:LaboratoryInfoWizardStepViewModel}">
-                <wizard1:LabInfoStepUserControl/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type wizard:LaboratoryProjectWizardStepViewModel}">
-                <wizard1:LabProjectStepUserControl/>
+                <wizardUi:LabInfoStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:MillingCenterInfoWizardStepViewModel}">
-                <wizard1:MillingCenterInfoStepUserControl/>
+                <wizardUi:MillingCenterInfoStepUserControl/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type wizard:MillingCenterProjectWizardStepViewModel}">
-                <wizard1:MillingCenterProjectStepUserControl/>
+                <wizardUi:MillingCenterProjectStepUserControl/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type wizard:MillingCenterAdditionalEquipmentViewModel}">
-                <wizard1:MillingCenterAdditionalEquipmentUserControl/>
+            <DataTemplate DataType="{x:Type wizard:AdditionalEquipmentWizardStepViewModel}">
+                <wizardUi:AdditionalEquipmentStepUserControl/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type wizard:PriceListWizardStepViewModel}">
+                <wizardUi:PriceListStepUserControl/>
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
@@ -55,11 +53,11 @@
             <TextBlock Text="{Binding CurrentStep.DisplayName}" Margin="6,12,12,12" FontSize="14"/>
         </Border>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentStep}" Background="Red" Margin="0,12,0,12">
+        <ContentControl Grid.Row="1" Content="{Binding CurrentStep}" Background="Red" Margin="0,12,0,0">
             <ContentControl.Style>
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding WizardMode}" Value="{x:Static wizard1:WizardMode.View}">
+                        <DataTrigger Binding="{Binding WizardMode}" Value="{x:Static wizardUi:WizardMode.View}">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>

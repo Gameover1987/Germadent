@@ -20,6 +20,8 @@ namespace Germadent.Rma.Model
 
         public DateTime Created { get; set; }
 
+        public string CreatorFullName { get; set; }
+
         public DateTime? Closed { get; set; }
 
         public int Status { get; set; }

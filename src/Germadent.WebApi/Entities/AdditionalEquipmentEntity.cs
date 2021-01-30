@@ -23,7 +23,12 @@
         /// <summary>
         /// Количество оснастки
         /// </summary>
-        public int Quantity { get; set; }
+        public int QuantityIn { get; set; }
+
+        /// <summary>
+        /// Количество единиц докомплектации заказа
+        /// </summary>
+        public int QuantityOut { get; set; }
 
     }
 }

@@ -72,3 +72,6 @@ src/Germadent.Rma.ModelCore/obj/
 src/Germadent.Rma.ModelCore/bin/
 src/Germadent.WebApi/bin/
 src/Germadent.WebApi/obj/
+db/Germadent/Germadent.DB/Germadent.DB.dbmdl
+src/Germadent.DataGenerator.App/bin/
+src/Germadent.DataGenerator.App/obj/

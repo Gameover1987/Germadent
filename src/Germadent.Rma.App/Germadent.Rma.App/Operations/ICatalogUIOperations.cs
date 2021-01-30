@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.Operations
 {
@@ -17,13 +18,13 @@ namespace Germadent.Rma.App.Operations
         /// <param name="customer"></param>
         /// <returns></returns>
         CustomerDto UpdateCustomer(CustomerDto customer);
-        
+
         /// <summary>
         /// Id удаляемого заказчика
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        CustomerDeleteResult DeleteCustomer(int customerId);
+        DeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Добавить ответственное лицо
@@ -44,6 +45,6 @@ namespace Germadent.Rma.App.Operations
         /// </summary>
         /// <param name="responsiblePersonId"></param>
         /// <returns></returns>
-        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId);
+        DeleteResult DeleteResponsiblePerson(int responsiblePersonId);
     }
 }

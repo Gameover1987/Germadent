@@ -4,12 +4,15 @@ using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
-    [Route("api/Rma/Orders")]
     [ApiController]
+    [Route("api/Rma/Orders")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;
@@ -22,7 +25,7 @@ namespace Germadent.WebApi.Controllers.Rma
             _fileManager = fileManager;
             _logger = logger;
         }
-
+        
         [HttpPost]
         [Route("getByFilter")]
         public IActionResult GetOrders(OrdersFilter filter)
@@ -39,7 +42,7 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
-
+        
         [HttpGet("{id:int}")]
         public IActionResult GetWorkOrderById(int id)
         {
@@ -65,47 +68,6 @@ namespace Germadent.WebApi.Controllers.Rma
                 _logger.Info(nameof(AddOrder));
                 var order = _rmaDbOperations.AddOrder(orderDto);
                 return Ok(order);
-            }
-            catch (Exception exception)
-            {
-                _logger.Error(exception);
-                return BadRequest(exception);
-            }
-        }
-
-        [HttpPost]
-        [Route("fileUpload/{id}/{fileName}")]
-        public IActionResult FileUpload(int id, string fileName)
-        {
-            try
-            {
-                _logger.Info(nameof(FileUpload));
-                var stream = Request.Form.Files.GetFile("DataFile").OpenReadStream();
-                _rmaDbOperations.AttachDataFileToOrder(id, fileName, stream);
-                return Ok();
-            }
-            catch(Exception exception)
-            {
-                _logger.Error(exception);
-                return BadRequest(exception);
-            }
-        }
-
-        [HttpGet]
-        [Route("fileDownload/{id}")]
-        public IActionResult FileDownload(int id)
-        {
-            try
-            {
-                _logger.Info(nameof(FileDownload));
-                var fullFileName = _rmaDbOperations.GetFileByWorkOrder(id);
-                if (fullFileName == null)
-                    return null;
-
-                var stream = _fileManager.OpenFileAsStream(fullFileName);
-
-                var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
-                return fileStreamResult;
             }
             catch (Exception exception)
             {

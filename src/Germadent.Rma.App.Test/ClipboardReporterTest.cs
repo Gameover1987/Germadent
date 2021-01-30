@@ -1,9 +1,8 @@
 ﻿using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Germadent.Rma.App.Test
 {
@@ -14,10 +13,10 @@ namespace Germadent.Rma.App.Test
         public string ExpectedData { get; set; }
     }
 
-    [TestFixture]
+    [TestClass]
     public class ClipboardReporterTest
     {
-        [TestCaseSource(nameof(GetTestData))]
+        [DataSource(nameof(GetTestData))]
         public void ShouldCopyReportdataToClipboard(ReporterTestData testData)
         {
             // Given
@@ -49,9 +48,9 @@ namespace Germadent.Rma.App.Test
                 {
                     Reports = new ReportListDto[]
                     {
-                        new ReportListDto {Quantity = 18},
+                        new ReportListDto {DocNumber = "3030-MC~20", Customer = "ООО СК МЕЧКОВСКИХ", EquipmentSubstring = "1", Patient = "Воинцев", Quantity = 1},
                     },
-                    ExpectedData = "18\r\n"
+                    ExpectedData = "3030-MC~20\tООО СК МЕЧКОВСКИХ\t1\tВоинцев\t\t\t\t1\r\n"
                 }
             };
         }

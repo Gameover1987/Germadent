@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		Алексей Колосенок
 -- Create date: 19.02.2020
--- Description:	Возвращает двоичный поток для заданного workOrderId. Работает, если к 1 заказ-наряду прицеплен 1 файл
+-- Description:	Возвращает двоичный поток для заданного userId. Работает, если к 1 пользователю прицеплена 1 фотография
 -- =============================================
 CREATE FUNCTION [dbo].[GetBinaryStream]
 (
-	@workOrderId int
+	@userId int
 -- , @streamId uniqueidentifier
 )
 RETURNS varbinary(max)
@@ -15,8 +15,8 @@ BEGIN
 	@fileStream varbinary(max)
 
 	SELECT @fileStream = file_stream
-	FROM StlAndPhotos
-	WHERE stream_id = (SELECT stream_id FROM LinksFileStreams WHERE WorkOrderID = @workOrderId)
+	FROM Pictures
+	WHERE stream_id = (SELECT stream_id FROM LinksFileStreams WHERE UserID = @userId)
 
 	RETURN @fileStream
 

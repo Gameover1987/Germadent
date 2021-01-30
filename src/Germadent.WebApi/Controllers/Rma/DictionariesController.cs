@@ -3,12 +3,14 @@ using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
     [Route("api/Rma/[controller]")]
     [ApiController]
+    [Authorize]
     public class DictionariesController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;

@@ -30,11 +30,6 @@ BEGIN
 	--SET file_stream = CONVERT(varbinary(max), '0')
 	--WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
 
-	DELETE
-	FROM StlAndPhotos 
-	WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
-		
-
 --	SELECT @countRowsDeleted = @@ROWCOUNT
 
 END

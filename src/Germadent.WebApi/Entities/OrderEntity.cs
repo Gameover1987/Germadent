@@ -73,9 +73,24 @@ namespace Germadent.WebApi.Entities
         public string WorkDescription { get; set; }
 
         /// <summary>
+        /// ФИО администратора
+        /// </summary>
+        public string CreatorFullName { get; set; }
+
+        /// <summary>
         /// Флаг согласования работ
         /// </summary>
         public bool FlagWorkAccept { get; set; }
+
+        /// <summary>
+        /// Флаг наличия stl-файла
+        /// </summary>
+        public bool FlagStl { get; set; }
+
+        /// <summary>
+        /// Флаг безналичного расчёта
+        /// </summary>
+        public bool FlagCashless { get; set; }
 
         /// <summary>
         /// Дата закрытия заказа

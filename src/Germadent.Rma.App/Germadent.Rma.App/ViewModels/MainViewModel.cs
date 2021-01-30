@@ -1,59 +1,114 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
+using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
+using Germadent.Rma.App.Views.Pricing;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
+    public class ContextMenuItemViewModel : ViewModelBase
+    {
+        private bool _isChecked;
+
+        public string Header { get; set; }
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked == value)
+                    return;
+                _isChecked = value;
+                OnPropertyChanged(() => IsChecked);
+            }
+        }
+
+        public object Parameter { get; set; }
+
+        public IDelegateCommand Command { get; set; }
+    }
+
+    public class OrderLiteComparerByDateTime : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            if (x == null || y == null)
+                return 0;
+
+            var order1 = (OrderLiteViewModel) x;
+            var order2 = (OrderLiteViewModel)y;
+
+            return DateTime.Compare(order2.Model.Created, order1.Model.Created);
+        }
+    }
+
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaServiceClient _rmaOperations;
+        private readonly IEnvironment _environment;
         private readonly IOrderUIOperations _orderUIOperations;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
+        private readonly IPriceListEditorContainerViewModel _priceListEditorContainerViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
+        private readonly IUserManager _userManager;
+        private readonly IUserSettingsManager _userSettingsManager;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
 
-        private readonly ICollectionView _collectionView;
+        private ListCollectionView _collectionView;
 
         private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
         public MainViewModel(IRmaServiceClient rmaOperations,
+            IEnvironment environment,
             IOrderUIOperations orderUIOperations,
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
+            IPriceListEditorContainerViewModel priceListEditorContainerContainerViewModel,
             IPrintModule printModule,
             ILogger logger,
-            IReporter reporter)
+            IReporter reporter, 
+            IUserManager userManager,
+            IUserSettingsManager userSettingsManager)
         {
             _rmaOperations = rmaOperations;
+            _environment = environment;
             _orderUIOperations = orderUIOperations;
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
+            _priceListEditorContainerViewModel = priceListEditorContainerContainerViewModel;
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
+            _userManager = userManager;
+            _userSettingsManager = userSettingsManager;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -66,19 +121,28 @@ namespace Germadent.Rma.App.ViewModels
             CopyOrderToClipboardCommand = new DelegateCommand(x => CopyOrderToClipboardCommandHandler());
             ShowCustomersDictionaryCommand = new DelegateCommand(ShowCustomersDictionaryCommandHandler);
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
+            ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
+            LogOutCommand = new DelegateCommand(LogOutCommandHandler);
+            ExitCommand = new DelegateCommand(ExitCommandHandler);
+            ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
 
-            _collectionView = CollectionViewSource.GetDefaultView(Orders);
+            _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
+            _collectionView.CustomSort = new OrderLiteComparerByDateTime();
             _collectionView.Filter = Filter;
+
+
+            CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
         }
 
-        private bool Filter(object obj)
+        public string Title
         {
-            if (SearchString.IsNullOrWhiteSpace())
-                return true;
-
-            var order = (OrderLiteViewModel)obj;
-            return order.MatchBySearchString(SearchString);
+            get
+            {
+                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
+            }
         }
+
+        public bool CanViewPriceList { get; }
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -94,6 +158,13 @@ namespace Germadent.Rma.App.ViewModels
                 OnPropertyChanged(() => SelectedOrder);
             }
         }
+
+        public IUserSettingsManager SettingsManager
+        {
+            get { return _userSettingsManager; }
+        }
+
+        public event EventHandler ColumnSettingsChanged;
 
         public bool IsBusy
         {
@@ -125,6 +196,14 @@ namespace Germadent.Rma.App.ViewModels
 
         public IDelegateCommand ShowResponsiblePersonsDictionaryCommand { get; }
 
+        public IDelegateCommand ShowPriceListEditorCommand { get; }
+
+        public IDelegateCommand LogOutCommand { get; }
+
+        public IDelegateCommand ExitCommand { get; }
+
+        public IDelegateCommand ChangeColumnsVisibilityCommand { get; }
+
         public string SearchString
         {
             get => _searchString;
@@ -139,6 +218,17 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
+        public ObservableCollection<ContextMenuItemViewModel> ColumnContextMenuItems { get; } = new ObservableCollection<ContextMenuItemViewModel>();
+
+        private bool Filter(object obj)
+        {
+            if (SearchString.IsNullOrWhiteSpace())
+                return true;
+
+            var order = (OrderLiteViewModel)obj;
+            return order.MatchBySearchString(SearchString);
+        }
+
         private void RefreshView()
         {
             _collectionView.Refresh();
@@ -147,11 +237,35 @@ namespace Germadent.Rma.App.ViewModels
         public void Initialize()
         {
             FillOrders();
+
+            ColumnContextMenuItems.Clear();
+            foreach (var columnInfo in  _userSettingsManager.Columns)
+            {
+                ColumnContextMenuItems.Add(new ContextMenuItemViewModel
+                {
+                    Command = ChangeColumnsVisibilityCommand,
+                    Header = columnInfo.DisplayName,
+                    Parameter = columnInfo,
+                    IsChecked = columnInfo.IsVisible
+                });
+            }
+        }
+
+        private void ChangeColumnsVisibilityCommandHandler(object sender)
+        {
+            var columnInfo = (ColumnInfo)sender;
+            columnInfo.IsVisible = !columnInfo.IsVisible;
+
+            ColumnSettingsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateLabOrderCommandHandler()
         {
-            var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto { BranchType = BranchType.Laboratory }, WizardMode.Create);
+            var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto
+            {
+                BranchType = BranchType.Laboratory,
+                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+            }, WizardMode.Create);
 
             if (labOrder == null)
                 return;
@@ -163,7 +277,11 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto { BranchType = BranchType.MillingCenter }, WizardMode.Create);
+            var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto
+            {
+                BranchType = BranchType.MillingCenter,
+                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+            }, WizardMode.Create);
 
             if (millingCenterOrder == null)
                 return;
@@ -274,6 +392,32 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowResponsiblePersonsDictionaryCommandHandler()
         {
             _dialogAgent.ShowDialog<ResponsiblePersonCatalogWindow>(_responsiblePersonCatalogViewModel);
+        }
+
+        private bool CanShowPriceListEditorCommandHandler()
+        {
+            return CanViewPriceList;
+        }
+
+        private void ShowPriceListEditorCommandHandler()
+        {
+            _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
+        }
+
+        private void LogOutCommandHandler()
+        {
+            if (_dialogAgent.ShowMessageDialog("Выйти из приложения, и зайти под другим пользователем?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
+            _environment.Restart();
+        }
+
+        private void ExitCommandHandler()
+        {
+            if (_dialogAgent.ShowMessageDialog("Выйти из приложения?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
+            _environment.Shutdown();
         }
     }
 }

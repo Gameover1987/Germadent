@@ -11,10 +11,11 @@ namespace Germadent.Rma.Model
         {
             Created = DateTime.Now;
             Gender = Gender.Male;
-            OfficeAdminName = " ";
+            CreatorFullName = " ";
             ToothCard = new ToothDto[0];
-            Transparency = 7; // Не определено
             AdditionalEquipment = new AdditionalEquipmentDto[0];
+            Attributes = new AttributeDto[0];
+            WorkAccepted = true;
         }
 
         public int WorkOrderId { get; set; }
@@ -49,35 +50,28 @@ namespace Germadent.Rma.Model
 
         public DateTime? FittingDate { get; set; }
 
+        public DateTime? DateOfCompletion { get; set; }
+
         public string WorkDescription { get; set; }
-
-        public string ColorAndFeatures { get; set; }
-
-        public string AdditionalInfo { get; set; }
-
-        public string CarcassColor { get; set; }
-
-        public string ImplantSystem { get; set; }
-
-        public string IndividualAbutmentProcessing { get; set; }
 
         public bool WorkAccepted { get; set; }
 
-        public int Transparency { get; set; }
+        public bool Stl { get; set; }
 
-        public string Understaff { get; set; }
+        public bool Cashless { get; set; }
 
-        public string OfficeAdminName { get; set; }
+        public string CreatorFullName { get; set; }
+
+        public int CreatorId { get; set; }
 
         public ToothDto[] ToothCard { get; set; }
 
         public string ProstheticArticul { get; set; }
 
-        public string DataFileName { get; set; }
-
         public string MaterialsStr { get; set; }
 
-        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
-        public DateTime? DateOfCompletion { get; set; }
+        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }        
+
+        public AttributeDto[] Attributes { get; set; }
     }
 }

@@ -12,15 +12,15 @@ namespace Germadent.UserManagementCenter.App.ViewModels
     public class RolesManagerViewModel : ViewModelBase, IRolesManagerViewModel
     {
         private readonly IUmcServiceClient _umcServiceClient;
-        private readonly IUserManagementUIOperations _windowManager;
+        private readonly IUserManagementUIOperations _userManagementUIOperations;
         private RoleViewModel _selectedRole;
 
         private ICollectionView _rightsView;
 
-        public RolesManagerViewModel(IUmcServiceClient umcServiceClient, IUserManagementUIOperations windowManager)
+        public RolesManagerViewModel(IUmcServiceClient umcServiceClient, IUserManagementUIOperations userManagementUIOperations)
         {
             _umcServiceClient = umcServiceClient;
-            _windowManager = windowManager;
+            _userManagementUIOperations = userManagementUIOperations;
 
             AddRoleCommand = new DelegateCommand(AddRoleCommandHandler, CanAddRoleCommandHandler);
             EditRoleCommand = new DelegateCommand(EditRoleCommandHandler, CanEditRoleCommandHandler);
@@ -68,7 +68,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             var rightViewModel = new RightViewModel(new RightDto());
             _rightsView = CollectionViewSource.GetDefaultView(Rights);
-            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.Application)));
+            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.ApplicationModule)));
         }
 
         private void LoadRightsByRole()
@@ -92,12 +92,14 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void AddRoleCommandHandler()
         {
-            var role = _windowManager.AddRole();
+            var role = _userManagementUIOperations.AddRole();
             if (role == null)
                 return;
 
             role = _umcServiceClient.AddRole(role);
-            Roles.Add(new RoleViewModel(role));
+            var roleViewModel = new RoleViewModel(role);
+            Roles.Add(roleViewModel);
+            SelectedRole = roleViewModel;
         }
 
         private bool CanEditRoleCommandHandler()
@@ -107,7 +109,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void EditRoleCommandHandler()
         {
-            var role = _windowManager.EditRole(SelectedRole);
+            var role = _userManagementUIOperations.EditRole(SelectedRole);
             if (role == null)
                 return;
 
@@ -123,7 +125,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void DeleteRoleCommandHandler()
         {
+           if (_userManagementUIOperations.DeleteRole(SelectedRole) == false)
+               return;
 
+           Roles.Remove(SelectedRole);
         }
     }
 }

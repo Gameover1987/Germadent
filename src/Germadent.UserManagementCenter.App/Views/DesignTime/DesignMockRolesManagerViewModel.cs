@@ -4,7 +4,7 @@ using Germadent.UserManagementCenter.App.ViewModels;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {
-    internal class DesignMockRolesManagerViewModel : RolesManagerViewModel
+    public class DesignMockRolesManagerViewModel : RolesManagerViewModel
     {
         public DesignMockRolesManagerViewModel()
             : base(new DesignMockUserManagementCenterOperations(), new DesignMockWindowManager())

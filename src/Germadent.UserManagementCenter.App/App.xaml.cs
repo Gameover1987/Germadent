@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Common.FileSystem;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
+using Germadent.UI.ViewModels;
+using Germadent.UI.Windows;
 using Germadent.UserManagementCenter.App.Configuration;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
 using Unity;
+using Unity.Lifetime;
 
 namespace Germadent.UserManagementCenter.App
 {
@@ -23,6 +27,7 @@ namespace Germadent.UserManagementCenter.App
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
 
+            _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
             _container.RegisterSingleton<IUmcConfiguration, UmcConfiguration>();
             _container.RegisterSingleton<IMainViewModel, MainViewModel>();
             _container.RegisterSingleton<IUsersManagerViewModel, UsersManagerViewModel>();
@@ -30,14 +35,24 @@ namespace Germadent.UserManagementCenter.App
             _container.RegisterSingleton<IRolesManagerViewModel, RolesManagerViewModel>();
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
             _container.RegisterSingleton<IUserManagementUIOperations, UserManagementUIOperations>();
-            _container.RegisterSingleton<IAddUserViewModel, AddUserViewModel>();
+            _container.RegisterType<IAddUserViewModel, AddUserViewModel>(new TransientLifetimeManager());
             _container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
-            _container.RegisterSingleton<IAddRoleViewModel, AddRoleViewModel>();
+            _container.RegisterSingleton<IFileManager, FileManager>();
+            _container.RegisterType<IAddRoleViewModel, AddRoleViewModel>(new TransientLifetimeManager());
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             DelegateCommand.CommandException += CommandException;
+
+            var authorizationViewModel = _container.Resolve<IAuthorizationViewModel>();
+            var authorizationWindow = new AuthorizationWindow();
+            authorizationWindow.DataContext = authorizationViewModel;
+            if (authorizationWindow.ShowDialog() == false)
+            {
+                Current.Shutdown(-1);
+                return;
+            }
 
             MainWindow = new MainWindow();
             MainWindow.Closed += MainWindowOnClosed;

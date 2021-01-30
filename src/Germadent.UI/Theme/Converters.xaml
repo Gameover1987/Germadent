@@ -4,5 +4,10 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <converters:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter"/>
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+    <converters:EnumNotEqualToBoolConverter x:Key="EnumNotEqualToBoolConverter"/>
+    <converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
     <converters:IntToBoolConverter x:Key="IntToBoolConverter"/>
+    <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
+    <converters:EnumToInvisibilityConverter x:Key="EnumToInvisibilityConverter"/>
+    <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
 </ResourceDictionary>

@@ -9,16 +9,28 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IPriceGroupRepository _priceGroupRepository;
+        private readonly IPricePositionRepository _pricePositionRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IAttributeRepository _attributeRepository;
         private readonly ILogger _logger;
 
         public AppInitializer(ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository,
             IDictionaryRepository dictionaryRepository,
+            IPriceGroupRepository priceGroupRepository,
+            IPricePositionRepository pricePositionRepository,
+            IProductRepository productRepository,
+            IAttributeRepository attributeRepository,
             ILogger logger)
         {
             _customerRepository = customerRepository;
             _responsiblePersonRepository = responsiblePersonRepository;
             _dictionaryRepository = dictionaryRepository;
+            _priceGroupRepository = priceGroupRepository;
+            _pricePositionRepository = pricePositionRepository;
+            _productRepository = productRepository;
+            _attributeRepository = attributeRepository;
             _logger = logger;
         }
 
@@ -34,6 +46,18 @@ namespace Germadent.Rma.App.Infrastructure
 
                 SendMessage("Инициализация репозитория словарей ...");
                 _dictionaryRepository.Initialize();
+
+                SendMessage("Инициализация репозитория ценовых групп ...");
+                _priceGroupRepository.Initialize();
+
+                SendMessage("Инициализация репозитория ценовых позиций ...");
+                _pricePositionRepository.Initialize();
+
+                SendMessage("Инициализация репозитория изделий ...");
+                _productRepository.Initialize();
+
+                SendMessage("Инициализация репозитория атрибутов ...");
+                _attributeRepository.Initialize();
 
                 InitializationCompleted?.Invoke(this, EventArgs.Empty);
             }

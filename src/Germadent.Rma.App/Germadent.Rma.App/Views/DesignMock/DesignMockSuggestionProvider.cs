@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.UI.Controls;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

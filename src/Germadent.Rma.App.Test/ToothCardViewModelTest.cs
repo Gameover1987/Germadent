@@ -1,27 +1,27 @@
-﻿using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using Moq;
-using NUnit.Framework;
 using System.Linq;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.ToothCard;
+using Germadent.Rma.Model.Pricing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class ToothCardViewModelTest
     {
         /// <summary>
         /// Должен перерисовать мост когда меняется флаг для соответствующего зуба
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldRaiseRenderRequestEventWhenHasBridgeChanged()
         {
             // Given
             var raised = false;
             var target = CreateTarget();
-            target.RenderRequest += (sender, args) => { raised = true; };
+            target.ToothChanged += (sender, args) => { raised = true; };
 
             // When
             target.Initialize(CreateToothCard());
@@ -49,7 +49,7 @@ namespace Germadent.Rma.App.Test
 
                 });
 
-            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IClipboardHelper>());
+            return new ToothCardViewModel(mockDictionaryRepository.Object, Mock.Of<IProductRepository>(), Mock.Of<IClipboardHelper>());
         }
 
         private static ToothDto[] CreateToothCard()
@@ -59,19 +59,13 @@ namespace Germadent.Rma.App.Test
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProstheticsId = 1,
-                    ProstheticsName = "Каркас",
+                    Products = new ProductDto[0],
                     ToothNumber = 11
                 },
                 new ToothDto
                 {
                     HasBridge = true,
-                    MaterialId = 1,
-                    MaterialName = "ZrO",
-                    ProstheticsId = 1,
-                    ProstheticsName = "Каркас",
+                    Products = new ProductDto[0],
                     ToothNumber = 12
                 },
             };

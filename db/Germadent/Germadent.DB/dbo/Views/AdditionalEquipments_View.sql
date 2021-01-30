@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.AdditionalEquipments_View
 AS
-SELECT   ae.WorkOrderID, ae.EquipmentID, e.EquipmentName, ae.Quantity
+SELECT   ae.WorkOrderID, ae.EquipmentID, e.EquipmentName, ae.QuantityIn, ae.QuantityOut
 FROM      dbo.AdditionalEquipment AS ae INNER JOIN
                 dbo.Equipments AS e ON ae.EquipmentID = e.EquipmentID
 GO
@@ -83,7 +83,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 40
-               Bottom = 128
+               Bottom = 161
                Right = 216
             End
             DisplayFlags = 280
@@ -93,7 +93,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 24
                Left = 325
-               Bottom = 127
+               Bottom = 186
                Right = 497
             End
             DisplayFlags = 280
@@ -110,15 +110,15 @@ Begin DesignProperties =
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
          Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Alias = 898
+         Table = 1169
+         Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -126,4 +126,6 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AdditionalEquipments_View';
+
+
 

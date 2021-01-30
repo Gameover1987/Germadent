@@ -10,7 +10,7 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         public DesignMockAddRoleViewModel()
             : base(new DesignMockUserManagementCenterOperations())
         {
-            Initialize(new RoleDto(), "Добавление новой роли");
+            Initialize(new RoleDto(), ViewMode.Add);
 
             RoleName = "Мега администратор!";
             Rights.ForEach(x => x.IsChecked = true);

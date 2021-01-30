@@ -37,8 +37,12 @@
         </Grid>
 
         <ListBox Grid.Row="1" Margin="0,6,0,0"
-                 ItemsSource="{Binding Rights}"
-                 ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                 ItemsSource="{Binding Rights}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
@@ -52,7 +56,7 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Row="0" Text="{Binding Name, Converter={StaticResource ApplicationModuleToStringConverter}}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
 
                                             <ItemsPresenter Grid.Row="1" Margin="12,6,0,12"/>
                                         </Grid>
@@ -65,7 +69,8 @@
             </ListBox.GroupStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:RightViewModel}">
-                    <CheckBox Content="{Binding Name}"
+                    <CheckBox Content="{Binding RightDescription}"
+                              IsEnabled="{Binding IsObsolete, Converter={StaticResource InvertBoolConverter}}"
                               IsChecked="{Binding IsChecked}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -80,10 +85,22 @@
         <Separator Grid.Row="3" Margin="-12,6,-12,12"/>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Добавить" IsDefault="True"
+            <Button IsDefault="True" Width="100"
                     helpers:WindowCloseHelper.DialogResult="True"
-                    Command="{Binding OkCommand}"/>
-            <Button Content="Отмена" Margin="6,0,0,0" IsCancel="True"/>
+                    Command="{Binding OkCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Content" Value="Сохранить"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewMode}" Value="{x:Static viewModels:ViewMode.Add}">
+                                <Setter Property="Content" Value="Добавить"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Отмена" Margin="6,0,0,0" Width="100"
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>

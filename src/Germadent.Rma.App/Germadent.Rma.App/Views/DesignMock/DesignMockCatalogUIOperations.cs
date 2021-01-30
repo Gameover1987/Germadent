@@ -1,7 +1,6 @@
-﻿using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.App.Operations;
-using Germadent.Rma.App.ViewModels;
+﻿using Germadent.Rma.App.Operations;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -17,7 +16,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new System.NotImplementedException();
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public DeleteResult DeleteCustomer(int customerId)
         {
             throw new System.NotImplementedException();
         }
@@ -32,7 +31,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             throw new System.NotImplementedException();
         }
 
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             throw new System.NotImplementedException();
         }

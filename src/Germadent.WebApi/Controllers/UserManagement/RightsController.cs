@@ -1,5 +1,8 @@
-﻿using Germadent.UserManagementCenter.Model.Rights;
+﻿using System;
+using Germadent.Common.Logging;
+using Germadent.UserManagementCenter.Model.Rights;
 using Germadent.WebApi.DataAccess;
+using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.UserManagement
@@ -9,17 +12,29 @@ namespace Germadent.WebApi.Controllers.UserManagement
     public class RightsController : ControllerBase
     {
         private readonly IUmcDbOperations _umcDbOperations;
+        private readonly ILogger _logger;
 
-        public RightsController(IUmcDbOperations umcDbOperations)
+        public RightsController(IUmcDbOperations umcDbOperations, ILogger logger)
         {
             _umcDbOperations = umcDbOperations;
+            _logger = logger;
         }
 
 
         [HttpGet]
-        public RightDto[] GetRights()
+        public IActionResult GetRights()
         {
-            return _umcDbOperations.GetRights();
+            try
+            {
+                _logger.Info(nameof(GetRights));
+                var rights = _umcDbOperations.GetRights();
+                return Ok(rights);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
         }
     }
 }

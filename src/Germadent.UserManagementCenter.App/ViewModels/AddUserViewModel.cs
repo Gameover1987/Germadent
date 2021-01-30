@@ -1,28 +1,48 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
+    public enum ViewMode
+    {
+        Add, Edit
+    }
+
     public class AddUserViewModel : ValidationSupportableViewModel, IAddUserViewModel
     {
         private readonly IUmcServiceClient _umcServiceClient;
-        private string _fullName;
+        private readonly IShowDialogAgent _dialogAgent;
+        private readonly IFileManager _fileManager;
+        private int _userId;
+        private string _firstName;
+        private string _surName;
+        private string _patronymic;
         private string _login;
         private string _password;
         private string _passwordOnceAgain;
         private string _description;
+        private bool _isLocked;
+        private string _phone;
+        private bool _isLoading;
+        private byte[] _image;
+        private string _fileName;
 
-        public AddUserViewModel(IUmcServiceClient umcServiceClient)
+        public AddUserViewModel(IUmcServiceClient umcServiceClient, IShowDialogAgent dialogAgent, IFileManager fileManager)
         {
             _umcServiceClient = umcServiceClient;
+            _dialogAgent = dialogAgent;
+            _fileManager = fileManager;
 
-            AddValidationFor(() => FullName)
-                .When(() => string.IsNullOrWhiteSpace(FullName), () => "Укажите полное имя пользователя");
+            AddValidationFor(() => FirstName)
+                .When(() => string.IsNullOrWhiteSpace(FirstName), () => "Укажите полное имя пользователя");
             AddValidationFor(() => Login)
                 .When(() => string.IsNullOrWhiteSpace(Login), () => "Укажите логин");
             AddValidationFor(() => Password)
@@ -32,19 +52,70 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 .When(() => Password != PasswordOnceAgain, () => "Пароли должны совпадать");
 
             OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
+            ChangeUserImageCommand = new DelegateCommand(ChangeUserImageCommandHandler);
         }
 
         public string Title { get; private set; }
 
-        public string FullName
+        public ViewMode ViewMode { get; private set; }
+
+        public bool IsLoading
         {
-            get { return _fullName; }
+            get { return _isLoading; }
             set
             {
-                if (_fullName == value)
+                if (_isLoading = value)
                     return;
-                _fullName = value;
-                OnPropertyChanged(() => FullName);
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
+        }
+
+        public string FirstName
+        {
+            get { return _firstName; }
+            set
+            {
+                if (_firstName == value)
+                    return;
+                _firstName = value;
+                OnPropertyChanged(() => FirstName);
+            }
+        }
+
+        public string Surname
+        {
+            get { return _surName; }
+            set
+            {
+                if (_surName == value)
+                    return;
+                _surName = value;
+                OnPropertyChanged(() => Surname);
+            }
+        }
+
+        public string Patronymic
+        {
+            get { return _patronymic; }
+            set
+            {
+                if (_patronymic == value)
+                    return;
+                _patronymic = value;
+                OnPropertyChanged(() => Patronymic);
+            }
+        }
+
+        public string Phone
+        {
+            get { return _phone; }
+            set
+            {
+                if (_phone == value)
+                    return;
+                _phone = value;
+                OnPropertyChanged(() => Phone);
             }
         }
 
@@ -84,6 +155,18 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
+        public bool IsLocked
+        {
+            get { return _isLocked; }
+            set
+            {
+                if (_isLocked == value)
+                    return;
+                _isLocked = value;
+                OnPropertyChanged(() => IsLocked);
+            }
+        }
+
         public string Description
         {
             get { return _description; }
@@ -96,18 +179,68 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
+        public byte[] Image
+        {
+            get { return _image; }
+            set
+            {
+                if (_image == value)
+                    return;
+                _image = value;
+                OnPropertyChanged(() => Image);
+            }
+        }
+
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                if (_fileName == value)
+                    return;
+                _fileName = value;
+                OnPropertyChanged(() => FileName);
+            }
+        }
+
         public ObservableCollection<RoleViewModel> Roles { get; } = new ObservableCollection<RoleViewModel>();
 
         public IDelegateCommand OkCommand { get; }
+
+        public IDelegateCommand ChangeUserImageCommand { get; }
 
         public bool AtLeastOneRoleChecked
         {
             get { return Roles.Any(x => x.IsChecked); }
         }
 
-        public void Initialize(UserDto user, string title)
+        public void Initialize(UserDto user, ViewMode viewMode)
         {
-            Title = title;
+            ViewMode = viewMode;
+            if (ViewMode == ViewMode.Add)
+            {
+                Title = "Добавление пользователя";
+            }
+            else
+            {
+                Title = "Редактирование данных пользователя";
+            }
+
+            _userId = user.UserId;
+            _firstName = user.FirstName;
+            _surName = user.Surname;
+            _patronymic = user.Patronymic;
+            _phone = user.Phone;
+            _password = user.Password;
+            _passwordOnceAgain = user.Password;
+            _login = user.Login;
+            _isLocked = user.IsLocked;
+            _description = user.Description;
+            _fileName = user.FileName;
+
+            _image = null;
+            if (_userId != 0)
+                _image = _umcServiceClient.GetUserImage(_userId);
 
             var roles = _umcServiceClient.GetRoles();
 
@@ -116,13 +249,18 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 role.Checked -= RoleOnChecked;
             }
 
+            var selectedRoleIds = user.Roles?.Select(x => x.RoleId).ToArray();
             Roles.Clear();
             foreach (var role in roles)
             {
                 var roleViewModel = new RoleViewModel(role);
                 roleViewModel.Checked += RoleOnChecked;
+                if (selectedRoleIds != null)
+                    roleViewModel.IsChecked = selectedRoleIds.Contains(roleViewModel.RoleId);
                 Roles.Add(roleViewModel);
             }
+
+            OnPropertyChanged();
         }
 
         private void RoleOnChecked(object sender, EventArgs e)
@@ -134,16 +272,44 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             return new UserDto
             {
-                FullName = FullName,
+                UserId = _userId,
+                FirstName = FirstName,
+                Surname = Surname,
+                Patronymic = Patronymic,
+                Phone = Phone,
                 Login = Login,
                 Password = Password,
-                Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray()
+                IsLocked = IsLocked,
+                Description = Description,
+                Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray(),
+                FileName = FileName
             };
         }
 
         private bool CanOkCommandHandler()
         {
-            return AtLeastOneRoleChecked && !HasErrors;
+            return IsValid();
+        }
+
+        private void ChangeUserImageCommandHandler()
+        {
+            var fileName = string.Empty;
+            var filter = "Изображения|*.jpg";
+            if (_dialogAgent.ShowOpenFileDialog(filter, out fileName) == false)
+                return;
+
+            FileName = fileName;
+            Image = _fileManager.ReadAllBytes(FileName);
+        }
+
+        private bool IsValid()
+        {
+            return !FirstName.IsNullOrWhiteSpace() &&
+                   !Login.IsNullOrWhiteSpace() &&
+                   !Password.IsNullOrWhiteSpace() &&
+                   !PasswordOnceAgain.IsNullOrWhiteSpace() &&
+                   Password == PasswordOnceAgain &&
+                   AtLeastOneRoleChecked;
         }
     }
 }

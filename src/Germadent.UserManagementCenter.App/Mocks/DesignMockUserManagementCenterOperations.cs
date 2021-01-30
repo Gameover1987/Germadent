@@ -6,6 +6,13 @@ namespace Germadent.UserManagementCenter.App.Mocks
 {
     public class DesignMockUserManagementCenterOperations : IUmcServiceClient
     {
+        public void Authorize(string login, string password)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
+
         public UserDto[] GetUsers()
         {
             var users = new UserDto[]
@@ -13,37 +20,113 @@ namespace Germadent.UserManagementCenter.App.Mocks
                 new UserDto
                 {
                     Login = "Admin",
-                    FullName = "Админ Админыч",
+                    FirstName = "Админ Админыч",
+                    Phone = "+5-222-333-4449",
                     Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
-                    Roles = new []{new RoleDto{Name =   "Admin"}}
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Dmitriy",
-                    FullName = "Дмитрий",
+                    FirstName = "Дмитрий",
+                    Phone = "+5-222-333-4449",
                     Description = "Руководитель",
-                    Roles = new []{new RoleDto{Name =   "Admin"}}
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vyacheslav",
-                    FullName = "Некрасов Вячеслав",
+                    FirstName = "Некрасов Вячеслав",
+                    Phone = "+5-222-333-4449",
                     Description = "Программист 1",
-                    Roles = new []{new RoleDto{Name =   "Admin"}}
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Alexey",
-                    FullName = "Колосенок Алексей",
+                    FirstName = "Колосенок Алексей",
                     Description = "Программист 2",
-                    Roles = new []{new RoleDto{Name =   "Admin"}}
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
                 new UserDto
                 {
                     Login = "Vasya",
-                    FullName = "Василий Алибабаевич",
+                    FirstName = "Василий Алибабаевич",
+                    Phone = "+5-222-333-4449",
                     Description = "Какой то Вася ))",
-                    Roles = new []{new RoleDto{Name =   "Admin"}}
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Admin",
+                    FirstName = "Админ Админыч",
+                    Phone = "+5-222-333-4449",
+                    Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Dmitriy",
+                    FirstName = "Дмитрий",
+                    Phone = "+5-222-333-4449",
+                    Description = "Руководитель",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vyacheslav",
+                    FirstName = "Некрасов Вячеслав",
+                    Description = "Программист 1",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Alexey",
+                    FirstName = "Колосенок Алексей",
+                    Description = "Программист 2",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vasya",
+                    FirstName = "Василий Алибабаевич",
+                    Description = "Какой то Вася ))",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Admin",
+                    FirstName = "Админ Админыч",
+                    Description = "Пользователь наделенный исключительными правами! Как говорится 'Админ прежде всего, царь и бог, а уже потом, читак и пидорас'",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Dmitriy",
+                    FirstName = "Дмитрий",
+                    Description = "Руководитель",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vyacheslav",
+                    FirstName = "Некрасов Вячеслав",
+                    Description = "Программист 1",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Alexey",
+                    FirstName = "Колосенок Алексей",
+                    Description = "Программист 2",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
+                },
+                new UserDto
+                {
+                    Login = "Vasya",
+                    FirstName = "Василий Алибабаевич",
+                    Description = "Какой то Вася ))",
+                    Roles = new []{new RoleDto{RoleName =   "Admin"}}
                 },
             };
 
@@ -55,29 +138,55 @@ namespace Germadent.UserManagementCenter.App.Mocks
             return users;
         }
 
+        public UserDto GetUserById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UserDto AddUser(UserDto userDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UserDto EditUser(UserDto userDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteUser(int userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
         public RoleDto[] GetRoles()
         {
             var roles = new RoleDto[]
             {
                 new RoleDto
                 {
-                    Name = "Admin",
+                    RoleName = "Admin",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
-                    Name = "Руководитель",
+                    RoleName = "Руководитель",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
-                    Name = "Администратор",
+                    RoleName = "Администратор",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
-                    Name = "Оператор",
+                    RoleName = "Оператор",
+                    Rights = new RightDto[0]
                 },
                 new RoleDto
                 {
-                    Name = "Техник",
+                    RoleName = "Техник",
+                    Rights = new RightDto[0]
                 },
             };
 
@@ -99,6 +208,12 @@ namespace Germadent.UserManagementCenter.App.Mocks
             throw new System.NotImplementedException();
         }
 
+        public void DeleteRole(int roleId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
         public RightDto[] GetRights()
         {
             var rights = UserRightsProvider.GetAllUserRights();
@@ -109,6 +224,11 @@ namespace Germadent.UserManagementCenter.App.Mocks
         {
             var rights = UserRightsProvider.GetAllUserRights();
             return new RightDto[0];
+        }
+
+        public byte[] GetUserImage(int userId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

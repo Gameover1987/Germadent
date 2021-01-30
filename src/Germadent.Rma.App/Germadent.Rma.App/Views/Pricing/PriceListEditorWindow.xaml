@@ -1,0 +1,56 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.Pricing.PriceListEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:pricing="clr-namespace:Germadent.Rma.App.Views.Pricing"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        mc:Ignorable="d"
+        Title="Редактирование прайслистов" 
+        MinHeight="450"
+        Height="700"
+        MinWidth="1024"
+        Width="1024"
+        Background="{x:Static SystemColors.ControlBrush}"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorContainerViewModel}, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="TabControl" BorderThickness="0">
+            <TabItem Header="Фрезерный центр"
+                     DataContext="{Binding MillingCenterPriceListEditor}">
+                <pricing:PriceListEditorControl Margin="12,6,12,0"/>
+            </TabItem>
+            <TabItem Header="Лаборатория"
+                     DataContext="{Binding LaboratoryPriceListEditor}">
+                <pricing:PriceListEditorControl Margin="12,6,12,0"/>
+            </TabItem>
+        </TabControl>
+
+        <Separator Grid.Row="1" Grid.Column="0" Margin="0,12,0,12"/>
+
+        <Grid Grid.Row="2" Margin="12,0,12,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:BusyIndicator Grid.Column="0" IsBusy="{Binding IsBusy, Delay=200, IsAsync=True}" Fill="Gray"
+                                    Width="24" Height="24" Margin="-6"/>
+
+            <TextBlock Grid.Column="1" Text="{Binding BusyReason, Delay=200, IsAsync=True}" Margin="12,0,0,0"
+                       VerticalAlignment="Center"/>
+
+            <Button Grid.Column="2" Width="100" Content="Закрыть" HorizontalAlignment="Right" IsCancel="True" Margin="6,0,0,0" Height="23"/>
+        </Grid>
+    </Grid>
+</Window>

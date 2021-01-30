@@ -1,0 +1,154 @@
+﻿<Window x:Class="Germadent.Rma.App.Views.Pricing.AddPricePositionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
+        xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+        xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+        xmlns:pricing1="clr-namespace:Germadent.Rma.Model.Pricing;assembly=Germadent.Rma.Model"
+        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
+        mc:Ignorable="d"
+        Background="{x:Static SystemColors.ControlBrush}"
+        Title="{Binding Title}" 
+        MinHeight="700"
+        Height="700"
+        MinWidth="700"
+        Width="700"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddPricePositionViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>              
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование" VerticalAlignment="Center"/>
+            <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Код" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0" Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Left" Width="150"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Ценовая группа" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" Height="23"
+                      ItemsSource="{Binding Groups}"
+                      SelectedItem="{Binding SelectedPriceGroup}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type pricing1:PriceGroupDto}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Материал" VerticalAlignment="Center" Margin="0,6,0,0"/>
+            <Grid Grid.Row="3" Grid.Column="1" Margin="6,6,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Height="23" Grid.Column="0"
+                          ItemsSource="{Binding Materials}"
+                          SelectedItem="{Binding SelectedMaterial}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Grid.Column="1" Content="Очистить" Margin="6,0,0,0"
+                        Command="{Binding ClearMaterialCommad}"/>
+            </Grid>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Изделия" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0"                     
+                     ItemsSource="{Binding ProsthteticTypes}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource StlnListBoxItemStyleWithoutSelection}">
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
+                        <CheckBox Content="{Binding DisplayName}" Margin="3,0,3,0"
+                                  IsChecked="{Binding IsChecked}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Цены" Margin="0,6,0,0"/>
+            <DataGrid Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" Height="150"
+                      AlternationCount="2"
+                      IsReadOnly="True"
+                      SelectedItem="{Binding SelectedPrice}"
+                      ItemsSource="{Binding Prices}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Past}">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Current}">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="ToolTip" Value="Текущая цена"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PriceKind}" Value="{x:Static pricing:PriceKind.Future}">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding Begin, StringFormat='dd MMMM yyyy', ConverterCulture=ru-RU}"/>
+                    <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding PriceStl}"/>
+                    <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding PriceModel}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+                <Button Content="Добавить" Width="100"
+                        Command="{Binding AddPriceCommand}"/>
+                <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                        Command="{Binding EditPriceCommand}"/>
+                <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                        Command="{Binding DeletePriceCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="100" IsDefault="True"
+                    Command="{Binding OkCommand}"
+                    helpers:WindowCloseHelper.DialogResult="True"/>
+            <Button Width="100" Content="Отмена" Margin="6,0,0,0" IsCancel="True"
+                    Visibility="{Binding ViewMode, Converter={StaticResource EnumToInvisibilityConverter}, ConverterParameter={x:Static catalogs:CardViewMode.View}}"
+                    helpers:WindowCloseHelper.DialogResult="False"/>
+        </StackPanel>
+    </Grid>
+</Window>

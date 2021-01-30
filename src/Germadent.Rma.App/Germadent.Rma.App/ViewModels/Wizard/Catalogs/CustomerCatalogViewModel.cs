@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -129,8 +127,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             var customer = _catalogUIOperations.AddCustomer(new CustomerDto());
             if (customer == null)
                 return;
-            
-            Customers.Add(new CustomerViewModel(customer));
+
+            var addedCustomer = new CustomerViewModel(customer);
+            Customers.Add(addedCustomer);
+
+            SelectedCustomer = addedCustomer;
         }
 
         private bool CanEditCustomerCommandHandler()

@@ -15,6 +15,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public OrderLiteDto Model => _model;
 
+        public bool IsClosed => _model.Closed != null;
+
         public void Update(OrderLiteDto order)
         {
             _model = order;

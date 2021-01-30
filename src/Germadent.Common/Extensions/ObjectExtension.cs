@@ -9,6 +9,30 @@ namespace Germadent.Common.Extensions
             return int.Parse(obj.ToString());
         }
 
+        public static int? ToIntOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToInt();
+        }
+
+        public static decimal ToDecimal(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return 0;
+
+            return decimal.Parse(obj.ToString());
+        }
+
+        public static decimal? ToDecimalOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToDecimal();
+        }
+
         public static DateTime ToDateTime(this object obj)
         {
             return DateTime.Parse(obj.ToString());

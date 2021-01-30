@@ -7,72 +7,61 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	
 	@branchTypeID int
 	, @workOrderID int
-	, @docNumber nvarchar(10)
 	, @customerID int
 	, @responsiblePersonId int
 	, @flagWorkAccept bit
+	, @flagStl bit
+	, @flagCashless bit
 	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
---	, @officeAdminID int
-	, @officeAdminName nvarchar(50)
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint	
 	, @fittingDate datetime
 	, @dateOfCompletion datetime
-	, @additionalInfo nvarchar(70)
-	, @carcassColor nvarchar(30)
-	, @implantSystem nvarchar(70)
-	, @individualAbutmentProcessing nvarchar(70)
-	, @understaff nvarchar(100)
-	, @transparenceID int
-	, @colorAndFeatures nvarchar(100)
+	, @jsonToothCardString varchar(MAX)
+	, @jsonEquipmentsString varchar(MAX)
+	, @jsonAttributesString varchar(MAX)
 	, @created datetime output
 	
 AS
 BEGIN
+
+	SET NOCOUNT, XACT_ABORT ON;
+
 	-- Никаких изменений, если заказ-наряд закрыт
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
 		BEGIN
 			RETURN
 		END
 
-	-- Изменение основной таблицы
-	UPDATE WorkOrder
-	SET  DocNumber = @docNumber
-		, CustomerID = @customerID
-		, PatientFullName = @patientFullName
-		, PatientGender = @patientGender
-		, PatientAge = @patientAge
-		, ResponsiblePersonID = @responsiblePersonId
-		, FittingDate = @fittingDate
-		, DateOfCompletion = @dateOfCompletion
-		, DateComment = @dateComment
-		, ProstheticArticul = @prostheticArticul
-		, WorkDescription = @workDescription
-		, FlagWorkAccept = @flagWorkAccept
---		, OfficeAdminID = @officeAdminID
-		, OfficeAdminName = @officeAdminName	
-	WHERE WorkOrderID = @workOrderID
+	BEGIN TRAN
 	
-	-- Изменение подчинённых таблиц в зависимости от типа филиала
-	IF @branchTypeID = 1 BEGIN
-		UPDATE WorkOrderMC
-		SET AdditionalInfo = @additionalInfo
-			, CarcassColor = @carcassColor
-			, ImplantSystem = @implantSystem
-			, IndividualAbutmentProcessing = @individualAbutmentProcessing
-			, Understaff = @understaff
-		WHERE WorkOrderMCID = @workOrderID
-	END
-	ELSE IF @branchTypeID = 2 BEGIN
-		UPDATE WorkOrderDL
-		SET TransparenceID = @transparenceID		
-			, ColorAndFeatures = @colorAndFeatures
-		WHERE WorkOrderDLID = @workOrderID
-	END
-	
+		UPDATE WorkOrder
+		SET   CustomerID = @customerID
+			, PatientFullName = @patientFullName
+			, PatientGender = @patientGender
+			, PatientAge = @patientAge
+			, ResponsiblePersonID = @responsiblePersonId
+			, FittingDate = @fittingDate
+			, DateOfCompletion = @dateOfCompletion
+			, DateComment = @dateComment
+			, ProstheticArticul = @prostheticArticul
+			, WorkDescription = @workDescription
+			, FlagWorkAccept = @flagWorkAccept
+			, FlagStl = @flagStl
+			, FlagCashless = @flagCashless
+
+		WHERE WorkOrderID = @workOrderID
+		
+		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
+		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+
+
+	COMMIT
+
 	-- Напоминаем программе дату и время создания заказ-наряда
 	SELECT @created = Created FROM WorkOrder WHERE WorkOrderID = @workOrderID
 

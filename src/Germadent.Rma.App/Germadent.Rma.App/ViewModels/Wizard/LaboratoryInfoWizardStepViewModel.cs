@@ -27,6 +27,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private string _dateComment;
         private int _customerId;
         private int _responsiblePersonId;
+        private bool _stl;
+        private bool _cashless;
 
         public LaboratoryInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
@@ -227,6 +229,30 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
+        public bool Stl
+        {
+            get { return _stl; }
+            set
+            {
+                if (_stl == value)
+                    return;
+                _stl = value;
+                OnPropertyChanged(() => Stl);
+            }
+        }
+
+        public bool Cashless
+        {
+            get { return _cashless; }
+            set
+            {
+                if (_cashless == value)
+                    return;
+                _cashless = value;
+                OnPropertyChanged(() => Cashless);
+            }
+        }
+
         public IDelegateCommand SelectCustomerCommand { get; }
 
         public IDelegateCommand AddCustomerCommand { get; }
@@ -252,6 +278,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             FittingDate = order.FittingDate;
             DateOfCompletion = order.DateOfCompletion;
             DateComment = order.DateComment;
+            Stl = order.Stl;
+            Cashless = order.Cashless;
         }
 
         public override void AssemblyOrder(OrderDto order)
@@ -268,6 +296,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.FittingDate = FittingDate;
             order.DateOfCompletion = DateOfCompletion;
             order.DateComment = DateComment;
+            order.Stl = Stl;
+            order.Cashless = Cashless;
         }
 
         private void CustomerRepositoryOnChanged(object sender, EventArgs e)

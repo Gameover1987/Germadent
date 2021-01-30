@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 
@@ -49,6 +50,14 @@ namespace Germadent.Rma.App.Views
                 return;
 
             DialogResult = true;
+        }
+
+        private void ResponsiblePersonsGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ResponsiblePersonsGrid.SelectedItem == null)
+                return;
+
+            ResponsiblePersonsGrid.ScrollIntoView(ResponsiblePersonsGrid.SelectedItem);
         }
     }
 }

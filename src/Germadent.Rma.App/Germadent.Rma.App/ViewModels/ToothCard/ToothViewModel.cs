@@ -1,38 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Germadent.Common.Extensions;
+using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
 {
     public class ToothViewModel : ViewModelBase
     {
+        private readonly IProductRepository _productRepository;
+
         private bool _hasBridge;
         private bool _isChanged;
+        private ProductViewModel[] _products;
 
-        public ToothViewModel(DictionaryItemDto[] prostheticConditions, DictionaryItemDto[] prostheticTypes, DictionaryItemDto[] materials)
+        public ToothViewModel(IDictionaryRepository dictionaryRepository, IProductRepository productRepository)
         {
-            prostheticConditions.ForEach(x =>
-            {
-                var prostheticConditionViewModel = new CheckableDictionaryItemViewModel(x);
-                prostheticConditionViewModel.Checked += ProstheticConditionViewModelOnChecked;
-                ProstheticConditions.Add(prostheticConditionViewModel);
-            });
-            prostheticTypes.ForEach(x =>
-            {
-                var prostheticsTypeViewModel = new CheckableDictionaryItemViewModel(x);
-                prostheticsTypeViewModel.Checked += ProstheticsTypeViewModelOnChecked;
-                ProstheticTypes.Add(prostheticsTypeViewModel);
-            });
-            materials.ForEach(x =>
-            {
-                var materialViewModel = new CheckableDictionaryItemViewModel(x);
-                materialViewModel.Checked += MaterialViewModelOnChecked;
-                Materials.Add(materialViewModel);
-            });
+            _productRepository = productRepository;
+            dictionaryRepository
+                .Items
+                .Where(x => x.Dictionary == DictionaryType.ProstheticCondition)
+                .ForEach(x =>
+                {
+                    var prostheticConditionViewModel = new CheckableDictionaryItemViewModel(x);
+                    prostheticConditionViewModel.Checked += ProstheticConditionViewModelOnChecked;
+                    ProstheticConditions.Add(prostheticConditionViewModel);
+                });
         }
 
         public int Number { get; set; }
@@ -73,22 +72,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get { return ProstheticConditions.FirstOrDefault(x => x.IsChecked); }
         }
 
-        public ObservableCollection<CheckableDictionaryItemViewModel> ProstheticTypes { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
-
-        public CheckableDictionaryItemViewModel SelectedProstheticsType
-        {
-            get { return ProstheticTypes.FirstOrDefault(x => x.IsChecked); }
-        }
-
-        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
-
-
-        public CheckableDictionaryItemViewModel SelectedMaterial
-        {
-            get { return Materials.FirstOrDefault(x => x.IsChecked); }
-        }
-
-        public bool HasDescription => SelectedProstheticsType != null || SelectedMaterial != null || HasBridge;
+        public bool HasDescription => SelectedProstheticCondition != null || HasBridge;
 
         public bool IsValid
         {
@@ -97,7 +81,13 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (!IsChanged)
                     return true;
 
-                return SelectedProstheticCondition != null && SelectedMaterial != null && SelectedProstheticsType != null;
+                if (SelectedProstheticCondition == null)
+                    return false;
+
+                if (_products.IsNullOrEmpty())
+                    return false;
+
+                return true;
             }
         }
 
@@ -106,7 +96,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get
             {
                 var dto = ToDto();
-                return OrderDescriptionBuilder.GetToothCardDescription(dto);
+                return OrderDescriptionBuilder.GetToothDescription(dto);
             }
         }
 
@@ -118,17 +108,24 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
                 if (SelectedProstheticCondition == null)
                     descriptionBuilder.AppendLine("Выберите условие протезирования");
 
-                if (SelectedProstheticsType == null)
-                    descriptionBuilder.AppendLine("Выьерите тип протезирования");
-
-                if (SelectedMaterial == null)
-                    descriptionBuilder.AppendLine("Выберите материал");
+                if (_products.IsNullOrEmpty())
+                    descriptionBuilder.AppendLine("Выберите ценовую позицию");
 
                 return descriptionBuilder.ToString();
             }
         }
 
         public event EventHandler<ToothChangedEventArgs> ToothChanged;
+
+        public event EventHandler<ToothCleanUpEventArgs> ToothCleanup; 
+
+        public void AttachPricePositions(ProductViewModel[] products)
+        {
+            _products = products;
+
+            if (_products.Any())
+                IsChanged = true;
+        }
 
         public void Initialize(ToothDto toothDto)
         {
@@ -139,15 +136,17 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             if (selectedProstheticCondition != null)
                 selectedProstheticCondition.IsChecked = true;
 
-            var selectedProstheticsType = ProstheticTypes.FirstOrDefault(x => x.Item.Name == toothDto.ProstheticsName);
-            if (selectedProstheticsType != null)
-                selectedProstheticsType.IsChecked = true;
-
-            var selectedMaterial = Materials.FirstOrDefault(x => x.Item.Name == toothDto.MaterialName);
-            if (selectedMaterial != null)
-                selectedMaterial.IsChecked = true;
-
             _hasBridge = toothDto.HasBridge;
+
+            var products = new List<ProductDto>();
+            foreach (var productDto in toothDto.Products)
+            {
+                var productFromRepository = _productRepository.Items.First(x =>
+                    x.ProductId == productDto.ProductId && x.PricePositionId == productDto.PricePositionId);
+                products.Add(productFromRepository);
+            }
+
+            _products = products.Select(x => new ProductViewModel(x)).ToArray();
 
             OnPropertyChanged();
         }
@@ -157,26 +156,24 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             return new ToothDto()
             {
                 ToothNumber = Number,
-                MaterialId = SelectedMaterial?.Item.Id ?? 0,
-                MaterialName = SelectedMaterial?.DisplayName,
-                ProstheticsId = SelectedProstheticsType?.Item.Id ?? 0,
-                ProstheticsName = SelectedProstheticsType?.DisplayName,
+                Products = _products?.Select(x => x.ToDto()).ToArray(),
                 ConditionId = SelectedProstheticCondition?.Item.Id ?? 0,
                 ConditionName = SelectedProstheticCondition?.DisplayName,
                 HasBridge = HasBridge
             };
         }
 
-        public bool CanClear => HasBridge || SelectedProstheticCondition != null || SelectedMaterial != null || SelectedProstheticsType != null;
+        public bool CanClear => HasBridge || SelectedProstheticCondition != null || !_products.IsNullOrEmpty();
 
         public void Clear()
         {
             HasBridge = false;
             ProstheticConditions.ForEach(x => x.ResetIsChanged());
-            Materials.ForEach(x => x.ResetIsChanged());
-            ProstheticTypes.ForEach(x => x.ResetIsChanged());
+            _products = null;
 
             IsChanged = false;
+
+            ToothCleanup?.Invoke(this, new ToothCleanUpEventArgs(this));
         }
 
         public override string ToString()
@@ -186,7 +183,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         private bool GetIsChecked()
         {
-            return HasBridge || SelectedProstheticCondition != null || SelectedProstheticsType != null || SelectedMaterial != null;
+            return HasBridge || SelectedProstheticCondition != null || !_products.IsNullOrEmpty();
         }
 
         private void ProstheticConditionViewModelOnChecked(object sender, EventArgs e)
@@ -195,24 +192,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             prostheticConditionViewModels.ForEach(x => x.ResetIsChanged());
 
             OnPropertyChanged(() => SelectedProstheticCondition);
-            IsChanged = GetIsChecked();
-        }
-
-        private void ProstheticsTypeViewModelOnChecked(object sender, EventArgs e)
-        {
-            var prostheticsTypeViewModels = ProstheticTypes.Where(x => x != sender);
-            prostheticsTypeViewModels.ForEach(x => x.ResetIsChanged());
-
-            OnPropertyChanged(() => SelectedProstheticsType);
-            IsChanged = GetIsChecked();
-        }
-
-        private void MaterialViewModelOnChecked(object sender, EventArgs e)
-        {
-            var materialViewModels = Materials.Where(x => x != sender);
-            materialViewModels.ForEach(x => x.ResetIsChanged());
-
-            OnPropertyChanged(() => SelectedMaterial);
             IsChanged = GetIsChecked();
         }
 

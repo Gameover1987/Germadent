@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Version>1.0.0.2</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logo_umc.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.10.1" />
@@ -15,6 +20,27 @@
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
     <ProjectReference Include="..\Germadent.UI\Germadent.UI.csproj" />
     <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo_umc.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   
 </Project>

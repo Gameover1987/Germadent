@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              mc:Ignorable="d" 
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -64,6 +64,5 @@
                     Command="{Binding DownloadFileCommand}"/>
             <controls:BusyIndicator Width="23" Height="23" IsBusy="{Binding IsBusy}" Fill="#2D2D2D" Margin="6,0,0,0"/>
         </StackPanel>
-        <wizard:MouthUserControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,0,0" />
     </Grid>
 </UserControl>

@@ -29,32 +29,24 @@ SELECT wo.WorkOrderID,
 			ISNULL(wo.ProstheticArticul, '') AS ProstheticArticul,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,
 			wo.FlagWorkAccept,
-			ISNULL(wo.OfficeAdminName, '') AS OfficeAdminName,
+			wo.FlagStl,
+			wo.FlagCashless,
 			wo.Closed,
-		--	CONCAT(e.FamilyName,' ', LEFT(e.Name, 1), '.', LEFT(e.Patronymic, 1), '.') AS OfficeAdmin,
+			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName,
 			ISNULL(rp.ResponsiblePerson, '') AS TechnicFullName,
 			ISNULL(rp.RP_Phone, '') AS TechnicPhone,
-			ISNULL(wmc.AdditionalInfo, '') AS AdditionalInfo,
-			ISNULL(wmc.CarcassColor, '') AS CarcassColor,
-			ISNULL(wmc.ImplantSystem, '') AS ImplantSystem,
-			ISNULL(wmc.IndividualAbutmentProcessing, '') AS IndividualAbutmentProcessing,
-			ISNULL(wmc.Understaff, '') AS Understaff,
 			ISNULL(rp.ResponsiblePerson, '') AS DoctorFullName,
 			wo.PatientGender,
 			ISNULL(wo.PatientAge, 0) AS PatientAge,
 			wo.DateOfCompletion,
 			wo.FittingDate,
-			ISNULL(wdl.ColorAndFeatures, '') AS ColorAndFeatures,
-			ISNULL(wdl.TransparenceID, 0) AS TransparenceID,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
 	FROM 	WorkOrder wo 
 			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
 			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-	--		INNER JOIN Employee e ON wo.OfficeAdminID = e.EmployeeID
-			LEFT JOIN WorkOrderMC wmc ON wo.WorkOrderID = wmc.WorkOrderMCID
-			LEFT JOIN WorkOrderDL wdl ON wo.WorkOrderID = wdl.WorkOrderDLID
+			LEFT JOIN Users u ON wo.CreatorID = u.UserID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

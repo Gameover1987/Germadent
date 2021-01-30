@@ -23,7 +23,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <controls:SearchComboBox Grid.Row="0" LabelText="Поиск ролей" />
+            <controls:SearchComboBox Grid.Row="0" LabelText="Поиск ролей" Height="23"/>
 
             <ListBox Grid.Row="1" Margin="0,6,0,0"
                      ItemsSource="{Binding Roles}"
@@ -31,7 +31,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
                         <Grid Margin="3,0,3,0">
-                            <TextBlock Grid.Row="1" Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Name}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -54,7 +54,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <controls:SearchComboBox Grid.Row="0" LabelText="Поиск прав" />
+            <controls:SearchComboBox Grid.Row="0" LabelText="Поиск прав" Height="23" />
 
             <ListBox Grid.Row="1" Margin="0,6,0,0"
                      ItemsSource="{Binding Rights}"
@@ -72,7 +72,7 @@
                                                    <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
-                                               <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
+                                               <TextBlock Grid.Row="0" Text="{Binding Name, Converter={StaticResource ApplicationModuleToStringConverter}}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
 
                                                <ItemsPresenter Grid.Row="1" Margin="12,6,0,12"/>
                                             </Grid>
@@ -92,7 +92,7 @@
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Data="M 0,7.87402L 4.72441,14.1733L 14.1732,4.72443L 14.1732,0L 4.72441,11.0237L 0,4.72443L 0,7.87402 Z" Fill="Green" Width="10" Height="10" Stretch="Uniform" />
 
-                            <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="3,0,0,0"/>
+                            <TextBlock Grid.Column="1" Text="{Binding RightDescription}" Margin="3,0,0,0"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

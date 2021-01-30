@@ -5,37 +5,35 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[AddOrUpdateAttributesSet]
 	
-	@jsonString varchar(MAX)
+	@workOrderId int,
+	@jsonAttributesString varchar(MAX)
 
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
-    -- Достаём нужный id
-	DECLARE @workOrderId int
-
-	SET 	 @workOrderId = (SELECT DISTINCT WorkOrderID
-							FROM OPENJSON (@jsonString)
-								WITH (WorkOrderId int))
-
+    
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
 	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
 		BEGIN
 			RETURN
 		END
 
-	-- Чистим набор атрибутов от старого содержимого
-	DELETE
-	FROM AttributesSet
-	WHERE WorkOrderID = @workOrderId
+	BEGIN TRAN
+		-- Чистим набор атрибутов от старого содержимого
+		DELETE
+		FROM AttributesSet
+		WHERE WorkOrderID = @workOrderId
 
-	-- Наполняем набор новым содержимым, распарсив строку json
-	INSERT INTO AttributesSet
-		(WorkOrderID, AttributeID, AttrValueID)
-	SELECT WorkOrderID, AttributeID, AttrValueID
-		FROM OPENJSON (@jsonString)
-		WITH (WorkOrderID int, AttributeID int, AttrValueID int)
+		-- Наполняем набор новым содержимым, распарсив строку json
+		INSERT INTO AttributesSet
+			(WorkOrderID, ToothNumber, AttributeID, AttributeValueID)
+		SELECT WorkOrderID = @workOrderId, ToothNumber, AttributeID, AttributeValueID
+			FROM OPENJSON (@jsonAttributesString)
+			WITH (ToothNumber tinyint, AttributeId int, AttributeValueId int)
+
+	COMMIT
 
 	-- Удаляем незначащие записи
 	DELETE
@@ -44,3 +42,8 @@ BEGIN
 	AND AttributeID IS NULL
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateAttributesSet] TO [gdl_user]
+    AS [dbo];
+

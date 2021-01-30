@@ -18,10 +18,21 @@
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
     [FlagWorkAccept]      BIT            NULL,
-    [OfficeAdminID]       INT            NULL,
-    [OfficeAdminName]     NVARCHAR (50)  NULL,
+    [FlagStl]             BIT            NULL,
+    [FlagCashless]        BIT            NULL,
+    [CreatorID]           INT            NULL,
     [Closed]              DATETIME       NULL
 );
+
+
+
+
+
+
+
+
+
+
 
 
 

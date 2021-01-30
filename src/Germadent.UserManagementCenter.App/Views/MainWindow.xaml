@@ -18,12 +18,12 @@
         d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=True}">
     <TabControl Margin="0,0,0,-1">
         <TabItem Header="Пользователи">
-            <views:UsersView Margin="6"
+            <views:UsersView Margin="12"
                              DataContext="{Binding UsersManager}"/>
         </TabItem>
 
         <TabItem Header="Роли и права">
-            <views:RolesView Margin="6"
+            <views:RolesView Margin="12"
                              DataContext="{Binding RolesManager}"/>
         </TabItem>
     </TabControl>

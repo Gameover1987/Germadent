@@ -1,4 +1,5 @@
 ﻿using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -6,7 +7,7 @@ namespace Germadent.WebApi.Entities.Conversion
     {
         OrderDto ConvertToOrder(OrderEntity entity);
 
-        ToothDto ConvertToTooth(ToothEntity entity);
+        ToothDto[] ConvertToToothCard(ToothEntity[] entities, bool getPricesAsStl);
 
         OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
 
@@ -14,11 +15,20 @@ namespace Germadent.WebApi.Entities.Conversion
 
         AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity);
 
-        ReportListDto ConvertToExcel(ExcelEntity entity);
-
         CustomerDto ConvertToCustomer(CustomerEntity entity);
 
         ResponsiblePersonDto ConvertToResponsiblePerson(ResponsiblePersonEntity entity);
-      
+
+        AttributeDto ConvertToAttribute(AttributesEntity entity);
+
+        PriceGroupDto ConvertToPriceGroup(PriceGroupEntity entity);
+
+        PricePositionDto ConvertToPricePosition(PricePositionEntity entity);
+
+        PriceDto ConvertToPrice(PriceEntity entity);
+
+        ProductDto ConvertToProduct(ProductEntity entity);
+
+        ToothEntity[] ConvertFromToothDto(ToothDto toothDto, bool setPriceStl);
     }
 }

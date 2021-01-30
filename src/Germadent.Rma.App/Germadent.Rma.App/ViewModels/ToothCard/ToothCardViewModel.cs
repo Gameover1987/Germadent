@@ -5,8 +5,8 @@ using System.Text;
 using System.Windows.Input;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
@@ -16,21 +16,19 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
     public class ToothCardViewModel : ViewModelBase, IToothCardViewModel
     {
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IClipboardHelper _clipboard;
         private ToothViewModel[] _selectedTeeth;
 
-        public ToothCardViewModel(IDictionaryRepository dictionaryRepository, IClipboardHelper clipboard)
+        public ToothCardViewModel(IDictionaryRepository dictionaryRepository, IProductRepository productRepository, IClipboardHelper clipboard)
         {
             _dictionaryRepository = dictionaryRepository;
+            _productRepository = productRepository;
             _clipboard = clipboard;
 
             Teeth = new ObservableCollection<ToothViewModel>();
-            Materials = new ObservableCollection<CheckableDictionaryItemViewModel>();
-            Prosthetics = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
             SelectPtostheticsConditionCommand = new DelegateCommand(SelectProstheticConditionsCommandHandler, x => CanSelectProstheticConditionCommandHandler());
-            SelectPtostheticsTypeCommand = new DelegateCommand(SelectProstheticsTypeCommandHandler, x => CanSelectTypeOfProstheticsCommandHandler());
-            SelectMaterialCommand = new DelegateCommand(SelectMaterialCommandHandler, x => CanSelectMaterialCommandHandler());
             SelectBridgeCommand = new DelegateCommand(SelectBridgeCommandHandler, x => CanSelectBridgeCommandHandler());
             ClearCommand = new DelegateCommand(x => ClearCommandHandler(), x => CanClearCommandHandler());
             CopyDescriptionCommand = new DelegateCommand(x => CopyDescriptionCommandHandler(), x => CanCopyDescriptionCommandHandler());
@@ -38,15 +36,7 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
 
         public ObservableCollection<ToothViewModel> Teeth { get; }
 
-        public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; }
-
-        public ObservableCollection<CheckableDictionaryItemViewModel> Prosthetics { get; }
-
         public ICommand SelectPtostheticsConditionCommand { get; }
-
-        public ICommand SelectPtostheticsTypeCommand { get; }
-
-        public ICommand SelectMaterialCommand { get; }
 
         public ICommand SelectBridgeCommand { get; }
 
@@ -59,40 +49,45 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             get { return Teeth.Where(x => x.IsChanged).All(x => x.IsValid); }
         }
 
+        public event EventHandler<ToothSelectedEventArgs> ToothSelected;
+        public event EventHandler<ToothCleanUpEventArgs> ToothCleanup;
+
         public void Initialize(ToothDto[] toothCard)
         {
             var prostheticConditions = _dictionaryRepository.GetItems(DictionaryType.ProstheticCondition);
-            var materials = _dictionaryRepository.GetItems(DictionaryType.Material);
-            var prosteticTypes = _dictionaryRepository.GetItems(DictionaryType.ProstheticType);
 
             foreach (var toothViewModel in Teeth)
             {
                 toothViewModel.ToothChanged -= TeethViewModelOnToothChanged;
-            }
-            Teeth.Clear();
-            for (int i = 21; i <= 28; i++)
-            {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                toothViewModel.ToothCleanup -= ToothViewModelOnToothCleanup;
             }
 
-            for (int i = 31; i <= 38; i++)
+            Teeth.Clear();
+
+            for (int i = 18; i >= 11; i--)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
+            }
+
+            for (int i = 21; i <= 28; i++)
+            {
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
+            }
+
+            for (int i = 38; i >= 31; i--)
+            {
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             for (int i = 41; i <= 48; i++)
             {
-                Teeth.Add(new ToothViewModel(prostheticConditions,prosteticTypes, materials) { Number = i });
-            }
-
-            for (int i = 11; i <= 18; i++)
-            {
-                Teeth.Add(new ToothViewModel(prostheticConditions, prosteticTypes, materials) { Number = i });
+                Teeth.Add(new ToothViewModel(_dictionaryRepository, _productRepository) { Number = i });
             }
 
             foreach (var teethViewModel in Teeth)
             {
                 teethViewModel.ToothChanged += TeethViewModelOnToothChanged;
+                teethViewModel.ToothCleanup += ToothViewModelOnToothCleanup;
 
                 var toothDto = toothCard.FirstOrDefault(x => x.ToothNumber == teethViewModel.Number);
                 if (toothDto == null)
@@ -102,12 +97,17 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             }
         }
 
+        private void ToothViewModelOnToothCleanup(object sender, ToothCleanUpEventArgs e)
+        {
+            ToothCleanup?.Invoke(this, e);
+        }
+
         public ToothDto[] ToDto()
         {
             return Teeth.Where(x => x.IsChanged).Select(x => x.ToDto()).ToArray();
         }
 
-        public event EventHandler<EventArgs> RenderRequest;
+        public event EventHandler<ToothChangedEventArgs> ToothChanged;
 
         public string Description
         {
@@ -131,13 +131,14 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             {
                 _selectedTeeth = value;
                 OnPropertyChanged(() => SelectedTeeth);
+
+                ToothSelected?.Invoke(this, new ToothSelectedEventArgs(_selectedTeeth?.LastOrDefault()));
             }
         }
 
         private void TeethViewModelOnToothChanged(object sender, ToothChangedEventArgs e)
         {
-            if (e.AffectsRenderToothCard)
-                RenderRequest?.Invoke(this, EventArgs.Empty);
+            ToothChanged?.Invoke(this, e);
 
             OnPropertyChanged(() => Description);
             OnPropertyChanged(() => IsValid);
@@ -155,36 +156,6 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
             foreach (var selectedTooth in SelectedTeeth)
             {
                 selectedTooth.ProstheticConditions.First(x => x.DisplayName == prostheticConditionViewModel.DisplayName).IsChecked = true;
-            }
-        }
-
-        private bool CanSelectTypeOfProstheticsCommandHandler()
-        {
-            return SelectedTeeth != null;
-        }
-
-        private void SelectProstheticsTypeCommandHandler(object obj)
-        {
-            var prostheticTypeViewModel = (CheckableDictionaryItemViewModel)obj;
-
-            foreach (var selectedTooth in SelectedTeeth)
-            {
-                selectedTooth.ProstheticTypes.First(x => x.DisplayName == prostheticTypeViewModel.DisplayName).IsChecked = true;
-            }
-        }
-
-        private bool CanSelectMaterialCommandHandler()
-        {
-            return SelectedTeeth != null;
-        }
-
-        private void SelectMaterialCommandHandler(object obj)
-        {
-            var materialViewModel = (CheckableDictionaryItemViewModel)obj;
-
-            foreach (var selectedTooth in SelectedTeeth)
-            {
-                selectedTooth.Materials.First(x => x.DisplayName == materialViewModel.DisplayName).IsChecked = true;
             }
         }
 
@@ -231,6 +202,17 @@ namespace Germadent.Rma.App.ViewModels.ToothCard
         private void CopyDescriptionCommandHandler()
         {
             _clipboard.CopyToClipboard(Description);
+        }
+
+        public void AttachPricePositions(ProductViewModel[] products)
+        {
+            if (SelectedTeeth == null || !SelectedTeeth.Any())
+                return;
+
+            foreach (var toothViewModel in SelectedTeeth)
+            {
+                toothViewModel.AttachPricePositions(products);
+            }
         }
     }
 }

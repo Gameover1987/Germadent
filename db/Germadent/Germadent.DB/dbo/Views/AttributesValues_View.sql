@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.AttributesValues_View
 AS
-SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttrValueID, v.AttributeValue
+SELECT   a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, v.AttributeValue, a.IsObsolete
 FROM      dbo.Attributes AS a INNER JOIN
                 dbo.AttrValues AS v ON a.AttributeID = v.AttributeID
 GO
@@ -13,7 +13,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+         Configuration = "(H (1[41] 4[32] 2[9] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -81,20 +81,20 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "a"
             Begin Extent = 
-               Top = 6
-               Left = 40
-               Bottom = 128
-               Right = 236
+               Top = 0
+               Left = 36
+               Bottom = 188
+               Right = 232
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "v"
             Begin Extent = 
-               Top = 6
-               Left = 276
-               Bottom = 147
-               Right = 457
+               Top = 0
+               Left = 401
+               Bottom = 141
+               Right = 585
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -120,7 +120,7 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 1440
+         Column = 2894
          Alias = 898
          Table = 1725
          Output = 727
@@ -137,6 +137,12 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'AttributesValues_View';
+
+
+
+
+
+
 
 
 

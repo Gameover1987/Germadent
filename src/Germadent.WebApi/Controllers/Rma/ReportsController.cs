@@ -2,12 +2,14 @@
 using Germadent.Common.Logging;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.Rma;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
     [Route("api/Rma/Reports")]
     [ApiController]
+    [Authorize]
     public class ReportsController : ControllerBase
     {
         private readonly IRmaDbOperations _rmaDbOperations;

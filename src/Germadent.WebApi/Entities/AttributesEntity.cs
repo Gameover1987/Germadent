@@ -16,5 +16,20 @@
         /// Наименование атрибута атрибута по-русски
         /// </summary>
         public string AttributeName { get; set; }
+
+        /// <summary>
+        /// Позволяет определить является ли данный атрибут устаревшим
+        /// </summary>
+        public bool IsObsolete { get; set; }
+
+        /// <summary>
+        /// Идентификатор значения атрибута
+        /// </summary>
+        public int AttributeValueId { get; set; }
+
+        /// <summary>
+        /// Значение атрибута
+        /// </summary>
+        public string AttributeValue { get; set; }
     }
 }

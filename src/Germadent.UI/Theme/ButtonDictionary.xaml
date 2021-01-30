@@ -27,6 +27,45 @@
     <Geometry x:Key="HelpButtonGeometry">M 150.01,0C 67.3271,0 0,67.3271 0,150.01C 0,232.692 67.3271,300.019 150.01,300.019C 232.692,300.019 300.019,232.692 300.019,150.01C 300.019,67.3271 232.692,0 150.01,0 Z M 146.072,261.04C 133.473,261.04 122.842,250.803 122.842,238.204C 122.842,225.211 133.473,214.974 146.072,214.974C 158.671,214.974 168.908,225.211 168.908,238.204C 168.908,250.803 158.671,261.04 146.072,261.04 Z M 212.612,141.741C 209.068,146.86 201.194,153.553 190.957,161.034L 179.933,168.908C 174.027,173.633 170.483,177.964 168.908,182.295C 167.727,185.839 167.333,186.626 167.333,193.713L 167.333,195.682L 125.205,195.682L 125.205,192.138C 125.992,177.177 126.386,168.515 132.292,161.428C 141.741,150.403 162.609,136.623 163.79,136.229C 166.546,133.867 169.302,131.504 171.271,128.748C 175.602,122.449 177.57,117.724 177.57,112.999C 177.57,106.306 175.602,100.4 171.664,94.8879C 168.121,89.7695 161.034,87.0134 150.797,87.0134C 140.954,87.0134 133.867,90.5569 129.536,96.8565C 125.599,103.55 123.236,110.637 123.236,117.724L 123.236,120.086L 79.9263,120.086L 80.3201,118.118C 81.5012,91.3444 90.9507,72.0518 108.275,61.0275C 119.299,53.9404 133.079,50.3969 149.222,50.3969C 170.09,50.3969 187.807,55.5153 201.588,65.3585C 215.762,75.5953 223.243,90.9506 223.243,110.637C 223.243,122.055 219.699,132.292 212.612,141.741 Z</Geometry>
     <Geometry x:Key="MainMenuButtonGeometry">M0,0 l20,0 0,2 -20,0 z M0,4 l20,0 0,2 -20,0 z M0,8 l20,0 0,2 -20,0 z M0,12 l20,0 0,2 -20,0 z</Geometry>
 
+    <Geometry x:Key="XButton">M4.4807296,3.6010888 L3.6010888,4.4807296 7.1202807,7.9999213 3.6017172,11.518485 4.4815154,12.398283 8.0000782,8.8797197 11.519271,12.398911 12.398911,11.519271 8.8797197,8.0000782 12.398283,4.4815154 11.518485,3.6017172 7.9999213,7.1202807 z M8,0 C12.418278,0 16,3.581722 16,8 16,12.418278 12.418278,16 8,16 3.581722,16 0,12.418278 0,8 0,3.581722 3.581722,0 8,0 z</Geometry>
+
+    <LinearGradientBrush x:Key="RedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF9B0E0E" Offset="0"/>
+        <GradientStop Color="#FFAE3737" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="XButtonStyle" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="Transparent">
+                        <Path UseLayoutRounding="True" SnapsToDevicePixels="True" x:Name="ellipse"
+                                      Data="{StaticResource XButton}"
+                                      Fill="#FF999999" Stretch="Fill" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="True" />
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="ellipse" Value="{StaticResource RedBackground}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Fill" TargetName="ellipse" Value="{StaticResource RedBackground}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False" />
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Visibility" Value="Hidden" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <LinearGradientBrush x:Key="StlnButtonBackgroundBrush" StartPoint="0,0" EndPoint="0,1" >
 		<GradientStop Color="#FFF4F4F4" Offset="0" />
 		<GradientStop Color="#FFC1C1C1" Offset="1" />
@@ -204,7 +243,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
-					<Grid MinWidth="40" Background="Transparent">
+					<Grid MinWidth="10" Background="Transparent">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />

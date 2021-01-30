@@ -1,14 +1,17 @@
 ﻿CREATE VIEW dbo.ToothCard_View
 AS
-SELECT        tc.WorkOrderID, tc.ToothNumber, tc.MaterialID, m.MaterialName, tc.ProstheticsID, p.ProstheticsName, wo.DocNumber
-FROM            dbo.ToothCard AS tc INNER JOIN
-                         dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
-                         dbo.TypesOfProsthetics AS p ON tc.ProstheticsID = p.ProstheticsID INNER JOIN
-                         dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID
-WHERE        (m.FlagUnused IS NULL) OR
-                         (m.FlagUnused <> 1)
+SELECT   tc.WorkOrderID, tc.ToothNumber, wo.DocNumber, tc.MaterialID AS Expr1, dbo.PricePositions.PricePositionCode, p.ProductName
+FROM      dbo.ToothCard AS tc INNER JOIN
+                dbo.Materials AS m ON tc.MaterialID = m.MaterialID INNER JOIN
+                dbo.WorkOrder AS wo ON tc.WorkOrderID = wo.WorkOrderID INNER JOIN
+                dbo.Products AS p ON tc.ProductID = p.ProductID INNER JOIN
+                dbo.PricePositions ON tc.PricePositionID = dbo.PricePositions.PricePositionID AND m.MaterialID = dbo.PricePositions.MaterialID
+WHERE   (m.FlagUnused IS NULL) OR
+                (m.FlagUnused <> 1)
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 
 
 GO
@@ -85,43 +88,53 @@ Begin DesignProperties =
       Begin Tables = 
          Begin Table = "tc"
             Begin Extent = 
-               Top = 10
-               Left = 46
-               Bottom = 151
-               Right = 227
+               Top = 9
+               Left = 289
+               Bottom = 313
+               Right = 470
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "m"
             Begin Extent = 
-               Top = 31
-               Left = 321
-               Bottom = 153
-               Right = 502
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "p"
-            Begin Extent = 
-               Top = 195
-               Left = 319
-               Bottom = 298
-               Right = 507
+               Top = 81
+               Left = 732
+               Bottom = 218
+               Right = 913
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "wo"
             Begin Extent = 
-               Top = 6
-               Left = 540
-               Bottom = 136
-               Right = 739
+               Top = 8
+               Left = 4
+               Bottom = 373
+               Right = 203
             End
             DisplayFlags = 280
-            TopColumn = 1
+            TopColumn = 6
+         End
+         Begin Table = "p"
+            Begin Extent = 
+               Top = 183
+               Left = 518
+               Bottom = 338
+               Right = 699
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "PricePositions"
+            Begin Extent = 
+               Top = 0
+               Left = 990
+               Bottom = 168
+               Right = 1189
+            End
+            DisplayFlags = 280
+            TopColumn = 0
          End
       End
    End
@@ -130,19 +143,48 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+         Width = 1426
+      End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 2340
-         Alias = 900
-         Table = 1170
-         Output = 720
+         Column = 2338
+         Alias = 898
+         Table = 1540
+  ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'       Output = 727
          Append = 1400
          NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
+         SortType = 1354
+         SortOrder = 1411
          GroupBy = 1350
-         Filter = 1350
+         Filter = 1354
          Or = 1350
          Or = 1350
          Or = 1350
@@ -150,6 +192,8 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'ToothCard_View';
+
+
 
 
 

@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
-             xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
              xmlns:wizard="clr-namespace:Germadent.Rma.App.Views.Wizard"
+             xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
              xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterInfoWizardStepViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=designMock:DesignMockMillingCenterInfoWizardStepViewModel, IsDesignTimeCreatable=True}"
+             FocusManager.FocusedElement="{Binding ElementName=CustomerAutoCompleteBox}">
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -34,13 +36,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0"
                 Style="{StaticResource InfoTextBorderStyle}">
             <TextBlock Text="Заказчик" Margin="0,1,0,0"/>
         </Border>
-        <controls:AutoCompleteTextBox Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
+        <controls:AutoCompleteTextBox x:Name="CustomerAutoCompleteBox" Grid.Row="0" Grid.Column="1" Margin="6,0,0,0"
                                       Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}" 
                                       DisplayMember="DisplayName"
                                       Provider="{Binding CustomerSuggestionProvider}">
@@ -75,7 +81,7 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Text="ФИО техника" VerticalAlignment="Center"
                    ToolTip="{x:Static properties:Resources.Tooltip_RequredField}"
                    HorizontalAlignment="Right" Margin="0,6,0,0" />
-       
+
         <controls:AutoCompleteTextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0"
                                       Text="{Binding ResponsiblePerson, UpdateSourceTrigger=PropertyChanged}" 
                                       DisplayMember="FullName"
@@ -115,5 +121,21 @@
 
         <TextBlock Grid.Column="0" Grid.Row="7" Text="Комментарий по времени"/>
         <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" Margin="6,6,0,0" Text="{Binding DateComment, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Цена"/>
+        <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Модель" Margin="0,0,0,0"
+                         IsChecked="{Binding Stl, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="STL"  Margin="6,0,0,0"
+                         IsChecked="{Binding Stl}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Тип расчета"/>
+        <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="Наличный"
+                         IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="Безналичный" Margin="6,0,0,0"
+                         IsChecked="{Binding Cashless}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

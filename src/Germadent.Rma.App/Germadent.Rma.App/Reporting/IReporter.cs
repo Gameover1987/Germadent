@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Reporting
 {
@@ -17,7 +16,6 @@ namespace Germadent.Rma.App.Reporting
 
         public ClipboardReporter(IClipboardHelper clipboard, IRmaServiceClient rmaServiceClient)
         {
-            //TODO Nekrasov:нул
             _clipboard = clipboard;
             _rmaServiceClient = rmaServiceClient;
         }
@@ -32,9 +30,7 @@ namespace Germadent.Rma.App.Reporting
 
             foreach (var report in reports)
             {
-                //TODO Nekrasov: че бля? $"" не, не слышал?
-                //TODO Nekrasov:адово длинная строка, легко накосячить, можно сделать многострочной
-                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ColorAndFeatures, "\t", report.Quantity, "\t", "\t", "\t", "\t", report.ProstheticArticul + "\n").Trim();
+                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ConstructionColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ImplantSystem, "\t", report.TotalPriceCashless, "\t", report.TotalPrice, "\n").Trim();
                 builder.AppendLine(line);
             }
 

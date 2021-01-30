@@ -11,7 +11,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT a.WorkOrderID, a.EquipmentID, e.EquipmentName, a.Quantity
+	SELECT a.WorkOrderID, a.EquipmentID, e.EquipmentName, a.QuantityIn, a.QuantityOut
 	FROM AdditionalEquipment a 
 		INNER JOIN Equipments e ON a.EquipmentID = e.EquipmentID
 

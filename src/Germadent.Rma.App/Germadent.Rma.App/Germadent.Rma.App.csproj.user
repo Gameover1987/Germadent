@@ -2,26 +2,72 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Views\Pricing\AddPricePositionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pricing\AddPriceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pricing\PriceListEditorControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pricing\PriceListEditorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SplashScreenWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Wizard\PriceListStepUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Wizard\PriceListUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Wizard\ResponsiblePersonUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Wizard\ToothUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\Pricing\AddPricePositionWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pricing\AddPriceWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pricing\PriceListEditorControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pricing\PriceListEditorWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreenWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Wizard\PriceListStepUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\PriceListUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Wizard\ResponsiblePersonUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\ToothCardDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Wizard\ToothUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

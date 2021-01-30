@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="Germadent.Rma.App.Views.Pricing.PriceListEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Germadent.Rma.App.Views"
+             xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+             xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+             xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ценовые группы"
+                   Style="{StaticResource GroupNameStyle}"/>
+
+        <ListBox Grid.Row="1" Grid.Column="0" Margin="0,6,0,0" Width="320"
+                 SelectionChanged="Selector_OnSelectionChanged"
+                 ItemsSource="{Binding Groups}"
+                 SelectedItem="{Binding SelectedGroup}"
+                 ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
+            <ListBox.InputBindings>
+                <KeyBinding Key="N" Modifiers="Control"
+                            Command="{Binding AddPriceGroupCommand}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditPriceGroupCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeletePriceGroupCommand}"/>
+            </ListBox.InputBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
+                    <Grid Background="Transparent" MouseLeftButtonDown="PriceGroupMouseButtonDown">
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="3,0,0,0" TextTrimming="CharacterEllipsis"
+                                   helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,6,0,0">
+            <Button Content="Добавить" Width="100"
+                    Command="{Binding AddPriceGroupCommand}"/>
+            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                    Command="{Binding EditPriceGroupCommand}"/>
+            <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                    Command="{Binding DeletePriceGroupCommand}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Ценовые позиции" Margin="12,0,0,0"
+                   Style="{StaticResource GroupNameStyle}"/>
+
+        <DataGrid Grid.Row="1" Grid.Column="1" Margin="12,6,0,0"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"	
+                  AlternationCount="2"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Positions}"
+                  SelectedItem="{Binding SelectedPosition}">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                    <EventSetter Event="PreviewMouseDoubleClick" Handler="PricePositionMouseDoubleClick"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding EditPricePositionCommand}"
+                                          InputGestureText="F2"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeletePricePositionCommand}"
+                                          InputGestureText="Delete"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.InputBindings>
+                <KeyBinding Key="N" Modifiers="Control"
+                            Command="{Binding AddPricePositionCommand}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditPricePositionCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeletePricePositionCommand}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
+                                    Binding="{Binding PricePositionId}"/>
+                <DataGridTextColumn Header="Код" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                    Binding="{Binding UserCode}"/>
+               <DataGridTextColumn Header="Наименование" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding DisplayName}"/>
+               <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding PriceStl}"/>
+               <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                   Binding="{Binding PriceModel}"/>
+           </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="12,6,0,0">
+            <Button Content="Добавить" Width="100"
+                    Command="{Binding AddPricePositionCommand}"/>
+            <Button Content="Редактировать" Width="100" Margin="6,0,0,0"
+                    Command="{Binding EditPricePositionCommand}"/>
+            <Button Content="Удалить" Width="100" Margin="6,0,0,0"
+                    Command="{Binding DeletePricePositionCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

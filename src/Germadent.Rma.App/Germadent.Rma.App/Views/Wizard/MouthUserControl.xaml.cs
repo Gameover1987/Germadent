@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,9 +15,9 @@ namespace Germadent.Rma.App.Views.Wizard
     /// </summary>
     public partial class MouthUserControl : UserControl
     {
-        private static int[] StopNumbers = new int[] { 18, 48, 28, 38 };
+        private static readonly int[] StopNumbers = new int[] { 18, 48, 28, 38 };
 
-        private List<Bridge> _bridges = new List<Bridge>();
+        private readonly List<Bridge> _bridges = new List<Bridge>();
         private IToothCardViewModel _toothCard;
 
         public MouthUserControl()
@@ -31,19 +33,21 @@ namespace Germadent.Rma.App.Views.Wizard
         {
             if (_toothCard != null)
             {
-                _toothCard.RenderRequest -= ToothCardOnRenderRequest;
+                _toothCard.ToothChanged -= ToothCardOnToothChanged;
             }
 
             if (DataContext == null)
                 return;
 
-            _toothCard = ((IToothCardContainer)DataContext).ToothCard;
-            _toothCard.RenderRequest += ToothCardOnRenderRequest;
-
+            _toothCard = (IToothCardViewModel)DataContext;
+            _toothCard.ToothChanged += ToothCardOnToothChanged;
         }
 
-        private void ToothCardOnRenderRequest(object sender, EventArgs e)
+        private void ToothCardOnToothChanged(object sender, ToothChangedEventArgs e)
         {
+            if (!e.AffectsRenderToothCard)
+                return;
+
             RenderMouth();
         }
 
@@ -57,7 +61,25 @@ namespace Germadent.Rma.App.Views.Wizard
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            RenderMouth();
+            Task.Run(() =>
+            {
+                Thread.Sleep(25);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    RenderMouth();
+
+                    _mouthListBox.SelectedItems.Clear();
+                    var firstChangedTooth = _toothCard.Teeth.FirstOrDefault(x => x.IsChanged);
+                    if (firstChangedTooth != null) {
+                        
+                        _mouthListBox.SelectedItems.Add(firstChangedTooth);
+                    }
+                    else
+                    {
+                        _mouthListBox.SelectedItems.Add(_toothCard.Teeth.First(x => x.Number == 11));
+                    }
+                }));
+            });
         }
 
         private void RenderMouth()
@@ -65,49 +87,39 @@ namespace Germadent.Rma.App.Views.Wizard
             if (_toothCard == null)
                 return;
 
-            var canvasWidth = _mouthListBox.ActualWidth - 50;
-            var canvasHeight = _mouthListBox.ActualHeight - 50;
+            var canvasWidth = _mouthListBox.ActualWidth - 6;
 
-            var a = canvasWidth / 2.0;
-            var b = canvasHeight / 2.0;
+            var stepByWidth = canvasWidth / 16;
+            var horizontalMargin = 5;
+            var verticalMargin = 10;
 
-            var stepByWidth = ((canvasWidth / 2.0) - 10) / 8;
-
-            var placement1 = new List<TeethPlacement>();
-            var placement2 = new List<TeethPlacement>();
-            var placement3 = new List<TeethPlacement>();
-            var placement4 = new List<TeethPlacement>();
-
-            for (int i = 0; i < 8; i++)
+            var allPlacements = new List<TeethPlacement>();
+            var placements1 = new List<TeethPlacement>();
+            for (int i = 0; i < 16; i++)
             {
-                var x = 20 + stepByWidth * i;
-                var y = b * Math.Sqrt(1 - Math.Pow(x, 2) / Math.Pow(a, 2));
-                var point1 = new Point(a + x, b - y);
-                var point2 = new Point(a + x, b + y);
-                var point3 = new Point(a - x, b + y);
-                var point4 = new Point(a - x, b - y);
-
-                placement1.Add(PlaceTeeth(i, point1));
-                placement2.Add(PlaceTeeth(i + 8, point2));
-                placement3.Add(PlaceTeeth(i + 16, point3));
-                placement4.Add(PlaceTeeth(i + 24, point4));
+                var point = new Point((stepByWidth * i) + horizontalMargin, verticalMargin);
+                placements1.Add(PlaceTeeth(i, point));
             }
 
-            var placements = new List<TeethPlacement>();
-            placement4.Reverse();
-            placements.AddRange(placement4);
-            placements.AddRange(placement1);
-            placement2.Reverse();
-            placements.AddRange(placement2);
-            placements.AddRange(placement3);
+            var placements2 = new List<TeethPlacement>();
+            var decrement = 15;
+            for (int i = 16; i < 32; i++)
+            {
+                var point = new Point((stepByWidth * decrement) + horizontalMargin, verticalMargin + 45);
+                placements2.Add(PlaceTeeth(i, point));
+                decrement--;
+            }
 
-            foreach (var teethPlacement in placements)
+            allPlacements.AddRange(placements1);
+            allPlacements.AddRange(placements2);
+
+            foreach (var teethPlacement in allPlacements)
             {
                 Canvas.SetLeft(teethPlacement.ListBoxItem, teethPlacement.Position.X);
                 Canvas.SetTop(teethPlacement.ListBoxItem, teethPlacement.Position.Y);
             }
 
-            DrawBridges(placements);
+            DrawBridges(allPlacements);
         }
 
         private void DrawBridges(List<TeethPlacement> placements)
@@ -195,7 +207,9 @@ namespace Germadent.Rma.App.Views.Wizard
 
             public ListBoxItem ListBoxItem { get; set; }
 
-            public Point CorrectedPosition => new Point(Position.X + ListBoxItem.ActualWidth / 2, Position.Y + ListBoxItem.ActualHeight / 2);
+            public Point CorrectedPosition => new Point(
+                Position.X + (ListBoxItem.ActualWidth / 2 + 1),
+                Position.Y + (ListBoxItem.ActualHeight / 2 + 1));
 
             public override string ToString()
             {

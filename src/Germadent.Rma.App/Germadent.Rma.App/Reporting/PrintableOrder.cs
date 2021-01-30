@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.Reporting
         public string ToothCardDescription { get; set; }
         public string FlagWorkAccept { get; set; }
         public DateTime? Closed { get; set; }
-        public string OfficeAdmin { get; set; }
+        public string OfficeAdminName { get; set; }
         public string AdditionalInfo { get; set; }
         public string CarcassColor { get; set; }
         public string ImplantSystem { get; set; }

@@ -614,11 +614,6 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Grid.LayoutTransform>
-            <ScaleTransform CenterX="0" CenterY="0"
-                            ScaleX="{Binding UiScale}"
-                            ScaleY="{Binding UiScale}" />
-        </Grid.LayoutTransform>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.4*" />
             <RowDefinition Height="Auto" />

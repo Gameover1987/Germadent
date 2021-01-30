@@ -1,16 +1,58 @@
 ﻿using System;
 using Germadent.Common.Logging;
+using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.Model;
+using Germadent.UI.Infrastructure;
+using Germadent.UI.ViewModels.DesignTime;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
+    public class DesignMockEnvironment : IEnvironment
+    {
+        public void Restart()
+        {
+            
+        }
+
+        public void Shutdown()
+        {
+            
+        }
+    }
+
+    public class DesignMockUserSettingsManager : IUserSettingsManager
+    {
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string LastLogin { get; set; }
+        public ColumnInfo[] Columns { get; set; }
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockRmaServiceClient(), new DesignMockWindowManager(), new DesignMockDialogAgent(), new DesignMockCustomerCatalogViewModel(), new DesignMockResponsiblePersonsCatalogViewModel(),   new DesignMockPrintModule(), new MockLogger(), new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()))
+            : base(new DesignMockRmaServiceClient(),
+                new DesignMockEnvironment(), 
+                new DesignMockWindowManager(), 
+                new DesignMockShowDialogAgent(), 
+                new DesignMockCustomerCatalogViewModel(),
+                new DesignMockResponsiblePersonsCatalogViewModel(),
+                new DesignMockPriceListEditorContainerViewModel(), 
+                new DesignMockPrintModule(), 
+                new MockLogger(), 
+                new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()), 
+                new DesignMockUserManager(),
+                new DesignMockUserSettingsManager() )
         {
         }
     }

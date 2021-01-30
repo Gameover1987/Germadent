@@ -7,10 +7,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
     {
         UserDto AddUser();
 
-        UserDto EditUser(UserViewModel user);
+        UserDto EditUser(UserDto user);
+
+        bool DeleteUser(UserViewModel user);
 
         RoleDto AddRole();
 
         RoleDto EditRole(RoleViewModel role);
+
+        bool DeleteRole(RoleViewModel role);
     }
 }

@@ -1,8 +1,20 @@
 ﻿using System;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
+using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
+    public class UserAuthorizedEventArgs : EventArgs
+    {
+        public UserAuthorizedEventArgs(AuthorizationInfoDto info)
+        {
+            AuthorizationInfo = info;
+        }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; }
+    }
+
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -14,6 +26,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="user"></param>
         /// <param name="password"></param>
         void Authorize(string user, string password);
+
+        /// <summary>
+        /// Данные авторизации
+        /// </summary>
+        AuthorizationInfoDto AuthorizationInfo { get; }
 
         /// <summary>
         /// Получить список заказнарядов
@@ -87,7 +104,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        CustomerDeleteResult DeleteCustomer(int customerId);
+        DeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
@@ -115,7 +132,7 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <param name="responsiblePersonId"></param>
         /// <returns></returns>
-        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId);
+        DeleteResult DeleteResponsiblePerson(int responsiblePersonId);
 
         /// <summary>
         /// Возвращает словарь по его названию
@@ -125,13 +142,71 @@ namespace Germadent.Rma.App.ServiceClient
         DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
 
         /// <summary>
-        /// Собтие изменения репозитория заказчиков
+        /// Возвращает прайс по выбранному типу филиала
         /// </summary>
-        event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PriceGroupDto[] GetPriceGroups(BranchType branchType);
 
         /// <summary>
-        /// Событие изменения репозитория ответственных лиц
+        /// Добавляет ценовую группу
         /// </summary>
-        event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Обновляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Удаляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupId"></param>
+        /// <returns></returns>
+        DeleteResult DeletePriceGroup(int priceGroupId);
+
+        /// <summary>
+        /// Возвращает ценовые позиции по выбранному типу филиала
+        /// 
+        /// </summary>
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PricePositionDto[] GetPricePositions(BranchType branchType);
+
+        /// <summary>
+        /// Добавляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Обновляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Удаляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionId"></param>
+        /// <returns></returns>
+        DeleteResult DeletePricePosition(int pricePositionId);
+
+        /// <summary>
+        /// Возвращает весь набор изделий с материалами и ценами
+        /// </summary>
+        /// <returns></returns>
+        ProductDto[] GetProducts();
+
+        /// <summary>
+        /// Возвращает список атрибутов и их значений
+        /// </summary>
+        /// <returns></returns>
+        AttributeDto[] GetAttributes();
     }
 }

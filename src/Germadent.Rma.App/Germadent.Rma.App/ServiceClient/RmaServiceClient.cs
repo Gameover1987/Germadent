@@ -1,9 +1,11 @@
-﻿using System;
-using DocumentFormat.OpenXml.Drawing;
-using Germadent.Common.FileSystem;
+﻿using System.Linq;
+using Germadent.Common;
 using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
+using Germadent.UserManagementCenter.Model;
+using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -11,18 +13,31 @@ namespace Germadent.Rma.App.ServiceClient
     public class RmaServiceClient : ServiceClientBase, IRmaServiceClient
     {
         private readonly IConfiguration _configuration;
-        private readonly IFileManager _fileManager;
+        private readonly ISignalRClient _signalRClient;
 
-        public RmaServiceClient(IConfiguration configuration, IFileManager fileManager)
+        public RmaServiceClient(IConfiguration configuration, ISignalRClient signalRClient)
         {
             _configuration = configuration;
-            _fileManager = fileManager;
+            _signalRClient = signalRClient;
         }
 
-        public void Authorize(string user, string password)
+        public void Authorize(string login, string password)
         {
+            var info = ExecuteHttpGet<AuthorizationInfoDto>(
+                _configuration.DataServiceUrl + string.Format("/api/auth/authorize/{0}/{1}", login, password));
 
+            AuthorizationInfo = info;
+            AuthenticationToken = info.Token;
+
+            if (AuthorizationInfo.IsLocked)
+                throw new UserMessageException("Учетная запись заблокирована.");
+
+            if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
+                throw new UserMessageException("Отсутствует право на запуск приложения");
+
+            _signalRClient.Initialize();
         }
+        public AuthorizationInfoDto AuthorizationInfo { get; protected set; }
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
@@ -42,24 +57,16 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto AddOrder(OrderDto order)
         {
+            order.CreatorId = AuthorizationInfo.UserId;
+            
             var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
-            if (order.DataFileName != null)
-            {
-                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, addedOrder.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
-                ExecuteFileUpload(api, order.DataFileName);
-            }
 
             return addedOrder;
         }
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder =  ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
-            if (order.DataFileName != null)
-            {
-                var api = string.Format("{0}/api/Rma/orders/fileUpload/{1}/{2}", _configuration.DataServiceUrl, order.WorkOrderId, _fileManager.GetShortFileName(order.DataFileName));
-                ExecuteFileUpload(api, order.DataFileName);
-            }
+            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
 
             return updatedOrder;
         }
@@ -82,20 +89,18 @@ namespace Germadent.Rma.App.ServiceClient
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
             var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/add", сustomerDto);
-            CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { addedCustomer }, null));
             return addedCustomer;
         }
 
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
         {
             var updatedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/update", customerDto);
-            CustomerRepositoryChanged?.Invoke(this, new CustomerRepositoryChangedEventArgs(new[] { updatedCustomer }, null));
             return updatedCustomer;
         }
 
-        public CustomerDeleteResult DeleteCustomer(int customerId)
+        public DeleteResult DeleteCustomer(int customerId)
         {
-            return ExecuteHttpDelete<CustomerDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Customers/{customerId}");
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Customers/{customerId}");
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
@@ -106,20 +111,18 @@ namespace Germadent.Rma.App.ServiceClient
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
             var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/add", responsiblePersonDto);
-            ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new[] { addedResponsiblePerson }, null));
             return addedResponsiblePerson;
         }
 
         public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
             var updatedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/update", responsiblePersonDto);
-            ResponsiblePersonRepositoryChanged?.Invoke(this, new ResponsiblePersonRepositoryChangedEventArgs(new[] { responsiblePersonDto }, null));
             return updatedResponsiblePerson;
         }
 
-        public ResponsiblePersonDeleteResult DeleteResponsiblePerson(int responsiblePersonId)
+        public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
-            return ExecuteHttpDelete<ResponsiblePersonDeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
         }
 
         public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
@@ -127,9 +130,57 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
         }
 
-        public event EventHandler<CustomerRepositoryChangedEventArgs> CustomerRepositoryChanged;
-        
-        public event EventHandler<ResponsiblePersonRepositoryChangedEventArgs> ResponsiblePersonRepositoryChanged;
+        public PriceGroupDto[] GetPriceGroups(BranchType branchType)
+        {
+            return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
+        }
+
+        public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
+            return addedPriceGroup;
+        }
+
+        public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
+        {
+            var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
+            return updatedPriceGroup;
+        }
+
+        public DeleteResult DeletePriceGroup(int priceGroupId)
+        {
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
+        }
+
+        public PricePositionDto[] GetPricePositions(BranchType branchType)
+        {
+            return ExecuteHttpGet<PricePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);
+        }
+
+        public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
+        {
+            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
+        }
+
+        public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
+        {
+            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
+        }
+
+        public DeleteResult DeletePricePosition(int pricePositionId)
+        {
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
+        }
+
+        public ProductDto[] GetProducts()
+        {
+            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts");
+        }
+
+        public AttributeDto[] GetAttributes()
+        {
+            return ExecuteHttpGet<AttributeDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Attributes/GetAttributesAndValues");
+        }
 
         protected override void HandleError(IRestResponse response)
         {

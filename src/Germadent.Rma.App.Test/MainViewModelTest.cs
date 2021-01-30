@@ -6,21 +6,23 @@ using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
+using Germadent.UserManagementCenter.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Germadent.Rma.App.Test
 {
-    [TestFixture]
+    [TestClass]
     public class MainViewModelTest
     {
         /// <summary>
         /// Должен проинициализировать вьюмодель главного окна
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ShouldInitialize()
         {
             // Given
@@ -31,13 +33,17 @@ namespace Germadent.Rma.App.Test
             mockRmaOperations.Setup(x => x.GetOrders(It.IsAny<OrdersFilter>())).Returns(orders.ToArray());
             var mockClipboard = new Mock<IClipboardHelper>();
             var target = new MainViewModel(mockRmaOperations.Object,
+                Mock.Of<IEnvironment>(),
                 Mock.Of<IOrderUIOperations>(),
                 Mock.Of<IShowDialogAgent>(),
                 Mock.Of<ICustomerCatalogViewModel>(),
                 Mock.Of<IResponsiblePersonCatalogViewModel>(),
+                Mock.Of<IPriceListEditorContainerViewModel>(),
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
-                Mock.Of<IReporter>());
+                Mock.Of<IReporter>(),
+                Mock.Of<IUserManager>(),
+                Mock.Of<IUserSettingsManager>());
 
             ThreadTaskExtensions.IsSyncRun = true;
 

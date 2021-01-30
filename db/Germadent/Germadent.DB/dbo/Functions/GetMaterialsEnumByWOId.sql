@@ -28,6 +28,7 @@ BEGIN
 	RETURN @materialsEnum
 
 END
+
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetMaterialsEnumByWOId] TO [gdl_user]

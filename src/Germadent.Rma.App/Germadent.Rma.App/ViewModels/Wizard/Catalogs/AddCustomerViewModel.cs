@@ -19,7 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard.Catalogs
             AddValidationFor(() => Name)
                 .When(() => string.IsNullOrWhiteSpace(Name), () => "Укажите наименование заказчика");
 
-            OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
+            OkCommand = new DelegateCommand(CanOkCommandHandler);
         }
 
         public string Title => GetTitle(ViewMode);

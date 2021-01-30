@@ -1,13 +1,10 @@
-﻿using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Operations;
+﻿using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.App.Views.DesignMock;
 using Germadent.Rma.Model;
-using Germadent.UI.Controls;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -17,7 +14,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
     public class MillingCenterWizardStepsProvider : IMillingCenterWizardStepsProvider
     {
-        private readonly IOrderFilesContainerViewModel _filesContainer;
         private readonly ICustomerSuggestionProvider _customerSuggestionProvider;
         private readonly IResponsiblePersonsSuggestionsProvider _responsiblePersonSuggestionProvider;
         private readonly ICatalogUIOperations _catalogUIOperations;
@@ -25,17 +21,23 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
         private readonly IDictionaryRepository _dictionaryRepository;
+        private readonly IAttributeRepository _attributeRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IPriceListViewModel _priceListViewModel;
+        private readonly IClipboardHelper _clipboardHelper;
 
-        public MillingCenterWizardStepsProvider(IOrderFilesContainerViewModel filesContainer,
-            ICustomerSuggestionProvider customerSuggestionProvider,
+        public MillingCenterWizardStepsProvider(ICustomerSuggestionProvider customerSuggestionProvider,
             IResponsiblePersonsSuggestionsProvider responsiblePersonSuggestionProvider,
             ICatalogUIOperations catalogUIOperations,
             ICatalogSelectionUIOperations catalogSelectionOperations,
             ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository,
-            IDictionaryRepository dictionaryRepository)
+            IDictionaryRepository dictionaryRepository,
+            IAttributeRepository attributeRepository,
+            IProductRepository productRepository,
+            IPriceListViewModel priceListViewModel,
+            IClipboardHelper clipboardHelper)
         {
-            _filesContainer = filesContainer;
             _customerSuggestionProvider = customerSuggestionProvider;
             _responsiblePersonSuggestionProvider = responsiblePersonSuggestionProvider;
             _catalogUIOperations = catalogUIOperations;
@@ -43,6 +45,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _customerRepository = customerRepository;
             _responsiblePersonRepository = responsiblePersonRepository;
             _dictionaryRepository = dictionaryRepository;
+            _attributeRepository = attributeRepository;
+            _productRepository = productRepository;
+            _priceListViewModel = priceListViewModel;
+            _clipboardHelper = clipboardHelper;
         }
 
         public BranchType BranchType => BranchType.MillingCenter;
@@ -51,9 +57,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         {
             return new IWizardStepViewModel[]
             {
-                new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository),
-                new MillingCenterProjectWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, new ClipboardHelper()), _filesContainer),
-                new MillingCenterAdditionalEquipmentViewModel(_dictionaryRepository),
+                new MillingCenterInfoWizardStepViewModel(_catalogSelectionOperations, _catalogUIOperations, _customerSuggestionProvider, _responsiblePersonSuggestionProvider, _customerRepository, _responsiblePersonRepository ),
+                new PriceListWizardStepViewModel(new ToothCardViewModel(_dictionaryRepository, _productRepository, _clipboardHelper), _priceListViewModel),
+                new AdditionalEquipmentWizardStepViewModel(_dictionaryRepository, _attributeRepository),
             };
         }
     }

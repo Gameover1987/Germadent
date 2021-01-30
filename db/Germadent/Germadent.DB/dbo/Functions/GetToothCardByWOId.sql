@@ -1,22 +1,25 @@
 ﻿-- =============================================
--- Author:		Алексей Колосенок
--- Create date: 23.11.2019
--- Description:	Зубная карта из заказ-наряда по его ID
+-- Author:		 Алексей Колосенок
+-- Create date:  23.11.2019
+-- Editing date: 17.09.2020
+-- Description:	 Зубная карта из заказ-наряда по его ID
 -- =============================================
 CREATE FUNCTION [dbo].[GetToothCardByWOId] 
-(	
-	
-	@WorkOrderID int
-	
+(
+	@workOrderID int	
 )
 RETURNS TABLE 
 AS
 RETURN 
 (
-	SELECT wo.WorkOrderID, tc.ToothNumber, c.ConditionName, p.ProstheticsName, m.MaterialName, tc.FlagBridge 
+	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialID, m.MaterialName, c.ConditionID, c.ConditionName, p.ProductID, p.ProductName, tc.Price, tc.HasBridge, pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName
 	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
-		INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
-		INNER JOIN TypesOfProsthetics p ON tc.ProstheticsID = p.ProstheticsID
 		INNER JOIN ConditionsOfProsthetics c ON tc.ConditionID = c.ConditionID
-	WHERE wo.WorkOrderID = @WorkOrderID
+		INNER JOIN PricePositions pp ON tc.PricePositionID = pp.PricePositionID
+		INNER JOIN PriceGroups pg ON pp.PriceGroupID = pg.PriceGroupID
+		LEFT JOIN Products p ON tc.ProductID = p.ProductID
+		LEFT JOIN Materials m ON tc.MaterialID = m.MaterialID
+	
+				
+	WHERE wo.WorkOrderID = @workOrderID
 )

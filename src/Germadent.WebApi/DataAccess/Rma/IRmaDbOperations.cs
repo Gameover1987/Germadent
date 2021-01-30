@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -23,20 +24,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        /// <param name="stream"></param>
-        OrderDto AddOrder(OrderDto order);
-
-        /// <summary>
-        /// Присоединяет файл к созданному заказнаряду
-        /// </summary>
-        void AttachDataFileToOrder(int id, string fileName, Stream stream);
-
-        /// <summary>
-        /// Возвращает путь к файлу привязанному к заказнаряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        string GetFileByWorkOrder(int id);
+        OrderDto AddOrder(OrderDto order);       
 
         /// <summary>
         /// Обновляет заказ наряд
@@ -102,7 +90,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        CustomerDeleteResult DeleteCustomer(int customerId);
+        DeleteResult DeleteCustomer(int customerId);
 
         /// <summary>
         /// Обновляет данные по ответственному лицу
@@ -116,6 +104,74 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ResponsiblePersonDeleteResult DeleteResponsiblePerson(int id);
+        DeleteResult DeleteResponsiblePerson(int id);
+
+        /// <summary>
+        /// Возвращает ценовые группы по типу филиала
+        /// </summary>
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PriceGroupDto[] GetPriceGroups(BranchType branchType);
+
+        /// <summary>
+        /// Возвращает ценовые позиции по выбранному типу филиала
+        /// </summary>
+        /// <param name="branchType"></param>
+        /// <returns></returns>
+        PricePositionDto[] GetPricePositions(BranchType branchType);
+
+        /// <summary>
+        /// Возвращает набор изделий для ценовой позиции
+        /// </summary>
+        /// <returns></returns>
+        ProductDto[] GetProducts();
+
+        /// <summary>
+        /// Добавляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Обновить ценовую группу
+        /// </summary>
+        /// <param name="priceGroupDto"></param>
+        /// <returns></returns>
+        PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto);
+
+        /// <summary>
+        /// Удаляет ценовую группу
+        /// </summary>
+        /// <param name="priceGroupId"></param>
+        /// <returns></returns>
+        DeleteResult DeletePriceGroup(int priceGroupId);
+
+        /// <summary>
+        /// Добавляет ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto AddPricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Обновить ценовую позицию
+        /// </summary>
+        /// <param name="pricePositionDto"></param>
+        /// <returns></returns>
+        PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto);
+
+        /// <summary>
+        /// Удаляет ценовую позицию
+        /// </summary>
+        /// <param name="priceGroupId"></param>
+        /// <returns></returns>
+        DeleteResult DeletePricePosition(int priceGroupId);
+
+        /// <summary>
+        /// Возвращает набор всех атрибутов и их значений
+        /// </summary>
+        /// <returns></returns>
+        AttributeDto[] GetAllAttributesAndValues();
     }
 }

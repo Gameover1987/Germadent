@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.2</Version>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>
+    <AssemblyName>Germadent.Rma.App</AssemblyName>
+    <RootNamespace>Germadent.Rma.App</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.10.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
@@ -27,10 +30,7 @@
     <ProjectReference Include="..\..\Germadent.Common\Germadent.Common.csproj" />
     <ProjectReference Include="..\..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
     <ProjectReference Include="..\..\Germadent.UI\Germadent.UI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+    <ProjectReference Include="..\..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

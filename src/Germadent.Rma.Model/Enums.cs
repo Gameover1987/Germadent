@@ -8,11 +8,7 @@ namespace Germadent.Rma.Model
         Male = 1, 
     }
 
-    public enum CarcasColor
-    {
-        VitaClassical, Opak, Translucen
-    }
-    
+        
     public enum BranchType
     {
         [Description("Фрезерный центр")]

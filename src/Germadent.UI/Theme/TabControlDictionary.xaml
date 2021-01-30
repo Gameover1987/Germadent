@@ -24,7 +24,7 @@
 							<RowDefinition x:Name="RowDefinition0" Height="Auto"/>
 							<RowDefinition x:Name="RowDefinition1" Height="*"/>
 						</Grid.RowDefinitions>
-						<Border x:Name="ContentPanel" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" BorderThickness="0,1,0,1" BorderBrush="#FF828282" Background="#FFf2f2f2">
+						<Border x:Name="ContentPanel" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" BorderThickness="0,1,0,0" BorderBrush="#FF828282" Background="#FFf2f2f2">
 							<ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"  />
 						</Border>
 						<Border Grid.Row="0" Background="{StaticResource MainHeaderBackgroundBrush}" BorderBrush="#FF828282" BorderThickness="0" >
