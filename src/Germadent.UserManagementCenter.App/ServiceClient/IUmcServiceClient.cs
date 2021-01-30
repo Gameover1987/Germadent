@@ -9,6 +9,15 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     public interface IUmcServiceClient
     {
         /// <summary>
+        /// Авторизация
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        void Authorize(string login, string password);
+
+        AuthorizationInfoDto AuthorizationInfo { get; }
+
+        /// <summary>
         /// Возвращает список пользователей
         /// </summary>
         /// <returns></returns>

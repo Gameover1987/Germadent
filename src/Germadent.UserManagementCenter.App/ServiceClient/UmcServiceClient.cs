@@ -1,4 +1,6 @@
-﻿using Germadent.Common.Extensions;
+﻿using System.Linq;
+using Germadent.Common;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
 using Germadent.UserManagementCenter.App.Configuration;
@@ -20,6 +22,23 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             _fileManager = fileManager;
             _client = new RestClient();
         }
+
+        public void Authorize(string login, string password)
+        {
+            var info = ExecuteHttpGet<AuthorizationInfoDto>(
+                _configuration.DataServiceUrl + string.Format("/api/auth/authorize/{0}/{1}", login, password));
+
+            AuthorizationInfo = info;
+            AuthenticationToken = info.Token;
+
+            if (AuthorizationInfo.IsLocked)
+                throw new UserMessageException("Учетная запись заблокирована.");
+
+            if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
+                throw new UserMessageException("Отсутствует право на запуск приложения");
+        }
+
+        public AuthorizationInfoDto AuthorizationInfo { get; protected set; }
 
         public UserDto[] GetUsers()
         {
