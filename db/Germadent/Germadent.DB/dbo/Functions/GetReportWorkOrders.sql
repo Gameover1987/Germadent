@@ -13,6 +13,7 @@ AS
 RETURN 
 (
 	WITH
+-- Сначала делаем выборку цветов конструкции из таблиц атрибутов...
 cs (WorkOrderID, Color) AS
 (
 SELECT aset.WorkOrderID, av.AttributeValue AS Color
@@ -24,7 +25,7 @@ FROM WorkOrder wo
 WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
 	AND a.AttributeID = 1
 ),
-
+-- ... затем - то же самое для систем имплантов
 ims (WorkOrderID, ImplantSystem) AS
 (
 SELECT aset.WorkOrderID, av.AttributeValue AS ImplantSystem
@@ -35,7 +36,7 @@ FROM WorkOrder wo
 WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
 	AND a.AttributeID = 2
 ),
-
+-- Соединяем это с основной выборкой...
 ord (Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName,  MaterialName, Color, ImplantSystem, Cashless, Cash) AS
 (
 SELECT wo.Created, wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
@@ -54,7 +55,7 @@ FROM WorkOrder wo
 WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
 )
-
+-- ... и агрегируем
 SELECT 
 Created, 
 DocNumber, 

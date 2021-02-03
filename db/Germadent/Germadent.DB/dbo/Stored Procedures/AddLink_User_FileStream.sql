@@ -12,24 +12,34 @@ CREATE PROCEDURE [dbo].[AddLink_User_FileStream]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
 	DECLARE @streamId uniqueidentifier
+
+
 
 	-- Получение id файлового потока по имени файла и времени его создания
 	SET @streamId = (SELECT stream_id FROM Pictures	WHERE name = @fileName	AND creation_time = @creationTime)
 
 	-- Проверка, если такая связь уже есть
 	IF EXISTS (SELECT stream_id FROM LinksFileStreams WHERE stream_id = @streamId AND UserID = @userId)
-	BEGIN
 		RETURN
-	END
+	
+	ELSE BEGIN TRAN
+		DELETE FROM LinksFileStreams 
+		WHERE UserID = @userId
 
-	-- Собственно вставка
-	INSERT INTO LinksFileStreams
-	(UserID, stream_id)
-	VALUES
-    (@userId, @streamId)
+		-- Собственно вставка
+		INSERT INTO LinksFileStreams
+		(UserID, stream_id)
+		VALUES
+		(@userId, @streamId)
+
+		-- Удаление "бесхозных" картинок
+		DELETE FROM Pictures
+		WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
+		
+	COMMIT
 
 END
 GO
