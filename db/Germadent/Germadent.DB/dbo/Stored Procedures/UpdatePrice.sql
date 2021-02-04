@@ -15,7 +15,7 @@ CREATE PROCEDURE [dbo].[UpdatePrice]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 	SET ANSI_WARNINGS OFF;
 
 	DECLARE @dateBeginningNew date, -- перетащить во входные параметры
@@ -30,12 +30,12 @@ BEGIN
 	BEGIN TRAN
 		
 		DELETE
-		FROM Prices
+		FROM dbo.Prices
 		WHERE PricePositionID = @pricePositionId
 			AND DateBeginning = @dateBeginningCurrent
 
-		SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
-		SELECT @maxDateEnd = MAX(DateEnd) FROM Prices WHERE PricePositionID = @pricePositionId
+		SELECT @maxDateBeginning = MAX(DateBeginning) FROM dbo.Prices WHERE PricePositionID = @pricePositionId
+		SELECT @maxDateEnd = MAX(DateEnd) FROM dbo.Prices WHERE PricePositionID = @pricePositionId
 
 		IF @dateBeginningNew <= @maxDateBeginning OR @dateEnd <= @maxDateEnd OR @dateBeginningNew > @dateEnd BEGIN
 		ROLLBACK
@@ -44,12 +44,12 @@ BEGIN
 		END
 
 		ELSE BEGIN
-			INSERT INTO Prices
+			INSERT INTO dbo.Prices
 			(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
 			VALUES
 			(@pricePositionId, @dateBeginningNew, @priceSTL, @priceModel, @dateEnd)
 
-			UPDATE Prices
+			UPDATE dbo.Prices
 			SET DateEnd = @dateBeginningNew
 			WHERE PricePositionID = @pricePositionId
 				AND DateEnd = @maxDateEnd
@@ -62,17 +62,18 @@ BEGIN
 		BEGIN TRAN
 
 			DELETE
-			FROM Prices
+			FROM dbo.Prices
 			WHERE PricePositionID = @pricePositionId
 				AND (PriceSTL = 0 OR PriceSTL IS NULL) 
 				AND (PriceModel = 0 OR PriceModel IS NULL)
 
-			SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
+			SELECT @maxDateBeginning = MAX(DateBeginning) FROM dbo.Prices WHERE PricePositionID = @pricePositionId
 
-			UPDATE Prices
+			UPDATE dbo.Prices
 			SET DateEnd = NULL
 			WHERE PricePositionID = @pricePositionId
 				AND DateBeginning = @maxDateBeginning
+
 		COMMIT TRAN	
 
 END

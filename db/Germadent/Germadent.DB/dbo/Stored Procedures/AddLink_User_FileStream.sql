@@ -19,25 +19,25 @@ BEGIN
 
 
 	-- Получение id файлового потока по имени файла и времени его создания
-	SET @streamId = (SELECT stream_id FROM Pictures	WHERE name = @fileName	AND creation_time = @creationTime)
+	SET @streamId = (SELECT stream_id FROM dbo.Pictures	WHERE name = @fileName	AND creation_time = @creationTime)
 
 	-- Проверка, если такая связь уже есть
-	IF EXISTS (SELECT stream_id FROM LinksFileStreams WHERE stream_id = @streamId AND UserID = @userId)
+	IF EXISTS (SELECT stream_id FROM dbo.LinksFileStreams WHERE stream_id = @streamId AND UserID = @userId)
 		RETURN
 	
 	ELSE BEGIN TRAN
-		DELETE FROM LinksFileStreams 
+		DELETE FROM dbo.LinksFileStreams 
 		WHERE UserID = @userId
 
 		-- Собственно вставка
-		INSERT INTO LinksFileStreams
+		INSERT INTO dbo.LinksFileStreams
 		(UserID, stream_id)
 		VALUES
 		(@userId, @streamId)
 
 		-- Удаление "бесхозных" картинок
-		DELETE FROM Pictures
-		WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
+		DELETE FROM dbo.Pictures
+		WHERE stream_id NOT IN (SELECT stream_id FROM dbo.LinksFileStreams)
 		
 	COMMIT
 

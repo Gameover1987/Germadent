@@ -3,7 +3,7 @@
 -- Create date: 19.10.2020
 -- Description:	Каскадное удаление выбранной роли
 -- =============================================
-CREATE PROCEDURE umc_DeleteRole 
+CREATE PROCEDURE [dbo].[umc_DeleteRole] 
 	
 	@roleId int
 	  
@@ -13,7 +13,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     	DELETE 
-	FROM Roles
+	FROM dbo.Roles
 	WHERE RoleID = @roleId
 
 END

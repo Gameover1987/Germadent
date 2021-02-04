@@ -21,7 +21,7 @@ BEGIN
 		SELECT @max_Id = ISNULL(MAX(RightID), 0)
 		FROM Rights
 
-		EXEC IdentifierAlignment Rights, @max_Id
+		EXEC dbo.IdentifierAlignment Rights, @max_Id
 	
 		REVERT
 	END;
@@ -36,7 +36,7 @@ BEGIN
 	)
 	
 	-- Собственно слияние:
-	MERGE Rights AS trg
+	MERGE dbo.Rights AS trg
 	USING src
 	ON (trg.RightID = src.RightID)
 	WHEN MATCHED 

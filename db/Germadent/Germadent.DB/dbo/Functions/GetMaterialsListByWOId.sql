@@ -13,7 +13,8 @@ AS
 RETURN 
 (
 	SELECT DISTINCT m.MaterialName
-	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
-		INNER JOIN Materials m ON tc.MaterialID = m.MaterialID
+	FROM dbo.ToothCard tc 
+		INNER JOIN dbo.WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
+		INNER JOIN dbo.Materials m ON tc.MaterialID = m.MaterialID
 	WHERE wo.WorkOrderID = @workOrderID
 )

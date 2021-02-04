@@ -3,7 +3,7 @@
 -- Create date: 08.11.2020
 -- Description:	Возвращает все цены для ценовой позиции
 -- =============================================
-CREATE FUNCTION GetAllPricesForPricePosition 
+CREATE FUNCTION [dbo].[GetAllPricesForPricePosition] 
 (	
 	@pricePositionId int
 	
@@ -14,7 +14,7 @@ RETURN
 (
 	
 	SELECT *
-	FROM Prices
+	FROM dbo.Prices
 	WHERE PricePositionID = @pricePositionId
 
 )

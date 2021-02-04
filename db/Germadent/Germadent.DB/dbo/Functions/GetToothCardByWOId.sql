@@ -13,12 +13,13 @@ AS
 RETURN 
 (
 	SELECT wo.WorkOrderID, tc.ToothNumber, m.MaterialID, m.MaterialName, c.ConditionID, c.ConditionName, p.ProductID, p.ProductName, tc.Price, tc.HasBridge, pg.PriceGroupID, pg.PriceGroupName, pp.PricePositionID, pp.PricePositionCode, pp.PricePositionName
-	FROM ToothCard tc INNER JOIN WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
-		INNER JOIN ConditionsOfProsthetics c ON tc.ConditionID = c.ConditionID
-		INNER JOIN PricePositions pp ON tc.PricePositionID = pp.PricePositionID
-		INNER JOIN PriceGroups pg ON pp.PriceGroupID = pg.PriceGroupID
-		LEFT JOIN Products p ON tc.ProductID = p.ProductID
-		LEFT JOIN Materials m ON tc.MaterialID = m.MaterialID
+	FROM dbo.ToothCard tc 
+		INNER JOIN dbo.WorkOrder wo ON tc.WorkOrderID = wo.WorkOrderID
+		INNER JOIN dbo.ConditionsOfProsthetics c ON tc.ConditionID = c.ConditionID
+		INNER JOIN dbo.PricePositions pp ON tc.PricePositionID = pp.PricePositionID
+		INNER JOIN dbo.PriceGroups pg ON pp.PriceGroupID = pg.PriceGroupID
+		LEFT JOIN dbo.Products p ON tc.ProductID = p.ProductID
+		LEFT JOIN dbo.Materials m ON tc.MaterialID = m.MaterialID
 	
 				
 	WHERE wo.WorkOrderID = @workOrderID

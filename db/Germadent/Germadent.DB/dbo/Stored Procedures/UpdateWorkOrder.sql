@@ -31,14 +31,14 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
+	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
 		BEGIN
 			RETURN
 		END
 
 	BEGIN TRAN
 	
-		UPDATE WorkOrder
+		UPDATE dbo.WorkOrder
 		SET   CustomerID = @customerID
 			, PatientFullName = @patientFullName
 			, PatientGender = @patientGender
@@ -55,15 +55,15 @@ BEGIN
 
 		WHERE WorkOrderID = @workOrderID
 		
-		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
-		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
-		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
+		EXEC dbo.AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
 
 
 	COMMIT
 
 	-- Напоминаем программе дату и время создания заказ-наряда
-	SELECT @created = Created FROM WorkOrder WHERE WorkOrderID = @workOrderID
+	SELECT @created = Created FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID
 
 END
 GO

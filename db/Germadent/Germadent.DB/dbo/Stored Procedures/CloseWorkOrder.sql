@@ -13,12 +13,12 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
+	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
 		BEGIN
 			RETURN
 		END
 		
-	UPDATE WorkOrder
+	UPDATE dbo.WorkOrder
 	SET Status = 9,
 		Closed = GETDATE()
 	WHERE WorkOrderID = @workOrderId

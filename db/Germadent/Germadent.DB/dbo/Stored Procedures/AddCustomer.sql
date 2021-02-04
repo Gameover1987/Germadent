@@ -22,13 +22,13 @@ BEGIN
 		SELECT @max_Id = ISNULL(MAX(CustomerID), 0)
 		FROM Customers
 
-		EXEC IdentifierAlignment Customers, @max_Id
+		EXEC dbo.IdentifierAlignment Customers, @max_Id
 	
 		REVERT
 	END
 	-- Собственно вставка:
 	
-	INSERT INTO Customers
+	INSERT INTO dbo.Customers
 	(CustomerName, CustomerPhone, CustomerEmail, CustomerWebSite, CustomerDescription)
 	values
 	(@customerName, @customerPhone, @customerEmail, @customerWebSite, @customerDescription)

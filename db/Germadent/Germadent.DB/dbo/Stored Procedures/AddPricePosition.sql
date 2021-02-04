@@ -16,23 +16,22 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 AS
 BEGIN
 	
-	SET NOCOUNT ON
-	SET XACT_ABORT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	BEGIN TRAN
 		DECLARE @max_Id int
 		SELECT @max_Id = ISNULL(MAX(PricePositionID), 0)
-		FROM PricePositions
+		FROM dbo.PricePositions
 
-		EXEC IdentifierAlignment PricePositions, @max_Id
+		EXEC dbo.IdentifierAlignment PricePositions, @max_Id
 	
 		REVERT
 	COMMIT
 	
 	BEGIN TRAN
 		-- Собственно вставка, сначала - в основную таблицу:
-		INSERT INTO PricePositions
+		INSERT INTO dbo.PricePositions
 		(PricePositionCode, PriceGroupID, PricePositionName, MaterialID)
 		VALUES
 		(@pricePositionCode, @priceGroupId, @pricePositionName, @materialId)
@@ -40,10 +39,10 @@ BEGIN
 		SET @pricePositionId = SCOPE_IDENTITY()
 
 		-- Добавление набора изделий:
-		EXEC AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
 	
 		-- Добавление цены:
-		EXEC AddOrUpdatePrices @pricePositionId, @jsonStringPrices
+		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices
 
 	COMMIT
 	   

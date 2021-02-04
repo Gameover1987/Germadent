@@ -12,6 +12,6 @@ AS
 RETURN 
 (
 	SELECT ps.*, p.ProductName
-	FROM ProductSet ps
-	INNER JOIN Products p ON ps.ProductID = p.ProductID
+	FROM dbo.ProductSet ps
+	INNER JOIN dbo.Products p ON ps.ProductID = p.ProductID
 )

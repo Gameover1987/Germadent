@@ -22,7 +22,7 @@ BEGIN
 
 	DECLARE @maxDateBeginning date
 
-	SELECT @maxDateBeginning = MAX(DateBeginning) FROM Prices WHERE PricePositionID = @pricePositionId
+	SELECT @maxDateBeginning = MAX(DateBeginning) FROM dbo.Prices WHERE PricePositionID = @pricePositionId
 
 	IF @maxDateBeginning IS NULL BEGIN
 		SET @maxDateBeginning = '17530101'
@@ -30,11 +30,11 @@ BEGIN
 
 	IF @dateBeginning > @maxDateBeginning BEGIN
 
-		UPDATE Prices
+		UPDATE dbo.Prices
 		SET DateEnd = @dateBeginning
 		WHERE PricePositionID = @pricePositionId
 
-		INSERT INTO Prices
+		INSERT INTO dbo.Prices
 		(PricePositionID, DateBeginning, PriceSTL, PriceModel)
 		VALUES
 		(@pricePositionId, @dateBeginning, @priceSTL, @priceModel)

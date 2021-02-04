@@ -13,8 +13,8 @@ AS
 RETURN 
 (
 	SELECT rl.RoleID, rl.RoleName, rg.RightID, rg.RightName, rg.RightDescription, a.ApplicationID, a.ApplicationName, a.ApplicationDescription
-	FROM Roles rl
-		INNER JOIN RolesAndRights rr ON rl.RoleID = rr.RoleID
-		INNER JOIN Rights rg ON rg.RightID = rr.RightID
-		INNER JOIN Applications a ON rg.ApplicationID = a.ApplicationID
+	FROM dbo.Roles rl
+		INNER JOIN dbo.RolesAndRights rr ON rl.RoleID = rr.RoleID
+		INNER JOIN dbo.Rights rg ON rg.RightID = rr.RightID
+		INNER JOIN dbo.Applications a ON rg.ApplicationID = a.ApplicationID
 )

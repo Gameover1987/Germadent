@@ -14,7 +14,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DELETE
-	FROM Users
+	FROM dbo.Users
 	WHERE UserID = @userId
     
 --	SET @deletedRows = @@rowcount

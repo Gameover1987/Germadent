@@ -12,7 +12,7 @@ AS
 RETURN 
 (
 	SELECT WorkOrderID
-	FROM ToothCard
+	FROM dbo.ToothCard
 	WHERE MaterialID IN 
 	(SELECT Id
 		FROM OPENJSON(@materialSet) 

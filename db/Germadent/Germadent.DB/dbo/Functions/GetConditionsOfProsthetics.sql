@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT ConditionID, ConditionName
-	FROM ConditionsOfProsthetics 
+	FROM dbo.ConditionsOfProsthetics 
 )

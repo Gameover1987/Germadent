@@ -17,7 +17,7 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-    UPDATE Customers
+    UPDATE dbo.Customers
 	SET CustomerName = @customerName
 		, CustomerPhone = @customerPhone
 		, CustomerEmail = @customerEmail

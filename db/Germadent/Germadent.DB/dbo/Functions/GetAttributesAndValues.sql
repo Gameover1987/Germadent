@@ -13,6 +13,6 @@ RETURN
 (
 	
 	SELECT a.AttributeID, a.AttributeKeyName, a.AttributeName, a.IsObsolete, v.AttributeValueID, v.AttributeValue
-	FROM Attributes a INNER JOIN AttrValues v ON a.AttributeID = v.AttributeID
+	FROM dbo.Attributes a INNER JOIN dbo.AttrValues v ON a.AttributeID = v.AttributeID
 	
 )

@@ -20,31 +20,33 @@ CREATE PROCEDURE [dbo].[umc_UpdateUser]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
-	-- Наполняем главную таблицу
-    	UPDATE Users
-	SET Login = @login
-		, Password = @password
-		, FamilyName = @familyName
-		, FirstName = @firstName
-		, Patronymic = @patronymic
-		, Phone = @phone
-		, IsLocked = @isLocked
-		, Description = @description
-	WHERE UserID = @userId
+	BEGIN TRAN
+		-- Наполняем главную таблицу
+    		UPDATE dbo.Users
+		SET Login = @login
+			, Password = @password
+			, FamilyName = @familyName
+			, FirstName = @firstName
+			, Patronymic = @patronymic
+			, Phone = @phone
+			, IsLocked = @isLocked
+			, Description = @description
+		WHERE UserID = @userId
 
-	-- Чистим набор ролей от старого содержимого
-	DELETE
-	FROM UsersAndRoles
-	WHERE UserID = @userId
+		-- Чистим набор ролей от старого содержимого
+		DELETE
+		FROM dbo.UsersAndRoles
+		WHERE UserID = @userId
 
-	-- Наполняем набор новым содержимым, распарсив строку json
-	INSERT INTO UsersAndRoles
-	(UserID, RoleID)
-	SELECT UserID, RoleID
-	FROM OPENJSON(@jsonString)
-	WITH(UserId int, RoleId int)
+		-- Наполняем набор новым содержимым, распарсив строку json
+		INSERT INTO dbo.UsersAndRoles
+		(UserID, RoleID)
+		SELECT UserID, RoleID
+		FROM OPENJSON(@jsonString)
+		WITH(UserId int, RoleId int)
+	COMMIT
 
 END
 GO

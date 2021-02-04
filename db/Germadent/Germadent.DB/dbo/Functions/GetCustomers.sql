@@ -19,7 +19,7 @@ AS
 RETURN 
 (
 	SELECT *
-	FROM Customers
+	FROM dbo.Customers
 	WHERE CustomerID = ISNULL(@customerId, CustomerID)
 		AND CustomerName LIKE '%'+ISNULL(@customerName, '')+'%'
 	--	AND CustomerPhone LIKE '%'+ISNULL(@customerPhone, '')+'%'

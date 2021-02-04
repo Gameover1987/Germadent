@@ -12,8 +12,8 @@ AS
 RETURN 
 (
 	SELECT a.WorkOrderID, a.EquipmentID, e.EquipmentName, a.QuantityIn, a.QuantityOut
-	FROM AdditionalEquipment a 
-		INNER JOIN Equipments e ON a.EquipmentID = e.EquipmentID
+	FROM dbo.AdditionalEquipment a 
+		INNER JOIN dbo.Equipments e ON a.EquipmentID = e.EquipmentID
 
 	WHERE WorkOrderID = @workOrderId
 )

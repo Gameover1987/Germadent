@@ -42,11 +42,11 @@ SELECT wo.WorkOrderID,
 			wo.FittingDate,
 			dbo.GetMaterialsEnumByWOId(wo.WorkOrderID) AS MaterialsEnum
 
-	FROM 	WorkOrder wo 
-			INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
-			INNER JOIN Customers cs ON wo.CustomerID = cs.CustomerID
-			LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-			LEFT JOIN Users u ON wo.CreatorID = u.UserID
+	FROM 	dbo.WorkOrder wo 
+			INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
+			INNER JOIN dbo.Customers cs ON wo.CustomerID = cs.CustomerID
+			LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
+			LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

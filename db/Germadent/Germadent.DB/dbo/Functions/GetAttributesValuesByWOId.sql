@@ -13,9 +13,9 @@ RETURN
 (
 	
 	SELECT s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, v.AttributeValue
-	FROM Attributes a 
-		INNER JOIN AttrValues v ON a.AttributeID = v.AttributeID
-		INNER JOIN AttributesSet s ON v.AttributeValueID = s.AttributeValueID
+	FROM dbo.Attributes a 
+		INNER JOIN dbo.AttrValues v ON a.AttributeID = v.AttributeID
+		INNER JOIN dbo.AttributesSet s ON v.AttributeValueID = s.AttributeValueID
 	WHERE s.WorkOrderID = @worklOrderId
 	GROUP BY s.WorkOrderID, s.ToothNumber, a.AttributeID, a.AttributeKeyName, a.AttributeName, v.AttributeValueID, v.AttributeValue
 

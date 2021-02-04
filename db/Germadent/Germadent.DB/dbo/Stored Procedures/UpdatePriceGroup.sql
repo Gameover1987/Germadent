@@ -3,7 +3,7 @@
 -- Create date: 03.11.2020
 -- Description:	Редактирование ценовй группы
 -- =============================================
-CREATE PROCEDURE UpdatePriceGroup 
+CREATE PROCEDURE [dbo].[UpdatePriceGroup] 
 	
 	@priceGroupId int,
 	@branchTypeId int,
@@ -14,7 +14,7 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-	UPDATE PriceGroups
+	UPDATE dbo.PriceGroups
 	SET BranchTypeID = @branchTypeId,
 		PriceGroupName = @priceGroupName
 	WHERE PriceGroupID = @priceGroupId

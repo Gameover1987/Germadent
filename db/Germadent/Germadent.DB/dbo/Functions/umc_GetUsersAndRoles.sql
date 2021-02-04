@@ -14,7 +14,7 @@ RETURN
 (
 	
 	SELECT u.UserID, u.Login, u.Password, u.IsLocked, u.Description, r.RoleID, r.RoleName, u.FamilyName, u.FirstName, u.Patronymic, u.Phone
-	FROM Users u 
-		INNER JOIN UsersAndRoles ur ON u.UserID = ur.UserID
-		INNER JOIN Roles r ON r.RoleID = ur.RoleID
+	FROM dbo.Users u 
+		INNER JOIN dbo.UsersAndRoles ur ON u.UserID = ur.UserID
+		INNER JOIN dbo.Roles r ON r.RoleID = ur.RoleID
 )

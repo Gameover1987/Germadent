@@ -16,20 +16,20 @@ BEGIN
 
 	IF @newResponsiblePersonId IS NOT NULL
 		BEGIN
-			UPDATE WorkOrder 
+			UPDATE dbo.WorkOrder 
 			SET ResponsiblePersonID = @newResponsiblePersonId 
 			WHERE ResponsiblePersonID = @oldResponsiblePersonId
 
 			DELETE
-			FROM ResponsiblePersons
+			FROM dbo.ResponsiblePersons
 			WHERE ResponsiblePersonID = @oldResponsiblePersonId
 
 			SET @resultCount = @@rowcount
 		END
-		ELSE IF @newResponsiblePersonId IS NULL AND NOT EXISTS (SELECT ResponsiblePersonID FROM WorkOrder WHERE ResponsiblePersonID = @oldResponsiblePersonId)
+		ELSE IF @newResponsiblePersonId IS NULL AND NOT EXISTS (SELECT ResponsiblePersonID FROM dbo.WorkOrder WHERE ResponsiblePersonID = @oldResponsiblePersonId)
 			BEGIN
 				DELETE
-				FROM ResponsiblePersons
+				FROM dbo.ResponsiblePersons
 				WHERE ResponsiblePersonID = @oldResponsiblePersonId
 
 				SET @resultCount = @@rowcount
