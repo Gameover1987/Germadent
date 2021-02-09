@@ -75,3 +75,6 @@ src/Germadent.WebApi/obj/
 db/Germadent/Germadent.DB/Germadent.DB.dbmdl
 src/Germadent.DataGenerator.App/bin/
 src/Germadent.DataGenerator.App/obj/
+src/Utils/Corcon/Corcon/bin/
+src/Utils/Corcon/Corcon/obj/
+src/Utils/Corcon/.vs/
