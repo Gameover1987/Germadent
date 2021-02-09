@@ -43,7 +43,7 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
         
-        [HttpGet("{workOrderId:int, userId:int}")]
+        [HttpGet("GetWorkOrderById")]
         public IActionResult GetWorkOrderById(int workOrderId, int userId)
         {
             try
