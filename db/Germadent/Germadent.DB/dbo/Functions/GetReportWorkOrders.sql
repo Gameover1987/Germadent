@@ -57,7 +57,7 @@ WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
 )
 -- ... и агрегируем
 SELECT 
-Created, 
+FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') AS Created,
 DocNumber, 
 CustomerName, 
 ISNULL(EquipmentName, '') EquipmentName,
