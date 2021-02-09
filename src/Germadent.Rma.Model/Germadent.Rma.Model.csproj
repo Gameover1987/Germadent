@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
+    <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
   </ItemGroup>
 
 </Project>

@@ -43,13 +43,13 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
         
-        [HttpGet("{id:int}")]
-        public IActionResult GetWorkOrderById(int id)
+        [HttpGet("{workOrderId:int, userId:int}")]
+        public IActionResult GetWorkOrderById(int workOrderId, int userId)
         {
             try
             {
                 _logger.Info(nameof(GetWorkOrderById));
-                var order = _rmaDbOperations.GetOrderDetails(id);
+                var order = _rmaDbOperations.GetOrderDetails(workOrderId, userId);
                 return Ok(order);
             }
             catch (Exception exception)

@@ -9,9 +9,10 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <summary>
         /// Возвращает заказ наряд по идентификатору
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        OrderDto GetOrderDetails(int id);
+        OrderDto GetOrderDetails(int workOrderId, int userId);
 
         /// <summary>
         /// Возвращает список заказ нарядов по фильтру

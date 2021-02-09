@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.Model
 {
@@ -73,5 +74,9 @@ namespace Germadent.Rma.Model
         public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }        
 
         public AttributeDto[] Attributes { get; set; }
+
+        public UserDto LockedBy { get; set; }
+
+        public DateTime LockDate { get; set; }
     }
 }

@@ -128,10 +128,24 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         }
 
-        public OrderDto GetOrderDetails(int id)
+        public OrderDto GetOrderDetails(int workOrderId, int userId)
         {
-            var orderDto = GetWorkOrderById(id);
-            orderDto.ToothCard = GetToothCard(id, orderDto.Stl);
+            var orderDto = GetWorkOrderById(workOrderId);
+            orderDto.ToothCard = GetToothCard(workOrderId, orderDto.Stl);
+
+            var lockers = GetWorkOrdersLockInfo();
+            var lockInfo = lockers.FirstOrDefault(x => x.WorkOrderId == workOrderId);
+            if (lockInfo != null)
+            {
+                orderDto.LockedBy = _umcDbOperations.GetUserById(lockInfo.UserId);
+                orderDto.LockDate = lockInfo.OccupancyDateTime;
+            }
+
+            if (lockInfo == null)
+            {
+                LockWorkOrder(workOrderId, userId);
+            }
+
             return orderDto;
         }
 
@@ -201,6 +215,51 @@ namespace Germadent.WebApi.DataAccess.Rma
                 order.AdditionalEquipment = GetAdditionalEquipmentByWorkOrder(workOrderId, connection);
                 order.Attributes = GetAttributesByWoId(workOrderId, connection);
                 return order;
+            }
+        }
+
+        private LockWorkOrderInfoEntity[] GetWorkOrdersLockInfo()
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "select * from GetOccupancyWO(NULL)";
+                var lockers = new List<LockWorkOrderInfoEntity>();
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var entity = new LockWorkOrderInfoEntity();
+                            entity.WorkOrderId = reader[nameof(entity.WorkOrderId)].ToInt();
+                            entity.UserId = reader[nameof(entity.UserId)].ToInt();
+                            entity.OccupancyDateTime = reader[nameof(entity.OccupancyDateTime)].ToDateTime();
+                            lockers.Add(entity);
+                        }
+                    }
+                }
+
+                return lockers.ToArray();
+            }
+        }
+
+        private void LockWorkOrder(int workOrderId, int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "AddOrDeleteOccupancyWO";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@workOrderID", SqlDbType.Int)).Value = workOrderId;
+                    command.Parameters.Add(new SqlParameter("@userID", SqlDbType.Int)).Value = userId;
+
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
