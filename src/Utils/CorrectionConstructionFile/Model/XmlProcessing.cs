@@ -1,15 +1,24 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Windows;
 using System.Xml;
+using Microsoft.Win32;
 
-namespace Corcon.Model
+namespace Germadent.CorrectionConstructionFile.App.Model
 {
-    public class XmlDocumentProcessing
+    public interface IXmlDocumentProcessor
+    {
+        void Process(string sourceFileName, string destFileName);
 
+        void CopyFile(string fullFileName);
+
+        string GetFileName();
+
+        string ReadingDocument(string fullFileName, Dictionary<string, string> transitDict);
+    }
+
+    public class XmlDocumentProcessor : IXmlDocumentProcessor
     {
         public string FileName { get; private set; }
         public string ProcessInfo { get; private set; }
@@ -128,5 +137,9 @@ namespace Corcon.Model
             return txtParts;
         }
 
+        public void Process(string sourceFileName, string destFileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

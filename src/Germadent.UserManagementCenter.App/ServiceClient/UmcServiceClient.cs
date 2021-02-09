@@ -34,7 +34,7 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
             if (AuthorizationInfo.IsLocked)
                 throw new UserMessageException("Учетная запись заблокирована.");
 
-            if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
+            if (AuthorizationInfo.Rights.Count(x => x.RightName == UmcUserRights.RunApplication) == 0)
                 throw new UserMessageException("Отсутствует право на запуск приложения");
         }
 

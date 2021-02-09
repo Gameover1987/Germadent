@@ -16,4 +16,12 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Unity" Version="5.11.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Germadent.UI\Germadent.UI.csproj" />
+  </ItemGroup>
+
 </Project>
