@@ -21,12 +21,12 @@ BEGIN
 	IF @userID IS NULL
 		BEGIN
 			DELETE 
-			FROM BusyDocs
+			FROM OccupancyWO
 			WHERE WorkOrderID = @workOrderID
 			RETURN
 		END
 	ELSE BEGIN 
-			INSERT INTO BusyDocs
+			INSERT INTO OccupancyWO
 			(WorkOrderID, OccupancyDateTime, UserID)
 			VALUES
 			(@workOrderID, GETDATE(), @userID)
