@@ -3,37 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:designTime="clr-namespace:Germadent.CorrectionConstructionFile.App.View.DesignTime"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="800" Width="800" FontSize="14">
+        Title="CorCon" 
+        MinHeight="400"
+        Height="500" 
+        MinWidth="400"
+        Width="600" 
+        d:DataContext="{d:DesignInstance {x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=False}">
     <TabControl>
         <TabItem Header="Обработка">
             <Grid Margin="3,3,3,3">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Row="0" Grid.Column="0" Content="Открыть и обработать файл" HorizontalAlignment="Center" Margin="6,6,6,6" VerticalAlignment="Center" MinHeight="30" MinWidth="180" Command="{Binding OpenProcesingXmlDocumentCommand}"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Background="AliceBlue" HorizontalAlignment="Left" Margin="6,6,6,6" TextWrapping="NoWrap" VerticalAlignment="Center" MinWidth="30" MinHeight="30" TextAlignment="Center" Text ="{Binding FullFileName}"/>
-                <GroupBox Grid.Row="1" Grid.Column="1" Header="Информация" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,3,3,3">
-                    <TextBox Margin="10,3,0,0" FontSize="14" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Text="{Binding ProcessReport}"/>
-                </GroupBox>
 
+                <Button Grid.Row="0" Grid.Column="0" Content="Открыть и обработать файл" HorizontalAlignment="Left" Margin="6"
+                        Command="{Binding OpenProcesingXmlDocumentCommand}"/>
+
+                <TextBlock Grid.Row="1" Margin="6,0,0,0">
+                    <Run Text="Информация:"/>
+                    <Run Text="{Binding FullFileName, Mode=OneWay}" FontWeight="SemiBold"/>
+                </TextBlock>
+
+                <TextBox Grid.Row="2" Margin="6" VerticalScrollBarVisibility="Auto" Text="{Binding ProcessReport}"/>
             </Grid>
         </TabItem>
         <TabItem Header="Словарь">
-            <Grid>
-                <DataGrid Grid.Row="0" Grid.Column="0" Margin="6" ItemsSource="{Binding ImplantDict}"
+            <Grid Margin="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" Grid.Column="0" Margin="6" ItemsSource="{Binding CorrectionDictionary}"
+                          SelectedItem="{Binding SelectedItem}"
                           AlternationCount="2">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Ключ" Binding="{Binding Key}"/>
+                        <DataGridTextColumn Header="Ключ" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Значение" Width="*" Binding="{Binding Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="6">
+                    <Button Content="Добавить строку"
+                            Command="{Binding AddDictionaryItemCommand}"/>
+                    <Button Content="Изменить строку" Margin="6,0,0,0"
+                            Command="{Binding EditDictionaryItemCommand}"/>
+                    <Button Content="Удалить строку" Margin="6,0,0,0"
+                            Command="{Binding DeleteDictionaryItemCommand}"/>
+                </StackPanel>
             </Grid>
         </TabItem>
     </TabControl>
