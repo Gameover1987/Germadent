@@ -23,6 +23,7 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private const string DictionaryFileName = "Model\\ImplantDictionary.json";
+        private const string DictionaryFile = "Model\\ImplantSystemsDictionary.json";
 
         private readonly IFileManager _fileManager;
         private readonly IShowDialogAgent _dialogAgent;
@@ -151,9 +152,9 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
             ProcessReport = _xmlDocumentProcessor.ProcessInfo;
         }
 
-        private Dictionary<string, string> LoadFromFile(string fileNsame)
+        private Dictionary<string, string> LoadFromFile(string fileName)
         {
-            var jsonString = _fileManager.ReadAllText(fileNsame);
+            var jsonString = _fileManager.ReadAllText(fileName);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
             return dictionary;
         }

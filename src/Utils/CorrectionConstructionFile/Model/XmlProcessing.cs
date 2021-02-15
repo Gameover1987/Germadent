@@ -31,7 +31,7 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
         public void Process(string sourceFileName, string destFileName, CorrectionDictionaryItem[] correctionDictionary)
         {
-            File.Copy(sourceFileName, destFileName);
+            File.Copy(sourceFileName, destFileName, true);
             var correctedDoc = CorrectXmlDoc(destFileName, correctionDictionary);
             correctedDoc.Save(destFileName);
         }
@@ -57,26 +57,28 @@ namespace Germadent.CorrectionConstructionFile.App.Model
                     {
                         if (nodeLevel2.Name == "Tooth")
                         {
-                            foreach (XmlNode nodeLevel3 in nodeLevel2.ChildNodes)
+                            foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                             {
                                 switch (nodeLevel3.Name)
                                 {
                                     case "Number":
                                         stringBuilder.Append(string.Concat("Зуб ", nodeLevel3.InnerText, ":", "\r\n"));
                                         break;
-                                    case "FilenameImplantGeometry":
-                                        if (nodeLevel3.InnerText.Contains("exo-plovdiv"))
-                                        {
-                                            nodeLevel3.RemoveAll();
-                                            stringBuilder.Append(string.Concat("Упоминание Пловдива убрано", "\r\n"));
-                                        }
-                                        break;
                                     case "ImplantLibraryEntryDescriptor":
                                         stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
                                         nodeLevel3.InnerText = ImplantInformationHadling(nodeLevel3.InnerText, correctionDictionary);
                                         stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
-                                            "---------------------------------------------------------", "\r\n"));
+                                              "-----------------------------------------------------------", "\r\n"));
                                         break;
+                                }
+                            }
+                            foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                            {
+                                if (nodeLevel3.Name.Contains("FilenameImplantGeometry") && nodeLevel3.InnerText.Contains("exo-plovdiv"))
+                                {
+                                    nodeLevel3.ParentNode.RemoveChild(nodeLevel3);
+                                    stringBuilder.Append(string.Concat("Упоминание Пловдива убрано", "\r\n",
+                                            "================================================", "\r\n"));
                                 }
                             }
                         }
