@@ -24,11 +24,12 @@
   },
 
   "IMPLANTIUM": {
-    " ": "R9000-R" 
+    " ": "R9000-R"
   },
 
   "Liko-M": {
-    " ": "R9000-R" },
+    " ": "R9000-R"
+  },
 
   "MIS C1": {
     "WP": "R9010-R",
@@ -62,8 +63,8 @@
   },
 
   "Straumann Bone Level": {
-    "NC 3.3": "L9000-R",
-    "RC 4.1": "L9010-R"
+    "NC": "L9000-R",
+    "RC": "L9010-R"
   },
 
   "Straumann SynOcta": {

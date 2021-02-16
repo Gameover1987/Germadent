@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Xml;
 using Microsoft.Win32;
@@ -13,6 +14,13 @@ namespace Germadent.CorrectionConstructionFile.App.Model
         public string Name { get; set; }
 
         public string Value { get; set; }
+    }
+
+    public class ImplSystems
+    {
+        public string ImplSystem { get; set; }
+
+        public CorrectionDictionaryItem CorrDict { get; set; }
     }
 
     public interface IXmlDocumentProcessor
@@ -29,20 +37,27 @@ namespace Germadent.CorrectionConstructionFile.App.Model
         {
         }
 
+
+        Dictionary<string, Dictionary<string, string>> ImplantSystems = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText("Model\\ImplantSystemsDictionary.json"));
+
+
         public void Process(string sourceFileName, string destFileName, CorrectionDictionaryItem[] correctionDictionary)
         {
             File.Copy(sourceFileName, destFileName, true);
-            var correctedDoc = CorrectXmlDoc(destFileName, correctionDictionary);
+            var correctedDoc = CorrectXmlDoc(destFileName, ImplantSystems);
             correctedDoc.Save(destFileName);
         }
 
         public string ProcessInfo { get; private set; }
 
-        private XmlDocument CorrectXmlDoc(string fileName, CorrectionDictionaryItem[] correctionDictionary)
+        //private XmlDocument CorrectXmlDoc(string fileName, CorrectionDictionaryItem[] correctionDictionary)
+        private XmlDocument CorrectXmlDoc(string fileName, Dictionary<string, Dictionary<string, string>> implantSystems)
         {
             var xmlDoc = new XmlDocument();
 
             ProcessInfo = null;
+
+            string soughtCode = "";
 
             var stringBuilder = new StringBuilder();
 
@@ -64,14 +79,32 @@ namespace Germadent.CorrectionConstructionFile.App.Model
                                     case "Number":
                                         stringBuilder.Append(string.Concat("Зуб ", nodeLevel3.InnerText, ":", "\r\n"));
                                         break;
-                                    case "ImplantLibraryEntryDescriptor":
+                                    case "ImplantLibraryEntryDisplayInformation":
                                         stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
-                                        nodeLevel3.InnerText = ImplantInformationHadling(nodeLevel3.InnerText, correctionDictionary);
+                                        nodeLevel3.InnerText = CodeChanger(nodeLevel3.InnerText, implantSystems, out soughtCode);
                                         stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
-                                              "-----------------------------------------------------------", "\r\n"));
+                                              "++++++++++++++++++++++++++++++++++++++++++++", "\r\n"));
                                         break;
                                 }
                             }
+
+                            foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                            {
+                                if (nodeLevel3.Name.Contains("ImplantLibraryEntryDescriptor"))
+                                {
+                                    stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
+                                    string[] cutText = TextCutter(nodeLevel3.InnerText, ":");
+                                    if(cutText.Length==3)
+                                    {
+                                        cutText[2] = soughtCode;
+                                        nodeLevel3.InnerText = string.Concat(cutText[0], ":", cutText[1], ": ", cutText[2]);
+                                        stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
+                                              "-------------------------------------------------------------------------------", "\r\n"));
+                                    }
+                                    
+                                }
+                            }
+
                             foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                             {
                                 if (nodeLevel3.Name.Contains("FilenameImplantGeometry") && nodeLevel3.InnerText.Contains("exo-plovdiv"))
@@ -91,32 +124,37 @@ namespace Germadent.CorrectionConstructionFile.App.Model
             return xmlDoc;
         }
 
-        private string ImplantInformationHadling(string innerText, CorrectionDictionaryItem[] correctionDictionary)
+        private string CodeChanger(string innerText, Dictionary<string, Dictionary<string, string>> implantSystems, out string soughtCode)
         {
+            
             string[] dividedText = TextCutter(innerText, ":");
             string handledText = "";
+            soughtCode = "";
 
             switch (dividedText.Length)
             {
                 case 2:
-                    foreach (var item in correctionDictionary)
-                    {
-                        dividedText[1] = dividedText[1].Replace(item.Name, item.Value);
-                    }
-                    handledText = string.Concat(dividedText[0], ":", dividedText[1]);
+                    handledText = innerText;
                     break;
-
                 case 3:
-                    foreach (var item in correctionDictionary)
+                    foreach(var implSystemItem in implantSystems)
                     {
-                        dividedText[2] = dividedText[2].Replace(item.Name, item.Value);
+                        if(dividedText[0].ToLower().Contains(implSystemItem.Key.ToLower()))
+                        {
+                            foreach(var implModel in implSystemItem.Value)
+                            {
+                                if(dividedText[1].ToLower().Contains(implModel.Key.ToLower()))
+                                {
+                                    dividedText[2] = implModel.Value;
+                                    soughtCode = implModel.Value;
+                                }
+                            }
+                        }
                     }
-                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", dividedText[2]);
+                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", dividedText[2]);                    
                     break;
             }
-
             return handledText;
-
         }
 
         private string[] TextCutter(string txtOrgin, params string[] charsToSplit)
