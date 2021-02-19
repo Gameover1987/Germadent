@@ -16,11 +16,11 @@ namespace Germadent.CorrectionConstructionFile.App.Model
         public string Value { get; set; }
     }
 
-    public class ImplSystems
+    public class ImplantSystems
     {
-        public string ImplSystem { get; set; }
+        public string ImplantSystem { get; set; }
 
-        public CorrectionDictionaryItem CorrDict { get; set; }
+        public CorrectionDictionaryItem CorrectionDictionary { get; set; }
     }
 
     public interface IXmlDocumentProcessor

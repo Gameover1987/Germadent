@@ -23,7 +23,7 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private const string DictionaryFileName = "Model\\ImplantDictionary.json";
-        private const string DictionaryFile = "Model\\ImplantSystemsDictionary.json";
+        private const string DoubleDictionaryFile = "Model\\ImplantSystemsDictionary.json";
 
         private readonly IFileManager _fileManager;
         private readonly IShowDialogAgent _dialogAgent;
@@ -32,6 +32,8 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
         private string _fullFileName;
         private string _processReport;
         private ObservableCollection<CorrectionDictionaryItem> _implants;
+        private ObservableCollection<ImplantSystems> _implantSystems;
+
         private CorrectionDictionaryItem _selectedItem;
 
         public MainViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IXmlDocumentProcessor xmlDocumentProcessor, IAddDictionaryItemViewModel addDictionaryItemViewModel)
@@ -43,6 +45,8 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
             var dictionary = LoadFromFile(DictionaryFileName);
             _implants = new ObservableCollection<CorrectionDictionaryItem>(dictionary.Select(x => new CorrectionDictionaryItem { Name = x.Key, Value = x.Value }).ToArray());
+            var doubleDictionary = LoadDictionaryFromFile(DoubleDictionaryFile);
+            _implantSystems = new ObservableCollection<ImplantSystems>();//хбз, как тут чё...
 
             AddDictionaryItemCommand = new DelegateCommand(AddDictionaryItemCommandHandler);
             EditDictionaryItemCommand = new DelegateCommand(EditDictionaryItemCommandHandler, CanEditDictionaryItemCommandHandler);
@@ -77,6 +81,7 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
 
         public ObservableCollection<CorrectionDictionaryItem> CorrectionDictionary => _implants;
+        public ObservableCollection<ImplantSystems> ImplantSystems => _implantSystems;
 
         public CorrectionDictionaryItem SelectedItem
         {
@@ -157,6 +162,13 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
             var jsonString = _fileManager.ReadAllText(fileName);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
             return dictionary;
+        }
+
+        private Dictionary<string, Dictionary<string, string>> LoadDictionaryFromFile(string fileName)
+        {
+            var jsonString = _fileManager.ReadAllText(fileName);
+            var doubleDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(jsonString);
+            return doubleDictionary;
         }
 
         public string GetNewFileName(string sourceFileName)

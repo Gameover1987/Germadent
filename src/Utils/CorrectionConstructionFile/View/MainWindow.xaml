@@ -8,9 +8,9 @@
         WindowStartupLocation="CenterScreen"
         Title="CorCon" 
         MinHeight="400"
-        Height="600" 
+        Height="700" 
         MinWidth="400"
-        Width="600" 
+        Width="600"
         d:DataContext="{d:DesignInstance {x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=False}">
     <TabControl>
         <TabItem Header="Обработка">
