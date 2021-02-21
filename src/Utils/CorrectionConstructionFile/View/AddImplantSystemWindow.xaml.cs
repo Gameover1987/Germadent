@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Germadent.CorrectionConstructionFile.App.View
 {
     /// <summary>
-    /// Interaction logic for AddDictionaryItemWindow.xaml
+    /// Interaction logic for AddImplantSystemWindow.xaml
     /// </summary>
-    public partial class AddDictionaryItemWindow : Window
+    public partial class AddImplantSystemWindow : Window
     {
-        public AddDictionaryItemWindow()
+        public AddImplantSystemWindow()
         {
             InitializeComponent();
         }

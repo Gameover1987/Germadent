@@ -2,12 +2,12 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="View\AddDictionaryItemWindow.xaml.cs">
+    <Compile Update="View\AddImplantSystemWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\AddDictionaryItemWindow.xaml">
+    <Page Update="View\AddImplantSystemWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -12,10 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Model\ImplantDictionary.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\ImplantSystemsDictionary.json">
+    <Content Include="ImplantSystemsDictionary.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

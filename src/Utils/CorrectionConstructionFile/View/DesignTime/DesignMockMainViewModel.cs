@@ -13,7 +13,7 @@ namespace Germadent.CorrectionConstructionFile.App.View.DesignTime
 {
     public class DesignMockXmlDocumentProcessor : IXmlDocumentProcessor
     {
-        public void Process(string sourceFileName, string destFileName, CorrectionDictionaryItem[] correctionDictionary)
+        public void Process(string sourceFileName, string destFileName, ImplantSystem[] implantSystems)
         {
             throw new NotImplementedException();
         }
@@ -24,19 +24,16 @@ namespace Germadent.CorrectionConstructionFile.App.View.DesignTime
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
-            : base(new DesignMockShowDialogAgent(), new FileManager(), new DesignMockXmlDocumentProcessor(), new DesignMockAddDictionaryItemViewModel())
+            : base(new DesignMockShowDialogAgent(), new FileManager(), new DesignMockXmlDocumentProcessor(), new DesignMockAddImplantSystemViewModel())
         {
         }
     }
 
-    public class DesignMockAddDictionaryItemViewModel : AddDictionaryItemViewModel
+    public class DesignMockAddImplantSystemViewModel : AddImplantSystemViewModel
     {
-        public DesignMockAddDictionaryItemViewModel()
+        public DesignMockAddImplantSystemViewModel()
         {
-            Initialize(new CorrectionDictionaryItem[]
-            {
-                new CorrectionDictionaryItem{Name = "Preved", Value = "Medved"},
-            }, null);
+           
         }
     }
 }
