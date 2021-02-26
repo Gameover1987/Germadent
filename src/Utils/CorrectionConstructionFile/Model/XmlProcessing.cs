@@ -63,6 +63,10 @@ namespace Germadent.CorrectionConstructionFile.App.Model
                                 stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
                                       "++++++++++++++++++++++++++++++++++++++++++++", "\r\n"));
                                 break;
+                            case "FilenameImplantGeometry":
+                                if (nodeLevel3.InnerText.Contains("exo-plovdiv"))
+                                   ToDeleteElement = true;
+                                break;
                         }
                     }
 
@@ -84,13 +88,6 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
                     foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                     {
-                        if (nodeLevel3.Name == "FilenameImplantGeometry" && nodeLevel3.InnerText.Contains("exo-plovdiv"))
-                            ToDeleteElement = true;
-                        
-                    }
-
-                    foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
-                    {
                         if (nodeLevel3.Name == "MatrixImplantGeometryTargetOutputConstructionFile" && ToDeleteElement == true)
                         {
                             nodeLevel3.ParentNode.RemoveChild(nodeLevel3);
@@ -108,7 +105,6 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
         private string CodeChanger(string innerText, ImplantSystem[] implantSystems, out string soughtCode)
         {
-
             string[] dividedText = TextCutter(innerText, ":");
             string handledText = "";
             soughtCode = "";
@@ -126,14 +122,11 @@ namespace Germadent.CorrectionConstructionFile.App.Model
                             foreach (var implModel in implSystemItem.CorrectionDictionary)
                             {
                                 if (dividedText[1].ToLower().Contains(implModel.Name.ToLower()))
-                                {
-                                    dividedText[2] = implModel.Value;
-                                    soughtCode = implModel.Value;
-                                }
+                                   soughtCode = implModel.Value;
                             }
                         }
                     }
-                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", dividedText[2]);
+                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", soughtCode);
                     break;
             }
             return handledText;
