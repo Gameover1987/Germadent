@@ -23,6 +23,7 @@ namespace Germadent.CorrectionConstructionFile.App.Model
         }
 
         public string ProcessInfo { get; private set; }
+        public bool ToDeleteElement { get; private set; }
 
         private XmlDocument CorrectXmlDoc(string fileName, ImplantSystem[] implantSystems)
         {
@@ -31,7 +32,7 @@ namespace Germadent.CorrectionConstructionFile.App.Model
             ProcessInfo = null;
 
             string soughtCode = "";
-
+                        
             var stringBuilder = new StringBuilder();
 
             xmlDoc.Load(fileName);
@@ -44,6 +45,8 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
                 foreach (XmlNode nodeLevel2 in nodeLevel1.ChildNodes)
                 {
+                    ToDeleteElement = false;
+
                     if (nodeLevel2.Name != "Tooth")
                         continue;
 
@@ -65,7 +68,7 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
                     foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                     {
-                        if (nodeLevel3.Name.Contains("ImplantLibraryEntryDescriptor"))
+                        if (nodeLevel3.Name == "ImplantLibraryEntryDescriptor")
                         {
                             stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
                             string[] cutText = TextCutter(nodeLevel3.InnerText, ":");
@@ -81,11 +84,18 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
                     foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                     {
-                        if (nodeLevel3.Name.Contains("FilenameImplantGeometry") && nodeLevel3.InnerText.Contains("exo-plovdiv"))
+                        if (nodeLevel3.Name == "FilenameImplantGeometry" && nodeLevel3.InnerText.Contains("exo-plovdiv"))
+                            ToDeleteElement = true;
+                        
+                    }
+
+                    foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                    {
+                        if (nodeLevel3.Name == "MatrixImplantGeometryTargetOutputConstructionFile" && ToDeleteElement == true)
                         {
                             nodeLevel3.ParentNode.RemoveChild(nodeLevel3);
-                            stringBuilder.Append(string.Concat("Упоминание Пловдива убрано", "\r\n",
-                                    "================================================", "\r\n"));
+                            stringBuilder.Append(string.Concat("Лишний элемент убран", "\r\n",
+                             "================================================", "\r\n"));
                         }
                     }
                 }
@@ -134,6 +144,5 @@ namespace Germadent.CorrectionConstructionFile.App.Model
             string[] txtParts = txtOrgin.Split(charsToSplit, StringSplitOptions.None);
             return txtParts;
         }
-
     }
 }
