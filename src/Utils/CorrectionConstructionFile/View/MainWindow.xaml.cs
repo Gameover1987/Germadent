@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Germadent.CorrectionConstructionFile.App.ViewModel;
 
 namespace Germadent.CorrectionConstructionFile.App.View
@@ -11,6 +12,12 @@ namespace Germadent.CorrectionConstructionFile.App.View
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void EventSetter_OnHandler(object sender, MouseButtonEventArgs e)
+        {
+            var mainViewModel = (IMainViewModel) DataContext;
+            mainViewModel.EditDictionaryItemCommand.TryExecute();
         }
     }
 }

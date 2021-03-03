@@ -18,31 +18,32 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 {
     public interface IMainViewModel : IDisposable
     {
+        IDelegateCommand EditDictionaryItemCommand { get; }
     }
 
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private const string DictionaryFileName = "Model\\ImplantDictionary.json";
-        private const string DictionaryFile = "Model\\ImplantSystemsDictionary.json";
+        private const string DictionaryFileName = "ImplantSystemsDictionary.json";
 
         private readonly IFileManager _fileManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IXmlDocumentProcessor _xmlDocumentProcessor;
-        private readonly IAddDictionaryItemViewModel _addDictionaryItemViewModel;
+        private readonly IAddImplantSystemViewModel _addImplantSystemViewModel;
         private string _fullFileName;
         private string _processReport;
-        private ObservableCollection<CorrectionDictionaryItem> _implants;
-        private CorrectionDictionaryItem _selectedItem;
+        private ObservableCollection<ImplantSystemViewModel> _implantSystems;
 
-        public MainViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IXmlDocumentProcessor xmlDocumentProcessor, IAddDictionaryItemViewModel addDictionaryItemViewModel)
+        private ImplantSystemViewModel _selectedItem;
+
+        public MainViewModel(IShowDialogAgent dialogAgent, IFileManager fileManager, IXmlDocumentProcessor xmlDocumentProcessor, IAddImplantSystemViewModel addImplantSystemViewModel)
         {
             _fileManager = fileManager;
             _dialogAgent = dialogAgent;
             _xmlDocumentProcessor = xmlDocumentProcessor;
-            _addDictionaryItemViewModel = addDictionaryItemViewModel;
+            _addImplantSystemViewModel = addImplantSystemViewModel;
 
-            var dictionary = LoadFromFile(DictionaryFileName);
-            _implants = new ObservableCollection<CorrectionDictionaryItem>(dictionary.Select(x => new CorrectionDictionaryItem { Name = x.Key, Value = x.Value }).ToArray());
+            var doubleDictionary = LoadDictionaryFromFile(DictionaryFileName);
+            _implantSystems = new ObservableCollection<ImplantSystemViewModel>(doubleDictionary.Select(x => new ImplantSystemViewModel(x)));
 
             AddDictionaryItemCommand = new DelegateCommand(AddDictionaryItemCommandHandler);
             EditDictionaryItemCommand = new DelegateCommand(EditDictionaryItemCommandHandler, CanEditDictionaryItemCommandHandler);
@@ -75,10 +76,9 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
             }
         }
 
+        public ObservableCollection<ImplantSystemViewModel> ImplantSystems => _implantSystems;
 
-        public ObservableCollection<CorrectionDictionaryItem> CorrectionDictionary => _implants;
-
-        public CorrectionDictionaryItem SelectedItem
+        public ImplantSystemViewModel SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -100,12 +100,12 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
         private void AddDictionaryItemCommandHandler()
         {
-            _addDictionaryItemViewModel.Initialize(CorrectionDictionary.ToArray(), null);
-            if (_dialogAgent.ShowDialog<AddDictionaryItemWindow>(_addDictionaryItemViewModel) == false)
+            _addImplantSystemViewModel.Initialize(ImplantSystems.ToArray(), null);
+            if (_dialogAgent.ShowDialog<AddImplantSystemWindow>(_addImplantSystemViewModel) == false)
                 return;
 
-            var item = _addDictionaryItemViewModel.GetItem();
-            CorrectionDictionary.Add(item);
+            var item = _addImplantSystemViewModel.GetItem();
+            ImplantSystems.Add(item);
             SelectedItem = item;
         }
 
@@ -116,14 +116,14 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
         private void EditDictionaryItemCommandHandler()
         {
-            _addDictionaryItemViewModel.Initialize(CorrectionDictionary.ToArray(), SelectedItem);
-            if (_dialogAgent.ShowDialog<AddDictionaryItemWindow>(_addDictionaryItemViewModel) == false)
+            _addImplantSystemViewModel.Initialize(ImplantSystems.ToArray(), SelectedItem);
+            if (_dialogAgent.ShowDialog<AddImplantSystemWindow>(_addImplantSystemViewModel) == false)
                 return;
 
-            var item = _addDictionaryItemViewModel.GetItem();
-            var position = CorrectionDictionary.IndexOf(SelectedItem);
-            CorrectionDictionary.RemoveAt(position);
-            CorrectionDictionary.Insert(position, item);
+            var item = _addImplantSystemViewModel.GetItem();
+            var position = ImplantSystems.IndexOf(SelectedItem);
+            ImplantSystems.RemoveAt(position);
+            ImplantSystems.Insert(position, item);
             SelectedItem = item;
         }
 
@@ -134,7 +134,7 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
         private void DeleteDictionaryItemCommandHandler()
         {
-            CorrectionDictionary.Remove(SelectedItem);
+            ImplantSystems.Remove(SelectedItem);
         }
 
         private void OpenProcessingXmlDocumentCommandHandler(object obj)
@@ -147,16 +147,24 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
             var destFileName = GetNewFileName(sourceFileName);
             FullFileName = destFileName;
 
-            _xmlDocumentProcessor.Process(sourceFileName, destFileName, CorrectionDictionary.ToArray());
+            _xmlDocumentProcessor.Process(sourceFileName, destFileName, ImplantSystems.Select(x => x.ToModel()).ToArray());
 
             ProcessReport = _xmlDocumentProcessor.ProcessInfo;
         }
 
-        private Dictionary<string, string> LoadFromFile(string fileName)
+        private ImplantSystem[] LoadDictionaryFromFile(string fileName)
         {
             var jsonString = _fileManager.ReadAllText(fileName);
-            var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
-            return dictionary;
+            var dictionaryOfDictionariesFuckYeah = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(jsonString);
+            return dictionaryOfDictionariesFuckYeah.Select(x => new ImplantSystem
+            {
+                Name = x.Key,
+                CorrectionDictionary = x.Value.Select(y => new CorrectionDictionaryItem
+                {
+                    Name = y.Key,
+                    Value = y.Value
+                }).ToArray()
+            }).ToArray();
         }
 
         public string GetNewFileName(string sourceFileName)
@@ -170,7 +178,7 @@ namespace Germadent.CorrectionConstructionFile.App.ViewModel
 
         public void Dispose()
         {
-            var dictionary = CorrectionDictionary.ToDictionary(x => x.Name, x => x.Value);
+            var dictionary = ImplantSystems.Select(x => x.ToModel()).ToDictionary(x => x.Name, x => x.CorrectionDictionary.ToDictionary(y => y.Name, y => y.Value));
             var jsonString = dictionary.SerializeToJson(Formatting.Indented);
             _fileManager.SaveAsText(jsonString, DictionaryFileName);
         }

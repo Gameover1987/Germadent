@@ -88,7 +88,8 @@
                 </ItemsControl>
             </ScrollViewer>
             <TextBlock Grid.Row="2" Text="Описание работ" FontSize="10" Margin="12,0,0,0"/>
-            <TextBox Grid.Row="3" Height="60" VerticalAlignment="Bottom" Margin="12,6,6,0" VerticalContentAlignment="Top" TextWrapping="Wrap" 
+            <TextBox Grid.Row="3" Height="60" VerticalAlignment="Bottom" Margin="12,6,6,0" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" 
+                     VerticalScrollBarVisibility="Auto"
                      Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}"/>
             <CheckBox Grid.Row="4" Content="Согласование работ" Margin="12,6,0,0"
                       IsChecked="{Binding WorkAccepted}"/>

@@ -8,10 +8,11 @@
 
   <ItemGroup>
     <None Remove="Model\ImplantDictionary.json" />
+    <None Remove="Model\ImplantSystemsDictionary.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Model\ImplantDictionary.json">
+    <Content Include="ImplantSystemsDictionary.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

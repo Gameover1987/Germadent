@@ -8,9 +8,9 @@
         WindowStartupLocation="CenterScreen"
         Title="CorCon" 
         MinHeight="400"
-        Height="600" 
+        Height="700" 
         MinWidth="400"
-        Width="600" 
+        Width="600"
         d:DataContext="{d:DesignInstance {x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=False}">
     <TabControl>
         <TabItem Header="Обработка">
@@ -33,17 +33,33 @@
             </Grid>
         </TabItem>
         <TabItem Header="Словарь">
+            <TabItem.InputBindings>
+                <KeyBinding Command="{Binding AddDictionaryItemCommand}"
+                            Key="N" Modifiers="Control"/>
+            </TabItem.InputBindings>
             <Grid Margin="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <DataGrid Grid.Row="0" Grid.Column="0" Margin="6" ItemsSource="{Binding CorrectionDictionary}"
+                <DataGrid Grid.Row="0" Grid.Column="0" Margin="6" 
+                          ItemsSource="{Binding ImplantSystems}"
                           SelectedItem="{Binding SelectedItem}"
                           AlternationCount="2">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                            <EventSetter Event="MouseDoubleClick" Handler="EventSetter_OnHandler"></EventSetter>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.InputBindings>
+                        <KeyBinding Command="{Binding EditDictionaryItemCommand}"
+                                    Key="Enter"/>
+                        <KeyBinding Command="{Binding DeleteDictionaryItemCommand}"
+                                    Key="Delete"/>
+                    </DataGrid.InputBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Ключ" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Значение" Width="*" Binding="{Binding Value}"/>
+                        <DataGridTextColumn Header="Значение" Width="*" Binding="{Binding Description}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

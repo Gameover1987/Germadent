@@ -1,49 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Windows;
 using System.Xml;
-using Microsoft.Win32;
 
 namespace Germadent.CorrectionConstructionFile.App.Model
 {
-    public class CorrectionDictionaryItem
-    {
-        public string Name { get; set; }
-
-        public string Value { get; set; }
-    }
 
     public interface IXmlDocumentProcessor
     {
-        void Process(string sourceFileName, string destFileName, CorrectionDictionaryItem[] correctionDictionary);
+        void Process(string sourceFileName, string destFileName, ImplantSystem[] implantSystems);
 
         string ProcessInfo { get; }
     }
 
     public class XmlDocumentProcessor : IXmlDocumentProcessor
     {
-
-        public XmlDocumentProcessor()
-        {
-        }
-
-        public void Process(string sourceFileName, string destFileName, CorrectionDictionaryItem[] correctionDictionary)
+        public void Process(string sourceFileName, string destFileName, ImplantSystem[] implantSystems)
         {
             File.Copy(sourceFileName, destFileName, true);
-            var correctedDoc = CorrectXmlDoc(destFileName, correctionDictionary);
+            var correctedDoc = CorrectXmlDoc(destFileName, implantSystems);
             correctedDoc.Save(destFileName);
         }
 
         public string ProcessInfo { get; private set; }
+        public bool ToDeleteElement { get; private set; }
 
-        private XmlDocument CorrectXmlDoc(string fileName, CorrectionDictionaryItem[] correctionDictionary)
+        private XmlDocument CorrectXmlDoc(string fileName, ImplantSystem[] implantSystems)
         {
             var xmlDoc = new XmlDocument();
 
             ProcessInfo = null;
 
+            string soughtCode = "";
+                        
             var stringBuilder = new StringBuilder();
 
             xmlDoc.Load(fileName);
@@ -51,36 +40,59 @@ namespace Germadent.CorrectionConstructionFile.App.Model
 
             foreach (XmlNode nodeLevel1 in root.ChildNodes)
             {
-                if (nodeLevel1.Name == "Teeth")
+                if (nodeLevel1.Name != "Teeth")
+                    continue;
+
+                foreach (XmlNode nodeLevel2 in nodeLevel1.ChildNodes)
                 {
-                    foreach (XmlNode nodeLevel2 in nodeLevel1.ChildNodes)
+                    ToDeleteElement = false;
+
+                    if (nodeLevel2.Name != "Tooth")
+                        continue;
+
+                    foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
                     {
-                        if (nodeLevel2.Name == "Tooth")
+                        switch (nodeLevel3.Name)
                         {
-                            foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                            case "Number":
+                                stringBuilder.Append(string.Concat("Зуб ", nodeLevel3.InnerText, ":", "\r\n"));
+                                break;
+                            case "ImplantLibraryEntryDisplayInformation":
+                                stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
+                                nodeLevel3.InnerText = CodeChanger(nodeLevel3.InnerText, implantSystems, out soughtCode);
+                                stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
+                                      "++++++++++++++++++++++++++++++++++++++++++++", "\r\n"));
+                                break;
+                            case "FilenameImplantGeometry":
+                                if (nodeLevel3.InnerText.Contains("exo-plovdiv"))
+                                   ToDeleteElement = true;
+                                break;
+                        }
+                    }
+
+                    foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                    {
+                        if (nodeLevel3.Name == "ImplantLibraryEntryDescriptor")
+                        {
+                            stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
+                            string[] cutText = TextCutter(nodeLevel3.InnerText, ":");
+                            if (cutText.Length == 3)
                             {
-                                switch (nodeLevel3.Name)
-                                {
-                                    case "Number":
-                                        stringBuilder.Append(string.Concat("Зуб ", nodeLevel3.InnerText, ":", "\r\n"));
-                                        break;
-                                    case "ImplantLibraryEntryDescriptor":
-                                        stringBuilder.Append(string.Concat("Было:  ", nodeLevel3.InnerText, "\r\n"));
-                                        nodeLevel3.InnerText = ImplantInformationHadling(nodeLevel3.InnerText, correctionDictionary);
-                                        stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
-                                              "-----------------------------------------------------------", "\r\n"));
-                                        break;
-                                }
+                                cutText[2] = soughtCode;
+                                nodeLevel3.InnerText = string.Concat(cutText[0], ":", cutText[1], ": ", cutText[2]);
+                                stringBuilder.Append(string.Concat("Стало: ", nodeLevel3.InnerText, "\r\n",
+                                      "-------------------------------------------------------------------------------", "\r\n"));
                             }
-                            foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
-                            {
-                                if (nodeLevel3.Name.Contains("FilenameImplantGeometry") && nodeLevel3.InnerText.Contains("exo-plovdiv"))
-                                {
-                                    nodeLevel3.ParentNode.RemoveChild(nodeLevel3);
-                                    stringBuilder.Append(string.Concat("Упоминание Пловдива убрано", "\r\n",
-                                            "================================================", "\r\n"));
-                                }
-                            }
+                        }
+                    }
+
+                    foreach (XmlElement nodeLevel3 in nodeLevel2.ChildNodes)
+                    {
+                        if (nodeLevel3.Name == "MatrixImplantGeometryTargetOutputConstructionFile" && ToDeleteElement == true)
+                        {
+                            nodeLevel3.ParentNode.RemoveChild(nodeLevel3);
+                            stringBuilder.Append(string.Concat("Лишний элемент убран", "\r\n",
+                             "================================================", "\r\n"));
                         }
                     }
                 }
@@ -91,32 +103,33 @@ namespace Germadent.CorrectionConstructionFile.App.Model
             return xmlDoc;
         }
 
-        private string ImplantInformationHadling(string innerText, CorrectionDictionaryItem[] correctionDictionary)
+        private string CodeChanger(string innerText, ImplantSystem[] implantSystems, out string soughtCode)
         {
             string[] dividedText = TextCutter(innerText, ":");
             string handledText = "";
+            soughtCode = "";
 
             switch (dividedText.Length)
             {
                 case 2:
-                    foreach (var item in correctionDictionary)
-                    {
-                        dividedText[1] = dividedText[1].Replace(item.Name, item.Value);
-                    }
-                    handledText = string.Concat(dividedText[0], ":", dividedText[1]);
+                    handledText = innerText;
                     break;
-
                 case 3:
-                    foreach (var item in correctionDictionary)
+                    foreach (var implSystemItem in implantSystems)
                     {
-                        dividedText[2] = dividedText[2].Replace(item.Name, item.Value);
+                        if (dividedText[0].ToLower().Contains(implSystemItem.Name.ToLower()))
+                        {
+                            foreach (var implModel in implSystemItem.CorrectionDictionary)
+                            {
+                                if (dividedText[1].ToLower().Contains(implModel.Name.ToLower()))
+                                   soughtCode = implModel.Value;
+                            }
+                        }
                     }
-                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", dividedText[2]);
+                    handledText = string.Concat(dividedText[0], ":", dividedText[1], ":", soughtCode);
                     break;
             }
-
             return handledText;
-
         }
 
         private string[] TextCutter(string txtOrgin, params string[] charsToSplit)
@@ -124,6 +137,5 @@ namespace Germadent.CorrectionConstructionFile.App.Model
             string[] txtParts = txtOrgin.Split(charsToSplit, StringSplitOptions.None);
             return txtParts;
         }
-
     }
 }

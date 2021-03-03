@@ -46,7 +46,7 @@ namespace Germadent.CorrectionConstructionFile.App
             container.RegisterInstance(typeof(IDispatcher), dispatcher);
 
             container.RegisterSingleton<IShowDialogAgent, ShowDialogAgent>();
-            container.RegisterSingleton<IAddDictionaryItemViewModel, AddDictionaryItemViewModel>();
+            container.RegisterSingleton<IAddImplantSystemViewModel, AddImplantSystemViewModel>();
             container.RegisterSingleton<IXmlDocumentProcessor, XmlDocumentProcessor>();
 
             return container;
