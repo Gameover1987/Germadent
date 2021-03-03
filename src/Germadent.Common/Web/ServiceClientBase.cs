@@ -55,9 +55,15 @@ namespace Germadent.Common.Web
 
         protected T ExecuteHttpDelete<T>(string api)
         {
-            var restRequest = new RestRequest(api, Method.DELETE);
-            restRequest.RequestFormat = DataFormat.Json;
-            var response = _client.Execute(restRequest, Method.DELETE);
+            var request = new RestRequest(api, Method.DELETE);
+            if (!AuthenticationToken.IsNullOrEmpty())
+            {
+                request.AddHeader("Authorization", string.Format("Bearer {0}", AuthenticationToken));
+                _client.Authenticator = new JwtAuthenticator(AuthenticationToken);
+                _client.Authenticator.Authenticate(_client, request);
+            }
+            request.RequestFormat = DataFormat.Json;
+            var response = _client.Execute(request, Method.DELETE);
             ThrowIfError(response);
             return response.Content.DeserializeFromJson<T>();
         }

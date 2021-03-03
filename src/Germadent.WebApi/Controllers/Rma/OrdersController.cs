@@ -60,7 +60,7 @@ namespace Germadent.WebApi.Controllers.Rma
         }
         
         [HttpPost]
-        [Route("AddOrder")]
+        [Route("add")]
         public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
             try
@@ -93,7 +93,7 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("Close/{id:int}")]
         public IActionResult CloseOrder(int id)
         {
             try

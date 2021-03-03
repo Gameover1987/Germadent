@@ -60,7 +60,7 @@ namespace Germadent.Rma.App.ServiceClient
         {
             order.CreatorId = AuthorizationInfo.UserId;
             
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/Orders/AddOrder", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/Orders/add", order);
 
             return addedOrder;
         }
@@ -74,7 +74,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{id}");
+            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/close/{id}");
         }
 
         public ReportListDto[] GetWorkReport(int id)
