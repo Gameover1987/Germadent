@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient.Repository;
@@ -65,7 +66,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             _branchType = branchType;
             Groups.Clear();
 
-            var groups = _priceGroupRepository.Items.Where(x => x.BranchType == branchType).ToArray();
+            var groups = _priceGroupRepository.Items
+                .Where(x => x.BranchType == branchType)
+                .OrderBy(x => x.Name)
+                .ToArray();
             foreach (var priceGroupDto in groups)
             {
                 Groups.Add(new PriceGroupViewModel(priceGroupDto));
@@ -75,7 +79,7 @@ namespace Germadent.Rma.App.ViewModels.Pricing
 
             Products.ForEach(x => x.Checked -= ProductOnChecked);
             Products.Clear();
-            var products = _productRepository.Items.ToArray();
+            var products = _productRepository.Items.OrderBy(x => x.ProductName).ToArray();
             foreach (var productDto in products)
             {
                 var productViewModel = new ProductViewModel(productDto);

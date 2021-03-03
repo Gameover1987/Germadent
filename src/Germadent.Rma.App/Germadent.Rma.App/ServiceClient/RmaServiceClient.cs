@@ -41,7 +41,8 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            return ExecuteHttpPost<OrderLiteDto[]>(_configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter", ordersFilter);
+            var api = _configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter";
+            return ExecuteHttpPost<OrderLiteDto[]>(api, ordersFilter);
         }
 
         public OrderDto GetOrderById(int workOrderId)
@@ -59,7 +60,7 @@ namespace Germadent.Rma.App.ServiceClient
         {
             order.CreatorId = AuthorizationInfo.UserId;
             
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/Orders/AddOrder", order);
 
             return addedOrder;
         }

@@ -43,7 +43,7 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
         
-        [HttpGet("GetWorkOrderById")]
+        [HttpGet("{workOrderId}/{userId}")]
         public IActionResult GetWorkOrderById(int workOrderId, int userId)
         {
             try
@@ -60,7 +60,7 @@ namespace Germadent.WebApi.Controllers.Rma
         }
         
         [HttpPost]
-        [Route("add")]
+        [Route("AddOrder")]
         public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
             try

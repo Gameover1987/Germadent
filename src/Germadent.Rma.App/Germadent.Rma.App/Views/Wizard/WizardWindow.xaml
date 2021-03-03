@@ -12,9 +12,9 @@
         Title="{Binding Title}"
         ShowInTaskbar="False"
         MinHeight="700"
-        Height="800"
+        Height="900"
         MinWidth="800"
-        Width="800"
+        Width="1024"
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
         d:DataContext="{d:DesignInstance Type=designMock:DesignMockWizardViewModel, IsDesignTimeCreatable=True}">
