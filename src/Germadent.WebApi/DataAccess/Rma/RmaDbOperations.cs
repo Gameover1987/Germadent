@@ -286,7 +286,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                     Quantity = product.Quantity,
                     ProstheticArticul = orderDto.ProstheticArticul,
                     TotalPrice = orderDto.Cashless ? 0: product.TotalPrice,
-                    TotalPriceCashless = orderDto.Cashless ? product.TotalPrice : 0
+                    TotalPriceCashless = orderDto.Cashless ? product.TotalPrice : 0,
+                    ResponsiblePerson = orderDto.ResponsiblePerson
                 };
                 reports.Add(reportListDto);
             }
