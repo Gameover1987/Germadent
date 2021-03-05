@@ -11,6 +11,7 @@ namespace Germadent.Rma.Model
         public OrderDto()
         {
             Created = DateTime.Now;
+            LockDate = DateTime.Now;
             Gender = Gender.Male;
             CreatorFullName = " ";
             ToothCard = new ToothDto[0];
