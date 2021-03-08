@@ -126,7 +126,7 @@
         <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="Модель" Margin="0,0,0,0"
                          IsChecked="{Binding Stl, Converter={StaticResource InvertBoolConverter}}"/>
-            <RadioButton Content="STL"  Margin="6,0,0,0"
+            <RadioButton Content="STL"  Margin="12,0,0,0"
                          IsChecked="{Binding Stl}"/>
         </StackPanel>
 
@@ -134,7 +134,7 @@
         <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="Наличный"
                          IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
-            <RadioButton Content="Безналичный" Margin="6,0,0,0"
+            <RadioButton Content="Безналичный" Margin="12,0,0,0"
                          IsChecked="{Binding Cashless}"/>
         </StackPanel>
     </Grid>
