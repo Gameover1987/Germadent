@@ -19,38 +19,39 @@ CREATE PROCEDURE [dbo].[umc_AddUser]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Чтобы неоправданно не возрастало значение Id в ключевом поле - сначала его "подбивка":
 	BEGIN
 		DECLARE @max_Id int
 		SELECT @max_Id = ISNULL(MAX(UserID), 0)
-		FROM Users
+		FROM dbo.Users
 
-		EXEC IdentifierAlignment Users, @max_Id
+		EXEC dbo.IdentifierAlignment Users, @max_Id
 	
 		REVERT
 	END
     
+	BEGIN TRAN
+		INSERT INTO dbo.Users
+		(Login, Password, FamilyName, FirstName, Patronymic, Phone, IsLocked, Description)
+		VALUES
+		(@login, @password, @familyName, @firstName, @patronymic, @phone, @isLocked, @description)
 
-	INSERT INTO Users
-	(Login, Password, FamilyName, FirstName, Patronymic, Phone, IsLocked, Description)
-	VALUES
-	(@login, @password, @familyName, @firstName, @patronymic, @phone, @isLocked, @description)
+		SET @userId = SCOPE_IDENTITY()
 
-	SET @userId = SCOPE_IDENTITY()
+		-- Чистим набор ролей от старого содержимого
+		DELETE
+		FROM dbo.UsersAndRoles
+		WHERE UserID = @userId
 
-	-- Чистим набор ролей от старого содержимого
-	DELETE
-	FROM UsersAndRoles
-	WHERE UserID = @userId
-
-	-- Наполняем набор новым содержимым, распарсив строку json
-	INSERT INTO UsersAndRoles
-	(UserID, RoleID)
-	SELECT UserID = @userId, RoleID
-	FROM OPENJSON(@jsonString)
-	WITH(RoleId int)
+		-- Наполняем набор новым содержимым, распарсив строку json
+		INSERT INTO dbo.UsersAndRoles
+		(UserID, RoleID)
+		SELECT UserID = @userId, RoleID
+		FROM OPENJSON(@jsonString)
+		WITH(RoleId int)
+	COMMIT
 
 END
 GO

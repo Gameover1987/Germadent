@@ -1,0 +1,77 @@
+﻿<Window x:Class="Germadent.CorrectionConstructionFile.App.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:designTime="clr-namespace:Germadent.CorrectionConstructionFile.App.View.DesignTime"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="CorCon" 
+        MinHeight="400"
+        Height="700" 
+        MinWidth="400"
+        Width="600"
+        d:DataContext="{d:DesignInstance {x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=False}">
+    <TabControl>
+        <TabItem Header="Обработка">
+            <Grid Margin="3,3,3,3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="0" Content="Открыть и обработать файл" HorizontalAlignment="Left" Margin="6"
+                        Command="{Binding OpenProcesingXmlDocumentCommand}"/>
+
+                <TextBlock Grid.Row="1" Margin="6,0,0,0">
+                    <Run Text="Файл:"/>
+                    <Run Text="{Binding FullFileName, Mode=OneWay}" FontWeight="SemiBold"/>
+                </TextBlock>
+
+                <TextBox Grid.Row="2" Margin="6" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top" TextWrapping="Wrap" Text="{Binding ProcessReport}"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Словарь">
+            <TabItem.InputBindings>
+                <KeyBinding Command="{Binding AddDictionaryItemCommand}"
+                            Key="N" Modifiers="Control"/>
+            </TabItem.InputBindings>
+            <Grid Margin="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" Grid.Column="0" Margin="6" 
+                          ItemsSource="{Binding ImplantSystems}"
+                          SelectedItem="{Binding SelectedItem}"
+                          AlternationCount="2">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                            <EventSetter Event="MouseDoubleClick" Handler="EventSetter_OnHandler"></EventSetter>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.InputBindings>
+                        <KeyBinding Command="{Binding EditDictionaryItemCommand}"
+                                    Key="Enter"/>
+                        <KeyBinding Command="{Binding DeleteDictionaryItemCommand}"
+                                    Key="Delete"/>
+                    </DataGrid.InputBindings>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ключ" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Значение" Width="*" Binding="{Binding Description}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="6">
+                    <Button Content="Добавить строку"
+                            Command="{Binding AddDictionaryItemCommand}"/>
+                    <Button Content="Изменить строку" Margin="6,0,0,0"
+                            Command="{Binding EditDictionaryItemCommand}"/>
+                    <Button Content="Удалить строку" Margin="6,0,0,0"
+                            Command="{Binding DeleteDictionaryItemCommand}"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

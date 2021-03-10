@@ -15,7 +15,7 @@ BEGIN
 
     
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
+	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
 		BEGIN
 			RETURN
 		END
@@ -23,11 +23,11 @@ BEGIN
 	BEGIN TRAN
 		-- Чистим набор атрибутов от старого содержимого
 		DELETE
-		FROM AttributesSet
+		FROM dbo.AttributesSet
 		WHERE WorkOrderID = @workOrderId
 
 		-- Наполняем набор новым содержимым, распарсив строку json
-		INSERT INTO AttributesSet
+		INSERT INTO dbo.AttributesSet
 			(WorkOrderID, ToothNumber, AttributeID, AttributeValueID)
 		SELECT WorkOrderID = @workOrderId, ToothNumber, AttributeID, AttributeValueID
 			FROM OPENJSON (@jsonAttributesString)
@@ -37,7 +37,7 @@ BEGIN
 
 	-- Удаляем незначащие записи
 	DELETE
-	FROM AttributesSet
+	FROM dbo.AttributesSet
 	WHERE WorkOrderID = @workOrderId
 	AND AttributeID IS NULL
 

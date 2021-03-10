@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT EquipmentID, EquipmentName
-	FROM Equipments
+	FROM dbo.Equipments
 )

@@ -3,7 +3,7 @@
 -- Create date: 21.10.2020
 -- Description:	Добавление права
 -- =============================================
-CREATE PROCEDURE umc_AddRight 
+CREATE PROCEDURE [dbo].[umc_AddRight] 
 	
 	@applicationId int, 
 	@rightName nvarchar(MAX),
@@ -19,7 +19,7 @@ BEGIN
 	BEGIN
 		DECLARE @max_Id int
 		SELECT @max_Id = ISNULL(MAX(RightID), 0)
-		FROM Rights
+		FROM dbo.Rights
 
 		EXEC IdentifierAlignment Rights, @max_Id
 	
@@ -27,7 +27,7 @@ BEGIN
 	END	   
 	
 	-- Собственно вставка:
-	INSERT INTO Rights
+	INSERT INTO dbo.Rights
 	(ApplicationID, RightName, RightDescription)
 	VALUES
 	(@applicationId, @rightName, @rightDescription)

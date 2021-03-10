@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.7.0" />
+    <PackageReference Include="NLog" Version="4.7.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
+    <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
   </ItemGroup>
 
 </Project>

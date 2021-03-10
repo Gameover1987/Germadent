@@ -16,20 +16,20 @@ BEGIN
 
     IF @newPriceGroupId IS NOT NULL 
 		BEGIN
-			UPDATE PricePositions 
+			UPDATE dbo.PricePositions 
 			SET PriceGroupID = @newPriceGroupId 
 			WHERE PriceGroupID = @oldPriceGroupId
 	
 			DELETE
-			FROM PriceGroups
+			FROM dbo.PriceGroups
 			WHERE PriceGroupID = @oldPriceGroupId
 
 			SET @resultCount = @@rowcount
 		END
-		ELSE IF @newPriceGroupId IS NULL AND NOT EXISTS (SELECT PriceGroupID FROM PricePositions WHERE PriceGroupID = @oldPriceGroupId)
+		ELSE IF @newPriceGroupId IS NULL AND NOT EXISTS (SELECT PriceGroupID FROM dbo.PricePositions WHERE PriceGroupID = @oldPriceGroupId)
 			BEGIN
 				DELETE
-				FROM PriceGroups
+				FROM dbo.PriceGroups
 				WHERE PriceGroupID = @oldPriceGroupId
 
 				SET @resultCount = @@rowcount

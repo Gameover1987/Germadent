@@ -3,7 +3,7 @@
 -- Create date: 21.10.2020
 -- Description:	Редактирование права
 -- =============================================
-CREATE PROCEDURE umc_UpdateRight 
+CREATE PROCEDURE [dbo].[umc_UpdateRight] 
 	
 	@rightId int, 
 	@rightDescription nvarchar(MAX),
@@ -14,7 +14,7 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-    UPDATE Rights
+    UPDATE dbo.Rights
 	SET RightDescription = @rightDescription,
 		IsObsolete = @isObsolete
 	WHERE RightID = @rightId

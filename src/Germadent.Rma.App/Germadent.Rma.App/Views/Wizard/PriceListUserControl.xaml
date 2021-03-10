@@ -27,6 +27,7 @@
             <ListBox Grid.Row="1" Width="300" Margin="0,6,0,0"
                      ItemsSource="{Binding Groups}"
                      SelectedItem="{Binding SelectedGroup}"
+                     AlternationCount="2"
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:PriceGroupViewModel}">
@@ -55,6 +56,7 @@
             <TextBlock  Grid.Row="0" Text="Ценовые позиции" Style="{StaticResource GroupNameStyle}"/>
             <ListBox Grid.Row="1" Margin="0,6,0,0"
                      ItemsSource="{Binding Products}"
+                     AlternationCount="2"
                      ItemContainerStyle="{StaticResource StlnListBoxItemStyleWithoutSelection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type pricing:ProductViewModel}">

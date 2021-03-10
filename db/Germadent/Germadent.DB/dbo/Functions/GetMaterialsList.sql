@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT MaterialID, MaterialName, FlagUnused
-	FROM Materials
+	FROM dbo.Materials
 )

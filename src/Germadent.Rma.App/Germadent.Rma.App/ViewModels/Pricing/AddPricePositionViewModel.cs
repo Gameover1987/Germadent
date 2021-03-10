@@ -232,12 +232,12 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 UserCode = UserCode,
                 BranchType = _branchType,
                 PriceGroupId = SelectedPriceGroup.PriceGroupId,
-                MaterialId = SelectedMaterial.Id,
+                MaterialId = SelectedMaterial?.Id,
                 Products = ProsthteticTypes.Where(x => x.IsChecked).Select(x => new ProductDto
                 {
                     ProductName = x.Item.Name,
                     ProductId = x.Item.Id,
-                    MaterialId = SelectedMaterial.Id,
+                    MaterialId = SelectedMaterial?.Id,
                 }).ToArray(),
                 Prices = Prices.Select(x => x.ToDto()).ToArray()
             };

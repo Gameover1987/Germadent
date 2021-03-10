@@ -7,6 +7,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.WebApi.Configuration;
+using Germadent.WebApi.DataAccess.UserManagement;
 using Germadent.WebApi.Entities;
 using Germadent.WebApi.Entities.Conversion;
 using Newtonsoft.Json;
@@ -17,11 +18,13 @@ namespace Germadent.WebApi.DataAccess.Rma
     {
         private readonly IRmaEntityConverter _converter;
         private readonly IServiceConfiguration _configuration;
+        private readonly IUmcDbOperations _umcDbOperations;
 
-        public RmaDbOperations(IRmaEntityConverter converter, IServiceConfiguration configuration)
+        public RmaDbOperations(IRmaEntityConverter converter, IServiceConfiguration configuration, IUmcDbOperations umcDbOperations)
         {
             _converter = converter;
             _configuration = configuration;
+            _umcDbOperations = umcDbOperations;
         }
 
         public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
@@ -283,7 +286,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                     Quantity = product.Quantity,
                     ProstheticArticul = orderDto.ProstheticArticul,
                     TotalPrice = orderDto.Cashless ? 0: product.TotalPrice,
-                    TotalPriceCashless = orderDto.Cashless ? product.TotalPrice : 0
+                    TotalPriceCashless = orderDto.Cashless ? product.TotalPrice : 0,
+                    ResponsiblePerson = orderDto.ResponsiblePerson
                 };
                 reports.Add(reportListDto);
             }

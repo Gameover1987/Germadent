@@ -26,13 +26,12 @@ BEGIN
 		  {"DateBeginning": "20210101", "PriceStl": 300, "PriceModel": 400}
 		]';
 */
-	SET NOCOUNT ON
-	SET	XACT_ABORT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 	
 		BEGIN TRAN	
 		--Удаление всех прежних цен:
 		DELETE
-		FROM Prices
+		FROM dbo.Prices
 		WHERE PricePositionID = @pricePositionId
 
 		CREATE TABLE #PricesCollection (RowNumber int, DateBeginning date, PriceSTL money, PriceModel money)
@@ -44,7 +43,7 @@ BEGIN
 					WITH (DateBeginning date, PriceStl money, PriceModel money)
 		
 		-- Добавление поля DateEnd как копии поля DateBeginning со смещением вверх и вставка строк в основную таблицу:
-		INSERT INTO Prices
+		INSERT INTO dbo.Prices
 				(PricePositionID, DateBeginning, PriceSTL, PriceModel, DateEnd)
 		SELECT PricePositionID = @pricePositionId, prc.DateBeginning, prc.PriceSTL, prc.PriceModel, d.DateBeginning as DateEnd
 		FROM #PricesCollection prc
@@ -56,7 +55,7 @@ BEGIN
 	
 	-- Удаление нулевых цен
 	DELETE
-	FROM Prices
+	FROM dbo.Prices
 	WHERE PriceModel = 0 OR PriceModel IS NULL
 		
 END

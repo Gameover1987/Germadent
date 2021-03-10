@@ -54,6 +54,11 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
         {
             throw new System.NotImplementedException();
         }
+
+        public void Copy(string sourceFileName, string destFileName)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     public class DesignMockAddUserViewModel : AddUserViewModel

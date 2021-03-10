@@ -34,10 +34,11 @@ RETURN
 		, wo.Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
 
-	FROM WorkOrder wo INNER JOIN BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
-		INNER JOIN Customers c ON wo.CustomerID = c.CustomerID
-		LEFT JOIN ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-		LEFT JOIN Users u ON wo.CreatorID = u.UserID
+	FROM dbo.WorkOrder wo 
+		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
+		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
+		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
+		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
 		AND b.BranchType LIKE '%'+ISNULL(@branchType, '')+'%'

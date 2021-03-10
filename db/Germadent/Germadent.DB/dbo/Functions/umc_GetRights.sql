@@ -12,6 +12,6 @@ AS
 RETURN 
 (
 	SELECT rg.RightID, rg.RightName, rg.RightDescription, rg.IsObsolete, a.ApplicationID, a.ApplicationName, a.ApplicationDescription
-	FROM 
-		Rights rg INNER JOIN Applications a ON rg.ApplicationID = a.ApplicationID
+	FROM dbo.Rights rg 
+		INNER JOIN dbo.Applications a ON rg.ApplicationID = a.ApplicationID
 )

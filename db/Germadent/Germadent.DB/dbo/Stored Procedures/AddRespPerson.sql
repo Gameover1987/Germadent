@@ -22,16 +22,16 @@ BEGIN
 		DECLARE @max_Id int
 
 		SELECT @max_Id = ISNULL(MAX(ResponsiblePersonID), 0)
-		FROM ResponsiblePersons
+		FROM dbo.ResponsiblePersons
 
-		EXEC IdentifierAlignment ResponsiblePersons, @max_Id
+		EXEC dbo.IdentifierAlignment ResponsiblePersons, @max_Id
 		REVERT
 	END
 	-- Собственно вставка:
 	
-	INSERT INTO ResponsiblePersons
+	INSERT INTO dbo.ResponsiblePersons
 	(ResponsiblePerson, RP_Position, RP_Phone, RP_Email, RP_Description)
-	values
+	VALUES
 	(@responsiblePerson, @rp_Position, @rp_phone, @rp_email, @rp_description)
 
 	SET @responsiblePersonId = SCOPE_IDENTITY()

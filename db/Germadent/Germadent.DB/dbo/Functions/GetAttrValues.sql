@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT *
-	FROM AttrValues
+	FROM dbo.AttrValues
 )

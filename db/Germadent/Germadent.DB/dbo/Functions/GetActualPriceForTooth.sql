@@ -19,8 +19,8 @@ RETURN
 				ELSE p.PriceModel
 			END Price
 
-	FROM PricePositions pp
-		LEFT JOIN Prices p ON pp.PricePositionID = p.PricePositionID
+	FROM dbo.PricePositions pp
+		LEFT JOIN dbo.Prices p ON pp.PricePositionID = p.PricePositionID
 	WHERE pp.PricePositionID = @pricePositionId
 		-- Подтягиваем актуальные цены:
 		AND GETDATE() BETWEEN p.DateBeginning AND ISNULL(p.DateEnd, '99991231')

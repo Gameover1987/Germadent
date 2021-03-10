@@ -9,7 +9,7 @@
              xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800"
+             d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockPriceListEditorViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
@@ -29,6 +29,7 @@
                  SelectionChanged="Selector_OnSelectionChanged"
                  ItemsSource="{Binding Groups}"
                  SelectedItem="{Binding SelectedGroup}"
+                 AlternationCount="2"
                  ItemContainerStyle="{StaticResource StlnListBoxItemStyle}">
             <ListBox.InputBindings>
                 <KeyBinding Key="N" Modifiers="Control"
@@ -97,16 +98,16 @@
                             Command="{Binding DeletePricePositionCommand}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
+                <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
                                     Binding="{Binding PricePositionId}"/>
                 <DataGridTextColumn Header="Код" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                     Binding="{Binding UserCode}"/>
                <DataGridTextColumn Header="Наименование" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                    Binding="{Binding DisplayName}"/>
                <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                   Binding="{Binding PriceStl}"/>
+                                   Binding="{Binding PriceStl, StringFormat=C, ConverterCulture='ru-RU'}"/>
                <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                   Binding="{Binding PriceModel}"/>
+                                   Binding="{Binding PriceModel, StringFormat=C, ConverterCulture='ru-RU'}"/>
            </DataGrid.Columns>
         </DataGrid>
 

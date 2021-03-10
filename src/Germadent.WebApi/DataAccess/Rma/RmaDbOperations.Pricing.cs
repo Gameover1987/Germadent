@@ -92,7 +92,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
                     command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
-                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@jsonStringProduct", SqlDbType.NVarChar)).Value = jsonStringProduct;
                     command.Parameters.Add(new SqlParameter("@jsonStringPrices", SqlDbType.NVarChar)).Value = jsonStringPrices;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int) { Direction = ParameterDirection.Output });
@@ -120,7 +120,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = pricePositionDto.PriceGroupId;
                     command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
-                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId;
+                    command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@jsonStringProduct", SqlDbType.NVarChar)).Value = jsonStringProduct;
                     command.Parameters.Add(new SqlParameter("@jsonStringPrices", SqlDbType.NVarChar)).Value = jsonStringPrices;
 

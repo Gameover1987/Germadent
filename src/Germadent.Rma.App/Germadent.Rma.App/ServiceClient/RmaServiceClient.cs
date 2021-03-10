@@ -41,12 +41,13 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
         {
-            return ExecuteHttpPost<OrderLiteDto[]>(_configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter", ordersFilter);
+            var api = _configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter";
+            return ExecuteHttpPost<OrderLiteDto[]>(api, ordersFilter);
         }
 
-        public OrderDto GetOrderById(int id)
+        public OrderDto GetOrderById(int workOrderId)
         {
-            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{id}");
+            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
         public byte[] GetDataFileByWorkOrderId(int id)
@@ -59,7 +60,7 @@ namespace Germadent.Rma.App.ServiceClient
         {
             order.CreatorId = AuthorizationInfo.UserId;
             
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/add", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/Orders/add", order);
 
             return addedOrder;
         }
@@ -73,7 +74,7 @@ namespace Germadent.Rma.App.ServiceClient
 
         public OrderDto CloseOrder(int id)
         {
-            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{id}");
+            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/close/{id}");
         }
 
         public ReportListDto[] GetWorkReport(int id)

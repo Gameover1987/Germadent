@@ -35,9 +35,9 @@ BEGIN
 	BEGIN TRAN
 		DECLARE @max_Id int
 		SELECT @max_Id = ISNULL(MAX(WorkOrderID), 0)
-		FROM WorkOrder
+		FROM dbo.WorkOrder
 
-		EXEC IdentifierAlignment WorkOrder, @max_Id
+		EXEC dbo.IdentifierAlignment WorkOrder, @max_Id
 		REVERT		
 	COMMIT
 
@@ -54,16 +54,17 @@ BEGIN
 		-- Собственно вставка, сначала в основную таблицу:
 		SET	@created = GETDATE()
 
-		INSERT INTO WorkOrder
+		INSERT INTO dbo.WorkOrder
 			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  CreatorID)
 		VALUES 
 			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @creatorId)
 
 		SET @workOrderID = SCOPE_IDENTITY()
-
-		EXEC AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
-		EXEC AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
-		EXEC AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+		
+		-- Затем - в подчинённые:
+		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
+		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
+		EXEC dbo.AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
 	
 	COMMIT
 END

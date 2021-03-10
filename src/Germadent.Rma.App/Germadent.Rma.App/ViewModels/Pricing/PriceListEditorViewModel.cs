@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using Germadent.Common;
@@ -87,7 +88,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
         public void Initialize()
         {
             Groups.Clear();
-            var groups = _priceGroupRepository.Items.Where(x => x.BranchType == BranchType).ToArray();
+            var groups = _priceGroupRepository.Items
+                .Where(x => x.BranchType == BranchType)
+                .OrderBy(x => x.Name).ToArray();
             foreach (var priceGroupDto in groups)
             {
                 Groups.Add(new PriceGroupViewModel(priceGroupDto));
@@ -96,7 +99,9 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             SelectedGroup = Groups.FirstOrDefault();
 
             Positions.Clear();
-            var positions = _pricePositionRepository.Items.Where(x => x.BranchType == BranchType).ToArray();
+            var positions = _pricePositionRepository.Items.Where(x => x.BranchType == BranchType)
+                .OrderBy(x => x.Name)
+                .ToArray();
             foreach (var pricePositionDto in positions)
             {
                 Positions.Add(new PricePositionViewModel(pricePositionDto, _dateTimeProvider));
@@ -194,21 +199,22 @@ namespace Germadent.Rma.App.ViewModels.Pricing
             PriceGroupDto addedPriceGroup = null;
             try
             {
-                await ThreadTaskExtensions.Run(() => { addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup); });
+                await ThreadTaskExtensions.Run(() =>
+                {
+                    addedPriceGroup = _serviceClient.AddPriceGroup(priceGroup);
+                });
+                var priceGroupViewModel = new PriceGroupViewModel(addedPriceGroup);
+                Groups.Add(priceGroupViewModel);
+                SelectedGroup = priceGroupViewModel;
             }
             catch (Exception exception)
             {
-
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
                 BusyReason = null;
             }
-
-            var priceGroupViewModel = new PriceGroupViewModel(addedPriceGroup);
-            Groups.Add(priceGroupViewModel);
-
-            SelectedGroup = priceGroupViewModel;
         }
 
         private bool CanEditPriceGroupCommandHandler()
@@ -230,6 +236,10 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 {
                     _serviceClient.UpdatePriceGroup(SelectedGroup.ToDto());
                 });
+            }
+            catch (Exception exception)
+            {
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
@@ -265,13 +275,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 {
                     _serviceClient.DeletePriceGroup(SelectedGroup.PriceGroupId);
                 });
+                Groups.Remove(SelectedGroup);
+            }
+            catch (Exception exception)
+            {
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
                 BusyReason = null;
             }
-
-            Groups.Remove(SelectedGroup);
         }
 
         private bool CanAddPricePositionCommandHandler()
@@ -293,15 +306,18 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 {
                     pricePositionDto = _serviceClient.AddPricePosition(_addPricePositionViewModel.GetPricePosition());
                 });
+                var pricePositionViewModel = new PricePositionViewModel(pricePositionDto, _dateTimeProvider);
+                Positions.Add(pricePositionViewModel);
+                SelectedPosition = pricePositionViewModel;
+            }
+            catch (Exception exception)
+            {
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
                 BusyReason = null;
             }
-
-            var pricePositionViewModel = new PricePositionViewModel(pricePositionDto, _dateTimeProvider);
-            Positions.Add(pricePositionViewModel);
-            SelectedPosition = pricePositionViewModel;
         }
 
         private bool CanEditPricePositionCommandHandler()
@@ -324,13 +340,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 {
                     pricePositionDto = _serviceClient.UpdatePricePosition(_addPricePositionViewModel.GetPricePosition());
                 });
+                SelectedPosition.Update(pricePositionDto);
+            }
+            catch (Exception exception)
+            {
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
                 BusyReason = null;
             }
-
-            SelectedPosition.Update(pricePositionDto);
         }
 
         private bool CanDeletePricePositionCommandHandler()
@@ -351,13 +370,16 @@ namespace Germadent.Rma.App.ViewModels.Pricing
                 {
                     _serviceClient.DeletePricePosition(SelectedPosition.PricePositionId);
                 });
+                Positions.Remove(SelectedPosition);
+            }
+            catch (Exception exception)
+            {
+                _commandExceptionHandler.HandleCommandException(exception);
             }
             finally
             {
                 BusyReason = null;
             }
-
-            Positions.Remove(SelectedPosition);
         }
     }
 }

@@ -17,7 +17,7 @@ AS
 RETURN 
 (
 	SELECT ResponsiblePersonID, ResponsiblePerson, RP_Position, RP_Phone, RP_Email, RP_Description
-	FROM ResponsiblePersons
+	FROM dbo.ResponsiblePersons
 	WHERE ResponsiblePersonID = ISNULL(@responsiblePersonId, ResponsiblePersonID)
 		AND ResponsiblePerson LIKE '%'+ISNULL(@responsiblePerson, '')+'%'
 	--	AND RP_Position LIKE '%'+ISNULL(@rp_position, '')+'%'

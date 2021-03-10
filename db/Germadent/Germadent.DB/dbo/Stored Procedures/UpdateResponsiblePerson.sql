@@ -17,7 +17,7 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-    UPDATE ResponsiblePersons
+    UPDATE dbo.ResponsiblePersons
 	SET  RP_Position = @rp_Position
 		, ResponsiblePerson = @responsiblePerson
 		, RP_Phone = @rp_phone

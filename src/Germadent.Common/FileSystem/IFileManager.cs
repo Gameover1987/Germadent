@@ -22,6 +22,8 @@ namespace Germadent.Common.FileSystem
         void OpenFileByOS(string fileName);
 
         bool Exists(string path);
+
+        void Copy(string sourceFileName, string destFileName);
     }
 
     public class FileManager : IFileManager
@@ -84,6 +86,11 @@ namespace Germadent.Common.FileSystem
         public bool Exists(string path)
         {
             return File.Exists(path);
+        }
+
+        public void Copy(string sourceFileName, string destFileName)
+        {
+            File.Copy(sourceFileName, destFileName);
         }
     }
 }

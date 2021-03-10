@@ -13,16 +13,16 @@ BEGIN
 	DECLARE
 		@woStatus int
 
-	SET @woStatus = (SELECT Status FROM WorkOrder WHERE WorkOrderID = @workOrderId)
+	SET @woStatus = (SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId)
 
 	IF @woStatus = 0
 			BEGIN
 				DELETE 
-				FROM WorkOrder
+				FROM dbo.WorkOrder
 				WHERE WorkOrderID = @workOrderId
 			END
 		ELSE IF @woStatus = 1
-			UPDATE WorkOrder 
+			UPDATE dbo.WorkOrder 
 				SET Status = -1
 				WHERE WorkOrderID = @workOrderId
 	

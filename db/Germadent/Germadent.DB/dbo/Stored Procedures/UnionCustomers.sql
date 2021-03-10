@@ -16,20 +16,20 @@ BEGIN
 	
 	IF @newCustomerId IS NOT NULL 
 		BEGIN
-			UPDATE WorkOrder 
+			UPDATE dbo.WorkOrder 
 			SET CustomerID = @newCustomerId 
 			WHERE CustomerID = @oldCustomerId
 	
 			DELETE
-			FROM Customers
+			FROM dbo.Customers
 			WHERE CustomerID = @oldCustomerId
 
 			SET @resultCount = @@rowcount
 		END
-		ELSE IF @newCustomerId IS NULL AND NOT EXISTS (SELECT CustomerID FROM WorkOrder WHERE CustomerID = @oldCustomerId)
+		ELSE IF @newCustomerId IS NULL AND NOT EXISTS (SELECT CustomerID FROM dbo.WorkOrder WHERE CustomerID = @oldCustomerId)
 			BEGIN
 				DELETE
-				FROM Customers
+				FROM dbo.Customers
 				WHERE CustomerID = @oldCustomerId
 
 				SET @resultCount = @@rowcount

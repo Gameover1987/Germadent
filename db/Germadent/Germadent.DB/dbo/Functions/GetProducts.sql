@@ -12,5 +12,5 @@ AS
 RETURN 
 (
 	SELECT ProductID, ProductName
-	FROM Products
+	FROM dbo.Products
 )

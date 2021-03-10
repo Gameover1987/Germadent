@@ -41,22 +41,28 @@
 						<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 					</Border>
 					<ControlTemplate.Triggers>
-						<Trigger Property="IsSelected" Value="True">
-							<Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
-							<Setter Property="Foreground" Value="White"/>
-						</Trigger>
-						<MultiTrigger>
-							<MultiTrigger.Conditions>
-								<Condition Property="IsSelected" Value="true"/>
-								<Condition Property="Selector.IsSelectionActive" Value="false"/>
-							</MultiTrigger.Conditions>
-							<Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
-							<Setter Property="Foreground" Value="White"/>
-						</MultiTrigger>
-						<Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter TargetName="Bd" Property="Background" Value="#FFF2F2F2"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Foreground" Value="#FF8da0bf"/>
 						</Trigger>
-					</ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="Bd" Value="#FF8da0bf"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -76,6 +82,12 @@
                         <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter TargetName="Bd" Property="Background" Value="#FFF2F2F2"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="#FF8da0bf"/>
                         </Trigger>

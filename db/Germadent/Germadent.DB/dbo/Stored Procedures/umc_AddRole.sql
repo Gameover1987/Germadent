@@ -19,13 +19,13 @@ BEGIN
 		SELECT @max_Id = ISNULL(MAX(RoleID), 0)
 		FROM Roles
 
-		EXEC IdentifierAlignment Roles, @max_Id
+		EXEC dbo.IdentifierAlignment Roles, @max_Id
 	
 		REVERT
 	END
 	-- Собственно вставка:
 
-    INSERT INTO Roles
+    INSERT INTO dbo.Roles
 	(RoleName)
 	VALUES
 	(@roleName)

@@ -71,6 +71,8 @@
 
 
 
+
+
 GO
 
 
@@ -90,7 +92,7 @@ GO
 -- Description:	История действий пользователей с заказ-нарядами
 -- =============================================
 CREATE TRIGGER [dbo].[WorkOrderHistory] 
-   ON  dbo.WorkOrder 
+   ON  [dbo].[WorkOrder] 
    AFTER INSERT,UPDATE,DELETE
 AS 
 BEGIN
@@ -99,22 +101,26 @@ BEGIN
 
 	IF EXISTS 
 	(	SELECT * FROM inserted i, deleted d WHERE
-		i.BranchTypeID = d.BranchTypeID
-		AND ISNULL(i.Closed, '99991231') = ISNULL(d.Closed, '99991231')
-		AND ISNULL(i.Created, '17530101') = ISNULL(d.Created, '17530101')
-		AND ISNULL(i.CustomerID, -19999) = ISNULL(d.CustomerID, -19999)
-		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
-		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
-		AND i.FlagWorkAccept = d.FlagWorkAccept
-		AND ISNULL(i.CreatorID, -19999) = ISNULL(d.CreatorID, -19999)
-		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
-		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
-		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')
-		AND ISNULL(i.PatientAge, 0) = ISNULL(d.PatientAge, 0)
-		AND ISNULL(i.ResponsiblePersonID, -19999) = ISNULL(d.ResponsiblePersonID, -19999)
+		i.WorkOrderID = d.WorkOrderID
+		AND i.BranchTypeID = d.BranchTypeID
 		AND i.Status = d.Status
+		AND ISNULL(i.DocNumber, 'empty') = ISNULL(d.DocNumber, 'empty')
+		AND ISNULL(i.CustomerID, -19999) = ISNULL(d.CustomerID, -19999)
+		AND ISNULL(i.ResponsiblePersonID, -19999) = ISNULL(d.ResponsiblePersonID, -19999)
+		AND ISNULL(i.PatientFullName, 'empty') = ISNULL(d.PatientFullName, 'empty')
+		AND ISNULL(i.PatientAge, 0) = ISNULL(d.PatientAge, 0)
+		AND ISNULL(i.Created, '17530101') = ISNULL(d.Created, '17530101')		
+		AND ISNULL(i.FittingDate, '17530101') = ISNULL(d.FittingDate, '17530101')
+		AND ISNULL(i.DateOfCompletion, '17530101') = ISNULL(d.DateOfCompletion, '17530101')
+		AND ISNULL(i.DateComment, 'empty') = ISNULL(d.DateComment, 'empty')
+		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND ISNULL(i.WorkDescription, 'empty') = ISNULL(d.WorkDescription, 'empty')
-		AND i.WorkOrderID = d.WorkOrderID
+		AND i.FlagWorkAccept = d.FlagWorkAccept
+		AND i.FlagStl = d.FlagStl
+		AND i.FlagCashless = d.FlagCashless
+		AND ISNULL(i.CreatorID, -19999) = ISNULL(d.CreatorID, -19999)
+		AND ISNULL(i.Closed, '17530101') = ISNULL(d.Closed, '17530101')		
+		 
 	) BEGIN
 		RETURN
 	END

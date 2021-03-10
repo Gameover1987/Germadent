@@ -20,16 +20,16 @@ BEGIN
 
 	BEGIN TRAN
 
-    UPDATE PricePositions
-	SET PricePositionCode = @pricePositionCode,
-		PriceGroupID = @priceGroupId,
-		PricePositionName = @pricePositionName,
-		MaterialID = @materialId
-	WHERE PricePositionID = @pricePositionId
+		UPDATE dbo.PricePositions
+		SET PricePositionCode = @pricePositionCode,
+			PriceGroupID = @priceGroupId,
+			PricePositionName = @pricePositionName,
+			MaterialID = @materialId
+		WHERE PricePositionID = @pricePositionId
 
-	EXEC AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
 
-	EXEC AddOrUpdatePrices @pricePositionId, @jsonStringPrices
+		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices
 
 	COMMIT
 

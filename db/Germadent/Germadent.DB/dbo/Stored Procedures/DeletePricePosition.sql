@@ -3,7 +3,7 @@
 -- Create date: 07.11.2020
 -- Description:	Удаление ценовой позиции
 -- =============================================
-CREATE PROCEDURE DeletePricePosition 
+CREATE PROCEDURE [dbo].[DeletePricePosition] 
 	
 	@pricePositionId int, 
 	@resultCount int output
@@ -13,14 +13,14 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT PricePositionID FROM ToothCard WHERE PricePositionID = @pricePositionId)
+    IF NOT EXISTS (SELECT PricePositionID FROM dbo.ToothCard WHERE PricePositionID = @pricePositionId)
 			BEGIN
 				DELETE
-				FROM ProductSet
+				FROM dbo.ProductSet
 				WHERE PricePositionID = @pricePositionId
 				
 				DELETE
-				FROM PricePositions
+				FROM dbo.PricePositions
 				WHERE PricePositionID = @pricePositionId
 
 				SET @resultCount = @@rowcount
