@@ -5,7 +5,7 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetReportWorkOrders] 
 (	
-	@beginningDate datetime, 
+	@beginningDate datetime = NULL, 
 	@endDate datetime = NULL
 )
 RETURNS TABLE 
@@ -22,7 +22,7 @@ FROM dbo.WorkOrder wo
 	INNER JOIN dbo.Attributes a ON aset.AttributeID = a.AttributeID
 	INNER JOIN dbo.AttrValues av ON aset.AttributeValueID = av.AttributeValueID
 
-WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
+WHERE wo.Created BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND a.AttributeID = 1
 ),
 -- ... затем - то же самое для систем имплантов
@@ -33,7 +33,7 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.AttributesSet aset ON wo.WorkOrderID = aset.WorkOrderID
 	INNER JOIN dbo.Attributes a ON aset.AttributeID = a.AttributeID
 	INNER JOIN dbo.AttrValues av ON aset.AttributeValueID = av.AttributeValueID
-WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
+WHERE wo.Created BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND a.AttributeID = 2
 ),
 -- Соединяем это с основной выборкой...
@@ -52,7 +52,7 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.Equipments e ON ae.EquipmentID = e.EquipmentID
 	LEFT JOIN cs ON cs.WorkOrderID = wo.WorkOrderID
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
-WHERE wo.Created BETWEEN @beginningDate AND ISNULL(@endDate, '99991231')
+WHERE wo.Created BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
 )
 -- ... и агрегируем
