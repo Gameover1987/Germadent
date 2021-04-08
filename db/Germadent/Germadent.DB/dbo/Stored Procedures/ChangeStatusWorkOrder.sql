@@ -5,32 +5,33 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[ChangeStatusWorkOrder] 
 	
-	@workOrderId int	,
+	@workOrderId int,
 	@status int,
-	@dateTimeChange datetime output
+	@userId int,
+	@remark nvarchar(100),
+	@statusChangeDateTime datetime output
 
 AS
 BEGIN
 
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
-		BEGIN
-			RETURN
-		END
+	IF EXISTS (SELECT 1 FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId AND Status = 9)
+		RETURN
 		
-	IF @status = 9 BEGIN 
-		UPDATE dbo.WorkOrder
-		SET Status = 9,
-			Closed = GETDATE()
-		WHERE WorkOrderID = @workOrderId
-		END
 	ELSE BEGIN
-		UPDATE dbo.WorkOrder
-		SET Status = @status
-		WHERE WorkOrderID = @workOrderId
-		END
+
+		BEGIN TRAN
+		SET @statusChangeDateTime = GETDATE()
+
+		INSERT INTO dbo.StatusWorkOrder
+		(WorkOrderID, Status, StatusChangeDateTime, UserID, Remark)
+		VALUES
+		(@workOrderId, @status, @statusChangeDateTime, @userId, @remark)
+		COMMIT
+
+	END
 END
 GO
 GRANT EXECUTE

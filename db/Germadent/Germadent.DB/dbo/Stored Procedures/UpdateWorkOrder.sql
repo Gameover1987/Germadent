@@ -31,11 +31,10 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
-		BEGIN
-			RETURN
-		END
-
+	IF EXISTS (SELECT 1 FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId AND Status = 9)
+		RETURN
+	
+	ELSE BEGIN
 	BEGIN TRAN
 	
 		UPDATE dbo.WorkOrder
@@ -63,8 +62,8 @@ BEGIN
 	COMMIT
 
 	-- Напоминаем программе дату и время создания заказ-наряда
-	SELECT @created = Created FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID
-
+	SELECT @created = StatusChangeDateTime FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderID AND Status = 0
+	END
 END
 GO
 GRANT EXECUTE

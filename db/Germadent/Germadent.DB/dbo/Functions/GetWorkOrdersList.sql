@@ -21,6 +21,11 @@ RETURNS TABLE
 AS
 RETURN 
 (	
+	WITH currentStatus (WorkOrderID, Status) AS
+	(SELECT WorkOrderID, MAX(Status) AS Status
+		FROM StatusWorkOrder
+		GROUP BY WorkOrderID)
+
 		SELECT  b.BranchTypeID
 		, b.BranchType
 		, wo.WorkOrderID
@@ -28,15 +33,18 @@ RETURN
 		, c.CustomerName
 		, wo.PatientFullName
 		, rp.ResponsiblePerson AS DoctorFullName
-		, wo.Created 
-		, wo.Status
+		, swozero.StatusChangeDateTime as Created
+		, currentStatus.Status
 		, wo.FlagWorkAccept
-		, wo.Closed
+		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
 
 	FROM dbo.WorkOrder wo 
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
+		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
+		INNER JOIN dbo.StatusWorkOrder swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
+		LEFT JOIN dbo.StatusWorkOrder swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
 	
@@ -49,8 +57,8 @@ RETURN
 				OR (PatientFullName IS NULL AND @patientFullName IS NULL))
 		AND (rp.ResponsiblePerson LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
 				OR (rp.ResponsiblePerson IS NULL AND @doctorFullName IS NULL))
-		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
-		AND	(wo.Closed BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
-				OR (Closed IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
+		AND (swozero.StatusChangeDateTime BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
+		AND	(swoend.StatusChangeDateTime BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
+				OR (swoend.StatusChangeDateTime IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
 		
 )

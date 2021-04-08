@@ -5,15 +5,15 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[DeleteWorkOrder] 
 
-	@workOrderId int
---	@countRowsDeleted int output
+	@workOrderId int,
+	@countRowsDeleted int output
 
 AS
 BEGIN
 	DECLARE
 		@woStatus int
 
-	SET @woStatus = (SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId)
+	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId)
 
 	IF @woStatus = 0
 			BEGIN
@@ -30,7 +30,7 @@ BEGIN
 	--SET file_stream = CONVERT(varbinary(max), '0')
 	--WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
 
---	SELECT @countRowsDeleted = @@ROWCOUNT
+	SELECT @countRowsDeleted = @@ROWCOUNT
 
 END
 GO

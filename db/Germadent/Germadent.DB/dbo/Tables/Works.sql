@@ -10,8 +10,10 @@
     CONSTRAINT [FK_Works_Products] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[Products] ([ProductID]),
     CONSTRAINT [FK_Works_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID]),
     CONSTRAINT [FK_Works_Users] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Users] ([UserID]),
-    CONSTRAINT [FK_Works_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID])
+    CONSTRAINT [FK_Works_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
 
 
 

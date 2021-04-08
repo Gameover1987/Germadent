@@ -52,7 +52,6 @@ BEGIN
 				END
 
 		-- Собственно вставка, сначала в основную таблицу:
-		SET	@created = GETDATE()
 
 		INSERT INTO dbo.WorkOrder
 			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  CreatorID)
@@ -65,6 +64,7 @@ BEGIN
 		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC dbo.AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+		EXEC dbo.ChangeStatusWorkOrder @workOrderId, 0, @creatorId, '', @created
 	
 	COMMIT
 END

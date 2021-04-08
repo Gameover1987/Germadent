@@ -7,6 +7,7 @@ CREATE FUNCTION [dbo].[GetReportWorkOrders]
 (	
 	@beginningDate datetime = NULL, 
 	@endDate datetime = NULL
+--	@jsonStringWOId varchar(max) = NULL
 )
 RETURNS TABLE 
 AS
@@ -54,6 +55,7 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
 WHERE wo.Created BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
+--	AND wo.WorkOrderID IN (SELECT ISNULL(OrderId, wo.WorkOrderID) FROM OPENJSON (@jsonStringWOId) WITH (OrderId int))
 )
 -- ... и агрегируем
 SELECT 
