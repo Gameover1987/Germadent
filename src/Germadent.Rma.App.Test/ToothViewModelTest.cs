@@ -34,7 +34,7 @@ namespace Germadent.Rma.App.Test
             // Then
             Assert.AreEqual(hasBridge, target.HasBridge);
         }
-
+         
         [TestMethod]
         [DataRow(10, 1, "ZrO", 1, "Каркас", true)]
         public void ShouldGetDto(int toothNumber, bool hasBridge)

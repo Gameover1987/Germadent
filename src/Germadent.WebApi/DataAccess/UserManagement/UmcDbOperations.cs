@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BC = BCrypt.Net.BCrypt;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -132,7 +133,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     command.Parameters.Add(new SqlParameter("@patronymic", SqlDbType.NVarChar)).Value = userDto.Patronymic;
                     command.Parameters.Add(new SqlParameter("@phone", SqlDbType.NVarChar)).Value = userDto.Phone;
                     command.Parameters.Add(new SqlParameter("@login", SqlDbType.NVarChar)).Value = userDto.Login;
-                    command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
+                    command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = HashPassword(userDto.Password);
                     command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                     command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
@@ -168,7 +169,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 command.Parameters.Add(new SqlParameter("@patronymic", SqlDbType.NVarChar)).Value = userDto.Patronymic;
                 command.Parameters.Add(new SqlParameter("@phone", SqlDbType.NVarChar)).Value = userDto.Phone;
                 command.Parameters.Add(new SqlParameter("@login", SqlDbType.NVarChar)).Value = userDto.Login;
-                command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
+                command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = HashPassword(userDto.Password);
                 command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                 command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                 command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
@@ -571,7 +572,11 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 }
             }
         }
-
+        
+        private static string GetRandomSalt() => BC.GenerateSalt(12);
+        private static string HashPassword(string password) => BC.HashPassword(password, GetRandomSalt());
+        private static bool ValidatePassword(string password, string correctHash) => BC.Verify(password, correctHash);
+       
         private class RightComparer : IEqualityComparer<RightDto>
         {
             public bool Equals(RightDto x, RightDto y)
@@ -586,4 +591,5 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
     }
+
 }
