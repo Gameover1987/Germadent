@@ -31,7 +31,7 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF EXISTS (SELECT 1 FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId AND Status = 9)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 9)
 		RETURN
 	
 	ELSE BEGIN
@@ -62,7 +62,7 @@ BEGIN
 	COMMIT
 
 	-- Напоминаем программе дату и время создания заказ-наряда
-	SELECT @created = StatusChangeDateTime FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderID AND Status = 0
+	SELECT @created = StatusChangeDateTime FROM dbo.StatusList WHERE WorkOrderID = @workOrderID AND Status = 0
 	END
 END
 GO

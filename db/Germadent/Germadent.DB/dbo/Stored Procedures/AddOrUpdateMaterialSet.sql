@@ -3,7 +3,7 @@
 -- Create date: 10.03.2021
 -- Description:	Добавление или изменение набора материалов для ценовой позиции
 -- =============================================
-CREATE PROCEDURE AddOrUpdateMaterialSet 
+CREATE PROCEDURE [dbo].[AddOrUpdateMaterialSet] 
 	
 	@pricePositionId int, 
 	@jsonStringMaterial nvarchar(max)

@@ -17,7 +17,7 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
-	IF EXISTS (SELECT 1 FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId AND Status = 9)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 9)
 		RETURN
 		
 	ELSE BEGIN
@@ -25,7 +25,7 @@ BEGIN
 		BEGIN TRAN
 		SET @statusChangeDateTime = GETDATE()
 
-		INSERT INTO dbo.StatusWorkOrder
+		INSERT INTO dbo.StatusList
 		(WorkOrderID, Status, StatusChangeDateTime, UserID, Remark)
 		VALUES
 		(@workOrderId, @status, @statusChangeDateTime, @userId, @remark)

@@ -13,7 +13,7 @@ BEGIN
 	DECLARE
 		@woStatus int
 
-	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusWorkOrder WHERE WorkOrderID = @workOrderId)
+	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusList WHERE WorkOrderID = @workOrderId)
 
 	IF @woStatus = 0
 			BEGIN

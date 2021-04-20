@@ -23,7 +23,7 @@ RETURN
 (	
 	WITH currentStatus (WorkOrderID, Status) AS
 	(SELECT WorkOrderID, MAX(Status) AS Status
-		FROM StatusWorkOrder
+		FROM dbo.StatusList
 		GROUP BY WorkOrderID)
 
 		SELECT  b.BranchTypeID
@@ -43,8 +43,8 @@ RETURN
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
-		INNER JOIN dbo.StatusWorkOrder swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
-		LEFT JOIN dbo.StatusWorkOrder swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
+		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
+		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
 	
