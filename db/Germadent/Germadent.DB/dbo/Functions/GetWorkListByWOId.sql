@@ -3,7 +3,7 @@
 -- Create date: 20.04.2021
 -- Description:	Возвращает список работ по заказ-наряду
 -- =============================================
-CREATE FUNCTION GetWorkListByWOId
+CREATE FUNCTION [dbo].[GetWorkListByWOId]
 (	
 	@workOrderId int
 )
@@ -19,7 +19,9 @@ RETURN
 			teo.TechnologyOperationUserCode, 
 			teo.TechnologyOperationName, 
 			u.UserID, 
-			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName, 
+			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName,
+			wl.Rate,
+			wl.Quantity,
 			wl.OperationCost, 
 			wl.Started, 
 			wl.Ended

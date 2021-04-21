@@ -3,7 +3,7 @@
 -- Create date: 20.04.2021
 -- Description:	Добавление/изменение работ для заказ-наряда
 -- =============================================
-CREATE PROCEDURE AddOrUpdateWorkList 
+CREATE PROCEDURE [dbo].[AddOrUpdateWorkList] 
 	
 	@workOrderId int,
 	@jsonWorklistString nvarchar(MAX)
@@ -26,10 +26,10 @@ BEGIN
 
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO dbo.WorkList
-		(WorkOrderID, ProductID, TechnologyOperationID, EmployeeID, OperationCost, Started, Ended, IsChecked)
-		SELECT WorkOrderID = @workOrderId, ProductID, TechnologyOperationID, EmployeeID, OperationCost, Started, Ended, IsChecked
+		(WorkOrderID, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, Started, Ended, IsChecked)
+		SELECT WorkOrderID = @workOrderId, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, Started, Ended, IsChecked
 		FROM OPENJSON (@jsonWorklistString)
-			WITH(ProductId int, TechnologyOperationId int, EmployeeId int, OperationCost money, Started datetime, Ended datetime, IsChecked bit)
+			WITH(ProductId int, TechnologyOperationId int, EmployeeId int, Rate money, Quantity int, Started datetime, Ended datetime, IsChecked bit)
 
 	COMMIT
 

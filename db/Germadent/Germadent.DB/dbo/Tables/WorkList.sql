@@ -3,7 +3,9 @@
     [ProductID]             INT      NOT NULL,
     [TechnologyOperationID] INT      NOT NULL,
     [EmployeeID]            INT      NOT NULL,
-    [OperationCost]         MONEY    NULL,
+    [Rate]                  MONEY    NOT NULL,
+    [Quantity]              INT      NOT NULL,
+    [OperationCost]         AS       ([Rate]*[Quantity]),
     [Started]               DATETIME NULL,
     [Ended]                 DATETIME NULL,
     [IsChecked]             BIT      NULL,
@@ -12,6 +14,8 @@
     CONSTRAINT [FK_WorkList_Users] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Users] ([UserID]),
     CONSTRAINT [FK_WorkList_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
 
 
 GO
