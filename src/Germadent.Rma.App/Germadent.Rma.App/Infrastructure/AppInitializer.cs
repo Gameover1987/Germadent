@@ -13,16 +13,20 @@ namespace Germadent.Rma.App.Infrastructure
         private readonly IPricePositionRepository _pricePositionRepository;
         private readonly IProductRepository _productRepository;
         private readonly IAttributeRepository _attributeRepository;
+        private readonly IEmployeePositionRepository _employeePositionRepository;
+        private readonly ITechnologyOperationRepository _technologyOperationRepository;
         private readonly ILogger _logger;
 
-        public AppInitializer(ICustomerRepository customerRepository,
+        public AppInitializer(ILogger logger,
+            ICustomerRepository customerRepository,
             IResponsiblePersonRepository responsiblePersonRepository,
             IDictionaryRepository dictionaryRepository,
             IPriceGroupRepository priceGroupRepository,
             IPricePositionRepository pricePositionRepository,
             IProductRepository productRepository,
             IAttributeRepository attributeRepository,
-            ILogger logger)
+            IEmployeePositionRepository employeePositionRepository,
+            ITechnologyOperationRepository technologyOperationRepository)
         {
             _customerRepository = customerRepository;
             _responsiblePersonRepository = responsiblePersonRepository;
@@ -31,6 +35,8 @@ namespace Germadent.Rma.App.Infrastructure
             _pricePositionRepository = pricePositionRepository;
             _productRepository = productRepository;
             _attributeRepository = attributeRepository;
+            _employeePositionRepository = employeePositionRepository;
+            _technologyOperationRepository = technologyOperationRepository;
             _logger = logger;
         }
 
@@ -58,6 +64,12 @@ namespace Germadent.Rma.App.Infrastructure
 
                 SendMessage("Инициализация репозитория атрибутов ...");
                 _attributeRepository.Initialize();
+
+                SendMessage("Инициализация репозитория специализаций ...");
+                _employeePositionRepository.Initialize();
+
+                SendMessage("Инициализация репозитория технологических операций...");
+                _technologyOperationRepository.Initialize();
 
                 InitializationCompleted?.Invoke(this, EventArgs.Empty);
             }

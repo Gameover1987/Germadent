@@ -12,9 +12,11 @@ using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Pricing;
+using Germadent.Rma.App.Views.TechnologyOperation;
 using Germadent.Rma.App.Views.Wizard;
 using Germadent.Rma.Model;
 using Germadent.UI.Commands;
@@ -25,29 +27,6 @@ using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class ContextMenuItemViewModel : ViewModelBase
-    {
-        private bool _isChecked;
-
-        public string Header { get; set; }
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-            }
-        }
-
-        public object Parameter { get; set; }
-
-        public IDelegateCommand Command { get; set; }
-    }
-
     public class OrderLiteComparerByDateTime : IComparer
     {
         public int Compare(object x, object y)
@@ -71,6 +50,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
         private readonly IPriceListEditorContainerViewModel _priceListEditorContainerViewModel;
+        private readonly ITechnologyOperationsEditorViewModel _technologyOperationsEditorViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IReporter _reporter;
@@ -91,6 +71,7 @@ namespace Germadent.Rma.App.ViewModels
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
             IPriceListEditorContainerViewModel priceListEditorContainerContainerViewModel,
+            ITechnologyOperationsEditorViewModel technologyOperationsEditorViewModel,
             IPrintModule printModule,
             ILogger logger,
             IReporter reporter, 
@@ -104,6 +85,7 @@ namespace Germadent.Rma.App.ViewModels
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
             _priceListEditorContainerViewModel = priceListEditorContainerContainerViewModel;
+            _technologyOperationsEditorViewModel = technologyOperationsEditorViewModel;
             _printModule = printModule;
             _logger = logger;
             _reporter = reporter;
@@ -122,6 +104,7 @@ namespace Germadent.Rma.App.ViewModels
             ShowCustomersDictionaryCommand = new DelegateCommand(ShowCustomersDictionaryCommandHandler);
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
+            ShowTechnologyOperationsEditorCommand = new DelegateCommand(ShowTechnologyOperationsEditorCommandHandler, CanShowTechnologyOperationsEditorCommandHandler);
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
@@ -143,6 +126,8 @@ namespace Germadent.Rma.App.ViewModels
         }
 
         public bool CanViewPriceList { get; }
+
+        public bool CanViewTechnologyOperations { get; } = true;
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -197,6 +182,8 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand ShowResponsiblePersonsDictionaryCommand { get; }
 
         public IDelegateCommand ShowPriceListEditorCommand { get; }
+
+        public IDelegateCommand ShowTechnologyOperationsEditorCommand { get; }
 
         public IDelegateCommand LogOutCommand { get; }
 
@@ -402,6 +389,16 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowPriceListEditorCommandHandler()
         {
             _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
+        }
+
+        private bool CanShowTechnologyOperationsEditorCommandHandler()
+        {
+            return CanViewTechnologyOperations;
+        }
+
+        private void ShowTechnologyOperationsEditorCommandHandler()
+        {
+            _dialogAgent.ShowDialog<TechnologyOperationsEditorWindow>(_technologyOperationsEditorViewModel);
         }
 
         private void LogOutCommandHandler()

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Production;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.DesignTime;
 
@@ -38,6 +42,54 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
     }
 
+    public class DesignMockEmployeePositionRepository : IEmployeePositionRepository
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        public event EventHandler<EventArgs> Changed;
+
+        public EmployeePositionDto[] Items
+        {
+            get
+            {
+                var mockServiceClient = new DesignMockRmaServiceClient();
+                return mockServiceClient.GetEmployeePositions();
+            }
+        }
+    }
+
+    public class DesignMockTechnologyOperationsEditorViewModel : TechnologyOperationsEditorViewModel
+    {
+        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository())
+        {
+            Initialize();
+
+            SelectedEmployeePosition = EmployeePositions.FirstOrDefault();
+        }
+    }
+
+    public class DesignMockTechnologyOperationRepository : ITechnologyOperationRepository
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        public event EventHandler<EventArgs> Changed;
+
+        public TechnologyOperationDto[] Items
+        {
+            get
+            {
+                var mockServiceClient = new DesignMockRmaServiceClient();
+                return mockServiceClient.GetTechnologyOperations();
+            }
+        }
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel()
@@ -48,6 +100,7 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockCustomerCatalogViewModel(),
                 new DesignMockResponsiblePersonsCatalogViewModel(),
                 new DesignMockPriceListEditorContainerViewModel(), 
+                new DesignMockTechnologyOperationsEditorViewModel(), 
                 new DesignMockPrintModule(), 
                 new MockLogger(), 
                 new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()), 

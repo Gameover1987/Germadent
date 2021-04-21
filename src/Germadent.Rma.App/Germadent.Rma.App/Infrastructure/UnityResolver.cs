@@ -12,6 +12,7 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
@@ -120,6 +121,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IAddPricePositionViewModel, AddPricePositionViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IAddPriceViewModel, AddPriceViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceListEditorFactory, PriceListEditorFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ITechnologyOperationsEditorViewModel, TechnologyOperationsEditorViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()
@@ -141,6 +143,8 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IPricePositionRepository, PricePositionRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IProductRepository, ProductRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IAttributeRepository, AttributeRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IEmployeePositionRepository, EmployeePositionRepository>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ITechnologyOperationRepository, TechnologyOperationRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());
         }
 

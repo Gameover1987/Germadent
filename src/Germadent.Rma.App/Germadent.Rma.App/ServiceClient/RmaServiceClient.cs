@@ -4,6 +4,7 @@ using Germadent.Common.Web;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;
@@ -181,6 +182,16 @@ namespace Germadent.Rma.App.ServiceClient
         public AttributeDto[] GetAttributes()
         {
             return ExecuteHttpGet<AttributeDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Attributes/GetAttributesAndValues");
+        }
+
+        public EmployeePositionDto[] GetEmployeePositions()
+        {
+            return ExecuteHttpGet<EmployeePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Technology/EmployeePositions");
+        }
+
+        public TechnologyOperationDto[] GetTechnologyOperations()
+        {
+            return ExecuteHttpGet<TechnologyOperationDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Technology/Operations");
         }
 
         protected override void HandleError(IRestResponse response)

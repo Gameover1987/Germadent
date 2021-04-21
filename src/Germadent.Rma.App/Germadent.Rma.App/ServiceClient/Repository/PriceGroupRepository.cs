@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {

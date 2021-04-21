@@ -5,6 +5,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 
@@ -480,6 +481,30 @@ namespace Germadent.Rma.App.Mocks
         public AttributeDto[] GetAttributes()
         {
             throw new NotImplementedException();
+        }
+
+        public EmployeePositionDto[] GetEmployeePositions()
+        {
+            return new EmployeePositionDto[]
+            {
+                new EmployeePositionDto {Name = "Администратор", EmployeePositionId = 1},
+                new EmployeePositionDto {Name = "Моделировщик"},
+                new EmployeePositionDto {Name = "Техник"},
+                new EmployeePositionDto {Name = "Оператор"},
+            };
+        }
+
+        public TechnologyOperationDto[] GetTechnologyOperations()
+        {
+            return new TechnologyOperationDto[]
+            {
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1, Rate = 123},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1 , Rate = 333},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1, Rate = 555},
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1, Rate = 123},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1 , Rate = 333},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1, Rate = 555},
+            };
         }
     }
 }

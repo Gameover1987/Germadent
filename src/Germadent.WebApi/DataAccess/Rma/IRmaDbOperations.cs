@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -174,5 +175,17 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <returns></returns>
         AttributeDto[] GetAllAttributesAndValues();
+
+        /// <summary>
+        /// Возвращает список должностей
+        /// </summary>
+        /// <returns></returns>
+        EmployeePositionDto[] GetEmployeePositions();
+
+        /// <summary>
+        /// Возвращает список технологических операций
+        /// </summary>
+        /// <returns></returns>
+        TechnologyOperationDto[] GetTechnologyOperations();
     }
 }

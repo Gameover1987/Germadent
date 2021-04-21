@@ -129,6 +129,9 @@
             <Button Content="Прайслисты" Margin="0,6,0,0"
                     Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding ShowPriceListEditorCommand}"/>
+            <Button Content="Технологические операции" Margin="0,6,0,0"
+                    Visibility="{Binding CanViewTechnologyOperations, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Command="{Binding ShowTechnologyOperationsEditorCommand}"/>
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"

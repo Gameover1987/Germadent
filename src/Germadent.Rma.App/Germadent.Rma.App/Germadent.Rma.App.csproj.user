@@ -35,6 +35,9 @@
     <Compile Update="Views\Wizard\ToothUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\TechnologyOperation\TechnologyOperationsEditorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\Pricing\AddPricePositionWindow.xaml">
@@ -68,6 +71,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Wizard\ToothUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TechnologyOperation\TechnologyOperationsEditorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ServiceClient
@@ -208,5 +209,17 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         AttributeDto[] GetAttributes();
+
+        /// <summary>
+        /// Возвращает список специализаций работников
+        /// </summary>
+        /// <returns></returns>
+        EmployeePositionDto[] GetEmployeePositions();
+
+        /// <summary>
+        /// Возвращает список технологичесикх операций
+        /// </summary>
+        /// <returns></returns>
+        TechnologyOperationDto[] GetTechnologyOperations();
     }
 }
