@@ -35,3 +35,8 @@ BEGIN
 	WHERE MaterialID = 0 OR MaterialID IS NULL
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateMaterialSet] TO [gdl_user]
+    AS [dbo];
+

@@ -40,3 +40,8 @@ BEGIN
 	AND TechnologyOperationID IS NULL
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddOrUpdateWorkList] TO [gdl_user]
+    AS [dbo];
+
