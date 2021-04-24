@@ -10,7 +10,7 @@ namespace Germadent.WebApi.DataAccess.Rma
     {
         public EmployeePositionDto[] GetEmployeePositions()
         {
-            var cmdText = "select distinct EmployeePositionID, EmployeePositionName from dbo.GetTechnologyOperations()";
+            var cmdText = "select distinct EmployeePositionID, EmployeePositionName from dbo.GetTechnologyOperations(default)";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -37,7 +37,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public TechnologyOperationDto[] GetTechnologyOperations()
         {
-            var cmdText = "select distinct EmployeePositionID, TechnologyOperationID, TechnologyOperationUserCode, TechnologyOperationName from dbo.GetTechnologyOperations()";
+            var cmdText = "select distinct EmployeePositionID, TechnologyOperationID, TechnologyOperationUserCode, TechnologyOperationName from dbo.GetTechnologyOperations(default)";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
