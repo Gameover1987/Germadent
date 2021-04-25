@@ -24,6 +24,9 @@
         public int Id { get; set; }
 
         public int Count { get; set; }
+
+        public string Error { get; set; }
+
         public int GetIdentificator()
         {
             return Id;

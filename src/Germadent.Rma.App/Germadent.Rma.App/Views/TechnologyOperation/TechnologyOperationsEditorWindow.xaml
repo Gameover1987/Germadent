@@ -67,9 +67,12 @@
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Content="Добавить" Width="100" Margin="6,6,0,0"/>
-                <Button Content="Настроить" Width="100" Margin="6,6,0,0"/>
-                <Button Content="Удалить" Width="100" Margin="6,6,0,0"/>
+                <Button Content="Добавить" Width="100" Margin="6,6,0,0"
+                        Command="{Binding AddTechnologyOperationCommand}"/>
+                <Button Content="Настроить" Width="100" Margin="6,6,0,0"
+                        Command="{Binding EditTechnologyOperationCommand}"/>
+                <Button Content="Удалить" Width="100" Margin="6,6,0,0"
+                        Command="{Binding DeleteTechnologyOperationCommand}"/>
             </StackPanel>
         </Grid>
 

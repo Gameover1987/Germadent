@@ -194,6 +194,12 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<TechnologyOperationDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Technology/Operations");
         }
 
+        public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
+        {
+            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
+        }
+
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

@@ -4,6 +4,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.Configuration;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json.Linq;
 
@@ -43,6 +44,7 @@ namespace Germadent.Rma.App.ServiceClient
         public event EventHandler<RepositoryChangedEventArgs<ResponsiblePersonDto>> ResponsiblePersonRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
+        public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
 
         private void OnNotification(string arg)
         {
@@ -76,6 +78,12 @@ namespace Germadent.Rma.App.ServiceClient
             {
                 var args = CreateRepositoryChangedEventArgs<ProductDto>(notification);
                 ProductRepositoryChanged?.Invoke(this, args);
+            }
+
+            if (notification.RepositoryType == RepositoryType.TechnologyOperation)
+            {
+                var args = CreateRepositoryChangedEventArgs<TechnologyOperationDto>(notification);
+                TechnologyOperationRepositoryChanged?.Invoke(this, args);
             }
         }
 

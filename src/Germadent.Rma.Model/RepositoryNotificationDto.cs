@@ -10,7 +10,8 @@ namespace Germadent.Rma.Model
         PricePosition,
         Product,
         Customer,
-        ResponsiblePerson
+        ResponsiblePerson,
+        TechnologyOperation
     }
 
     public class RepositoryNotificationDto

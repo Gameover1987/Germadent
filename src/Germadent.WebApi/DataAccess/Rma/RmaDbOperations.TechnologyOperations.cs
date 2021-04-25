@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Germadent.Common.Extensions;
+using Germadent.Rma.Model.Pricing;
 using Germadent.Rma.Model.Production;
 
 namespace Germadent.WebApi.DataAccess.Rma
@@ -60,6 +62,30 @@ namespace Germadent.WebApi.DataAccess.Rma
                     reader.Close();
 
                     return technologyOperations.ToArray();
+                }
+            }
+        }
+
+        public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("DeleteTechnologyOperation", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = technologyOperationId;
+                    command.Parameters.Add(new SqlParameter("@resultCount", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var count = command.Parameters["@resultCount"].Value.ToInt();
+
+                    return new DeleteResult()
+                    {
+                        Id = technologyOperationId,
+                        Count = count
+                    };
                 }
             }
         }

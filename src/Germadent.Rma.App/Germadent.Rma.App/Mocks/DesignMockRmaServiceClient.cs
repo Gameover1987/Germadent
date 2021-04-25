@@ -506,5 +506,10 @@ namespace Germadent.Rma.App.Mocks
                 new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1, Rate = 555},
             };
         }
+
+        public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

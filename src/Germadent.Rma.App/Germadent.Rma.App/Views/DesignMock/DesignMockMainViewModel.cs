@@ -63,7 +63,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockTechnologyOperationsEditorViewModel : TechnologyOperationsEditorViewModel
     {
-        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository())
+        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository(), new DesignMockShowDialogAgent())
         {
             Initialize();
 
@@ -87,6 +87,11 @@ namespace Germadent.Rma.App.Views.DesignMock
                 var mockServiceClient = new DesignMockRmaServiceClient();
                 return mockServiceClient.GetTechnologyOperations();
             }
+        }
+
+        public void DeleteTechnologyOperation(int technologyOperationId)
+        {
+            throw new NotImplementedException();
         }
     }
 

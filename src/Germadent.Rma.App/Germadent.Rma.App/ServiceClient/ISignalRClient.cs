@@ -1,6 +1,7 @@
 ﻿using System;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient
 {
@@ -33,5 +34,7 @@ namespace Germadent.Rma.App.ServiceClient
         event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
 
         event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
+
+        event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
     }
 }
