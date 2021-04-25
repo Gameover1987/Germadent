@@ -42,6 +42,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         protected abstract T[] GetItems();
 
+        // TODO: Refactor this fucking event!
         public event EventHandler<EventArgs> Changed;
     }
 }

@@ -38,9 +38,7 @@ namespace Germadent.WebApi.Controllers.Rma
         [Route("DeleteOperation/{technologyOperationId:int}")]
         public IActionResult DeleteTechnologyOperation(int technologyOperationId)
         {
-            var result = ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.DeleteTechnologyOperation(technologyOperationId), RepositoryType.TechnologyOperation, RepositoryAction.Delete);
-            SendDeleteNotification(RepositoryType.TechnologyOperation, technologyOperationId);
-            return result;
+            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.DeleteTechnologyOperation(technologyOperationId), RepositoryType.TechnologyOperation, RepositoryAction.Delete);
         }
     }
 }

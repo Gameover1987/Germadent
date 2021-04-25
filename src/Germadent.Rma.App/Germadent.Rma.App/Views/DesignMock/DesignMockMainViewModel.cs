@@ -4,6 +4,7 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
@@ -88,6 +89,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 return mockServiceClient.GetTechnologyOperations();
             }
         }
+
+        public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> ChangedNew;
 
         public void DeleteTechnologyOperation(int technologyOperationId)
         {

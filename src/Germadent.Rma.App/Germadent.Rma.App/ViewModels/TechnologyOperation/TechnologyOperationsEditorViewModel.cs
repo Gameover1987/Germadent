@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.Model.Production;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
@@ -29,7 +31,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         {
             _employeePositionRepository = employeePositionRepository;
             _technologyOperationRepository = technologyOperationRepository;
-            _technologyOperationRepository.Changed += TechnologyOperationRepositoryOnChanged;
+            _technologyOperationRepository.ChangedNew += TechnologyOperationRepositoryOnChanged;
             _dialogAgent = dialogAgent;
 
             _technologyOperationsView = CollectionViewSource.GetDefaultView(TechnologyOperations);
@@ -136,9 +138,17 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
             return technologyOperation.EmployeePositionId == SelectedEmployeePosition.EmployeePositionId;
         }
 
-        private void TechnologyOperationRepositoryOnChanged(object? sender, EventArgs e)
+        private void TechnologyOperationRepositoryOnChanged(object sender, RepositoryChangedEventArgs<TechnologyOperationDto> e)
         {
-            
+            if (e.DeletedItems != null)
+            {
+                foreach (var deletedItem in e.DeletedItems)
+                {
+                    var technologyOperationToDelete = TechnologyOperations.FirstOrDefault(x => x.TechnologyOperationId == deletedItem);
+                    if (technologyOperationToDelete != null)
+                        TechnologyOperations.Remove(technologyOperationToDelete);
+                }
+            }
         }
     }
 }
