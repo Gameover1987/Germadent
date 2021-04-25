@@ -75,5 +75,7 @@ namespace Germadent.UserManagementCenter.Model
         public RoleDto[] Roles { get; set; }
 
         public string FileName { get; set; }
+
+        public EmployeePositionsCombinationDto[] Positions { get; set; }
     }
 }
