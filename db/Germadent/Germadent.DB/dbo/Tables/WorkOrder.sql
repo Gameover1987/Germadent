@@ -8,7 +8,7 @@
     [PatientFullName]     NVARCHAR (150) NULL,
     [PatientGender]       BIT            NULL,
     [PatientAge]          TINYINT        NULL,
-    [Created]             DATETIME       NOT NULL,
+    [Created]             DATETIME       NULL,
     [FittingDate]         DATETIME       NULL,
     [DateOfCompletion]    DATETIME       NULL,
     [DateComment]         NVARCHAR (50)  NULL,
@@ -25,6 +25,8 @@
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
     CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([CreatorID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 

@@ -3,13 +3,14 @@
 -- Create date: 22.04.2021
 -- Description:	Редактирование технологической операции
 -- =============================================
-CREATE PROCEDURE UpdateTechnologyOperation 
+CREATE PROCEDURE [dbo].[UpdateTechnologyOperation] 
 	
 	@technologyOperationId int,
 	@technologyOperationUserCode nvarchar(10),
 	@technologyOperationName nvarchar(250),
 	@employeePositionID int,
-	@isObsoleteTechnologyOperation bit
+	@isObsoleteTechnologyOperation bit, 
+	@jsonStringRates nvarchar(MAX)
 
 AS
 BEGIN
@@ -23,6 +24,8 @@ BEGIN
 			TechnologyOperationName = @technologyOperationName,
 			EmployeePositionID = @employeePositionID,
 			IsObsoleteTechnologyOperation = @isObsoleteTechnologyOperation
+
+		EXEC dbo.AddOrUpdateRates @technologyOperationId, @jsonStringRates
 
 	COMMIT
 

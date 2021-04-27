@@ -3,13 +3,14 @@
 -- Create date: 22.04.2021
 -- Description:	Добавление технологической операции
 -- =============================================
-CREATE PROCEDURE AddTechnologyOperation 
+CREATE PROCEDURE [dbo].[AddTechnologyOperation] 
 	
 	@technologyOperationUserCode nvarchar(10) = null,
 	@technologyOperationName nvarchar(250),
 	@employeePositionID int,
 	@isObsoleteTechnologyOperation bit = null,
-	@technologyOperationId int output
+	@technologyOperationId int output,
+	@jsonStringRates nvarchar(max)
 
 AS
 BEGIN
@@ -35,6 +36,9 @@ BEGIN
 		(@technologyOperationUserCode, @technologyOperationName, @employeePositionID, @isObsoleteTechnologyOperation)
 
 		SET @technologyOperationId = SCOPE_IDENTITY()
+
+		-- Затем - в подчинённые:
+		EXEC dbo.AddOrUpdateRates @technologyOperationId, @jsonStringRates
 
 	COMMIT
 

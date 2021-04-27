@@ -21,10 +21,14 @@ RETURNS TABLE
 AS
 RETURN 
 (	
-	WITH currentStatus (WorkOrderID, Status) AS
-	(SELECT WorkOrderID, MAX(Status) AS Status
+	WITH statusChanged (WorkOrderID, StatusChangeDateTime) AS
+	(SELECT WorkOrderID, MAX(StatusChangeDateTime) AS StatusChangeDateTime
 		FROM dbo.StatusList
-		GROUP BY WorkOrderID)
+		GROUP BY WorkOrderID),
+
+	currentStatus (WorkOrderID, Status, StatusChangeDateTime) AS 
+	(SELECT statusChanged.WorkOrderID, sls.Status, statusChanged.StatusChangeDateTime
+		FROM dbo.StatusList sls INNER JOIN  statusChanged ON sls.WorkOrderID = statusChanged.WorkOrderID AND sls.StatusChangeDateTime = statusChanged.StatusChangeDateTime)
 
 		SELECT  b.BranchTypeID
 		, b.BranchType
@@ -34,7 +38,7 @@ RETURN
 		, wo.PatientFullName
 		, rp.ResponsiblePerson AS DoctorFullName
 		, swozero.StatusChangeDateTime as Created
-		, currentStatus.Status
+		, CONCAT(cs.Status, ' - ', se.StatusName) AS Status
 		, wo.FlagWorkAccept
 		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
@@ -42,7 +46,8 @@ RETURN
 	FROM dbo.WorkOrder wo 
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
-		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
+		INNER JOIN currentStatus cs ON wo.WorkOrderID = cs.WorkOrderID
+		INNER JOIN StatusEnumeration se ON cs.Status = se.Status
 		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
 		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
