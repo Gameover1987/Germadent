@@ -178,7 +178,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             Created = reader["Created"].ToDateTime(),
                             Patient = reader["PatientFullName"].ToString(),
                             WorkDescription = reader["WorkDescription"].ToString(),
-                            Status = reader["Status"].ToInt(),
+                            Status = reader["Status"].ToString(),
                             ResponsiblePersonId = reader["ResponsiblePersonId"].ToInt(),
                             DoctorFullName = reader["DoctorFullName"].ToString(),
                             TechnicFullName = reader["TechnicFullName"].ToString(),
@@ -328,6 +328,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
                     orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
                     orderLite.CreatorFullName = reader[nameof(orderLite.CreatorFullName)].ToString();
+                    orderLite.Status = reader[nameof(orderLite.Status)].ToString();
 
                     var closed = reader[nameof(orderLite.Closed)];
                     if (closed != DBNull.Value)

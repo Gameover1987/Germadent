@@ -24,6 +24,6 @@ namespace Germadent.Rma.Model
 
         public DateTime? Closed { get; set; }
 
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }

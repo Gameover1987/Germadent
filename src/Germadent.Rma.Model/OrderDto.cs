@@ -22,7 +22,7 @@ namespace Germadent.Rma.Model
 
         public int WorkOrderId { get; set; }
 
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         public string DocNumber { get; set; }
         

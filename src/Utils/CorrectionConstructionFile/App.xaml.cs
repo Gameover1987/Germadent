@@ -30,12 +30,13 @@ namespace Germadent.CorrectionConstructionFile.App
             MainWindow.Show();
         }
 
+#nullable enable
         private void CommandException(object? sender, ExceptionEventArgs e)
         {
             var dialogAgent = _container.Resolve<IShowDialogAgent>();
             dialogAgent.ShowErrorMessageDialog(e.Exception.Message, e.Exception.StackTrace);
         }
-
+#nullable disable
         private static IUnityContainer RegisterTypes()
         {
             var container = new UnityContainer();
@@ -52,12 +53,12 @@ namespace Germadent.CorrectionConstructionFile.App
             return container;
         }
 
-
+#nullable enable 
         private void MainWindowOnClosed(object? sender, EventArgs e)
         {
             App.Current.Shutdown(0);
         }
-
+#nullable disable
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             _container?.Dispose();
