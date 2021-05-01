@@ -1,12 +1,11 @@
-﻿<Window x:Class="Germadent.Rma.App.Views.MainWindow"
+﻿<Window x:Class="Germadent.Rms.App.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
-        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-        xmlns:viewModels="clr-namespace:Germadent.Rma.App.ViewModels"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:local="clr-namespace:Germadent.Rms.App.Views"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
@@ -15,7 +14,6 @@
         Height="900"
         WindowStartupLocation="CenterScreen"
         Background="{x:Static SystemColors.ControlBrush}"
-        d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Window.Resources>
@@ -28,28 +26,8 @@
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-
-        <!-- Контекстное меню для колонок -->
-        <ContextMenu x:Key="DataGridColumnHeaderContextMenu"
-                     DataContext="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                     ItemsSource="{Binding ColumnContextMenuItems}">
-            <ContextMenu.ItemContainerStyle>
-                <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemViewModelStyle}">
-                    <Setter Property="StaysOpenOnClick" Value="True" />
-                </Style>
-            </ContextMenu.ItemContainerStyle>
-        </ContextMenu>
-
-        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
-            <Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}"/>
-        </Style>
     </Window.Resources>
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding ExitCommand}"
-                    Key="F10"/>
-        <KeyBinding Command="{Binding LogOutCommand}"
-                    Key="L" Modifiers="Control+Alt"/>
-    </Window.InputBindings>
+
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -61,80 +39,20 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Margin="-6,-6,-6,6" Grid.ColumnSpan="2">
-            <MenuItem Header="Программа">
-                <MenuItem Header="Зайти под другим пользователем"
-                          InputGestureText="Ctrl+Alt+L"
-                          Command="{Binding LogOutCommand}"/>
-                <MenuItem Header="Выйти"
-                          InputGestureText="F10"
-                          Command="{Binding ExitCommand}"/>
-            </MenuItem>
-            <MenuItem Header="Заказ-наряды">
-                <MenuItem Header="Создать заказ-наряд для ЗТЛ"
-                          Command="{Binding CreateLabOrderCommand}"/>
-                <MenuItem Header="Создать заказ-наряд для ФЦ"
-                          Command="{Binding CreateLabOrderCommand}"/>
-                <Separator/>
-                <MenuItem Header="Редактировать заказ-наряд"
-                          InputGestureText="Enter"
-                          Command="{Binding OpenOrderCommand}"/>
-                <MenuItem Header="Закрыть заказ-наряд" 
-                          InputGestureText="Ctrl+Shift+C"
-                          Command="{Binding CloseOrderCommand}"/>
-                <MenuItem Header="Распечатать заказ-наряд" 
-                          InputGestureText="Ctrl+P"
-                          Command="{Binding PrintOrderCommand}"/>
-                <MenuItem Header="Копировать в Excel" 
-                          Command="{Binding CopyOrderToClipboardCommand}"/>
-            </MenuItem>
-            <MenuItem Header="Справочники">
-                <MenuItem Header="Заказчики" 
-                          Command="{Binding ShowCustomersDictionaryCommand}"/>
-                <MenuItem Header="Ответственные лица"
-                          Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
-                <MenuItem Header="Прайслисты"
-                          Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
-                          Command="{Binding ShowPriceListEditorCommand}"/>
-            </MenuItem>
-        </Menu>
+        
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
-            <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,0,0,0"
-                                     LabelText="Поиск заказ-нарядов" 
-                                     SearchEventTimeDelay="00:00:3"
-                                     SearchText="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text="Создание заказ-нарядов" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
-            <Button Content="Лаборатория" Margin="0,6,0,0"
-                    Command="{Binding CreateLabOrderCommand}"/>
-            <Button Content="Фрезерный центр" Margin="0,6,0,0"
-                    Command="{Binding CreateMillingCenterOrderCommand}"/>
-
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
-            <Button Content="Настроить фильтр" Margin="0,6,0,0"
-                    Command="{Binding FilterOrdersCommand}"/>
-            <Button Content="Редактировать З-Н" Margin="0,6,0,0"
-                    Command="{Binding OpenOrderCommand}"/>
-            <Button Content="Закрыть З-Н" Margin="0,6,0,0"
-                    Command="{Binding CloseOrderCommand}"/>
-            <Button Content="Распечатать З-Н" Margin="0,6,0,0"
-                    Command="{Binding PrintOrderCommand}"/>
 
-            <TextBlock Text="Работа со справочниками" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
-            <Button Content="Заказчики" Margin="0,6,0,0"
-                    Command="{Binding ShowCustomersDictionaryCommand}"/>
-            <Button Content="Ответственные лица" Margin="0,6,0,0"
-                    Command="{Binding ShowResponsiblePersonsDictionaryCommand}"/>
-            <Button Content="Прайслисты" Margin="0,6,0,0"
-                    Visibility="{Binding CanViewPriceList, Converter={StaticResource BoolToVisibilityConverter}}"
-                    Command="{Binding ShowPriceListEditorCommand}"/>
-            <Button Content="Технологические операции" Margin="0,6,0,0"
-                    Visibility="{Binding CanViewTechnologyOperations, Converter={StaticResource BoolToVisibilityConverter}}"
-                    Command="{Binding ShowTechnologyOperationsEditorCommand}"/>
+            <Button Content="Открыть З-Н" Margin="0,6,0,0"
+                    Command="{Binding OpenOrderCommand}"/>
+
+            <Button Content="Список работ по З-Н" Margin="0,6,0,0"
+                    Command="{Binding WorkListCommand}"/>
+
         </StackPanel>
 
-        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"
+        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   EnableColumnVirtualization="True"
@@ -225,12 +143,5 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <controls:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                Width="50" Height="50" Fill="#2D2D2D" IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,3,0,0">
-            <TextBlock Text="Записей:"/>
-            <TextBlock Text="{Binding Orders.Count}" Margin="3,0,0,0"/>
-        </StackPanel>
     </Grid>
 </Window>
