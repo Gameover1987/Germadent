@@ -4,6 +4,10 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 {
     public interface ITechnologyOperationRepository : IRepository<TechnologyOperationDto>
     {
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
         public void DeleteTechnologyOperation(int technologyOperationId);
     }
 
@@ -27,6 +31,16 @@ namespace Germadent.Rma.App.ServiceClient.Repository
         protected override TechnologyOperationDto[] GetItems()
         {
             return _rmaServiceClient.GetTechnologyOperations();
+        }
+
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void DeleteTechnologyOperation(int technologyOperationId)

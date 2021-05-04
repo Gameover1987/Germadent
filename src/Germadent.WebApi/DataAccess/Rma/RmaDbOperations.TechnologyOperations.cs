@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Rma.Model.Pricing;
 using Germadent.Rma.Model.Production;
@@ -39,15 +40,17 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public TechnologyOperationDto[] GetTechnologyOperations()
         {
-            var cmdText = "select distinct EmployeePositionID, TechnologyOperationID, TechnologyOperationUserCode, TechnologyOperationName from dbo.GetTechnologyOperations(default)";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
-                using (var command = new SqlCommand(cmdText, connection))
+                // Получили технологические операции без рейтов
+                var technologyOperations = new List<TechnologyOperationDto>();
+                var getTechCommandText = "select distinct EmployeePositionID, TechnologyOperationID, TechnologyOperationUserCode, TechnologyOperationName from dbo.GetTechnologyOperations(default)";
+                using (var command = new SqlCommand(getTechCommandText, connection))
                 {
                     var reader = command.ExecuteReader();
-                    var technologyOperations = new List<TechnologyOperationDto>();
+                    
                     while (reader.Read())
                     {
                         var technologyOperationDto = new TechnologyOperationDto();
@@ -60,9 +63,32 @@ namespace Germadent.WebApi.DataAccess.Rma
                         technologyOperations.Add(technologyOperationDto);
                     }
                     reader.Close();
-
-                    return technologyOperations.ToArray();
                 }
+
+                // Получили рейты
+                var rates = new List<RateDto>();
+                var getRatesCommandText = "select * from dbo.Rates";
+                using (var command = new SqlCommand(getRatesCommandText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var rateDto = new RateDto();
+                        rateDto.TechnologyOperationId = reader["TechnologyOperationID"].ToInt();
+                        rateDto.QualifyingRank = reader["QualifyingRank"].ToInt();
+                        rateDto.Rate = reader["Rate"].ToDecimal();
+                        rateDto.DateBeginning = reader["DateBeginning"].ToDateTime();
+                        rates.Add(rateDto);
+                    }
+                }
+
+                // Соединили рейты и тех. операции
+                foreach (var technologyOperationDto in technologyOperations)
+                {
+                    technologyOperationDto.Rates = rates.Where(x => x.TechnologyOperationId == technologyOperationDto.TechnologyOperationId).ToArray();
+                }
+
+                return technologyOperations.ToArray();
             }
         }
 

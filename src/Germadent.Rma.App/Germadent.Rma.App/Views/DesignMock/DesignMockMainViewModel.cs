@@ -66,7 +66,7 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockTechnologyOperationsEditorViewModel : TechnologyOperationsEditorViewModel
     {
-        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository(), new DesignMockShowDialogAgent())
+        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository(), new DesignMockShowDialogAgent(), new DesignMockAddTechnologyOperationViewModel())
         {
             Initialize();
 
@@ -92,6 +92,16 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> Changed;
+
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
 
         public void DeleteTechnologyOperation(int technologyOperationId)
         {

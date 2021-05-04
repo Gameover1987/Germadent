@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.Views.TechnologyOperation;
 using Germadent.Rma.Model.Production;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
@@ -18,6 +19,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         private readonly IEmployeePositionRepository _employeePositionRepository;
         private readonly ITechnologyOperationRepository _technologyOperationRepository;
         private readonly IShowDialogAgent _dialogAgent;
+        private readonly IAddTechnologyOperationViewModel _addTechnologyOperationViewModel;
 
         private EmployeePositionViewModel _selectedEmployeePosition;
         private TechnologyOperationViewModel _selectedTechnologyOperation;
@@ -27,12 +29,14 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         public TechnologyOperationsEditorViewModel(
             IEmployeePositionRepository employeePositionRepository, 
             ITechnologyOperationRepository technologyOperationRepository,
-            IShowDialogAgent dialogAgent)
+            IShowDialogAgent dialogAgent,
+            IAddTechnologyOperationViewModel addTechnologyOperationViewModel)
         {
             _employeePositionRepository = employeePositionRepository;
             _technologyOperationRepository = technologyOperationRepository;
             _technologyOperationRepository.Changed += TechnologyOperationRepositoryOnChanged;
             _dialogAgent = dialogAgent;
+            _addTechnologyOperationViewModel = addTechnologyOperationViewModel;
 
             _technologyOperationsView = CollectionViewSource.GetDefaultView(TechnologyOperations);
             _technologyOperationsView.Filter = TechnologyOperationsFilter;
@@ -102,7 +106,16 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void AddTechnologyOperationCommandHandler()
         {
+            var newTechnologyOperationDto = new TechnologyOperationDto
+            {
+                EmployeePositionId = SelectedEmployeePosition.EmployeePositionId
+            };
+            _addTechnologyOperationViewModel.Initialize(ViewMode.Add, newTechnologyOperationDto);
+            if (_dialogAgent.ShowDialog<AddTechnologyOperationWindow>(_addTechnologyOperationViewModel) == false)
+                return;
 
+            var technologyOperation = _addTechnologyOperationViewModel.GetTechnologyOperation();
+            _technologyOperationRepository.AddTechnologyOperation(technologyOperation);
         }
 
         private bool CanEditTechnologyOperationCommandHandler()
@@ -112,7 +125,14 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void EditTechnologyOperationCommandHandler()
         {
+            _addTechnologyOperationViewModel.Initialize(ViewMode.Edit, SelectedTechnologyOperation.ToDto());
+            if (_dialogAgent.ShowDialog<AddTechnologyOperationWindow>(_addTechnologyOperationViewModel) == false)
+                return;
 
+            var technologyOperation = _addTechnologyOperationViewModel.GetTechnologyOperation();
+            SelectedTechnologyOperation.Update(technologyOperation);
+
+            _technologyOperationRepository.EditTechnologyOperation(technologyOperation);
         }
 
         private bool CanDeleteTechnologyOperationCommand()

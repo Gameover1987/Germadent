@@ -20,12 +20,15 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         public string DisplayName => _technologyOperationDto.Name;
 
-        public decimal Rate => _technologyOperationDto.Rate;
-
         public void Update(TechnologyOperationDto technologyOperationDto)
         {
             _technologyOperationDto = technologyOperationDto;
             OnPropertyChanged();
+        }
+
+        public TechnologyOperationDto ToDto()
+        {
+            return _technologyOperationDto;
         }
     }
 }

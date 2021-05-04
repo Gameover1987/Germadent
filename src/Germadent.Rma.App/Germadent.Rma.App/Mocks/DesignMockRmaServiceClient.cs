@@ -498,12 +498,12 @@ namespace Germadent.Rma.App.Mocks
         {
             return new TechnologyOperationDto[]
             {
-                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1, Rate = 123},
-                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1 , Rate = 333},
-                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1, Rate = 555},
-                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1, Rate = 123},
-                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1 , Rate = 333},
-                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1, Rate = 555},
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1},
             };
         }
 
