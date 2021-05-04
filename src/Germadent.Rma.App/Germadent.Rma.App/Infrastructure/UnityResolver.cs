@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;

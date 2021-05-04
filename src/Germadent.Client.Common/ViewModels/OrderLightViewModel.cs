@@ -2,7 +2,7 @@
 using Germadent.Rma.Model;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rma.App.ViewModels
+namespace Germadent.Client.Common.ViewModels
 {
     public class OrderLiteViewModel : ViewModelBase
     {

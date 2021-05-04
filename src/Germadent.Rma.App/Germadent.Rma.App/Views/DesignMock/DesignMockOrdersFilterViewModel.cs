@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Rma.App.ViewModels;
 
 namespace Germadent.Rma.App.Views.DesignMock

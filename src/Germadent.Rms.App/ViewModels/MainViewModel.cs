@@ -19,6 +19,7 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.Views.Wizard;
 using System.Windows;
+using Germadent.Client.Common.ViewModels;
 
 namespace Germadent.Rms.App.ViewModels
 {
