@@ -1,21 +1,10 @@
-﻿using System;
-using Germadent.Rma.Model;
+﻿using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
 using Germadent.Rma.Model.Production;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {
-    public class UserAuthorizedEventArgs : EventArgs
-    {
-        public UserAuthorizedEventArgs(AuthorizationInfoDto info)
-        {
-            AuthorizationInfo = info;
-        }
-
-        public AuthorizationInfoDto AuthorizationInfo { get; }
-    }
-
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
@@ -221,6 +210,20 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         TechnologyOperationDto[] GetTechnologyOperations();
+
+        /// <summary>
+        /// Добавляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Обновляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto);
 
         /// <summary>
         /// Удаляет технологическую операцию

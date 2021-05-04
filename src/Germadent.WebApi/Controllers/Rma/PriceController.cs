@@ -3,6 +3,7 @@ using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Rma.Model;
 using Germadent.Rma.Model.Pricing;
+using Germadent.Rma.Model.Production;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

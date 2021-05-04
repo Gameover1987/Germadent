@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.Model.Pricing;
 
@@ -11,7 +12,8 @@ namespace Germadent.Rma.App.Views.DesignMock
             
         }
 
-        public event EventHandler<EventArgs> Changed;
         public ProductDto[] Items { get{return new ProductDto[0];} }
+
+        public event EventHandler<RepositoryChangedEventArgs<ProductDto>> Changed;
     }
 }

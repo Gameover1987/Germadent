@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 
 namespace Germadent.Rma.App.Views.TechnologyOperation
@@ -19,6 +20,12 @@ namespace Germadent.Rma.App.Views.TechnologyOperation
         {
             var editor = (ITechnologyOperationsEditorViewModel) DataContext;
             editor.Initialize();
+        }
+
+        private void OnTechOperationMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var editor = (ITechnologyOperationsEditorViewModel)DataContext;
+            editor.EditTechnologyOperationCommand.TryExecute();
         }
     }
 }

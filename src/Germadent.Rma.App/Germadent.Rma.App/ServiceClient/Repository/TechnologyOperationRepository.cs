@@ -1,11 +1,12 @@
-﻿using System;
-using Germadent.Rma.Model.Production;
+﻿using Germadent.Rma.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
     public interface ITechnologyOperationRepository : IRepository<TechnologyOperationDto>
     {
-        event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> ChangedNew;
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto);
 
         public void DeleteTechnologyOperation(int technologyOperationId);
     }
@@ -24,7 +25,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void SignalRClientOnTechnologyOperationRepositoryChanged(object sender, RepositoryChangedEventArgs<TechnologyOperationDto> e)
         {
-            ChangedNew?.Invoke(this, e);
+            OnRepositoryChanged(this, e);
         }
 
         protected override TechnologyOperationDto[] GetItems()
@@ -32,7 +33,15 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             return _rmaServiceClient.GetTechnologyOperations();
         }
 
-        public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> ChangedNew;
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            _rmaServiceClient.AddTechnologyOperation(technologyOperationDto);
+        }
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            _rmaServiceClient.UpdateTechnologyOperation(technologyOperationDto);
+        }
 
         public void DeleteTechnologyOperation(int technologyOperationId)
         {

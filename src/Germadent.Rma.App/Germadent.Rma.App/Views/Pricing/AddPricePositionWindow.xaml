@@ -123,11 +123,11 @@
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Дата" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding Begin, StringFormat='dd MMMM yyyy', ConverterCulture=ru-RU}"/>
+                                        Binding="{Binding Begin, StringFormat='d MMMM yyyy', ConverterCulture=ru-RU}"/>
                     <DataGridTextColumn Header="Цена с STL" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding PriceStl}"/>
+                                        Binding="{Binding PriceStl, StringFormat=C, ConverterCulture='ru-RU' }"/>
                     <DataGridTextColumn Header="Цена с модели" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding PriceModel}"/>
+                                        Binding="{Binding PriceModel, StringFormat=C, ConverterCulture='ru-RU'}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">

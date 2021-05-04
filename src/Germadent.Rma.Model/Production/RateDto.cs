@@ -8,6 +8,12 @@ namespace Germadent.Rma.Model.Production
 {
     public class RateDto
     {
+        public RateDto()
+        {
+            DateBeginning = DateTime.Now;
+            DateEnd = DateTime.Now;
+        }
+
         public int TechnologyOperationId { get; set; }
                 
         public int QualifyingRank { get; set; }

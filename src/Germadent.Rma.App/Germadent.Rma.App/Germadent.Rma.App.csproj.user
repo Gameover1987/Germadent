@@ -23,6 +23,12 @@
     <Compile Update="Views\SplashScreenWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\TechnologyOperation\AddRateWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TechnologyOperation\AddTechnologyOperationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Wizard\PriceListStepUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -56,6 +62,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreenWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TechnologyOperation\AddRateWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TechnologyOperation\AddTechnologyOperationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Wizard\PriceListStepUserControl.xaml">

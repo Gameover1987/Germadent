@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows;
+using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
@@ -8,11 +10,6 @@ namespace Germadent.Rma.App.ServiceClient.Repository
         /// Инициализация
         /// </summary>
         void Initialize();
-
-        /// <summary>
-        /// Событие наструпающее при изменении коллекции
-        /// </summary>
-        event EventHandler<EventArgs> Changed;
     }
 
     public interface IRepository<T> : IRepository
@@ -21,6 +18,11 @@ namespace Germadent.Rma.App.ServiceClient.Repository
         /// Коллекция всех элементов
         /// </summary>
         T[] Items { get; }
+
+        /// <summary>
+        /// Событие наструпающее при изменении коллекции
+        /// </summary>
+        event EventHandler<RepositoryChangedEventArgs<T>> Changed;
     }
 
     public abstract class Repository<T> : IRepository<T>
@@ -34,15 +36,16 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             _items = GetItems();
         }
 
-        protected void ReLoad()
-        {
-            _items = GetItems();
-            Changed?.Invoke(this, EventArgs.Empty);
-        }
-
         protected abstract T[] GetItems();
 
-        // TODO: Refactor this fucking event!
-        public event EventHandler<EventArgs> Changed;
+        public event EventHandler<RepositoryChangedEventArgs<T>> Changed;
+
+        protected void OnRepositoryChanged(object sender, RepositoryChangedEventArgs<T> e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Changed?.Invoke(sender, e);
+            });
+        }
     }
 }

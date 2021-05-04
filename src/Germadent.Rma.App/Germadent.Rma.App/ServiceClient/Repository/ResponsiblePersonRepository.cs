@@ -22,7 +22,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void SignalRClientOnResponsiblePersonRepositoryChanged(object sender, RepositoryChangedEventArgs<ResponsiblePersonDto> e)
         {
-            ReLoad();
+            OnRepositoryChanged(this, e);
         }
 
         protected override ResponsiblePersonDto[] GetItems()

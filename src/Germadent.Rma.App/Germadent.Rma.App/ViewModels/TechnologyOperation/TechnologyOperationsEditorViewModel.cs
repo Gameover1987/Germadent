@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.Views.TechnologyOperation;
 using Germadent.Rma.Model.Production;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
@@ -18,6 +19,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         private readonly IEmployeePositionRepository _employeePositionRepository;
         private readonly ITechnologyOperationRepository _technologyOperationRepository;
         private readonly IShowDialogAgent _dialogAgent;
+        private readonly IAddTechnologyOperationViewModel _addTechnologyOperationViewModel;
 
         private EmployeePositionViewModel _selectedEmployeePosition;
         private TechnologyOperationViewModel _selectedTechnologyOperation;
@@ -27,12 +29,14 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         public TechnologyOperationsEditorViewModel(
             IEmployeePositionRepository employeePositionRepository, 
             ITechnologyOperationRepository technologyOperationRepository,
-            IShowDialogAgent dialogAgent)
+            IShowDialogAgent dialogAgent,
+            IAddTechnologyOperationViewModel addTechnologyOperationViewModel)
         {
             _employeePositionRepository = employeePositionRepository;
             _technologyOperationRepository = technologyOperationRepository;
-            _technologyOperationRepository.ChangedNew += TechnologyOperationRepositoryOnChanged;
+            _technologyOperationRepository.Changed += TechnologyOperationRepositoryOnChanged;
             _dialogAgent = dialogAgent;
+            _addTechnologyOperationViewModel = addTechnologyOperationViewModel;
 
             _technologyOperationsView = CollectionViewSource.GetDefaultView(TechnologyOperations);
             _technologyOperationsView.Filter = TechnologyOperationsFilter;
@@ -102,7 +106,16 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void AddTechnologyOperationCommandHandler()
         {
+            var newTechnologyOperationDto = new TechnologyOperationDto
+            {
+                EmployeePositionId = SelectedEmployeePosition.EmployeePositionId
+            };
+            _addTechnologyOperationViewModel.Initialize(ViewMode.Add, newTechnologyOperationDto);
+            if (_dialogAgent.ShowDialog<AddTechnologyOperationWindow>(_addTechnologyOperationViewModel) == false)
+                return;
 
+            var technologyOperation = _addTechnologyOperationViewModel.GetTechnologyOperation();
+            _technologyOperationRepository.AddTechnologyOperation(technologyOperation);
         }
 
         private bool CanEditTechnologyOperationCommandHandler()
@@ -112,7 +125,14 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void EditTechnologyOperationCommandHandler()
         {
+            _addTechnologyOperationViewModel.Initialize(ViewMode.Edit, SelectedTechnologyOperation.ToDto());
+            if (_dialogAgent.ShowDialog<AddTechnologyOperationWindow>(_addTechnologyOperationViewModel) == false)
+                return;
 
+            var technologyOperation = _addTechnologyOperationViewModel.GetTechnologyOperation();
+            SelectedTechnologyOperation.Update(technologyOperation);
+
+            _technologyOperationRepository.EditTechnologyOperation(technologyOperation);
         }
 
         private bool CanDeleteTechnologyOperationCommand()
@@ -127,6 +147,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
                 return;
 
             _technologyOperationRepository.DeleteTechnologyOperation(SelectedTechnologyOperation.TechnologyOperationId);
+            TechnologyOperations.Remove(SelectedTechnologyOperation);
         }
 
         private bool TechnologyOperationsFilter(object obj)
@@ -140,14 +161,25 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void TechnologyOperationRepositoryOnChanged(object sender, RepositoryChangedEventArgs<TechnologyOperationDto> e)
         {
-            if (e.DeletedItems != null)
+            var itemsToDelete = TechnologyOperations
+                .Where(x => e.DeletedItems.Contains(x.TechnologyOperationId))
+                .ToArray();
+            foreach (var item in itemsToDelete)
             {
-                foreach (var deletedItem in e.DeletedItems)
-                {
-                    var technologyOperationToDelete = TechnologyOperations.FirstOrDefault(x => x.TechnologyOperationId == deletedItem);
-                    if (technologyOperationToDelete != null)
-                        TechnologyOperations.Remove(technologyOperationToDelete);
-                }
+                TechnologyOperations.Remove(item);
+            }
+
+            foreach (var technologyOperationDto in e.ChangedItems)
+            {
+                var technologyOperationViewModel = TechnologyOperations
+                    .FirstOrDefault(x => x.TechnologyOperationId == technologyOperationDto.TechnologyOperationId);
+
+                technologyOperationViewModel?.Update(technologyOperationDto);
+            }
+
+            foreach (var addedItem in e.AddedItems)
+            {
+                TechnologyOperations.Add(new TechnologyOperationViewModel(addedItem));
             }
         }
     }

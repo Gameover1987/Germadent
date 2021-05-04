@@ -194,6 +194,16 @@ namespace Germadent.Rma.App.ServiceClient
             return ExecuteHttpGet<TechnologyOperationDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Technology/Operations");
         }
 
+        public TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteHttpPost<TechnologyOperationDto>(_configuration.DataServiceUrl + $"/api/Rma/Technology/AddOperation", technologyOperationDto);
+        }
+
+        public TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteHttpPost<TechnologyOperationDto>(_configuration.DataServiceUrl + $"/api/Rma/Technology/UpdateOperation", technologyOperationDto);
+        }
+
         public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
         {
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);

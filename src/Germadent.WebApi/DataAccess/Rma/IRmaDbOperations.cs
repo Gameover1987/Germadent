@@ -194,5 +194,19 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="technologyOperationId"></param>
         /// <returns></returns>
         DeleteResult DeleteTechnologyOperation(int technologyOperationId);
+
+        /// <summary>
+        /// Добавляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Обновляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto);
     }
 }

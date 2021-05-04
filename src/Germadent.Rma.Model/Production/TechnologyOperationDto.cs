@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Germadent.Rma.Model.Production
+﻿namespace Germadent.Rma.Model.Production
 {
     public class TechnologyOperationDto
     {
+        public TechnologyOperationDto()
+        {
+            Rates = new RateDto[0];
+        }
+
         public int TechnologyOperationId { get; set; }
 
         public int EmployeePositionId { get; set; }
@@ -16,7 +15,9 @@ namespace Germadent.Rma.Model.Production
 
         public string Name { get; set; }
 
-        public decimal Rate { get; set; }
+        public RateDto[] Rates { get; set; }
+
+        public bool IsObsolete { get; set; }
     }
 
     public class EmployeePositionDto

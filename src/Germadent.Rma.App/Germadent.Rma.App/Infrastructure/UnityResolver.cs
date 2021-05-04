@@ -123,6 +123,8 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IAddPriceViewModel, AddPriceViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPriceListEditorFactory, PriceListEditorFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITechnologyOperationsEditorViewModel, TechnologyOperationsEditorViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAddTechnologyOperationViewModel, AddTechnologyOperationViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAddRateViewModel, AddRateViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()

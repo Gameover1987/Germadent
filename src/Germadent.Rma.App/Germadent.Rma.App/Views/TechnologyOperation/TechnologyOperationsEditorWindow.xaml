@@ -15,6 +15,11 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockTechnologyOperationsEditorViewModel}, IsDesignTimeCreatable=True}">
+    <Window.InputBindings>
+        <KeyBinding Key="N"
+                    Modifiers="Control"
+                    Command="{Binding AddTechnologyOperationCommand}"/>
+    </Window.InputBindings>
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -57,12 +62,38 @@
                       AlternationCount="2"
                       ItemsSource="{Binding TechnologyOperations}"
                       SelectedItem="{Binding SelectedTechnologyOperation}">
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Enter"
+                                Command="{Binding EditTechnologyOperationCommand}"/>
+                    <KeyBinding Key="Delete"
+                                Command="{Binding DeleteTechnologyOperationCommand}"/>
+                </DataGrid.InputBindings>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                        <EventSetter Event="MouseDoubleClick" Handler="OnTechOperationMouseDoubleClick"/>
+                        <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                    <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding EditTechnologyOperationCommand}"
+                                              InputGestureText="Enter"/>
+                                    <MenuItem Header="Удалить" Command="{Binding DeleteTechnologyOperationCommand}"
+                                              InputGestureText="Delete"/>
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsObsolete}" Value="True">
+                                <Setter Property="Background" Value="LightGray"/>
+                                <Setter Property="ToolTip" Value="Технологическая операция не используется"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Код" Binding="{Binding UserCode}" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
                     <DataGridTextColumn Header="Название" Binding="{Binding DisplayName}" Width="*"
-                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
-                    <DataGridTextColumn Header="Расценка" Binding="{Binding Rate, StringFormat=C, ConverterCulture='ru-RU'}" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>

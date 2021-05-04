@@ -25,7 +25,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void SignalRClientOnPriceGroupRepositoryChanged(object sender, RepositoryChangedEventArgs<PriceGroupDto> e)
         {
-           ReLoad();
+           OnRepositoryChanged(this, e);
         }
 
         protected override PriceGroupDto[] GetItems()
