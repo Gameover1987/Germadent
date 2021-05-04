@@ -35,9 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="logo.png">
+    <Resource Include="logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

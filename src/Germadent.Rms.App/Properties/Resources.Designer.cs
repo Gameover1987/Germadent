@@ -61,7 +61,7 @@ namespace Germadent.Rms.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Рабочее место администратора.
+        ///   Looks up a localized string similar to Рабочее место специалиста.
         /// </summary>
         internal static string AppTitle {
             get {
