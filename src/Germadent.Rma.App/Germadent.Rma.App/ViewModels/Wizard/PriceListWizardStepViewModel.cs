@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {

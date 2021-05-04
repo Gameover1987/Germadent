@@ -1,7 +1,8 @@
 ﻿using System;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
-using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

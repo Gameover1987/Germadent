@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 

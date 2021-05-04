@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Germadent.Client.Common.Infrastructure;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Model;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
@@ -9,7 +11,6 @@ using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Germadent.Rma.Model.Pricing
+namespace Germadent.Model.Pricing
 {
     public static class PriceExtensions
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Germadent.Client.Common.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 
 namespace Germadent.Rma.App.Reporting

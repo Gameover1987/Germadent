@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.Model.Pricing;
+﻿using Germadent.Model.Pricing;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {

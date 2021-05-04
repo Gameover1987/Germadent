@@ -5,8 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.WebApi.Entities;
 
 namespace Germadent.WebApi.DataAccess.Rma

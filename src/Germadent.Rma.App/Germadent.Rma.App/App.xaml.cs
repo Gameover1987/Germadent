@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Germadent.Client.Common.Views;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Views;
 using Germadent.UI.Commands;

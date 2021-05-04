@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.Model.Pricing
+﻿namespace Germadent.Model.Pricing
 {
     public class PriceGroupDto : IIdentityDto
     {

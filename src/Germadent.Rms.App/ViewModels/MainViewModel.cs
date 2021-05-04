@@ -1,65 +1,53 @@
 ﻿using Germadent.Common.Logging;
-using Germadent.Rma.App.Infrastructure;
-using Germadent.Rma.Model;
-using Germadent.Rma.App.Operations;
-using Germadent.Rma.App.Properties;
-using Germadent.Rma.App.ViewModels;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using Germadent.Common.Extensions;
-using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.Views.Wizard;
 using System.Windows;
+using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ViewModels;
+using Germadent.Model;
+using Germadent.Rms.App.Properties;
+using Germadent.Rms.App.ServiceClient;
 
 namespace Germadent.Rms.App.ViewModels
 {
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
-        private readonly IEnvironment _environment;
         private readonly ILogger _logger;
+        private readonly IRmsServiceClient _rmsServiceClient;
+        private readonly IEnvironment _environment;
         private readonly IUserManager _userManager;
-        private readonly IUserSettingsManager _userSettingsManager;
-        private readonly IOrderUIOperations _orderUIOperations;
         private readonly IShowDialogAgent _dialogAgent;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
 
         private ListCollectionView _collectionView;
-        private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
+        private readonly OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
-        public MainViewModel(IRmaServiceClient rmaOperations,
-            ILogger logger,
+        public MainViewModel(ILogger logger,
+            IRmsServiceClient rmsServiceClient,
+            IEnvironment environment,
             IUserManager userManager,
-            IUserSettingsManager userSettingsManager,
-            IOrderUIOperations orderUIOperations,
             IShowDialogAgent dialogAgent)
         {
-            _rmaOperations = rmaOperations;
             _logger = logger;
+            _rmsServiceClient = rmsServiceClient;
+            _environment = environment;
             _userManager = userManager;
-            _userSettingsManager = userSettingsManager;
-            _orderUIOperations = orderUIOperations;
             _dialogAgent = dialogAgent;
 
             SelectedOrder = Orders.FirstOrDefault();
-
-            ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
+            
             OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
-
         }
 
         public string Title
@@ -73,23 +61,10 @@ namespace Germadent.Rms.App.ViewModels
         public bool CanViewTechnologyOperations { get; } = true;
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
-        public ObservableCollection<ContextMenuItemViewModel> ColumnContextMenuItems { get; } = new ObservableCollection<ContextMenuItemViewModel>();
 
         public void Initialize()
         {
             FillOrders();
-
-            ColumnContextMenuItems.Clear();
-            foreach (var columnInfo in _userSettingsManager.Columns)
-            {
-                ColumnContextMenuItems.Add(new ContextMenuItemViewModel
-                {
-                    Command = ChangeColumnsVisibilityCommand,
-                    Header = columnInfo.DisplayName,
-                    Parameter = columnInfo,
-                    IsChecked = columnInfo.IsVisible
-                });
-            }
         }
 
         private void RefreshView()
@@ -110,11 +85,6 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        public IUserSettingsManager SettingsManager
-        {
-            get { return _userSettingsManager; }
-        }
-
         public event EventHandler ColumnSettingsChanged;
 
         public bool IsBusy
@@ -130,10 +100,8 @@ namespace Germadent.Rms.App.ViewModels
         }
 
         public IDelegateCommand OpenOrderCommand { get; }
-        public IDelegateCommand ChangeColumnsVisibilityCommand { get; }
         public IDelegateCommand LogOutCommand { get; }
         public IDelegateCommand ExitCommand { get; }
-
 
         public string SearchString
         {
@@ -158,7 +126,7 @@ namespace Germadent.Rms.App.ViewModels
                 OrderLiteDto[] orders = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    orders = _rmaOperations.GetOrders(_ordersFilter);
+                    orders = _rmsServiceClient.GetOrders(_ordersFilter);
                 });
 
                 foreach (var order in orders)
@@ -177,43 +145,35 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        private void ChangeColumnsVisibilityCommandHandler(object sender)
-        {
-            var columnInfo = (ColumnInfo)sender;
-            columnInfo.IsVisible = !columnInfo.IsVisible;
-
-            ColumnSettingsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
         private void FilterOrdersCommandHandler()
         {
-            var filter = _orderUIOperations.CreateOrdersFilter(_ordersFilter);
-            if (filter == null)
-                return;
+            //var filter = _orderUIOperations.CreateOrdersFilter(_ordersFilter);
+            //if (filter == null)
+            //    return;
 
-            _ordersFilter = filter;
-            FillOrders();
+            //_ordersFilter = filter;
+            //FillOrders();
         }
 
         private void OpenOrderCommandHandler()
         {
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
-            var orderDto = _rmaOperations.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
-            var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
-            if (orderDto.BranchType == BranchType.Laboratory)
-            {
-                changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
-            }
-            else if (orderDto.BranchType == BranchType.MillingCenter)
-            {
-                changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
-            }
+            var orderDto = _rmsServiceClient.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
+            //var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
+            //if (orderDto.BranchType == BranchType.Laboratory)
+            //{
+            //    changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
+            //}
+            //else if (orderDto.BranchType == BranchType.MillingCenter)
+            //{
+            //    changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
+            //}
 
-            if (changedOrderDto == null)
-                return;
+            //if (changedOrderDto == null)
+            //    return;
 
-            orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
+            //orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
 
         private void LogOutCommandHandler()

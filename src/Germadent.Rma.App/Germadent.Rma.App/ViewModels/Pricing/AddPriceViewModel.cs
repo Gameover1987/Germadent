@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 

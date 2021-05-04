@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.Rma.Model.Production;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {

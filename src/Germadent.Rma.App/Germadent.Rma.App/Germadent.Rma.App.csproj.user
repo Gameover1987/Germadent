@@ -20,9 +20,6 @@
     <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SplashScreenWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\TechnologyOperation\AddRateWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -46,6 +43,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\Pricing\AddPricePositionWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -59,9 +61,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SplashScreenWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TechnologyOperation\AddRateWindow.xaml">

@@ -1,16 +1,8 @@
-﻿using Germadent.Rma.Model.Production;
+﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface ITechnologyOperationRepository : IRepository<TechnologyOperationDto>
-    {
-        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
-
-        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto);
-
-        public void DeleteTechnologyOperation(int technologyOperationId);
-    }
-
     public class TechnologyOperationRepository : Repository<TechnologyOperationDto>, ITechnologyOperationRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

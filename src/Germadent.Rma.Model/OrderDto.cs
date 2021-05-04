@@ -1,7 +1,7 @@
 ﻿using System;
 using Germadent.UserManagementCenter.Model;
 
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     /// <summary>
     /// Заказ наряд

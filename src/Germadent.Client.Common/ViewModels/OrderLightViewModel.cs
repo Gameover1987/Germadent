@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Client.Common.ViewModels

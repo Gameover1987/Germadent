@@ -2,7 +2,7 @@
 using System.Text;
 using Germadent.Common.Extensions;
 
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     public static class OrderDescriptionBuilder
     {

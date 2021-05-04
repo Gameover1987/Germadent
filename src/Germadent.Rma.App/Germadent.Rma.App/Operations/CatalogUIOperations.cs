@@ -1,9 +1,9 @@
 ﻿using System.Windows;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Operations

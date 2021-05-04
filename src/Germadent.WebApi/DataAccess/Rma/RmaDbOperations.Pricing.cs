@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.WebApi.Entities;
 using Newtonsoft.Json;
 

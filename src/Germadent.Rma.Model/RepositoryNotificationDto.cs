@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Germadent.Rma.Model
+﻿namespace Germadent.Model
 {
     public enum RepositoryType
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Pricing

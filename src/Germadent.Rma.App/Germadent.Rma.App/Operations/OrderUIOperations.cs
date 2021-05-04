@@ -1,10 +1,10 @@
-﻿using Germadent.Rma.App.Reporting;
+﻿using Germadent.Client.Common.ViewModels;
+using Germadent.Model;
+using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Wizard;
-using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Operations

@@ -1,8 +1,10 @@
-﻿using Germadent.Common;
+﻿using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Common;
+using Germadent.Model;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
-using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.Model;
 

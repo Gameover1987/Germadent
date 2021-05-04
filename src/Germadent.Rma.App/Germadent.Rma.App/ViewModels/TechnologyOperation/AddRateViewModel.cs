@@ -1,6 +1,6 @@
 ﻿using System;
 using DocumentFormat.OpenXml;
-using Germadent.Rma.Model.Production;
+using Germadent.Model.Production;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 

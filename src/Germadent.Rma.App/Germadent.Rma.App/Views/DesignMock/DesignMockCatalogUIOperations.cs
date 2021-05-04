@@ -1,6 +1,6 @@
-﻿using Germadent.Rma.App.Operations;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+﻿using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Rma.App.Operations;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

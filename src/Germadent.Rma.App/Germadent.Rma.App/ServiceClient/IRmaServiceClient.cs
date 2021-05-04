@@ -1,6 +1,6 @@
-﻿using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.Rma.Model.Production;
+﻿using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
 using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ServiceClient

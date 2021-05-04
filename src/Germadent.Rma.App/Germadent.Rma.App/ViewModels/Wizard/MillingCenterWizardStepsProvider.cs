@@ -1,10 +1,12 @@
-﻿using Germadent.Rma.App.Operations;
+﻿using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
+using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {

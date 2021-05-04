@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Germadent.Rma.Model.Production;
+using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 {

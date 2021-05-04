@@ -2,8 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Logging;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 

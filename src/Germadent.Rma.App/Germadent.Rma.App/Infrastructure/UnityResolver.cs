@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.Configuration;
+using Germadent.Rma.App.Infrastructure.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Reporting;
@@ -23,11 +25,11 @@ using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.Model;
 using Unity;
 using Unity.Lifetime;
-using ISplashScreenViewModel = Germadent.Rma.App.ViewModels.ISplashScreenViewModel;
+using ISplashScreenViewModel = Germadent.UI.ViewModels.ISplashScreenViewModel;
 
 namespace Germadent.Rma.App.Infrastructure
 {
-    public class UnityResolver :IDisposable
+    public class UnityResolver : IDisposable
     {
         private IUnityContainer _container;
         private IConfiguration _configuration;
@@ -110,7 +112,7 @@ namespace Germadent.Rma.App.Infrastructure
 
             _container.RegisterType<ICustomerCatalogViewModel, CustomerCatalogViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IResponsiblePersonCatalogViewModel, ResponsiblePersonCatalogViewModel>(new ContainerControlledLifetimeManager());
-                        
+
             _container.RegisterType<ICustomerSuggestionProvider, CustomerSuggestionProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IResponsiblePersonsSuggestionsProvider, ResponsiblePersonSuggestionProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMillingCenterWizardStepsProvider, MillingCenterWizardStepsProvider>(new ContainerControlledLifetimeManager());

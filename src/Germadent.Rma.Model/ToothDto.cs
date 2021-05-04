@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Germadent.Rma.Model.Pricing;
+﻿using Germadent.Model.Pricing;
 
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     public class ToothDto
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     public class ResponsiblePersonDto : IIdentityDto
     {

@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.Model.Production;
+﻿using Germadent.Model.Production;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.TechnologyOperation

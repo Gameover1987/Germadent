@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
         xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
-        xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
-        xmlns:pricing1="clr-namespace:Germadent.Rma.Model.Pricing;assembly=Germadent.Rma.Model"
-        xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
+        xmlns:viewModels="clr-namespace:Germadent.Client.Common.ViewModels;assembly=Germadent.Client.Common"
+        xmlns:pricing11="clr-namespace:Germadent.Model.Pricing;assembly=Germadent.Model"
+        xmlns:model1="clr-namespace:Germadent.Model;assembly=Germadent.Model"
         mc:Ignorable="d"
         Background="{x:Static SystemColors.ControlBrush}"
         Title="{Binding Title}" 
@@ -57,7 +56,7 @@
                       ItemsSource="{Binding Groups}"
                       SelectedItem="{Binding SelectedPriceGroup}">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type pricing1:PriceGroupDto}">
+                    <DataTemplate DataType="{x:Type pricing11:PriceGroupDto}">
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -73,7 +72,7 @@
                           ItemsSource="{Binding Materials}"
                           SelectedItem="{Binding SelectedMaterial}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type model:DictionaryItemDto}">
+                        <DataTemplate DataType="{x:Type model1:DictionaryItemDto}">
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -92,7 +91,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
+                    <DataTemplate DataType="{x:Type viewModels:CheckableDictionaryItemViewModel}">
                         <CheckBox Content="{Binding DisplayName}" Margin="3,0,3,0"
                                   IsChecked="{Binding IsChecked}"/>
                     </DataTemplate>

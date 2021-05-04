@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     public class ReportListDto
     {

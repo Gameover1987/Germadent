@@ -1,13 +1,9 @@
 ﻿using System.Linq;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model.Pricing;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IProductRepository : IRepository<ProductDto>
-    {
-
-    }
-
     public class ProductRepository : Repository<ProductDto>, IProductRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Germadent.Rma.Model
+namespace Germadent.Model
 {
     public enum Gender
     {

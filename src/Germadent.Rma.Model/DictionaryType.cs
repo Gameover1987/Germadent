@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.Model
+﻿namespace Germadent.Model
 {
     /// <summary>
     /// Тип словаря

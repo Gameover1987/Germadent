@@ -1,5 +1,5 @@
 ﻿using System;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 

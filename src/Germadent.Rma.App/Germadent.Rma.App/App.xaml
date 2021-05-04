@@ -1,11 +1,9 @@
 ﻿<Application x:Class="Germadent.Rma.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Germadent.Rma.App"
-             xmlns:convertersUI="clr-namespace:Germadent.UI.Converters;assembly=Germadent.UI"
              xmlns:properties="clr-namespace:Germadent.Rma.App.Properties"
              xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
-             xmlns:converters="clr-namespace:Germadent.Rma.App.Converters"
+             xmlns:converters="clr-namespace:Germadent.Client.Common.Converters;assembly=Germadent.Client.Common"
              ShutdownMode="OnExplicitShutdown"
              Startup="App_OnStartup"
              Exit="App_OnExit">

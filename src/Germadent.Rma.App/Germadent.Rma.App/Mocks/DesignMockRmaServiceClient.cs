@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Germadent.Common.Extensions;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.Rma.Model.Production;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 

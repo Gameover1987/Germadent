@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

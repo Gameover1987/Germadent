@@ -1,12 +1,8 @@
-﻿using Germadent.Rma.Model.Production;
+﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IEmployeePositionRepository : IRepository<EmployeePositionDto>
-    {
-
-    }
-
     public class EmployeePositionRepository : Repository<EmployeePositionDto>, IEmployeePositionRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

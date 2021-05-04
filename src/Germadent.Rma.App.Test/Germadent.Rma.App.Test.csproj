@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Rma.App\Germadent.Rma.App\Germadent.Rma.App.csproj" />
-    <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
+    <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Model.csproj" />
     <ProjectReference Include="..\Germadent.TestUtils\Germadent.TestUtils.csproj" />
   </ItemGroup> 
 

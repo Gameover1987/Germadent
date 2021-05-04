@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using Germadent.Common;
 using Germadent.Common.Web;
-using Germadent.Rma.App.Configuration;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.Rma.Model.Production;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
+using Germadent.Rma.App.Infrastructure.Configuration;
 using Germadent.UserManagementCenter.Model;
 using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;

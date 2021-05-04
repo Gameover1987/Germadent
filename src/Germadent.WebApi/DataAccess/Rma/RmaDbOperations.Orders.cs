@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.WebApi.Entities;
 using Newtonsoft.Json;
 

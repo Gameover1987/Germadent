@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:local="clr-namespace:Germadent.Rms.App.Views"
+        xmlns:viewModels="clr-namespace:Germadent.Client.Common.ViewModels;assembly=Germadent.Client.Common"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
@@ -16,18 +17,6 @@
         Background="{x:Static SystemColors.ControlBrush}"
         DataContextChanged="MainWindow_OnDataContextChanged"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
-    <Window.Resources>
-        <Style x:Key="MenuItemViewModelStyle" TargetType="{x:Type MenuItem}">
-            <Setter Property="Header" Value="{Binding Header}" />
-            <Setter Property="IsCheckable" Value="True"/>
-            <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=TwoWay}"/>
-            <Setter Property="Command" Value="{Binding Command}" />
-            <Setter Property="CommandParameter" Value="{Binding Parameter}" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>
-    </Window.Resources>
-
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,8 +28,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        
-
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
 
@@ -49,7 +36,6 @@
 
             <Button Content="Список работ по З-Н" Margin="0,6,0,0"
                     Command="{Binding WorkListCommand}"/>
-
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"

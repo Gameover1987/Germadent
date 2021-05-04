@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Germadent.Rma.Model;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IDictionaryRepository : IRepository<DictionaryItemDto>
-    {
-        DictionaryItemDto[] GetItems(DictionaryType dictionary);
-    }
-
     public class DictionaryRepository : Repository<DictionaryItemDto>, IDictionaryRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

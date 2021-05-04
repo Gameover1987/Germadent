@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 
 namespace Germadent.Rma.App.ViewModels.Wizard

@@ -1,5 +1,5 @@
-﻿using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+﻿using Germadent.Model;
+using Germadent.Model.Pricing;
 
 namespace Germadent.Rma.App.Operations
 {

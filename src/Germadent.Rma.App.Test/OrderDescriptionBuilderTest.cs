@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.Model;
+﻿using Germadent.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.Rma.App.Test

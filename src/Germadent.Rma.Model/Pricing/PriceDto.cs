@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security;
-using System.Text;
-using Germadent.Common.Extensions;
 
-namespace Germadent.Rma.Model.Pricing
+namespace Germadent.Model.Pricing
 {
     public class PriceDto
     {

@@ -1,6 +1,6 @@
 ﻿using System;
+using Germadent.Model.Production;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
-using Germadent.Rma.Model.Production;
 using Germadent.UI.ViewModels.DesignTime;
 
 namespace Germadent.Rma.App.Views.DesignMock

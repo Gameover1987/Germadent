@@ -1,13 +1,9 @@
 ﻿using System.Linq;
-using Germadent.Rma.Model;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IResponsiblePersonRepository : IRepository<ResponsiblePersonDto>
-    {
-
-    }
-
     public class ResponsiblePersonRepository : Repository<ResponsiblePersonDto>, IResponsiblePersonRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

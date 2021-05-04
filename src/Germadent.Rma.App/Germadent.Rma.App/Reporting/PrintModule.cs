@@ -2,8 +2,8 @@
 using System.IO;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
+using Germadent.Model;
 using Germadent.Rma.App.Reporting.TemplateProcessing;
-using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Reporting

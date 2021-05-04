@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.Model.Production
+﻿namespace Germadent.Model.Production
 {
     public class TechnologyOperationDto
     {

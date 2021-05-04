@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
              xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
-             xmlns:model="clr-namespace:Germadent.Rma.Model;assembly=Germadent.Rma.Model"
+             xmlns:model1="clr-namespace:Germadent.Model;assembly=Germadent.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockAdditionalEquipmentWizardStepViewModel, IsDesignTimeCreatable=True}">
@@ -73,7 +73,7 @@
                                       ItemsSource="{Binding Values}"
                                       SelectedItem="{Binding SelectedValue}">
                                     <ComboBox.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type model:AttributeDto}">
+                                        <DataTemplate DataType="{x:Type model1:AttributeDto}">
                                             <TextBlock Text="{Binding AttributeValue}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>

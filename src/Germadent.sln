@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Common", "Germade
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UI", "Germadent.UI\Germadent.UI.csproj", "{E3944E28-D2B6-471B-ACC7-316315C602A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Rma.Model", "Germadent.Rma.Model\Germadent.Rma.Model.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Model", "Germadent.Rma.Model\Germadent.Model.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4DD6BEFD-A887-4337-8312-58A00439E1AE}"
 EndProject

@@ -2,11 +2,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Model;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient.Repository;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 

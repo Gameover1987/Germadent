@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Logging;
+using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
@@ -8,8 +12,6 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Production;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.DesignTime;
 

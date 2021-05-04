@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.Model
+﻿namespace Germadent.Model
 {
     /// <summary>
     /// DTO для данных элемента словаря

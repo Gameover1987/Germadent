@@ -1,6 +1,6 @@
-﻿using Germadent.Rma.App.ViewModels;
+﻿using Germadent.Model;
+using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

@@ -1,4 +1,6 @@
 ﻿using System;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Logging;
 using Germadent.Rma.App.ServiceClient.Repository;
 
