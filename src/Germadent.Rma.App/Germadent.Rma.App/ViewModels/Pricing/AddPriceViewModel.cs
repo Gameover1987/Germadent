@@ -7,13 +7,6 @@ using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
-    public interface IAddPriceViewModel
-    {
-        void Initialize(PriceDto price);
-
-        PriceDto GetPrice();
-    }
-
     public class AddPriceViewModel : ValidationSupportableViewModel, IAddPriceViewModel
     {
         private DateTime _dateBeginning;

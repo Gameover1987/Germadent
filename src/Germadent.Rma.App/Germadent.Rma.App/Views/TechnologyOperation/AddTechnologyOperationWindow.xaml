@@ -8,7 +8,6 @@
         xmlns:technologyOperation="clr-namespace:Germadent.Rma.App.ViewModels.TechnologyOperation"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
-        xmlns:catalogs="clr-namespace:Germadent.Rma.App.ViewModels.Wizard.Catalogs"
         xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
         mc:Ignorable="d"
         Title="{Binding Title}" 
@@ -19,7 +18,8 @@
         Background="{x:Static SystemColors.ControlBrush}"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddTechnologyOperationViewModel}, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddTechnologyOperationViewModel}, IsDesignTimeCreatable=True}"
+        FocusManager.FocusedElement="{Binding ElementName=nameTextBox}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -36,7 +36,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Название" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="6,0,0,0"/>
+        <TextBox x:Name="nameTextBox" Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="6,0,0,0"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Должность" VerticalAlignment="Center" Margin="0,6,0,0"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="6,6,0,0"

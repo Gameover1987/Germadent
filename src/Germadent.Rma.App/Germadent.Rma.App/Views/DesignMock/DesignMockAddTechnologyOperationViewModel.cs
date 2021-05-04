@@ -1,6 +1,7 @@
 ﻿using System;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.Model.Production;
+using Germadent.UI.ViewModels.DesignTime;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -9,7 +10,9 @@ namespace Germadent.Rma.App.Views.DesignMock
         public DesignMockAddTechnologyOperationViewModel() : base(
             new DesignMockEmployeePositionRepository(),
             new DesignMockTechnologyOperationRepository(), 
-            new DesignMockPricePositionRepository())
+            new DesignMockPricePositionRepository(),
+            new DesignMockAddRateViewModel(), 
+            new DesignMockShowDialogAgent())
         {
             Initialize(ViewMode.Add, new TechnologyOperationDto
             {

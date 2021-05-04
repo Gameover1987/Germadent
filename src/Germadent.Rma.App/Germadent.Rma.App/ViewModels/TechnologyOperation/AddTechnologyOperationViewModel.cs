@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -7,9 +8,11 @@ using Germadent.Common.Extensions;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.Views.TechnologyOperation;
 using Germadent.Rma.Model.Pricing;
 using Germadent.Rma.Model.Production;
 using Germadent.UI.Commands;
+using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.TechnologyOperation
@@ -26,6 +29,8 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         private readonly IEmployeePositionRepository _employeePositionRepository;
         private readonly ITechnologyOperationRepository _technologyOperationRepository;
         private readonly IPricePositionRepository _pricePositionRepository;
+        private readonly IAddRateViewModel _addRateViewModel;
+        private readonly IShowDialogAgent _dialogAgent;
 
         private ViewMode _viewMode;
 
@@ -44,13 +49,17 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         public AddTechnologyOperationViewModel(IEmployeePositionRepository employeePositionRepository,
             ITechnologyOperationRepository technologyOperationRepository,
-            IPricePositionRepository pricePositionRepository)
+            IPricePositionRepository pricePositionRepository,
+            IAddRateViewModel addRateViewModel,
+            IShowDialogAgent dialogAgent)
         {
             _employeePositionRepository = employeePositionRepository;
             _technologyOperationRepository = technologyOperationRepository;
             _technologyOperationRepository.Changed += TechnologyOperationRepositoryOnChanged;
 
             _pricePositionRepository = pricePositionRepository;
+            _addRateViewModel = addRateViewModel;
+            _dialogAgent = dialogAgent;
             _pricePositionRepository.Changed += PricePositionRepositoryOnChanged;
 
             AddValidationFor(() => Name)
@@ -70,7 +79,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
             AttachPricePositionCommand = new DelegateCommand(AttachPricePositionCommandHandler, CanAttachPricePositionCommandHandler);
             AddRateCommand = new DelegateCommand(AddRateCommandHandler);
             EditRateCommand = new DelegateCommand(EditRateCommandHandler, CanEditRateCommandHandler);
-            DeleteRateCommand = new DelegateCommand(DeleteRateCommandHandler, CanEditRateCommandHandler);
+            DeleteRateCommand = new DelegateCommand(DeleteRateCommandHandler, CanDeleteRateCommandHandler);
         }
 
         private bool PricePositionsFilter(object obj)
@@ -241,7 +250,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
                 TechnologyOperationId = _technologyOperationId,
                 EmployeePositionId = SelectedEmployeePosition.EmployeePositionId,
                 Name = Name,
-                Rates = Rates.Select(x => x.ToModel()).ToArray(),
+                Rates = Rates.Select(x => x.ToDto()).ToArray(),
                 UserCode = UserCode
             };
         }
@@ -255,10 +264,10 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
         {
             UserCodeValidationMessage = null;
             UserCodeValidationState = UserCodeValidationState.NonValidated;
+
             if (UserCode.IsNullOrWhiteSpace())
             {
-                UserCodeValidationMessage = "Укажите код ценовой позиции";
-                UserCodeValidationState = UserCodeValidationState.Invalid;
+                UserCodeValidationState = UserCodeValidationState.Valid;
                 return;
             }
 
@@ -283,11 +292,14 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
             if (Name.IsNullOrWhiteSpace())
                 return false;
 
+            if (UserCodeValidationState == UserCodeValidationState.Invalid)
+                return false;
+
             if (SelectedEmployeePosition == null)
                 return false;
 
-            //if (Rate <= 0)
-            //    return false;
+            if (Rates.Count == 0)
+                return false;
 
             return true;
         }
@@ -313,7 +325,18 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void AddRateCommandHandler()
         {
-            
+            var rateDto = new RateDto
+            {
+                TechnologyOperationId = _technologyOperationId,
+                DateBeginning = DateTime.Now,
+                QualifyingRank = 1,
+            };
+            _addRateViewModel.Initialize(ViewMode.Add, rateDto);
+            if (_dialogAgent.ShowDialog<AddRateWindow>(_addRateViewModel) == false)
+                return;
+
+            var rate = _addRateViewModel.GetRate();
+            Rates.Add(new RateViewModel(rate));
         }
 
         private bool CanEditRateCommandHandler()
@@ -323,7 +346,12 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void EditRateCommandHandler()
         {
+            _addRateViewModel.Initialize(ViewMode.Edit, SelectedRate.ToDto());
+            if (_dialogAgent.ShowDialog<AddRateWindow>(_addRateViewModel) == false)
+                return;
 
+            var rate = _addRateViewModel.GetRate();
+            SelectedRate.Update(rate);
         }
 
         private bool CanDeleteRateCommandHandler()
@@ -333,7 +361,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private void DeleteRateCommandHandler()
         {
-
+            Rates.Remove(SelectedRate);
         }
 
         private void TechnologyOperationRepositoryOnChanged(object sender, RepositoryChangedEventArgs<TechnologyOperationDto> e)

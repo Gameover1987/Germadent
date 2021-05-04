@@ -33,7 +33,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
             get { return _rateDto.DateBeginning; }
         }
 
-        public RateDto ToModel() => _rateDto;
+        public RateDto ToDto() => _rateDto;
 
         public void Update(RateDto rateDto)
         {
