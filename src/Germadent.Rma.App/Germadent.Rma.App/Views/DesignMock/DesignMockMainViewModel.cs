@@ -4,6 +4,7 @@ using Germadent.Common.Logging;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
@@ -49,7 +50,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             
         }
 
-        public event EventHandler<EventArgs> Changed;
+        
 
         public EmployeePositionDto[] Items
         {
@@ -59,6 +60,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 return mockServiceClient.GetEmployeePositions();
             }
         }
+
+        public event EventHandler<RepositoryChangedEventArgs<EmployeePositionDto>> Changed;
     }
 
     public class DesignMockTechnologyOperationsEditorViewModel : TechnologyOperationsEditorViewModel
@@ -78,8 +81,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             
         }
 
-        public event EventHandler<EventArgs> Changed;
-
+        
         public TechnologyOperationDto[] Items
         {
             get
@@ -88,6 +90,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 return mockServiceClient.GetTechnologyOperations();
             }
         }
+
+        public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> Changed;
 
         public void DeleteTechnologyOperation(int technologyOperationId)
         {

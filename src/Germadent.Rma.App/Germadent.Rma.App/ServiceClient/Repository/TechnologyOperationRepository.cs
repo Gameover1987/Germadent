@@ -21,7 +21,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void SignalRClientOnTechnologyOperationRepositoryChanged(object sender, RepositoryChangedEventArgs<TechnologyOperationDto> e)
         {
-            ReLoad();
+            OnRepositoryChanged(this, e);
         }
 
         protected override TechnologyOperationDto[] GetItems()

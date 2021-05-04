@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.Model;
@@ -35,17 +36,14 @@ namespace Germadent.Rma.App.Views.DesignMock
             }
         }
 
+        public event EventHandler<RepositoryChangedEventArgs<CustomerDto>> Changed;
+
         public void Initialize()
         {
 
         }
 
-        public void ReLoad()
-        {
-            throw new NotImplementedException();
-        }
-
-        public event EventHandler<EventArgs> Changed;
+        
     }
 
     public class DesignMockDictionaryRepository : IDictionaryRepository
@@ -55,7 +53,7 @@ namespace Germadent.Rma.App.Views.DesignMock
             
         }
 
-        public event EventHandler<EventArgs> Changed;
+        
 
         public DictionaryItemDto[] Items
         {
@@ -68,6 +66,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 return items.ToArray();
             }
         }
+
+        public event EventHandler<RepositoryChangedEventArgs<DictionaryItemDto>> Changed;
 
         public DictionaryItemDto[] GetItems(DictionaryType dictionary)
         {
