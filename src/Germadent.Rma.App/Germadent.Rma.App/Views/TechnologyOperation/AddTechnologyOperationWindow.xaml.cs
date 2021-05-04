@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 
 namespace Germadent.Rma.App.Views.TechnologyOperation
 {
@@ -22,6 +12,12 @@ namespace Germadent.Rma.App.Views.TechnologyOperation
         public AddTechnologyOperationWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnRateMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var addTechOperationViewModel = (IAddTechnologyOperationViewModel) DataContext;
+            addTechOperationViewModel.EditRateCommand.TryExecute();
         }
     }
 }

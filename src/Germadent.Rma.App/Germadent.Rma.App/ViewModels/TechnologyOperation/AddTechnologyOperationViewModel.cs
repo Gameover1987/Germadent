@@ -46,6 +46,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         private readonly ICollectionView _pricePositionsView;
         private RateViewModel _selectedRate;
+        private bool _isObsolete;
 
         public AddTechnologyOperationViewModel(IEmployeePositionRepository employeePositionRepository,
             ITechnologyOperationRepository technologyOperationRepository,
@@ -111,6 +112,18 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
                     return;
                 _name = value;
                 OnPropertyChanged(() => Name);
+            }
+        }
+
+        public bool IsObsolete
+        {
+            get { return _isObsolete; }
+            set
+            {
+                if (_isObsolete == value)
+                    return;
+                _isObsolete = value;
+                OnPropertyChanged(() => IsObsolete);
             }
         }
 
@@ -220,6 +233,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
             _name = technologyOperationDto.Name;
             _userCode = technologyOperationDto.UserCode;
+            _isObsolete = technologyOperationDto.IsObsolete;
 
             _operationNames = GetOperationNames();
 
@@ -251,7 +265,8 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
                 EmployeePositionId = SelectedEmployeePosition.EmployeePositionId,
                 Name = Name,
                 Rates = Rates.Select(x => x.ToDto()).ToArray(),
-                UserCode = UserCode
+                UserCode = UserCode,
+                IsObsolete = IsObsolete
             };
         }
 

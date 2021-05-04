@@ -11,8 +11,8 @@
         xmlns:pricing="clr-namespace:Germadent.Rma.App.ViewModels.Pricing"
         mc:Ignorable="d"
         Title="{Binding Title}" 
-        MinHeight="600"
-        Height="600"
+        MinHeight="650"
+        Height="650"
         MinWidth="700"
         Width="700"
         Background="{x:Static SystemColors.ControlBrush}"
@@ -20,8 +20,14 @@
         WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockAddTechnologyOperationViewModel}, IsDesignTimeCreatable=True}"
         FocusManager.FocusedElement="{Binding ElementName=nameTextBox}">
+    <Window.InputBindings>
+        <KeyBinding Key="N"
+                    Modifiers="Control"
+                    Command="{Binding AddRateCommand}"/>
+    </Window.InputBindings>
     <Grid Margin="12">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -63,6 +69,7 @@
             <TextBox Grid.Column="0" Grid.Row="0" Width="150" 
                                      Text="{Binding UserCode, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center"
+                       Opacity="0.7"
                        TextTrimming="CharacterEllipsis" helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"
                        Text="{Binding UserCodeValidationMessage}"/>
 
@@ -83,7 +90,10 @@
             </Border>
         </Grid>
 
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+        <CheckBox Grid.Row="3" Grid.Column="1" Content="Технологическая операция не используется" Margin="6,6,0,0"
+                  IsChecked="{Binding IsObsolete}"/>
+
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -108,18 +118,18 @@
                             <TextBlock Grid.Column="0" Text="{Binding UserCode}"/>
 
                             <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="6,0,0,0"
-                               TextTrimming="CharacterEllipsis" helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
+                                       TextTrimming="CharacterEllipsis" helpers:TextBlockToolTipHelper.ShowTooltipWhenTrimming="True"/>
 
                             <Button Grid.Column="2" Content="Привязать" Margin="6,0,0,0"
-                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.AttachPricePositionCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"/>
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.AttachPricePositionCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
 
-        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -129,8 +139,31 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Настройка расценок" Margin="0,12,0,0"
                        FontSize="10"/>
             <DataGrid Grid.Row="1" Margin="0,6,0,0"
+                      AlternationCount="2"
                       ItemsSource="{Binding Rates}"
                       SelectedItem="{Binding SelectedRate}">
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Enter"
+                                Command="{Binding EditRateCommand}"/>
+                    <KeyBinding Key="Delete"
+                                Command="{Binding DeleteRateCommand}"/>
+                </DataGrid.InputBindings>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                        <EventSetter Event="MouseDoubleClick" Handler="OnRateMouseDoubleClick"/>
+                        <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
+                                    <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding EditRateCommand}"
+                                              InputGestureText="Enter"/>
+                                    <MenuItem Header="Удалить" Command="{Binding DeleteRateCommand}"
+                                              InputGestureText="Delete"/>
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="Auto" Header="Разряд"
                                         Binding="{Binding QualifyingRank}"
@@ -155,9 +188,9 @@
 
         </Grid>
 
-        <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,12,-12,12"/>
+        <Separator Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,12,-12,12"/>
 
-        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="100" IsDefault="True"
                     Command="{Binding OkCommand}"
                     helpers:WindowCloseHelper.DialogResult="True"/>

@@ -507,6 +507,16 @@ namespace Germadent.Rma.App.Mocks
             };
         }
 
+        public TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
         public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
         {
             throw new NotImplementedException();

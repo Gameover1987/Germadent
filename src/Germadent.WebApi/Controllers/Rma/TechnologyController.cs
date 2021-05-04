@@ -1,5 +1,6 @@
 ﻿using Germadent.Common.Logging;
 using Germadent.Rma.Model;
+using Germadent.Rma.Model.Production;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,20 @@ namespace Germadent.WebApi.Controllers.Rma
         public IActionResult GetTechnologyOperations()
         {
             return ExecuteAction(() => _rmaDbOperations.GetTechnologyOperations());
+        }
+
+        [HttpPost]
+        [Route("AddOperation")]
+        public IActionResult AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.AddTechnologyOperation(technologyOperationDto), RepositoryType.TechnologyOperation, RepositoryAction.Add);
+        }
+
+        [HttpPost]
+        [Route("UpdateOperation")]
+        public IActionResult UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteRepositoryActionAndNotify(() => _rmaDbOperations.UpdateTechnologyOperation(technologyOperationDto), RepositoryType.TechnologyOperation, RepositoryAction.Update);
         }
 
         [HttpDelete]

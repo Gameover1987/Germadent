@@ -35,12 +35,12 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
         {
-            throw new System.NotImplementedException();
+            _rmaServiceClient.AddTechnologyOperation(technologyOperationDto);
         }
 
         public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto)
         {
-            throw new System.NotImplementedException();
+            _rmaServiceClient.UpdateTechnologyOperation(technologyOperationDto);
         }
 
         public void DeleteTechnologyOperation(int technologyOperationId)

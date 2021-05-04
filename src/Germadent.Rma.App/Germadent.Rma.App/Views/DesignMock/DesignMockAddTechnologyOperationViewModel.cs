@@ -23,7 +23,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                     new RateDto{DateBeginning = DateTime.Now, Rate = 200, QualifyingRank = 2},
                     new RateDto{DateBeginning = DateTime.Now.AddDays(8), Rate = 300, QualifyingRank = 3},
                 },
-                UserCode = "222333444"
+                UserCode = "222333444",
+                IsObsolete = true
             });
         }
     }

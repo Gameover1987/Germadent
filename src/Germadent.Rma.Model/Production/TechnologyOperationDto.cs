@@ -16,6 +16,8 @@
         public string Name { get; set; }
 
         public RateDto[] Rates { get; set; }
+
+        public bool IsObsolete { get; set; }
     }
 
     public class EmployeePositionDto

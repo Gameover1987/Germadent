@@ -20,6 +20,8 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         public string DisplayName => _technologyOperationDto.Name;
 
+        public bool IsObsolete => _technologyOperationDto.IsObsolete;
+
         public void Update(TechnologyOperationDto technologyOperationDto)
         {
             _technologyOperationDto = technologyOperationDto;
