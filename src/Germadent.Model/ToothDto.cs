@@ -4,6 +4,11 @@ namespace Germadent.Model
 {
     public class ToothDto
     {
+        public ToothDto()
+        {
+            Products = new ProductDto[0];
+        }
+
         public int WorkOrderId { get; set; }
 
         public int ToothNumber { get; set; }
