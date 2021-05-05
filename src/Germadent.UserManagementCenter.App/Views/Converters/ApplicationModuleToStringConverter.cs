@@ -18,7 +18,8 @@ namespace Germadent.UserManagementCenter.App.Views.Converters
                 case ApplicationModule.Umc:
                     return "Центр управления пользователями";
 
-                
+                case ApplicationModule.Rms:
+                    return "Рабочее место специалиста";
 
                 default:
                     throw new NotSupportedException();
