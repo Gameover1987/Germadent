@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="logo.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="logo.png" />
   </ItemGroup>
 
   <ItemGroup>
