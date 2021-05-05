@@ -16,7 +16,7 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @createDateTo datetime = NULL
 	, @closeDateFrom datetime = NULL
 	, @closeDateTo datetime = NULL
-	, @jsonStringStatus nvarchar(max) = NULL --'[{"StatusName": "Создан"}]'
+	, @jsonStringStatus nvarchar(max) = NULL --'[{"StatusName": "Формируется"}]'
 )
 RETURNS TABLE 
 AS
