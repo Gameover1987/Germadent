@@ -24,8 +24,11 @@ BEGIN
 			TechnologyOperationName = @technologyOperationName,
 			EmployeePositionID = @employeePositionID,
 			IsObsoleteTechnologyOperation = @isObsoleteTechnologyOperation
+		WHERE TechnologyOperationID = @technologyOperationId
 
 		EXEC dbo.AddOrUpdateRates @technologyOperationId, @jsonStringRates
+
+
 
 	COMMIT
 

@@ -16,6 +16,7 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @createDateTo datetime = NULL
 	, @closeDateFrom datetime = NULL
 	, @closeDateTo datetime = NULL
+	, @jsonStringStatus nvarchar(max) = NULL --'[{"StatusName": "Создан"}]'
 )
 RETURNS TABLE 
 AS
@@ -38,7 +39,7 @@ RETURN
 		, wo.PatientFullName
 		, rp.ResponsiblePerson AS DoctorFullName
 		, swozero.StatusChangeDateTime as Created
-		, CONCAT(cs.Status, ' - ', se.StatusName) AS Status
+		, se.StatusName AS Status
 		, wo.FlagWorkAccept
 		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
@@ -46,8 +47,8 @@ RETURN
 	FROM dbo.WorkOrder wo 
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
-		INNER JOIN currentStatus cs ON wo.WorkOrderID = cs.WorkOrderID
-		INNER JOIN StatusEnumeration se ON cs.Status = se.Status
+		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
+		INNER JOIN StatusEnumeration se ON currentStatus.Status = se.Status
 		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
 		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
@@ -65,5 +66,5 @@ RETURN
 		AND (swozero.StatusChangeDateTime BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
 		AND	(swoend.StatusChangeDateTime BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
 				OR (swoend.StatusChangeDateTime IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
-		
+		AND (se.StatusName IN (SELECT StatusName FROM OPENJSON(@jsonStringStatus) WITH (StatusName nvarchar(80))) OR @jsonStringStatus IS NULL)
 )

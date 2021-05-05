@@ -11,7 +11,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	SELECT ep.EmployeePositionID, ep.EmployeePositionName, teo.TechnologyOperationID, teo.TechnologyOperationUserCode, teo.TechnologyOperationName, r.QualifyingRank, r.Rate, r.DateBeginning, r.DateEnd
+	SELECT ep.EmployeePositionID, ep.EmployeePositionName, teo.TechnologyOperationID, teo.TechnologyOperationUserCode, teo.TechnologyOperationName, r.QualifyingRank, r.Rate, r.DateBeginning, r.DateEnd, teo.IsObsoleteTechnologyOperation
 	FROM dbo.EmployeePositions ep
 		INNER JOIN dbo.TechnologyOperations teo ON ep.EmployeePositionID = teo.EmployeePositionID
 		LEFT JOIN dbo.Rates r ON teo.TechnologyOperationID = r.TechnologyOperationID
