@@ -46,6 +46,11 @@ namespace Germadent.Rms.App.ServiceClient
 
         public AuthorizationInfoDto AuthorizationInfo { get; set; }
 
+        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
+        {
+            return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
+        }
+
         protected override void HandleError(IRestResponse response)
         {
             throw new ServerSideException(response);

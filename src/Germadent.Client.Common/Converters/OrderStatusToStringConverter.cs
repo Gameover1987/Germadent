@@ -6,12 +6,12 @@ using Germadent.Model;
 
 namespace Germadent.Client.Common.Converters
 {
-    public class BranchTypeToStringConverter : IValueConverter
+    public class OrderStatusToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var branchType = (BranchType) value;
-            return branchType.GetDescription();
+            var orderStatus = (OrderStatus)value;
+            return orderStatus.GetDescription();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

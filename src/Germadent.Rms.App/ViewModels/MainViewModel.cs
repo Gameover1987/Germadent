@@ -11,6 +11,7 @@ using System.Windows;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Model;
+using Germadent.Rma.App.Views;
 using Germadent.Rms.App.Properties;
 using Germadent.Rms.App.ServiceClient;
 
@@ -23,41 +24,49 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IEnvironment _environment;
         private readonly IUserManager _userManager;
         private readonly IShowDialogAgent _dialogAgent;
+        private readonly IOrdersFilterViewModel _ordersFilterViewModel;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
 
-        private ListCollectionView _collectionView;
-        private readonly OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
+        private readonly ListCollectionView _collectionView;
+        private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
         public MainViewModel(ILogger logger,
             IRmsServiceClient rmsServiceClient,
             IEnvironment environment,
             IUserManager userManager,
-            IShowDialogAgent dialogAgent)
+            IShowDialogAgent dialogAgent,
+            IOrdersFilterViewModel ordersFilterViewModel)
         {
             _logger = logger;
             _rmsServiceClient = rmsServiceClient;
             _environment = environment;
             _userManager = userManager;
             _dialogAgent = dialogAgent;
+            _ordersFilterViewModel = ordersFilterViewModel;
 
-            SelectedOrder = Orders.FirstOrDefault();
-            
+            _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
+            _collectionView.CustomSort = new OrderLiteComparerByDateTime();
+            _collectionView.Filter = Filter;
+
             OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
+            FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
+            PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
         }
 
-        public string Title
+        private bool Filter(object obj)
         {
-            get
-            {
-                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
-            }
+            if (SearchString.IsNullOrWhiteSpace())
+                return true;
+
+            var order = (OrderLiteViewModel)obj;
+            return order.MatchBySearchString(SearchString);
         }
 
-        public bool CanViewTechnologyOperations { get; } = true;
+        public string Title => $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -84,8 +93,6 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        public event EventHandler ColumnSettingsChanged;
-
         public bool IsBusy
         {
             get => _isBusy;
@@ -99,7 +106,13 @@ namespace Germadent.Rms.App.ViewModels
         }
 
         public IDelegateCommand OpenOrderCommand { get; }
+
+        public IDelegateCommand FilterOrdersCommand { get; }
+
+        public IDelegateCommand PrintOrderCommand { get; }
+
         public IDelegateCommand LogOutCommand { get; }
+
         public IDelegateCommand ExitCommand { get; }
 
         public string SearchString
@@ -114,6 +127,16 @@ namespace Germadent.Rms.App.ViewModels
 
                 RefreshView();
             }
+        }
+
+        private void FilterOrdersCommandHandler()
+        {
+            _ordersFilterViewModel.Initialize(_ordersFilter);
+            if (_dialogAgent.ShowDialog<OrdersFilterWindow>(_ordersFilterViewModel) == false)
+                return;
+
+            _ordersFilter = _ordersFilterViewModel.GetFilter();
+            FillOrders();
         }
 
         private async void FillOrders()
@@ -144,14 +167,19 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        private void FilterOrdersCommandHandler()
+        private bool CanPrintOrderCommandHandler()
         {
-            //var filter = _orderUIOperations.CreateOrdersFilter(_ordersFilter);
-            //if (filter == null)
-            //    return;
+            return SelectedOrder != null;
+        }
 
-            //_ordersFilter = filter;
-            //FillOrders();
+        private void PrintOrderCommandHandler()
+        {
+            //_printModule.Print(_rmaOperations.GetOrderById(SelectedOrder.Model.WorkOrderId));
+        }
+
+        private bool CanOpenOrderCommandHandler()
+        {
+            return SelectedOrder != null;
         }
 
         private void OpenOrderCommandHandler()
@@ -189,11 +217,6 @@ namespace Germadent.Rms.App.ViewModels
                 return;
 
             _environment.Shutdown();
-        }
-
-        private bool CanOpenOrderCommandHandler()
-        {
-            return SelectedOrder != null;
         }
     }
 }

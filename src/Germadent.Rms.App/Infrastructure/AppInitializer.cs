@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Logging;
 
 namespace Germadent.Rms.App.Infrastructure
@@ -12,18 +13,20 @@ namespace Germadent.Rms.App.Infrastructure
     public class AppInitializer : IAppInitializer
     {
         private readonly ILogger _logger;
+        private readonly IDictionaryRepository _dictionaryRepository;
 
-        public AppInitializer(ILogger logger)
+        public AppInitializer(ILogger logger, IDictionaryRepository dictionaryRepository)
         {
             _logger = logger;
+            _dictionaryRepository = dictionaryRepository;
         }
 
         public void Initialize()
         {
             try
             {
-                SendMessage("Инициализация репозитория технологических операций...");
-                Thread.Sleep(2000);
+                SendMessage("Инициализация репозитория словарей...");
+                _dictionaryRepository.Initialize();
 
                 InitializationCompleted?.Invoke(this, EventArgs.Empty);
             }

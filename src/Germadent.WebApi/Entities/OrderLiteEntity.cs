@@ -58,8 +58,13 @@ namespace Germadent.WebApi.Entities
         public DateTime? Closed { get; set; }
 
         /// <summary>
+        /// Название статуса
+        /// </summary>
+        public string StatusName { get; set; }
+
+        /// <summary>
         /// Статус
         /// </summary>
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Germadent.WebApi.Entities
         /// <summary>
         /// Статус
         /// </summary>
-        public string Status { get; set; }
+        public int Status { get; set; }
 
         /// <summary>
         /// Номер заказ-наряда

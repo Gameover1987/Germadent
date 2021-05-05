@@ -21,7 +21,7 @@ namespace Germadent.Model
 
         public int WorkOrderId { get; set; }
 
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public string DocNumber { get; set; }
         

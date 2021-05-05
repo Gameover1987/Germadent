@@ -126,7 +126,7 @@
                                     Binding="{Binding Model.CreatorFullName}"/>
                 <DataGridTextColumn Header="Статус" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnStatus"
-                                    Binding="{Binding Model.Status}"/>
+                                    Binding="{Binding Model.Status, Converter={StaticResource OrderStatusToStringConverter}}"/>
                 <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnClosed"
                                     Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>

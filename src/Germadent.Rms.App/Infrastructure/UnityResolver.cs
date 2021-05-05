@@ -7,12 +7,14 @@ using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Model;
+using Germadent.Rms.App.Infrastructure.Repository;
 using Germadent.Rms.App.ServiceClient;
 using Germadent.Rms.App.ViewModels;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Unity;
 using Unity.Lifetime;
+using OrdersFilterViewModel = Germadent.Rms.App.ViewModels.OrdersFilterViewModel;
 
 namespace Germadent.Rms.App.Infrastructure
 {
@@ -91,6 +93,7 @@ namespace Germadent.Rms.App.Infrastructure
         private void RegisterServiceClient()
         {
             _container.RegisterType<IRmsServiceClient, RmsServiceClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
         }
 
         public void Dispose()

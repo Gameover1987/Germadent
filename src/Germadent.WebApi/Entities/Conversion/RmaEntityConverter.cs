@@ -12,7 +12,7 @@ namespace Germadent.WebApi.Entities.Conversion
             var orderDto = new OrderDto
             {
                 WorkOrderId = entity.WorkOrderId,
-                Status = entity.Status,
+                Status = (OrderStatus)entity.Status,
                 BranchType = (BranchType)entity.BranchTypeId,
                 CustomerId = entity.CustomerId,
                 Customer = entity.CustomerName,
@@ -112,7 +112,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 DocNumber = entity.DocNumber,
                 DoctorFullName = entity.DoctorFullName,
                 TechnicFullName = entity.TechnicFullName,
-                Status = entity.Status,
+                Status = (OrderStatus)entity.Status,
                 Created = entity.Created,
                 CreatorFullName = entity.CreatorFullName,
                 Closed = entity.Closed,

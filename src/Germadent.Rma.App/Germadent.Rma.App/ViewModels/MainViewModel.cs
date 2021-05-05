@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -28,20 +27,6 @@ using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class OrderLiteComparerByDateTime : IComparer
-    {
-        public int Compare(object x, object y)
-        {
-            if (x == null || y == null)
-                return 0;
-
-            var order1 = (OrderLiteViewModel) x;
-            var order2 = (OrderLiteViewModel)y;
-
-            return DateTime.Compare(order2.Model.Created, order1.Model.Created);
-        }
-    }
-
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly IRmaServiceClient _rmaOperations;

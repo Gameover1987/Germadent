@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Germadent.Common.Extensions;
 
 namespace Germadent.Model
@@ -11,6 +12,39 @@ namespace Germadent.Model
             var b =  new OrdersFilter().SerializeToJson();
             return a == b;
         }
+    }
+
+    public enum OrderStatus
+    {
+        [Description("Создан")]
+        Created = 0,
+        
+        [Description("Подготовка")]
+        Prepared = 1,
+
+        [Description("Моделировка")]
+        Modeling = 2,
+        
+        [Description("Фрезеровка")]
+        Milling = 3,
+        
+        [Description("Литье")]
+        Casting = 4,
+        
+        [Description("Прессование")]
+        Pressing = 5,
+        
+        [Description("Постобработка")]
+        PostProcessing = 6,
+
+        [Description("Контроль качества")]
+        QualityControl = 7,
+        
+        [Description("Готов к выдаче")]
+        ReadyToIssue = 8,
+
+        [Description("Закрыт")]
+        Closed = 9
     }
 
     public class OrdersFilter
@@ -35,6 +69,8 @@ namespace Germadent.Model
         public string Patient { get; set; }
 
         public DictionaryItemDto[] Materials { get; set; }
+
+        public OrderStatus[] Statuses { get; set; }
 
         public static OrdersFilter CreateDefault()
         {

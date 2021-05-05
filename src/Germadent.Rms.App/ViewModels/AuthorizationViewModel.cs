@@ -19,6 +19,11 @@ namespace Germadent.Rms.App.ViewModels
 
             ApplicationName = Resources.AppTitle;
             ApplicationIcon = GetApplicationIcon();
+
+#if DEBUG
+            UserName = "slava";
+            Password = "123";
+#endif
         }
 
         private BitmapImage GetApplicationIcon()
