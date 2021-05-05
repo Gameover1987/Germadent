@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using Germadent.Model;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.UIOperations
 {

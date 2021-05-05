@@ -1,4 +1,4 @@
-﻿using Germadent.UserManagementCenter.Model;
+﻿using Germadent.Model;
 
 namespace Germadent.Rms.App.ServiceClient
 {

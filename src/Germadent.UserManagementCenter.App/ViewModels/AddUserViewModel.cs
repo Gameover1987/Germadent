@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {

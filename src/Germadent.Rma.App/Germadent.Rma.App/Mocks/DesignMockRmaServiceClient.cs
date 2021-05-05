@@ -5,9 +5,8 @@ using Germadent.Client.Common.ServiceClient;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.Mocks
 {

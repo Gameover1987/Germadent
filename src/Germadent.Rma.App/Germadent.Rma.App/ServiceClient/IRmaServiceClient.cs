@@ -1,7 +1,6 @@
 ﻿using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {

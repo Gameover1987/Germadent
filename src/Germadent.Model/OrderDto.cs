@@ -1,5 +1,4 @@
 ﻿using System;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Model
 {

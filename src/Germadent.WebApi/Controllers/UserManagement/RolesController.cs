@@ -1,6 +1,6 @@
 ﻿using System;
 using Germadent.Common.Logging;
-using Germadent.UserManagementCenter.Model;
+using Germadent.Model;
 using Germadent.WebApi.DataAccess;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;

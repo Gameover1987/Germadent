@@ -1,6 +1,6 @@
 ﻿using System;
+using Germadent.Model.Rights;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {

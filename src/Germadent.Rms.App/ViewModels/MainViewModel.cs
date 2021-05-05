@@ -2,7 +2,6 @@
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

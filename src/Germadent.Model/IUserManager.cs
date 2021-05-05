@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Germadent.UserManagementCenter.Model
+﻿namespace Germadent.Model
 {
     public interface IUserManager
     {

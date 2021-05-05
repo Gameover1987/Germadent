@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Germadent.Model;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rms.App.ServiceClient
 {
@@ -12,12 +7,16 @@ namespace Germadent.Rms.App.ServiceClient
     {
         public void Authorize(string login, string password)
         {
-            throw new NotImplementedException();
+            AuthorizationInfo = new AuthorizationInfoDto {Login = login};
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
         {
-            throw new NotImplementedException();
+            return new OrderLiteDto[]
+            {
+                new OrderLiteDto{BranchType = BranchType.Laboratory},
+                new OrderLiteDto{BranchType = BranchType.MillingCenter},
+            };
         }
 
         public OrderDto GetOrderById(int workOrderId)

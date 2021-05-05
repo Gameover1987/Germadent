@@ -1,6 +1,6 @@
-﻿using Germadent.UserManagementCenter.Model.Rights;
+﻿using Germadent.Model.Rights;
 
-namespace Germadent.UserManagementCenter.Model
+namespace Germadent.Model
 {
     public class RoleDto
     {

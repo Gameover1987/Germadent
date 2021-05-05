@@ -6,7 +6,6 @@ using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.UI.Infrastructure;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {

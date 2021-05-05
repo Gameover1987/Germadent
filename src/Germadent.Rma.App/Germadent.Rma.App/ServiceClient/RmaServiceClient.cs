@@ -4,9 +4,8 @@ using Germadent.Common.Web;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.Infrastructure.Configuration;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient

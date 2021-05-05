@@ -12,7 +12,6 @@ using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.UI.Infrastructure;
-using Germadent.UserManagementCenter.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

@@ -1,6 +1,4 @@
-﻿using System.Security;
-
-namespace Germadent.UserManagementCenter.Model.Rights
+﻿namespace Germadent.Model.Rights
 {
     public class RightDto
     {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Germadent.UserManagementCenter.Model.Rights
+﻿namespace Germadent.Model.Rights
 {
     /// <summary>
     /// Права для РМА

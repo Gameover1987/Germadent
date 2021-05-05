@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Germadent.UserManagementCenter.Model.Rights
+namespace Germadent.Model.Rights
 {
     public static class UserRightsProvider
     {

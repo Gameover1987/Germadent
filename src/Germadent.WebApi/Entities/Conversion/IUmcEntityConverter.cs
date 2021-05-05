@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
+using Germadent.Model.Rights;
 
 namespace Germadent.WebApi.Entities.Conversion
 {

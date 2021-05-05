@@ -1,7 +1,7 @@
 ﻿using System;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
-using Germadent.UserManagementCenter.Model;
+using Germadent.Model;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Microsoft.AspNetCore.Mvc;
 

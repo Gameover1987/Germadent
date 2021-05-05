@@ -11,6 +11,7 @@ using Germadent.Common;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Pricing;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
@@ -19,8 +20,6 @@ using Germadent.Rma.App.Views.Pricing;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {

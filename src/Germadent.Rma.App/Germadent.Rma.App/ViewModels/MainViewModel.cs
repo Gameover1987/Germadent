@@ -9,6 +9,7 @@ using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Model;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Properties;
@@ -24,8 +25,6 @@ using Germadent.Rma.App.Views.Wizard;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {

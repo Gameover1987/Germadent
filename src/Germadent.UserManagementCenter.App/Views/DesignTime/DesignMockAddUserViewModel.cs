@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using Germadent.Common.FileSystem;
+using Germadent.Model;
 using Germadent.UI.ViewModels.DesignTime;
 using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ViewModels;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {

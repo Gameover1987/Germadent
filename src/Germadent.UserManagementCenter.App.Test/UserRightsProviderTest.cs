@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.UserManagementCenter.Model.Rights;
+﻿using Germadent.Model.Rights;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Germadent.UserManagementCenter.App.Test
@@ -12,7 +9,7 @@ namespace Germadent.UserManagementCenter.App.Test
         [TestMethod]
         public void Test()
         {
-            var aaa = UserRightsProvider.GetAllUserRights();
+            var allUserRights = UserRightsProvider.GetAllUserRights();
         }
     }
 }

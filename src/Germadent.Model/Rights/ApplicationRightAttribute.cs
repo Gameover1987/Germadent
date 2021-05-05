@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Germadent.UserManagementCenter.Model.Rights
+namespace Germadent.Model.Rights
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class RightGroupAttribute : Attribute

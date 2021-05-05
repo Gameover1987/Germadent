@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Germadent.UserManagementCenter.Model.Rights;
+using Germadent.Model.Rights;
 
 namespace Germadent.WebApi.Entities
 {

@@ -1,6 +1,6 @@
-﻿using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
-using System.IO;
+﻿using System.IO;
+using Germadent.Model;
+using Germadent.Model.Rights;
 
 namespace Germadent.WebApi.DataAccess.UserManagement
 {

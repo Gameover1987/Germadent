@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {

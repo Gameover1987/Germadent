@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Germadent.Client.Common.Theme"
                     xmlns:converters="clr-namespace:Germadent.Client.Common.Converters"
                     xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI">
     

@@ -1,5 +1,5 @@
 ﻿using System;
-using Germadent.UserManagementCenter.Model;
+using Germadent.Model;
 
 namespace Germadent.Client.Common.ServiceClient
 {

@@ -6,11 +6,11 @@ using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
+using Germadent.Model;
 using Germadent.Rms.App.ServiceClient;
 using Germadent.Rms.App.ViewModels;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model;
 using Unity;
 using Unity.Lifetime;
 

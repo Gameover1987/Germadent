@@ -1,4 +1,4 @@
-﻿namespace Germadent.UserManagementCenter.Model.Rights
+﻿namespace Germadent.Model.Rights
 {
     public class UserRightsBase { }
 
