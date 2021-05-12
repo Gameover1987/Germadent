@@ -15,7 +15,7 @@ BEGIN
 
     
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 9)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
 		RETURN
 		
 	BEGIN TRAN

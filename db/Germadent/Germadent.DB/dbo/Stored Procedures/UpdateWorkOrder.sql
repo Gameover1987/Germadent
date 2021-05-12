@@ -31,7 +31,7 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 9)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
 		RETURN
 	
 	ELSE BEGIN

@@ -14,10 +14,8 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 		
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
-		BEGIN
-			RETURN
-		END
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
+		RETURN
 
 	BEGIN TRAN
 		-- Чистим набор от старого содержимого

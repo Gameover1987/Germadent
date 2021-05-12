@@ -6,7 +6,9 @@
 CREATE PROCEDURE [dbo].[DeleteWorkOrder] 
 
 	@workOrderId int,
-	@countRowsDeleted int output
+	@userId int,
+	@statusChangeDateTime datetime,
+	@countRowsDeleted int = 0 output
 
 AS
 BEGIN
@@ -20,17 +22,17 @@ BEGIN
 				DELETE 
 				FROM dbo.WorkOrder
 				WHERE WorkOrderID = @workOrderId
-			END
-		ELSE IF @woStatus = 1
-			UPDATE dbo.WorkOrder 
-				SET Status = -1
-				WHERE WorkOrderID = @workOrderId
-	
-	--UPDATE StlAndPhotos
-	--SET file_stream = CONVERT(varbinary(max), '0')
-	--WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
 
-	SELECT @countRowsDeleted = @@ROWCOUNT
+				SELECT @countRowsDeleted = @@ROWCOUNT
+			END
+
+		ELSE IF @woStatus = -1
+			RETURN
+
+			ELSE BEGIN
+			SET @statusChangeDateTime = GETDATE()
+			EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, null, @statusChangeDateTime
+			END	
 
 END
 GO

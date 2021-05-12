@@ -22,9 +22,9 @@ RETURN
 		WHERE epc.EmployeeID = @userId
 			AND GETDATE() BETWEEN ISNULL(r.DateBeginning, '17530101') AND ISNULL(r.DateEnd, '99991231')),
 	
-	-- Из зубной карты заказ-наряда тащим пользоваельские коды ценовых позиций и коды изделий. Группируем по изделиям, считаем количество
+	-- Из зубной карты заказ-наряда тащим пользовательские коды ценовых позиций и коды изделий. Группируем по изделиям, считаем количество
 	codes (PricePositionCode, ProductID, ProductCount) AS (
-		SELECT pp.PricePositionCode, tc.ProductID, COUNT(tc.WorkOrderID) AS ProductCount
+		SELECT pp.PricePositionCode, tc.ProductID, COUNT(tc.ProductID) AS ProductCount
 		FROM dbo.ToothCard tc
 			INNER JOIN dbo.PricePositions pp ON tc.PricePositionID = pp.PricePositionID
 		WHERE tc.WorkOrderID = @workOrderId

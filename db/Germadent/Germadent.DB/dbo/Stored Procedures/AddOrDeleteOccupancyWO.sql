@@ -13,10 +13,8 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
-		BEGIN
-			RETURN
-		END
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
+		RETURN
 
 	IF @userID IS NULL
 		BEGIN
