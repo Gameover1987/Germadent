@@ -34,7 +34,9 @@ declare
 		FROM dbo.Rates
 		WHERE TechnologyOperationID = @technologyOperationId
 
-		DECLARE @quantityRanks int
+		DECLARE @minQualifyingRank int,
+				@maxQualifyingRank int,
+				@currentQualifyingRank int
 
 		CREATE TABLE #RatesCollection (QualifyingRank tinyint, Rate money, DateBeginning date)
 
@@ -44,18 +46,20 @@ declare
 			FROM OPENJSON (@jsonStringRates)
 			WITH (QualifyingRank tinyint, Rate money, DateBeginning date)
 
-		-- Считаем количество квалификационных разрядов
-		SELECT @quantityRanks = COUNT(DISTINCT QualifyingRank) FROM #RatesCollection
+		-- Определяем минимальный и максимальный квалификационный разряды
+		SELECT @minQualifyingRank = MIN(QualifyingRank) FROM #RatesCollection
+		SELECT @maxQualifyingRank = MAX(QualifyingRank) FROM #RatesCollection
+		SET @currentQualifyingRank = @minQualifyingRank
 
 		-- Для каждого квалификационного разряда вставляем строки в основную таблицу с добавлением поля DateEnd как копии поля DateBeginning со смещением вверх
-		WHILE @quantityRanks >= 1
+		WHILE @currentQualifyingRank <= @maxQualifyingRank
 		BEGIN
 			CREATE TABLE #RatesCollectionPart (RowNumber int, QualifyingRank tinyint, Rate money, DateBeginning date)
 
 			INSERT INTO #RatesCollectionPart (RowNumber, QualifyingRank, Rate, DateBeginning)
 			SELECT ROW_NUMBER() OVER(ORDER BY DateBeginning) AS RowNumber, QualifyingRank, Rate, DateBeginning
 			FROM #RatesCollection
-			WHERE QualifyingRank = @quantityRanks
+			WHERE QualifyingRank = @currentQualifyingRank
 
 			INSERT INTO dbo.Rates
 			(TechnologyOperationID, QualifyingRank, Rate, DateBeginning, DateEnd)
@@ -64,7 +68,7 @@ declare
 
 			DROP TABLE #RatesCollectionPart
 
-			SET @quantityRanks = @quantityRanks - 1
+			SET @currentQualifyingRank = @currentQualifyingRank + 1
 			
 		END
 

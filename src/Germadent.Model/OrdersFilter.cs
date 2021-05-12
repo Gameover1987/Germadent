@@ -39,12 +39,15 @@ namespace Germadent.Model
 
         [Description("Контроль качества")]
         QualityControl = 7,
+
+        [Description("Доработка")]
+        Reworking = 8,
         
         [Description("Готов к выдаче")]
-        ReadyToIssue = 8,
+        ReadyToIssue = 9,
 
         [Description("Закрыт")]
-        Closed = 9
+        Closed = 10
     }
 
     public class OrdersFilter
