@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.Reporting.TemplateProcessing;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
@@ -10,8 +12,6 @@ using Germadent.Model;
 using Germadent.Rma.App.Infrastructure.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Operations;
-using Germadent.Rma.App.Reporting;
-using Germadent.Rma.App.Reporting.TemplateProcessing;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
@@ -26,6 +26,7 @@ using Germadent.UI.ViewModels;
 using Unity;
 using Unity.Lifetime;
 using ISplashScreenViewModel = Germadent.UI.ViewModels.ISplashScreenViewModel;
+using OrdersFilterViewModel = Germadent.Rma.App.ViewModels.OrdersFilterViewModel;
 
 namespace Germadent.Rma.App.Infrastructure
 {

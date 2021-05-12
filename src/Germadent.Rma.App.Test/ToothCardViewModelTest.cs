@@ -4,7 +4,6 @@ using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Model;
 using Germadent.Model.Pricing;
-using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.Model.Production;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
@@ -124,7 +124,7 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockTechnologyOperationsEditorViewModel(), 
                 new DesignMockPrintModule(), 
                 new MockLogger(), 
-                new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()), 
+                new ClipboardReporter(new ClipboardHelper()), 
                 new DesignMockUserManager(),
                 new DesignMockUserSettingsManager() )
         {

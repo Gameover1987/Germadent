@@ -1,26 +1,12 @@
 ﻿using System;
-using System.Linq;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Extensions;
 using Germadent.Model;
-using Germadent.Rma.App.ServiceClient.Repository;
 
-namespace Germadent.Rma.App.Reporting
+namespace Germadent.Client.Common.Reporting
 {
-    public interface IPrintableOrderConverter
-    {
-        PrintableOrder ConvertFrom(OrderDto order);
-    }
-
     public class PrintableOrderConverter : IPrintableOrderConverter
     {
-        private readonly IDictionaryRepository _dictionaryRepository;
-
-        public PrintableOrderConverter(IDictionaryRepository dictionaryRepository)
-        {
-            _dictionaryRepository = dictionaryRepository;
-        }
-
         public PrintableOrder ConvertFrom(OrderDto order)
         {
             var printableOrder = new PrintableOrder

@@ -3,12 +3,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Client.Common.ViewModels
+namespace Germadent.Rma.App.ViewModels
 {
     public class OrdersFilterViewModel : ViewModelBase, IOrdersFilterViewModel
     {

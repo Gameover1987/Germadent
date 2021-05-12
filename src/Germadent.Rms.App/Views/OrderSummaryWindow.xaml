@@ -4,9 +4,108 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rms.App.Views"
+        xmlns:designMock="clr-namespace:Germadent.Rms.App.Views.DesignMock"
+        xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
+        xmlns:propertyGrid="clr-namespace:Germadent.Client.Common.Reporting.PropertyGrid;assembly=Germadent.Client.Common"
         mc:Ignorable="d"
-        Title="OrderSummaryWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="{Binding Title}" 
+        MinHeight="815"
+        Height="815" 
+        MinWidth="1024"
+        Width="1024"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static SystemColors.ControlBrush}"
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockOrderSummaryViewModel, IsDesignTimeCreatable=True}">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="0" Width="400" Margin="0,6,0,0"
+                  IsSharedSizeScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding PropertyItems}"
+                                  HorizontalContentAlignment="Stretch">
+                        <ItemsControl.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
+
+                                                        <ItemsPresenter Grid.Row="1" Margin="12,6,0,12"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ItemsControl.GroupStyle>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type propertyGrid:PropertyItem}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName}" VerticalAlignment="Top" Margin="0,9,0,0"/>
+                                    <TextBox Grid.Column="1" Margin="6,6,0,0"
+                                             IsReadOnly="True"
+                                             IsReadOnlyCaretVisible="True" 
+                                             Text="{Binding Value}" TextWrapping="Wrap"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Button Grid.Row="1" Content="Скопировать данные" Margin="0,6,0,0" HorizontalAlignment="Left"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="1" Margin="12,6,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Работы к выполнению" FontSize="14" FontWeight="SemiBold"/>
+                <ListBox Grid.Row="1" Margin="0,6,0,0"></ListBox>
+            </Grid>
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Content="Взять в работу" Width="100" helpers:WindowCloseHelper.DialogResult="True"
+                    Command="{Binding OKCommand}"
+                    IsDefault="True"/>
+            <Button Content="Отмена" Width="100" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"
+                    IsCancel="False"/>
+        </StackPanel>
     </Grid>
 </Window>

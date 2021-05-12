@@ -1,6 +1,6 @@
-﻿using Germadent.Client.Common.ViewModels;
+﻿using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Model;
-using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Wizard;
 using Germadent.Rma.App.Views;

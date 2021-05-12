@@ -41,7 +41,7 @@ namespace Germadent.Rms.App.ServiceClient
 
         public OrderDto GetOrderById(int workOrderId)
         {
-            throw new NotImplementedException();
+            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; set; }

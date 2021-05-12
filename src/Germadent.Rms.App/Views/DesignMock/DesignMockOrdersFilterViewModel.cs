@@ -3,6 +3,7 @@ using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Logging;
 using Germadent.Model;
+using Germadent.Rms.App.ViewModels;
 
 namespace Germadent.Rms.App.Views.DesignMock
 {

@@ -1,6 +1,6 @@
 ﻿using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
 using Germadent.Model;
-using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -24,7 +24,7 @@ namespace Germadent.Rma.App.Test
             var mockClipboard = new Mock<IClipboardHelper>();
             var mockServiceClient = new Mock<IRmaServiceClient>();
             mockServiceClient.Setup(x => x.GetWorkReport(2)).Returns(testData.Reports);
-            var reporter = new ClipboardReporter(mockClipboard.Object, mockServiceClient.Object);
+            var reporter = new ClipboardReporter(mockClipboard.Object);
              
             // When
             reporter.CreateReport(2);

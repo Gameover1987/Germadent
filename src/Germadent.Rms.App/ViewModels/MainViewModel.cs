@@ -14,6 +14,7 @@ using Germadent.Model;
 using Germadent.Rma.App.Views;
 using Germadent.Rms.App.Properties;
 using Germadent.Rms.App.ServiceClient;
+using Germadent.Rms.App.Views;
 
 namespace Germadent.Rms.App.ViewModels
 {
@@ -25,6 +26,7 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IUserManager _userManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
+        private readonly IOrderSummaryViewModel _orderSummaryViewModel;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -37,7 +39,8 @@ namespace Germadent.Rms.App.ViewModels
             IEnvironment environment,
             IUserManager userManager,
             IShowDialogAgent dialogAgent,
-            IOrdersFilterViewModel ordersFilterViewModel)
+            IOrdersFilterViewModel ordersFilterViewModel,
+            IOrderSummaryViewModel orderSummaryViewModel)
         {
             _logger = logger;
             _rmsServiceClient = rmsServiceClient;
@@ -45,6 +48,7 @@ namespace Germadent.Rms.App.ViewModels
             _userManager = userManager;
             _dialogAgent = dialogAgent;
             _ordersFilterViewModel = ordersFilterViewModel;
+            _orderSummaryViewModel = orderSummaryViewModel;
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -184,23 +188,12 @@ namespace Germadent.Rms.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            OrderDto changedOrderDto = null;
-            var orderLiteViewModel = SelectedOrder;
-            var orderDto = _rmsServiceClient.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
-            //var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
-            //if (orderDto.BranchType == BranchType.Laboratory)
-            //{
-            //    changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
-            //}
-            //else if (orderDto.BranchType == BranchType.MillingCenter)
-            //{
-            //    changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
-            //}
+            var orderDto = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId);
+            _orderSummaryViewModel.Initialize(orderDto);
+            if (_dialogAgent.ShowDialog<OrderSummaryWindow>(_orderSummaryViewModel) == false)
+                return;
 
-            //if (changedOrderDto == null)
-            //    return;
 
-            //orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
 
         private void LogOutCommandHandler()

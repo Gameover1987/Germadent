@@ -1,6 +1,7 @@
 ﻿using System;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Rma.App.ViewModels;
+using OrdersFilterViewModel = Germadent.Rma.App.ViewModels.OrdersFilterViewModel;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

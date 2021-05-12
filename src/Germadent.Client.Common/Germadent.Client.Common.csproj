@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
     <ProjectReference Include="..\Germadent.Model\Germadent.Model.csproj" />
     <ProjectReference Include="..\Germadent.UI\Germadent.UI.csproj" />

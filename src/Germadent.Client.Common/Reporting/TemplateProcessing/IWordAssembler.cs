@@ -1,4 +1,4 @@
-﻿namespace Germadent.Rma.App.Reporting.TemplateProcessing
+﻿namespace Germadent.Client.Common.Reporting.TemplateProcessing
 {
     public interface IWordAssembler
     {

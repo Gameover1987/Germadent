@@ -1,6 +1,6 @@
 ﻿using Germadent.Model;
 
-namespace Germadent.Rma.App.Reporting
+namespace Germadent.Client.Common.Reporting
 {
     public interface IPrintModule
     {

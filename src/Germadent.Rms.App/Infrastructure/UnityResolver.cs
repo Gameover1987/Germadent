@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.Reporting.PropertyGrid;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
@@ -14,7 +16,6 @@ using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Unity;
 using Unity.Lifetime;
-using OrdersFilterViewModel = Germadent.Rms.App.ViewModels.OrdersFilterViewModel;
 
 namespace Germadent.Rms.App.Infrastructure
 {
@@ -66,34 +67,23 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();
             _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
             _container.RegisterType<IUserManager, RmsUserManager>();
-
-            RegisterServiceClient();
-            RegisterCommonComponents();
-            RegisterViewModels();
-        }
-
-        private void RegisterViewModels()
-        {
             _container.RegisterType<IDateTimeProvider, DateTimeProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IUiTimer, UiTimer>(new TransientLifetimeManager());
             _container.RegisterType<IShowDialogAgent, ShowDialogAgent>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IEnvironment, WpfEnvironment>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-        }
+            _container.RegisterType<IOrderSummaryViewModel, OrderSummaryViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
 
-        private void RegisterCommonComponents()
-        {
+            _container.RegisterType<IRmsServiceClient, RmsServiceClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
+
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IClipboardHelper, ClipboardHelper>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommandExceptionHandler, CommandExceptionHandler>(new ContainerControlledLifetimeManager());
-        }
-
-        private void RegisterServiceClient()
-        {
-            _container.RegisterType<IRmsServiceClient, RmsServiceClient>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
         }
 
         public void Dispose()
