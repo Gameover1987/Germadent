@@ -57,6 +57,8 @@ namespace Germadent.Model
 
         public bool WorkAccepted { get; set; }
 
+        public float UrgencyRatio { get; set; }
+
         public bool Stl { get; set; }
 
         public bool Cashless { get; set; }

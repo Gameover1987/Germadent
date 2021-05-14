@@ -293,5 +293,10 @@ namespace Germadent.WebApi.DataAccess.Rma
 
             return reports.ToArray();
         }
+
+        StatusListDto[] IRmaDbOperations.GetStatusListForWO(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

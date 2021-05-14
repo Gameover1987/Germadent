@@ -29,6 +29,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 WorkDescription = entity.WorkDescription,
                 CreatorFullName = entity.CreatorFullName,
                 WorkAccepted = entity.FlagWorkAccept,
+                UrgencyRatio = entity.UrgencyRatio,
                 Stl = entity.FlagStl,
                 Cashless = entity.FlagCashless,
                 ProstheticArticul = entity.ProstheticArticul,
@@ -227,6 +228,20 @@ namespace Germadent.WebApi.Entities.Conversion
                 PriceGroupId = entity.PriceGroupId,
                 ProductName = entity.ProductName,
                 PricePositionCode = entity.PricePositionCode
+            };
+        }
+
+        public StatusListDto ConvertToStatusList(StatusListEntity entity)
+        {
+            return new StatusListDto
+            {
+                WorkOrderId = entity.WorkOrderId,
+                Status = entity.Status,
+                StatusName = entity.StatusName,
+                StatusChangeDateTime = entity.StatusChangeDateTime,
+                UserId = entity.UserId,
+                UserFullName = entity.UserFullName,
+                Remark = entity.Remark
             };
         }
 

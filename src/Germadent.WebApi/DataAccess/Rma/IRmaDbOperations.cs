@@ -41,6 +41,13 @@ namespace Germadent.WebApi.DataAccess.Rma
         OrderDto CloseOrder(int id);
 
         /// <summary>
+        /// Возвращает список статусов для заказ-наряда
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <returns></returns>
+        StatusListDto[] GetStatusListForWO(int workOrderId);
+
+        /// <summary>
         /// Возвращает словарь
         /// </summary>
         /// <param name="dictionaryType"></param>

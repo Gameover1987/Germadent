@@ -1,5 +1,6 @@
 ﻿using Germadent.Model;
 using Germadent.Model.Pricing;
+using System.Collections.Generic;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -29,6 +30,9 @@ namespace Germadent.WebApi.Entities.Conversion
 
         ProductDto ConvertToProduct(ProductEntity entity);
 
+        StatusListDto ConvertToStatusList(StatusListEntity entity);
+
         ToothEntity[] ConvertFromToothDto(ToothDto toothDto, bool setPriceStl);
+
     }
 }

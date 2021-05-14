@@ -78,6 +78,11 @@ namespace Germadent.WebApi.Entities
         public string CreatorFullName { get; set; }
 
         /// <summary>
+        /// Коэффициент срочности
+        /// </summary>
+        public float UrgencyRatio { get; set; }
+
+        /// <summary>
         /// Флаг согласования работ
         /// </summary>
         public bool FlagWorkAccept { get; set; }

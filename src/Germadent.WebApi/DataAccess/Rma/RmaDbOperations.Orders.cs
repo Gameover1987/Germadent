@@ -43,6 +43,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul;
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription;
+                command.Parameters.Add(new SqlParameter("@urgencyRatio", SqlDbType.Float)).Value = order.UrgencyRatio;
                 command.Parameters.Add(new SqlParameter("@flagStl", SqlDbType.Bit)).Value = order.Stl;
                 command.Parameters.Add(new SqlParameter("@flagCashless", SqlDbType.Bit)).Value = order.Cashless;
                 command.Parameters.Add(new SqlParameter("@creatorId", SqlDbType.Int)).Value = order.CreatorId;
@@ -111,6 +112,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@dateComment", SqlDbType.NVarChar)).Value = order.DateComment;
                 command.Parameters.Add(new SqlParameter("@prostheticArticul", SqlDbType.NVarChar)).Value = order.ProstheticArticul.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@workDescription", SqlDbType.NVarChar)).Value = order.WorkDescription.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@urgencyRatio", SqlDbType.Float)).Value = order.UrgencyRatio;
                 command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = order.Patient;
                 command.Parameters.Add(new SqlParameter("@patientGender", SqlDbType.Bit)).Value = (int)order.Gender;
                 command.Parameters.Add(new SqlParameter("@patientAge", SqlDbType.SmallInt)).Value = order.Age;
@@ -177,6 +179,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             FlagCashless = reader["FlagCashless"].ToBool(),
                             Created = reader["Created"].ToDateTime(),
                             Patient = reader["PatientFullName"].ToString(),
+                            UrgencyRatio = (float)reader["UrgencyRatio"].ToDecimal(),
                             WorkDescription = reader["WorkDescription"].ToString(),
                             Status = reader["Status"].ToInt(),
                             ResponsiblePersonId = reader["ResponsiblePersonId"].ToInt(),
@@ -343,6 +346,41 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
+        private StatusListDto[] GetStatusListForWO(int workOrderId)
+        {
+            var cmdText = string.Format("select * from GetStatusListForWO({0})", workOrderId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+
+                    var entities = new List<StatusListEntity>();
+
+                    while (reader.Read())
+                    {
+                        var statusEntity = new StatusListEntity();
+
+                        statusEntity.WorkOrderId = reader[nameof(statusEntity.WorkOrderId)].ToInt();
+                        statusEntity.Status = reader[nameof(statusEntity.Status)].ToInt();
+                        statusEntity.StatusName = reader[nameof(statusEntity.StatusName)].ToString();
+                        statusEntity.StatusChangeDateTime = reader[nameof(statusEntity.StatusChangeDateTime)].ToDateTime();
+                        statusEntity.UserId = reader[nameof(statusEntity.UserId)].ToInt();
+                        statusEntity.UserFullName = reader[nameof(statusEntity.UserFullName)].ToString();
+                        statusEntity.Remark = reader[nameof(statusEntity.Remark)].ToString();
+
+                        entities.Add(statusEntity);
+                    }
+                    reader.Close();
+
+                    var statusListDtoCollection = entities.Select(x => _converter.ConvertToStatusList(x)).ToArray();
+                    return statusListDtoCollection;
+                }
+            }
+        }
+
         private ToothDto[] GetToothCard(int id, bool getPricesAsStl)
         {
             var cmdText = string.Format("select * from GetToothCardByWOId({0})", id);
@@ -384,6 +422,5 @@ namespace Germadent.WebApi.DataAccess.Rma
                 }
             }
         }
-
     }
 }
