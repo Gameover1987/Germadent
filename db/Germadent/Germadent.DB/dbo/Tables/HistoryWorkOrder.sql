@@ -17,12 +17,15 @@
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
+    [UrgencyRatio]        FLOAT (53)     NULL,
     [FlagWorkAccept]      BIT            NULL,
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
     [CreatorID]           INT            NULL,
     [Closed]              DATETIME       NULL
 );
+
+
 
 
 

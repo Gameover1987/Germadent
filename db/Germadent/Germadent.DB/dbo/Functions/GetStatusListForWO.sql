@@ -13,6 +13,7 @@ AS
 RETURN 
 (
 	SELECT sl.WorkOrderID
+	, sl.Status
 	, se.StatusName
 	, sl.StatusChangeDateTime
 	, sl.UserID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName

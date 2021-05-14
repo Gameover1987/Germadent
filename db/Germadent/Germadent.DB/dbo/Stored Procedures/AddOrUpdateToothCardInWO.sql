@@ -15,8 +15,13 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
 		RETURN
+
+	-- Тащим коэффициент срочности
+	DECLARE @urgencyRatio float
+	SELECT @urgencyRatio = UrgencyRatio 
+		FROM dbo.WorkOrder
 
 	BEGIN TRAN
 		-- Чистим зубную карту от старого содержимого

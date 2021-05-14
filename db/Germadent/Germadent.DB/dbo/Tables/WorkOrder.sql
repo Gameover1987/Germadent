@@ -14,6 +14,7 @@
     [DateComment]         NVARCHAR (50)  NULL,
     [ProstheticArticul]   NVARCHAR (50)  NULL,
     [WorkDescription]     NVARCHAR (250) NULL,
+    [UrgencyRatio]        FLOAT (53)     NULL,
     [FlagWorkAccept]      BIT            CONSTRAINT [DF_WorkOrder_WorkAccept] DEFAULT ((1)) NOT NULL,
     [FlagStl]             BIT            NULL,
     [FlagCashless]        BIT            NULL,
@@ -25,6 +26,8 @@
     CONSTRAINT [FK_WorkOrder_ResponsiblePersons] FOREIGN KEY ([ResponsiblePersonID]) REFERENCES [dbo].[ResponsiblePersons] ([ResponsiblePersonID]),
     CONSTRAINT [FK_WorkOrder_Users] FOREIGN KEY ([CreatorID]) REFERENCES [dbo].[Users] ([UserID])
 );
+
+
 
 
 
@@ -117,6 +120,7 @@ BEGIN
 		AND ISNULL(i.DateComment, 'empty') = ISNULL(d.DateComment, 'empty')
 		AND ISNULL(i.ProstheticArticul, 'empty') = ISNULL(d.ProstheticArticul, 'empty')
 		AND ISNULL(i.WorkDescription, 'empty') = ISNULL(d.WorkDescription, 'empty')
+		AND i.UrgencyRatio = d.UrgencyRatio
 		AND i.FlagWorkAccept = d.FlagWorkAccept
 		AND i.FlagStl = d.FlagStl
 		AND i.FlagCashless = d.FlagCashless
