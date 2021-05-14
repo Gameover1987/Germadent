@@ -13,7 +13,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
 		RETURN
 
 	IF @userID IS NULL

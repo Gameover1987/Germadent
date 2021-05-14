@@ -14,6 +14,7 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@dateComment nvarchar(50) = NULL,
 	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
+	@urgencyRatio float = 1,
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
 	@creatorId int,
@@ -54,9 +55,9 @@ BEGIN
 		-- Собственно вставка, сначала в основную таблицу:
 
 		INSERT INTO dbo.WorkOrder
-			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, 	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless)
+			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, 	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, UrgencyRatio, FlagStl,  FlagCashless)
 		VALUES 
-			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId,  @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless)
+			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId,  @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @urgencyRatio, @flagStl, @flagCashless)
 
 		SET @workOrderID = SCOPE_IDENTITY()
 		

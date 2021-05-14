@@ -15,6 +15,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
+	, @urgencyRatio float
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint	
@@ -31,7 +32,7 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Никаких изменений, если заказ-наряд закрыт
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 10)
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
 		RETURN
 	
 	ELSE BEGIN
@@ -48,6 +49,7 @@ BEGIN
 			, DateComment = @dateComment
 			, ProstheticArticul = @prostheticArticul
 			, WorkDescription = @workDescription
+			, UrgencyRatio = @urgencyRatio
 			, FlagWorkAccept = @flagWorkAccept
 			, FlagStl = @flagStl
 			, FlagCashless = @flagCashless

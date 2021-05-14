@@ -3,10 +3,11 @@
 -- Create date: 10.04.2021
 -- Description:	Возвращает набор технологических операций, доступных сотруднику согласно его должности
 -- =============================================
-CREATE FUNCTION [dbo].[GetRelevantOperations]
+CREATE FUNCTION [dbo].[GetRelevantOperationsForMC]
 (	
 	@userId int,
-	@workOrderId int
+	@workOrderId int,
+	@urgencyRatio float = 1
 )
 RETURNS TABLE 
 AS
@@ -19,7 +20,7 @@ RETURN
 			INNER JOIN dbo.EmployeePositions ep ON epc.EmployeePositionID = ep.EmployeePositionID
 			INNER JOIN dbo.TechnologyOperations t ON ep.EmployeePositionID = t.EmployeePositionID
 			INNER JOIN dbo.Rates r ON t.TechnologyOperationID = r.TechnologyOperationID AND epc.QualifyingRank = r.QualifyingRank
-		WHERE epc.EmployeeID = @userId
+		WHERE epc.EmployeeID = @userId --8 --
 			AND GETDATE() BETWEEN ISNULL(r.DateBeginning, '17530101') AND ISNULL(r.DateEnd, '99991231')),
 	
 	-- Из зубной карты заказ-наряда тащим пользовательские коды ценовых позиций и коды изделий. Группируем по изделиям, считаем количество
@@ -27,17 +28,17 @@ RETURN
 		SELECT pp.PricePositionCode, tc.ProductID, COUNT(tc.ProductID) AS ProductCount
 		FROM dbo.ToothCard tc
 			INNER JOIN dbo.PricePositions pp ON tc.PricePositionID = pp.PricePositionID
-		WHERE tc.WorkOrderID = @workOrderId
+		WHERE tc.WorkOrderID = @workOrderId --4270--
 		GROUP BY pp.PricePositionCode, tc.ProductID)
 
-	-- Выводим сцепленные данные
-	SELECT teop.*, codes.ProductID, codes.ProductCount
+	-- Выводим совмещённые данные
+	SELECT teop.*, codes.ProductID, codes.ProductCount, @urgencyRatio AS UrgencyRatio, teop.Rate*codes.ProductCount*@urgencyRatio AS Amount
 	FROM teop, codes
-	WHERE teop.TechnologyOperationUserCode = codes.PricePositionCode
+	WHERE teop.TechnologyOperationUserCode = LEFT(codes.PricePositionCode, 3)
 	
 	-- Прицепляем технологические операции, доступные специалисту, но без пользовательского кода
-	UNION ALL 
-	SELECT teop.*, NULL, NULL
-	FROM teop
-	WHERE teop.TechnologyOperationUserCode IS NULL
+	UNION 
+	SELECT teop.*, NULL, codes.ProductCount, @urgencyRatio AS UrgencyRatio, teop.Rate*codes.ProductCount*@urgencyRatio AS Amount
+	FROM teop, codes
+	WHERE LEN(teop.TechnologyOperationUserCode) = 0
 )

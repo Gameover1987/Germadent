@@ -16,7 +16,7 @@ BEGIN
 		@woStatus int
 
 	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusList WHERE WorkOrderID = @workOrderId)
-
+		
 	IF @woStatus = 0
 			BEGIN
 				DELETE 
@@ -26,14 +26,13 @@ BEGIN
 				SELECT @countRowsDeleted = @@ROWCOUNT
 			END
 
-		ELSE IF @woStatus = -1
+		ELSE IF @woStatus = 5 OR @woStatus = 100
 			RETURN
 
 			ELSE BEGIN
 			SET @statusChangeDateTime = GETDATE()
-			EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, null, @statusChangeDateTime
-			END	
-
+			EXEC dbo.ChangeStatusWorkOrder @workOrderId, 5, @userId, null, @statusChangeDateTime
+			END
 END
 GO
 GRANT EXECUTE
