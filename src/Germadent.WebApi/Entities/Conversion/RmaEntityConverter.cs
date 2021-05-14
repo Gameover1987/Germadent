@@ -101,24 +101,6 @@ namespace Germadent.WebApi.Entities.Conversion
             return toothCollection.ToArray();
         }
 
-        public OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity)
-        {
-            return new OrderLiteDto
-            {
-                WorkOrderId = entity.WorkOrderId,
-                BranchType = (BranchType)entity.BranchTypeId,
-                CustomerName = entity.CustomerName,
-                PatientFnp = entity.PatientFullName,
-                DocNumber = entity.DocNumber,
-                DoctorFullName = entity.DoctorFullName,
-                TechnicFullName = entity.TechnicFullName,
-                Status = (OrderStatus)entity.Status,
-                Created = entity.Created,
-                CreatorFullName = entity.CreatorFullName,
-                Closed = entity.Closed,
-            };
-        }
-
         public DictionaryItemDto ConvertToDictionaryItem(DictionaryItemEntity entity)
         {
             return new DictionaryItemDto

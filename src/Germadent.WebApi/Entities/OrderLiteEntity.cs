@@ -66,5 +66,15 @@ namespace Germadent.WebApi.Entities
         /// Статус
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// Данные рользователя заблокировавшего заказ-наряд
+        /// </summary>
+        public int? LockedBy { get; set; }
+
+        /// <summary>
+        /// Данные о дате и времени блокировки заказ-наряда
+        /// </summary>
+        public DateTime? LockDate { get; set; }
     }
 }

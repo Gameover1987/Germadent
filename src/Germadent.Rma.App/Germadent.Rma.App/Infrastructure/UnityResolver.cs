@@ -135,7 +135,6 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IClipboardHelper, ClipboardHelper>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IReporter, ClipboardReporter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommandExceptionHandler, CommandExceptionHandler>(new ContainerControlledLifetimeManager());
         }
 

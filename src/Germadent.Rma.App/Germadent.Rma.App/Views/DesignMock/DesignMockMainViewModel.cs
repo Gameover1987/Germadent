@@ -8,7 +8,6 @@ using Germadent.Model;
 using Germadent.Model.Production;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
@@ -123,10 +122,11 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockPriceListEditorContainerViewModel(), 
                 new DesignMockTechnologyOperationsEditorViewModel(), 
                 new DesignMockPrintModule(), 
-                new MockLogger(), 
-                new ClipboardReporter(new ClipboardHelper()), 
+                new MockLogger(),
                 new DesignMockUserManager(),
-                new DesignMockUserSettingsManager() )
+                new DesignMockUserSettingsManager(),
+                new ClipboardHelper(),
+                new DesignMockSignalRClient())
         {
         }
     }

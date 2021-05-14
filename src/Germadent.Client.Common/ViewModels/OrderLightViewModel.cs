@@ -17,6 +17,21 @@ namespace Germadent.Client.Common.ViewModels
 
         public bool IsClosed => _model.Closed != null;
 
+        public bool IsLocked => _model.LockedBy != null;
+
+        public UserDto LockedBy => _model.LockedBy;
+
+        public string LockInfo
+        {
+            get
+            {
+                if (_model.LockedBy == null)
+                    return null;
+
+                return string.Format("{0} {1}", _model.LockedBy.GetFullName(), _model.LockDate);
+            }
+        }
+
         public void Update(OrderLiteDto order)
         {
             _model = order;

@@ -520,5 +520,10 @@ namespace Germadent.Rma.App.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public void UnLockOrder(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

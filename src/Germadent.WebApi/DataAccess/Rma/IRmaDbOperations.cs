@@ -208,5 +208,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="technologyOperationDto"></param>
         /// <returns></returns>
         TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Раздлокирует заказ-наряд
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        void UnlockWorkOrder(int workOrderId);
     }
 }

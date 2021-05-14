@@ -9,8 +9,6 @@ namespace Germadent.WebApi.Entities.Conversion
 
         ToothDto[] ConvertToToothCard(ToothEntity[] entities, bool getPricesAsStl);
 
-        OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity);
-
         DictionaryItemDto ConvertToDictionaryItem(DictionaryItemEntity entity);
 
         AdditionalEquipmentDto ConvertToAdditionalEquipment(AdditionalEquipmentEntity entity);

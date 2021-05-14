@@ -35,7 +35,7 @@ namespace Germadent.Rma.App.ServiceClient
             if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
                 throw new UserMessageException("Отсутствует право на запуск приложения");
 
-            _signalRClient.Initialize();
+            _signalRClient.Initialize(info);
         }
         public AuthorizationInfoDto AuthorizationInfo { get; protected set; }
 
@@ -206,6 +206,11 @@ namespace Germadent.Rma.App.ServiceClient
         public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
         {
             return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
+        }
+
+        public void UnLockOrder(int workOrderId)
+        {
+            ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/UnlockWorkOrder/{workOrderId}");
         }
 
 

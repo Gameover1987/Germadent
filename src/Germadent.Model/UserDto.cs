@@ -36,6 +36,16 @@ namespace Germadent.Model
         }
 
         /// <summary>
+        /// ФИО (полностью)
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
+        public static string GetFullName(this UserDto userDto)
+        {
+            return string.Format("{0} {1} {2}", userDto.Surname, userDto.FirstName, userDto.Patronymic);
+        }
+
+        /// <summary>
         /// ФИО (с инициалами)
         /// </summary>
         /// <returns></returns>
@@ -53,7 +63,6 @@ namespace Germadent.Model
 
     public class UserDto
     {
-
         public int UserId { get; set; }
 
         public string FirstName { get; set; }
@@ -77,5 +86,10 @@ namespace Germadent.Model
         public string FileName { get; set; }
 
         public EmployeePositionsCombinationDto[] Positions { get; set; }
+
+        public string FullName
+        {
+            get { return this.GetFullName(); }
+        }
     }
 }

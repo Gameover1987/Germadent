@@ -10,7 +10,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
         /// Возвращает список пользователей
         /// </summary>
         /// <returns></returns>
-        UserDto[] GetUsers();
+        UserDto[] GetUsers(int? userId = null);
 
         /// <summary>
         /// Возвращает пользователя по его Id

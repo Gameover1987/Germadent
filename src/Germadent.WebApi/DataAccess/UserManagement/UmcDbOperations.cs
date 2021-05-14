@@ -47,13 +47,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
-        public UserDto[] GetUsers()
+        public UserDto[] GetUsers(int? userId = null)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
-                var cmdText = "select * from umc_GetUsersAndRoles()";
+                var idText = userId == null ? "NULL" : userId.Value.ToString();
+                var cmdText = $"select * from umc_GetUsersAndRoles({idText})";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var userAndRolesEntities = new List<UserAndRoleEntity>();
@@ -111,7 +112,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto GetUserById(int id)
         {
-            return null;
+            return GetUsers(id).FirstOrDefault();
         }
 
         public UserDto AddUser(UserDto userDto)

@@ -17,6 +17,8 @@ namespace Germadent.Rma.App.ServiceClient
 
         private HubConnection _connection;
 
+        private AuthorizationInfoDto _authorizationInfo;
+
         public SignalRClient(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -29,8 +31,10 @@ namespace Germadent.Rma.App.ServiceClient
             await _connection.DisposeAsync();
         }
 
-        public async void Initialize()
+        public async void Initialize(AuthorizationInfoDto info)
         {
+            _authorizationInfo = info;
+
             _connection = new HubConnectionBuilder()
                 .WithUrl(new Uri(_configuration.DataServiceUrl + "/NotificationHub"))
                 .WithAutomaticReconnect()
@@ -38,6 +42,7 @@ namespace Germadent.Rma.App.ServiceClient
 
             await _connection.StartAsync();
             _connection.On<string>("Send", OnNotification);
+            _connection.On<string>("LockOrUnlock", OnWorkOrderLockedOrUnlocked);
         }
 
         public event EventHandler<RepositoryChangedEventArgs<PriceGroupDto>> PriceGroupRepositoryChanged;
@@ -46,6 +51,7 @@ namespace Germadent.Rma.App.ServiceClient
         public event EventHandler<RepositoryChangedEventArgs<PricePositionDto>> PricePositionRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
+        public event EventHandler<OrderLockedEventArgs> WorkOrderLockedOrUnlocked;
 
         private void OnNotification(string arg)
         {
@@ -86,6 +92,15 @@ namespace Germadent.Rma.App.ServiceClient
                 var args = CreateRepositoryChangedEventArgs<TechnologyOperationDto>(notification);
                 TechnologyOperationRepositoryChanged?.Invoke(this, args);
             }
+        }
+
+        private void OnWorkOrderLockedOrUnlocked(string arg)
+        {
+            var lockInfo = arg.DeserializeFromJson<OrderLockInfoDto>();
+            if (lockInfo.IsLocked && lockInfo.User.UserId == _authorizationInfo.UserId)
+                return;
+
+            WorkOrderLockedOrUnlocked?.Invoke(this, new OrderLockedEventArgs(lockInfo));
         }
 
         private static RepositoryChangedEventArgs<T> CreateRepositoryChangedEventArgs<T>(RepositoryNotificationDto notification)

@@ -92,6 +92,24 @@ namespace Germadent.WebApi.DataAccess.Rma
             return orderDto;
         }
 
+        public void UnlockWorkOrder(int workOrderId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "AddOrDeleteOccupancyWO";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@workOrderID", SqlDbType.Int)).Value = workOrderId;
+                    command.Parameters.Add(new SqlParameter("@userID", SqlDbType.Int)).Value = DBNull.Value;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         private void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
             var jsonToothCardString = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
@@ -133,18 +151,12 @@ namespace Germadent.WebApi.DataAccess.Rma
             var orderDto = GetWorkOrderById(workOrderId);
             orderDto.ToothCard = GetToothCard(workOrderId, orderDto.Stl);
 
-            var lockers = GetWorkOrdersLockInfo();
-            var lockInfo = lockers.FirstOrDefault(x => x.WorkOrderId == workOrderId);
-            if (lockInfo != null)
-            {
-                orderDto.LockedBy = _umcDbOperations.GetUserById(lockInfo.UserId);
-                orderDto.LockDate = lockInfo.OccupancyDateTime;
-            }
+            LockWorkOrder(workOrderId, userId);
 
-            if (lockInfo == null)
-            {
-                LockWorkOrder(workOrderId, userId);
-            }
+            var lockers = GetWorkOrdersLockInfo(workOrderId);
+            var lockInfo = lockers.First(x => x.WorkOrderId == workOrderId);
+            orderDto.LockedBy = _umcDbOperations.GetUserById(lockInfo.UserId);
+            orderDto.LockDate = lockInfo.OccupancyDateTime;
 
             return orderDto;
         }
@@ -218,13 +230,14 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private LockWorkOrderInfoEntity[] GetWorkOrdersLockInfo()
+        private LockWorkOrderInfoEntity[] GetWorkOrdersLockInfo(int? workOrderId = null)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
-                var cmdText = "select * from GetOccupancyWO(NULL)";
+                string idText = workOrderId == null ? "NULL" : workOrderId.Value.ToString();
+                var cmdText = string.Format("select * from GetOccupancyWO({0})", idText);
                 var lockers = new List<LockWorkOrderInfoEntity>();
                 using (var command = new SqlCommand(cmdText, connection))
                 {
@@ -272,6 +285,8 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             var cmdText = GetFilterCommandText(filter);
 
+            var users = _umcDbOperations.GetUsers();
+
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -294,7 +309,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
 
-                    return GetOrderLiteCollectionFromReader(command);
+                    return GetOrderLiteCollectionFromReader(command, users);
                 }
             }
         }
@@ -312,34 +327,41 @@ namespace Germadent.WebApi.DataAccess.Rma
             return cmdTextDefault + cmdTextAdditional;
         }
 
-        private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command)
+        private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command, UserDto[] users)
         {
             using (var reader = command.ExecuteReader())
             {
-                var orderLiteEntities = new List<OrderLiteEntity>();
+                var orders = new List<OrderLiteDto>();
                 while (reader.Read())
                 {
-                    var orderLite = new OrderLiteEntity();
-                    orderLite.WorkOrderId = int.Parse(reader[nameof(orderLite.WorkOrderId)].ToString());
-                    orderLite.BranchTypeId = int.Parse(reader[nameof(orderLite.BranchTypeId)].ToString());
-                    orderLite.CustomerName = reader[nameof(orderLite.CustomerName)].ToString();
-                    orderLite.PatientFullName = reader[nameof(orderLite.PatientFullName)].ToString();
-                    orderLite.DoctorFullName = reader[nameof(orderLite.DoctorFullName)].ToString();
-                    orderLite.DocNumber = reader[nameof(orderLite.DocNumber)].ToString();
-                    orderLite.Created = DateTime.Parse(reader[nameof(orderLite.Created)].ToString());
-                    orderLite.CreatorFullName = reader[nameof(orderLite.CreatorFullName)].ToString();
-                    orderLite.StatusName = reader[nameof(orderLite.StatusName)].ToString();
-                    orderLite.Status = reader[nameof(orderLite.Status)].ToInt();
+                    var orderLiteDto = new OrderLiteDto();
+                    orderLiteDto.WorkOrderId = int.Parse(reader["WorkOrderId"].ToString());
+                    orderLiteDto.BranchType = (BranchType)int.Parse(reader["BranchTypeId"].ToString());
+                    orderLiteDto.CustomerName = reader["CustomerName"].ToString();
+                    orderLiteDto.PatientFnp = reader["PatientFullName"].ToString();
+                    orderLiteDto.DoctorFullName = reader["DoctorFullName"].ToString();
+                    orderLiteDto.DocNumber = reader["DocNumber"].ToString();
+                    orderLiteDto.Created = DateTime.Parse(reader["Created"].ToString());
+                    orderLiteDto.CreatorFullName = reader["CreatorFullName"].ToString();
+                    
+                    orderLiteDto.Status = (OrderStatus)reader[nameof(OrderLiteEntity.Status)].ToInt();
 
-                    var closed = reader[nameof(orderLite.Closed)];
+                    var lockedBy = reader["LockedBy"];
+                    if (lockedBy != DBNull.Value)
+                        orderLiteDto.LockedBy = users.First(x => x.UserId == lockedBy.ToInt());
+
+                    var lockDate = reader["LockDate"];
+                    if (lockDate != DBNull.Value)
+                        orderLiteDto.LockDate = lockDate.ToDateTime();
+
+                    var closed = reader["Closed"];
                     if (closed != DBNull.Value)
-                        orderLite.Closed = DateTime.Parse(closed.ToString());
+                        orderLiteDto.Closed = DateTime.Parse(closed.ToString());
 
-                    orderLiteEntities.Add(orderLite);
+                    orders.Add(orderLiteDto);
                 }
 
-                var orders = orderLiteEntities.Select(x => _converter.ConvertToOrderLite(x)).ToArray();
-                return orders;
+                return orders.ToArray();
             }
         }
 

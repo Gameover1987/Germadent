@@ -230,5 +230,11 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="technologyOperationId"></param>
         /// <returns></returns>
         DeleteResult DeleteTechnologyOperation(int technologyOperationId);
+
+        /// <summary>
+        /// Разблокировать заказ0наряд
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        void UnLockOrder(int workOrderId);
     }
 }
