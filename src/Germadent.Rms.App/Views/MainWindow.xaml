@@ -86,6 +86,18 @@
                         </Setter.Value>
                     </Setter>
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLocked}" Value="True">
+                            <Setter Property="Opacity" Value="0.6"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <TextBlock>
+                                        <Run Text="Заказ-наряд заблокировал пользователь"/>
+                                        <Run Text="{Binding LockedBy.FullName, Mode=OneWay}"
+                                             FontWeight="SemiBold"/>
+                                    </TextBlock>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsClosed}" Value="True"/>
@@ -124,12 +136,12 @@
                 <DataGridTextColumn Header="Создатель" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnCreator"
                                     Binding="{Binding Model.CreatorFullName}"/>
-                <DataGridTextColumn Header="Статус" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
+                <DataGridTextColumn Header="Статус" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnStatus"
                                     Binding="{Binding Model.Status, Converter={StaticResource OrderStatusToStringConverter}}"/>
-                <DataGridTextColumn Header="Закрыт" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
-                                    helpers:DataGridColumnNameHelper.Name="General_ColumnClosed"
-                                    Binding="{Binding Model.Closed, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                <DataGridTextColumn Header="Блокировка" ElementStyle="{StaticResource DataGridTextBlockStyle}" MinWidth="100" Width="100"
+                                    helpers:DataGridColumnNameHelper.Name="General_LockInfo"
+                                    Binding="{Binding LockInfo}"/>
             </DataGrid.Columns>
         </DataGrid>
 

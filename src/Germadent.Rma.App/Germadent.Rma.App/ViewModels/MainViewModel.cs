@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;

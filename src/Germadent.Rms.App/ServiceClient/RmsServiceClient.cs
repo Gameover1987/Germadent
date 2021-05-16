@@ -1,21 +1,24 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using Germadent.Client.Common.Configuration;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Common;
 using Germadent.Common.Web;
 using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.Model.Rights;
-using Germadent.Rms.App.Infrastructure;
 using RestSharp;
 
 namespace Germadent.Rms.App.ServiceClient
 {
     public class RmsServiceClient : ServiceClientBase, IRmsServiceClient
     {
-        private readonly IConfiguration _configuration;
+        private readonly IClientConfiguration _configuration;
+        private readonly ISignalRClient _signalRClient;
 
-        public RmsServiceClient(IConfiguration configuration)
+        public RmsServiceClient(IClientConfiguration configuration, ISignalRClient signalRClient)
         {
             _configuration = configuration;
+            _signalRClient = signalRClient;
         }
 
         public void Authorize(string login, string password)
@@ -31,6 +34,8 @@ namespace Germadent.Rms.App.ServiceClient
 
             if (AuthorizationInfo.Rights.Count(x => x.RightName == RmsUserRights.RunApplication) == 0)
                 throw new UserMessageException("Отсутствует право на запуск приложения");
+
+            _signalRClient.Initialize(info);
         }
 
         public OrderLiteDto[] GetOrders(OrdersFilter filter)
@@ -39,9 +44,10 @@ namespace Germadent.Rms.App.ServiceClient
             return ExecuteHttpPost<OrderLiteDto[]>(api, filter);
         }
 
-        public OrderDto GetOrderById(int workOrderId)
+        public OrderScope GetOrderById(int workOrderId)
         {
-            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
+            var order = ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
+            return new OrderScope(this, order);
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; set; }
@@ -49,6 +55,21 @@ namespace Germadent.Rms.App.ServiceClient
         public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
         {
             return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
+        }
+
+        public TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId)
+        {
+            return ExecuteHttpGet<TechnologyOperationByUserDto[]>(_configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetRelevantOperationsByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
+        }
+
+        public void StartWorks(WorkDto[] works)
+        {
+            ExecuteHttpPost<TechnologyOperationByUserDto[]>(_configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/StartWorks", works);
+        }
+
+        public void UnLockOrder(int workOrderId)
+        {
+            ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/UnlockWorkOrder/{workOrderId}");
         }
 
         protected override void HandleError(IRestResponse response)

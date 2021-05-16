@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Model.Production;
 using Germadent.Model.Rights;
 
 namespace Germadent.Model
@@ -85,7 +86,7 @@ namespace Germadent.Model
 
         public string FileName { get; set; }
 
-        public EmployeePositionsCombinationDto[] Positions { get; set; }
+        public EmployeePositionDto[] Positions { get; set; }
 
         public string FullName
         {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient.Repository

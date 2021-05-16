@@ -7,6 +7,7 @@
         xmlns:designMock="clr-namespace:Germadent.Rms.App.Views.DesignMock"
         xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
         xmlns:propertyGrid="clr-namespace:Germadent.Client.Common.Reporting.PropertyGrid;assembly=Germadent.Client.Common"
+        xmlns:viewModels="clr-namespace:Germadent.Rms.App.ViewModels"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinHeight="815"
@@ -94,7 +95,36 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Работы к выполнению" FontSize="14" FontWeight="SemiBold"/>
-                <ListBox Grid.Row="1" Margin="0,6,0,0"></ListBox>
+                <DataGrid Grid.Row="1" Margin="0,6,0,0"
+                          AlternationCount="2"
+                          ItemsSource="{Binding Operations}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                IsReadOnly="False">
+                            <DataGridCheckBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource StlnCheckBoxStyle}">
+                                    <Setter Property="Margin" Value="9,3,0,0"/>
+                                </Style>
+                            </DataGridCheckBoxColumn.ElementStyle>
+                        </DataGridCheckBoxColumn>
+                          
+                        <DataGridTextColumn Header="Название операции" Width="*"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding DisplayName}"/>
+                        <DataGridTextColumn Header="Кол-во" Width="Auto"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding ProductCount}"/>
+                        <DataGridTextColumn Header="Расценка" Width="Auto"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding Rate, StringFormat=C, ConverterCulture='ru-RU'}"/>
+                        <DataGridTextColumn Header="Срочность" Width="Auto"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding UrgencyRatio}"/>
+                        <DataGridTextColumn Header="Итого" Width="Auto"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding TotalCost, StringFormat=C, ConverterCulture='ru-RU'}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
 
@@ -102,7 +132,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Content="Взять в работу" Width="100" helpers:WindowCloseHelper.DialogResult="True"
-                    Command="{Binding OKCommand}"
+                    Command="{Binding OkCommand}"
                     IsDefault="True"/>
             <Button Content="Отмена" Width="100" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"
                     IsCancel="False"/>

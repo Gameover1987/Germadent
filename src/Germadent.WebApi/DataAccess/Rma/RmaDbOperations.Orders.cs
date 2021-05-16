@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.WebApi.Entities;
 using Newtonsoft.Json;
 
@@ -105,6 +106,64 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@workOrderID", SqlDbType.Int)).Value = workOrderId;
                     command.Parameters.Add(new SqlParameter("@userID", SqlDbType.Int)).Value = DBNull.Value;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public TechnologyOperationByUserDto[] GetRelevantOperationsByWorkOrder(int workOrderId, int userId)
+        {
+            var currentUser = _umcDbOperations.GetUsers(userId).First();
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = string.Format("select * from GetRelevantOperationsForMC({0},{1})", userId, workOrderId);
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var operations = new List<TechnologyOperationByUserDto>();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var operation = new TechnologyOperationByUserDto();
+                            operation.User = currentUser;
+                            operation.Operation = new TechnologyOperationDto
+                            {
+                                TechnologyOperationId = reader["TechnologyOperationID"].ToInt(),
+                                Name = reader["TechnologyOperationName"].ToString(),
+                                UserCode = reader["TechnologyOperationUserCode"].ToString(),
+                            };
+                            operation.UrgencyRatio = reader["UrgencyRatio"].ToFloat();
+                            operation.Rate = reader["Rate"].ToDecimal();
+                            operation.ProductCount = reader["ProductCount"].ToInt();
+                            operation.ProductId = reader["ProductId"].ToIntOrNull();
+                            operations.Add(operation);
+                        }
+                    }
+
+                    return operations.ToArray();
+                }
+            }
+        }
+
+        public void StartWorks(WorkDto[] works)
+        {
+            var workOrderId = works.First().WorkOrderId;
+            var worksJson = works.SerializeToJson(Formatting.Indented);
+
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "AddOrUpdateWorkList";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                    command.Parameters.Add(new SqlParameter("@jsonWorklistString", SqlDbType.NVarChar)).Value = worksJson;
 
                     command.ExecuteNonQuery();
                 }

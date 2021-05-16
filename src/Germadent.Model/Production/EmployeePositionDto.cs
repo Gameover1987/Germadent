@@ -1,10 +1,13 @@
-﻿namespace Germadent.Model
+﻿namespace Germadent.Model.Production
 {
-    public class EmployeePositionsCombinationDto
+    public class EmployeePositionDto
     {
-        public int EmployeeId { get; set; }
+        public int UserId { get; set; }
+
         public int EmployeePositionId { get; set; }
+
         public string EmployeePositionName { get; set; }
+
         public int QualifyingRank { get; set; }
     }
 }

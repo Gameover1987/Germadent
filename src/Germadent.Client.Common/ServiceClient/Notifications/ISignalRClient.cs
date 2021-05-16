@@ -1,10 +1,9 @@
 ﻿using System;
-using Germadent.Client.Common.ServiceClient;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
 
-namespace Germadent.Rma.App.ServiceClient
+namespace Germadent.Client.Common.ServiceClient.Notifications
 {
     public class OrderLockedEventArgs
     {

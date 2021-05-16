@@ -14,6 +14,6 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
 
         public int EmployeePositionId => _employeePositionDto.EmployeePositionId;
 
-        public string DisplayName => _employeePositionDto.Name;
+        public string DisplayName => _employeePositionDto.EmployeePositionName;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient.Repository

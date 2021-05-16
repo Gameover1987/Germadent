@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.TemplateProcessing;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Model;
-using Germadent.Rma.App.Infrastructure.Configuration;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
@@ -33,7 +34,7 @@ namespace Germadent.Rma.App.Infrastructure
     public class UnityResolver : IDisposable
     {
         private IUnityContainer _container;
-        private IConfiguration _configuration;
+        private IClientConfiguration _configuration;
 
         public UnityResolver()
         {
@@ -69,8 +70,8 @@ namespace Germadent.Rma.App.Infrastructure
         {
             _container = new UnityContainer();
 
-            _configuration = new RmaConfiguration();
-            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
+            _configuration = new ClientConfiguration();
+            _container.RegisterInstance<IClientConfiguration>(_configuration, new ContainerControlledLifetimeManager());
 
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
@@ -79,16 +80,8 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
             _container.RegisterType<IUserManager, RmaUserManager>();
             _container.RegisterType<IUserSettingsManager, UserSettingsManager>(new ContainerControlledLifetimeManager());
-
-            if (_configuration.WorkMode == WorkMode.Server)
-            {
-                RegisterServiceClient();
-            }
-            else
-            {
-                _container.RegisterType<IRmaServiceClient, DesignMockRmaServiceClient>(new ContainerControlledLifetimeManager());
-                _container.RegisterType<ICustomerRepository, DesignMockCustomerRepository>(new ContainerControlledLifetimeManager());
-            }
+            
+            RegisterServiceClient();
 
             RegisterCommonComponents();
             RegisterPrintModule();

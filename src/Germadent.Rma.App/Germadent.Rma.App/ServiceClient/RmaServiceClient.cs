@@ -1,21 +1,22 @@
 ﻿using System.Linq;
+using Germadent.Client.Common.Configuration;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Common;
 using Germadent.Common.Web;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
 using Germadent.Model.Rights;
-using Germadent.Rma.App.Infrastructure.Configuration;
 using RestSharp;
 
 namespace Germadent.Rma.App.ServiceClient
 {
     public class RmaServiceClient : ServiceClientBase, IRmaServiceClient
     {
-        private readonly IConfiguration _configuration;
+        private readonly IClientConfiguration _configuration;
         private readonly ISignalRClient _signalRClient;
 
-        public RmaServiceClient(IConfiguration configuration, ISignalRClient signalRClient)
+        public RmaServiceClient(IClientConfiguration configuration, ISignalRClient signalRClient)
         {
             _configuration = configuration;
             _signalRClient = signalRClient;

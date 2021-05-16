@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Linq;
-using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.Configuration;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
-using Germadent.Rma.App.Infrastructure.Configuration;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json.Linq;
 
-namespace Germadent.Rma.App.ServiceClient
+namespace Germadent.Client.Common.ServiceClient.Notifications
 {
     public class SignalRClient : ISignalRClient
     {
-        private readonly IConfiguration _configuration;
+        private readonly IClientConfiguration _configuration;
 
         private HubConnection _connection;
 
         private AuthorizationInfoDto _authorizationInfo;
 
-        public SignalRClient(IConfiguration configuration)
+        public SignalRClient(IClientConfiguration configuration)
         {
             _configuration = configuration;
         }

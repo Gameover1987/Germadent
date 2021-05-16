@@ -221,5 +221,19 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="workOrderId"></param>
         void UnlockWorkOrder(int workOrderId);
+
+        /// <summary>
+        /// Возвращает набор технологических операций по заказ-наряду, которые можно взять в работу пользователю
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        TechnologyOperationByUserDto[] GetRelevantOperationsByWorkOrder(int workOrderId, int userId);
+
+        /// <summary>
+        /// Запускает работы по заказ-наряду
+        /// </summary>
+        /// <param name="works"></param>
+        void StartWorks(WorkDto[] works);
     }
 }

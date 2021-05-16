@@ -19,11 +19,4 @@
 
         public bool IsObsolete { get; set; }
     }
-
-    public class EmployeePositionDto
-    {
-        public int EmployeePositionId { get; set; }
-
-        public string Name { get; set; }
-    }
 }

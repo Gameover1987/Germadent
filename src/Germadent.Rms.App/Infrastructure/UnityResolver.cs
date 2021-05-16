@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Windows;
+using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.PropertyGrid;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
@@ -22,7 +24,7 @@ namespace Germadent.Rms.App.Infrastructure
     public class UnityResolver : IDisposable
     {
         private IUnityContainer _container;
-        private IConfiguration _configuration;
+        private IClientConfiguration _configuration;
 
         public UnityResolver()
         {
@@ -58,8 +60,8 @@ namespace Germadent.Rms.App.Infrastructure
         {
             _container = new UnityContainer();
 
-            _configuration = new RmsConfiguration();
-            _container.RegisterInstance<IConfiguration>(_configuration, new ContainerControlledLifetimeManager());
+            _configuration = new ClientConfiguration();
+            _container.RegisterInstance<IClientConfiguration>(_configuration, new ContainerControlledLifetimeManager());
 
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
@@ -78,6 +80,7 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IRmsServiceClient, RmsServiceClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());

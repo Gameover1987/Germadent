@@ -184,7 +184,7 @@
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <TextBlock>
-                                        <Run Text="Заказ-наряд заблокировал пользователь "/>
+                                        <Run Text="Заказ-наряд заблокировал пользователь"/>
                                         <Run Text="{Binding LockedBy.FullName, Mode=OneWay}"
                                              FontWeight="SemiBold"/>
                                     </TextBlock>

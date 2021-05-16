@@ -9,6 +9,7 @@ using System.Windows.Data;
 using Germadent.Common.Extensions;
 using System.Windows;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Model;
 using Germadent.Rma.App.Views;
@@ -27,6 +28,7 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
         private readonly IOrderSummaryViewModel _orderSummaryViewModel;
+        private readonly ISignalRClient _signalRClient;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -40,7 +42,8 @@ namespace Germadent.Rms.App.ViewModels
             IUserManager userManager,
             IShowDialogAgent dialogAgent,
             IOrdersFilterViewModel ordersFilterViewModel,
-            IOrderSummaryViewModel orderSummaryViewModel)
+            IOrderSummaryViewModel orderSummaryViewModel,
+            ISignalRClient signalRClient)
         {
             _logger = logger;
             _rmsServiceClient = rmsServiceClient;
@@ -49,6 +52,8 @@ namespace Germadent.Rms.App.ViewModels
             _dialogAgent = dialogAgent;
             _ordersFilterViewModel = ordersFilterViewModel;
             _orderSummaryViewModel = orderSummaryViewModel;
+            _signalRClient = signalRClient;
+            _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -188,12 +193,15 @@ namespace Germadent.Rms.App.ViewModels
 
         private void OpenOrderCommandHandler()
         {
-            var orderDto = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId);
-            _orderSummaryViewModel.Initialize(orderDto);
-            if (_dialogAgent.ShowDialog<OrderSummaryWindow>(_orderSummaryViewModel) == false)
-                return;
+            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            {
+                _orderSummaryViewModel.Initialize(orderScope.Order);
+                if (_dialogAgent.ShowDialog<OrderSummaryWindow>(_orderSummaryViewModel) == false)
+                    return;
 
-
+                var works = _orderSummaryViewModel.GetWorks();
+                _rmsServiceClient.StartWorks(works);
+            }
         }
 
         private void LogOutCommandHandler()
@@ -210,6 +218,28 @@ namespace Germadent.Rms.App.ViewModels
                 return;
 
             _environment.Shutdown();
+        }
+
+        private void SignalRClientOnWorkOrderLockedOrUnlocked(object? sender, OrderLockedEventArgs e)
+        {
+            var orderLiteViewModel = Orders.FirstOrDefault(x => x.Model.WorkOrderId == e.Info.WorkOrderId);
+            if (orderLiteViewModel == null)
+                return;
+
+            var model = orderLiteViewModel.Model;
+
+            if (e.Info.IsLocked)
+            {
+                model.LockDate = e.Info.OccupancyDateTime;
+                model.LockedBy = e.Info.User;
+            }
+            else
+            {
+                model.LockDate = null;
+                model.LockedBy = null;
+            }
+
+            orderLiteViewModel.Update(model);
         }
     }
 }

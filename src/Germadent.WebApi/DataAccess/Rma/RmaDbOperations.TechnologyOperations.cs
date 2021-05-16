@@ -28,7 +28,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         var employeePosition = new EmployeePositionDto();
 
                         employeePosition.EmployeePositionId = reader["EmployeePositionID"].ToInt();
-                        employeePosition.Name = reader["EmployeePositionName"].ToString();
+                        employeePosition.EmployeePositionName = reader["EmployeePositionName"].ToString();
 
                         employeePositions.Add(employeePosition);
                     }

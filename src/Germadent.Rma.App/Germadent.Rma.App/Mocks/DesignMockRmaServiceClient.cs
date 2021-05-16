@@ -486,10 +486,10 @@ namespace Germadent.Rma.App.Mocks
         {
             return new EmployeePositionDto[]
             {
-                new EmployeePositionDto {Name = "Администратор", EmployeePositionId = 1},
-                new EmployeePositionDto {Name = "Моделировщик"},
-                new EmployeePositionDto {Name = "Техник"},
-                new EmployeePositionDto {Name = "Оператор"},
+                new EmployeePositionDto {EmployeePositionName = "Администратор", EmployeePositionId = 1},
+                new EmployeePositionDto {EmployeePositionName = "Моделировщик"},
+                new EmployeePositionDto {EmployeePositionName = "Техник"},
+                new EmployeePositionDto {EmployeePositionName = "Оператор"},
             };
         }
 

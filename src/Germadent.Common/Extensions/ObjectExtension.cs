@@ -17,6 +17,11 @@ namespace Germadent.Common.Extensions
             return obj.ToInt();
         }
 
+        public static float ToFloat(this object obj)
+        {
+            return float.Parse(obj.ToString());
+        }
+
         public static decimal ToDecimal(this object obj)
         {
             if (obj == null || obj == DBNull.Value)
