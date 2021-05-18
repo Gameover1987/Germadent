@@ -170,6 +170,76 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
+        public void StartWork(WorkDto work, int lastEditorId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "AddWork";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
+                    command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId;
+                    command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
+                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.EmployeeId;
+                    command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
+                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
+                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
+                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = work.WorkStarted;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = lastEditorId;
+                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateWork(WorkDto work, int lastEditorId)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "UpdateWork";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
+                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
+                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
+                    command.Parameters.Add(new SqlParameter("@workCompleted", SqlDbType.DateTime)).Value = work.WorkCompleted;
+                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = work.WorkStarted;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = lastEditorId;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteWork(WorkDto work)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "UpdateWork";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
+                    command.Parameters.Add(new SqlParameter("@rowCountResult", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         private void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
             var jsonToothCardString = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);

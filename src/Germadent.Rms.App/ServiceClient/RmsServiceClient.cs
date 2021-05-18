@@ -67,6 +67,21 @@ namespace Germadent.Rms.App.ServiceClient
             ExecuteHttpPost<TechnologyOperationByUserDto[]>(_configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/StartWorks", works);
         }
 
+        public void StartWork(WorkDto work, int lastEditorId)
+        {
+            
+        }
+
+        public void UpdateWork(WorkDto work, int lastEditorId)
+        {
+
+        }
+
+        public void DeleteWork(WorkDto work)
+        {
+
+        }
+
         public void UnLockOrder(int workOrderId)
         {
             ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/UnlockWorkOrder/{workOrderId}");

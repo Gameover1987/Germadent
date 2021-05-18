@@ -146,6 +146,21 @@ namespace Germadent.Rms.App.Views.DesignMock
         {
             throw new NotImplementedException();
         }
+
+        public void StartWork(WorkDto work, int lastEditorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateWork(WorkDto work, int lastEditorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteWork(WorkDto work)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class DesignMockOrderSummaryViewModel : OrderSummaryViewModel
