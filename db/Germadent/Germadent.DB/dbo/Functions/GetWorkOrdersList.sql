@@ -41,9 +41,12 @@ RETURN
 		, swozero.StatusChangeDateTime as Created
 		, se.Status
 		, se.StatusName
+--		, currentStatus.StatusChangeDateTime
 		, wo.FlagWorkAccept
 		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
+		, occ.UserID AS LockedBy
+		, occ.OccupancyDateTime as LockDate
 
 	FROM dbo.WorkOrder wo 
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
@@ -54,6 +57,7 @@ RETURN
 		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
+		LEFT JOIN dbo.OccupancyWO occ ON wo.WorkOrderID = occ.WorkOrderID
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
 		AND b.BranchType LIKE '%'+ISNULL(@branchType, '')+'%'

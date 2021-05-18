@@ -22,6 +22,7 @@ BEGIN
 	DECLARE @urgencyRatio float
 	SELECT @urgencyRatio = UrgencyRatio 
 		FROM dbo.WorkOrder
+		WHERE WorkOrderID = @workOrderId
 
 	BEGIN TRAN
 		-- Чистим зубную карту от старого содержимого
@@ -32,7 +33,7 @@ BEGIN
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO dbo.ToothCard
 			(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge)
-		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge
+		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID * @urgencyRatio, Price, HasBridge
 		FROM OPENJSON (@jsonToothCardString)
 			WITH (ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProductId int, Price money, HasBridge bit)
 

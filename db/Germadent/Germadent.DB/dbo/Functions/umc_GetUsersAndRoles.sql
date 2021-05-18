@@ -5,8 +5,7 @@
 -- =============================================
 CREATE FUNCTION [dbo].[umc_GetUsersAndRoles] 
 (	
-	
-	 
+	@userId int	= NULL
 )
 RETURNS TABLE 
 AS
@@ -17,4 +16,5 @@ RETURN
 	FROM dbo.Users u 
 		INNER JOIN dbo.UsersAndRoles ur ON u.UserID = ur.UserID
 		INNER JOIN dbo.Roles r ON r.RoleID = ur.RoleID
+	WHERE u.UserID = ISNULL(@userId, u.UserID)
 )
