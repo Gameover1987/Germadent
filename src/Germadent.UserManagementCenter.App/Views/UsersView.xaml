@@ -22,6 +22,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
                     <Grid Margin="3,0,3,0" Background="Transparent"
+                          MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown"
                           ToolTip="{Binding Description}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

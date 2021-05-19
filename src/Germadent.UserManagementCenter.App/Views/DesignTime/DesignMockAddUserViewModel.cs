@@ -77,6 +77,13 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             Description = "Какое то описание какогото юзверя";
 
             Roles.First().IsChecked = true;
+
+            IsAdmin = true;
+            IsOperator = true;
+            IsTechnic = true;
+            TechnicQualifyingRank = 3;
+            IsModeller = true;
+            ModellerQualifyingRank = 2;
         }
     }
 }

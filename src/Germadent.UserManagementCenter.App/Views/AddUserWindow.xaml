@@ -29,7 +29,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -117,17 +117,70 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-              
             </Grid>
 
             <Grid Grid.Row="2" Margin="0,6,0,0">
-               <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
-                   <ColumnDefinition Width="*" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="caption"/>
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Роли" Margin="0,0,0,6" HorizontalAlignment="Right"/>
-                <ListBox Grid.Column="1" Margin="6,0,0,0" 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,0,0"
+                           Text="Должность"/>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="0,0,0,0">
+                    <CheckBox Content="Администратор" Margin="6,6,0,0"
+                              IsChecked="{Binding IsAdmin}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="Моделировщик" Margin="6,6,0,0"
+                                  IsChecked="{Binding IsModeller}"/>
+                        <StackPanel Orientation="Horizontal"
+                                    IsEnabled="{Binding IsModeller}">
+                            <TextBlock Text="(" Margin="6,6,0,0"/>
+                            <RadioButton Margin="3,6,0,0"
+                                         GroupName="ModellerQualifyingRank"
+                                         IsChecked="{Binding ModellerQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=1}"
+                                         Content="1 разряд"/>
+                            <RadioButton Margin="6,6,0,0"
+                                         GroupName="ModellerQualifyingRank"
+                                         IsChecked="{Binding ModellerQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=2}"
+                                         Content="2 разряд"/>
+                            <RadioButton Margin="6,6,0,0"
+                                         GroupName="ModellerQualifyingRank"
+                                         IsChecked="{Binding ModellerQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=3}"
+                                         Content="3 разряд"/>
+                            <TextBlock Text=")" Margin="6,6,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="Техник" Margin="6,6,0,0"
+                                  IsChecked="{Binding IsTechnic}"/>
+                        <StackPanel Orientation="Horizontal"
+                                    IsEnabled="{Binding IsTechnic}">
+                            <TextBlock Text="(" Margin="6,6,0,0"/>
+                            <RadioButton Margin="3,6,0,0"
+                                         GroupName="TechnicQualifyingRank"
+                                         IsChecked="{Binding TechnicQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=1}"
+                                         Content="1 разряд"/>
+                            <RadioButton Margin="6,6,0,0"
+                                         GroupName="TechnicQualifyingRank"
+                                         IsChecked="{Binding TechnicQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=2}"
+                                         Content="2 разряд"/>
+                            <RadioButton Margin="6,6,0,0"
+                                         GroupName="TechnicQualifyingRank"
+                                         IsChecked="{Binding TechnicQualifyingRank, Converter={StaticResource IntToBoolConverter}, ConverterParameter=3}"
+                                         Content="3 разряд"/>
+                            <TextBlock Text=")" Margin="6,6,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <CheckBox Content="Оператор" Margin="6,6,0,0"
+                              IsChecked="{Binding IsOperator}"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Роли" Margin="0,16,0,6" HorizontalAlignment="Right"/>
+                <ListBox Grid.Row="1" Grid.Column="1" Margin="6,12,0,0" 
                          ItemsSource="{Binding Roles}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">

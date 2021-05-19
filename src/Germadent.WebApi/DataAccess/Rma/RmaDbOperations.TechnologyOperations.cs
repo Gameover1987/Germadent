@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     {
                         var employeePosition = new EmployeePositionDto();
 
-                        employeePosition.EmployeePositionId = reader["EmployeePositionID"].ToInt();
+                        employeePosition.EmployeePosition = (EmployeePosition)reader["EmployeePositionID"].ToInt();
                         employeePosition.EmployeePositionName = reader["EmployeePositionName"].ToString();
 
                         employeePositions.Add(employeePosition);

@@ -200,7 +200,7 @@ namespace Germadent.Rms.App.ViewModels
                     return;
 
                 var works = _orderSummaryViewModel.GetWorks();
-                //_rmsServiceClient.StartWorks(works);
+                _rmsServiceClient.StartWorks(works);
             }
         }
 

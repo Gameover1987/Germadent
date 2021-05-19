@@ -4,7 +4,7 @@
     {
         public int UserId { get; set; }
 
-        public int EmployeePositionId { get; set; }
+        public EmployeePosition EmployeePosition{ get; set; }
 
         public string EmployeePositionName { get; set; }
 

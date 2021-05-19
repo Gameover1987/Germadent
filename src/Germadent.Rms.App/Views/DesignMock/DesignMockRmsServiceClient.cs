@@ -17,6 +17,7 @@ namespace Germadent.Rms.App.Views.DesignMock
                 {
                     Operation = new TechnologyOperationDto
                     {
+                        UserCode = "001",
                         Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
                     },
                     ProductCount = 2,
@@ -106,19 +107,9 @@ namespace Germadent.Rms.App.Views.DesignMock
             };
         }
 
-        public void StartWork(WorkDto work, int lastEditorId)
+        public void StartWorks(WorkDto[] work)
         {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateWork(WorkDto work, int lastEditorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteWork(WorkDto work)
-        {
-            throw new NotImplementedException();
+            
         }
 
 

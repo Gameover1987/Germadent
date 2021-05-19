@@ -26,10 +26,11 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
+        public string UserCode => _operationByUser.Operation.UserCode;
+
         public string DisplayName
         {
             get { return _operationByUser.Operation.Name; }
-            set{}
         }
 
         public int ProductCount => _operationByUser.ProductCount;

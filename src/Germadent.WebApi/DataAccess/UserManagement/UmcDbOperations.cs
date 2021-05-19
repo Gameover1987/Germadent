@@ -121,6 +121,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 .Select(x => new { userDto.UserId, x.RoleId })
                 .ToArray()
                 .SerializeToJson(formatting: Formatting.Indented);
+            var positionsJson = userDto.Positions
+                .Select(x => new
+                {
+                    EmployeeID = x.UserId,
+                    EmployeePositionID = (int)x.EmployeePosition,
+                    x.QualifyingRank
+                })
+                .SerializeToJson(Formatting.Indented);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -137,7 +145,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                     command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-                    command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
+                    command.Parameters.Add(new SqlParameter("@jsonStringRoles", SqlDbType.NVarChar)).Value = rolesJson;
+                    command.Parameters.Add(new SqlParameter("@jsonStringPositions", SqlDbType.NVarChar)).Value = positionsJson;
 
                     command.ExecuteNonQuery();
 
@@ -159,6 +168,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 .Select(x => new { userDto.UserId, x.RoleId })
                 .ToArray()
                 .SerializeToJson(formatting: Formatting.Indented);
+            var positionsJson = userDto.Positions
+                .Select(x => new
+                {
+                    EmployeeID = x.UserId,
+                    EmployeePositionID = (int) x.EmployeePosition,
+                    x.QualifyingRank
+                })
+                .SerializeToJson(Formatting.Indented);
 
             using (var command = new SqlCommand("umc_UpdateUser", connection))
             {
@@ -172,7 +189,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
                 command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                 command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
-                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
+                command.Parameters.Add(new SqlParameter("@jsonStringRoles", SqlDbType.NVarChar)).Value = rolesJson;
+                command.Parameters.Add(new SqlParameter("@jsonStringPositions", SqlDbType.NVarChar)).Value = positionsJson;
 
                 command.ExecuteNonQuery();
             }

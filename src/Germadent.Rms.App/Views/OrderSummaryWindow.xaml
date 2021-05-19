@@ -107,7 +107,10 @@
                                 </Style>
                             </DataGridCheckBoxColumn.ElementStyle>
                         </DataGridCheckBoxColumn>
-                          
+
+                        <DataGridTextColumn Header="Код" Width="Auto"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}" 
+                                            Binding="{Binding UserCode}"/>
                         <DataGridTextColumn Header="Название операции" Width="*"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding DisplayName}"/>

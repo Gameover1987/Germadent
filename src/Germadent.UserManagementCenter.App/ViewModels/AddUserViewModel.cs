@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
+using NLog;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
@@ -34,6 +37,13 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private bool _isLoading;
         private byte[] _image;
         private string _fileName;
+
+        private bool _isAdmin;
+        private bool _isModeller;
+        private bool _isOperator;
+        private bool _isTechnic;
+        private int _modellerQualifyingRank;
+        private int _technicQualifyingRank;
 
         public AddUserViewModel(IUmcServiceClient umcServiceClient, IShowDialogAgent dialogAgent, IFileManager fileManager)
         {
@@ -205,6 +215,78 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public ObservableCollection<RoleViewModel> Roles { get; } = new ObservableCollection<RoleViewModel>();
 
+        public bool IsAdmin
+        {
+            get { return _isAdmin; }
+            set
+            {
+                if (_isAdmin == value)
+                    return;
+                _isAdmin = value;
+                OnPropertyChanged(() => IsAdmin);
+            }
+        }
+
+        public bool IsModeller
+        {
+            get { return _isModeller; }
+            set
+            {
+                if (_isModeller == value)
+                    return;
+                _isModeller = value;
+                OnPropertyChanged(() => IsModeller);
+            }
+        }
+
+        public int ModellerQualifyingRank
+        {
+            get { return _modellerQualifyingRank; }
+            set
+            {
+                if (_modellerQualifyingRank == value)
+                    return;
+                _modellerQualifyingRank = value;
+                OnPropertyChanged(() => ModellerQualifyingRank);
+            }
+        }
+
+        public bool IsTechnic
+        {
+            get { return _isTechnic; }
+            set
+            {
+                if (_isTechnic == value)
+                    return;
+                _isTechnic = value;
+                OnPropertyChanged(() => IsTechnic);
+            }
+        }
+
+        public int TechnicQualifyingRank
+        {
+            get { return _technicQualifyingRank; }
+            set
+            {
+                if (_technicQualifyingRank == value)
+                    return;
+                _technicQualifyingRank = value;
+                OnPropertyChanged(() => TechnicQualifyingRank);
+            }
+        }
+
+        public bool IsOperator
+        {
+            get { return _isOperator; }
+            set
+            {
+                if (_isOperator == value)
+                    return;
+                _isOperator = value;
+                OnPropertyChanged(() => IsOperator);
+            }
+        }
+
         public IDelegateCommand OkCommand { get; }
 
         public IDelegateCommand ChangeUserImageCommand { get; }
@@ -243,7 +325,6 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 _image = _umcServiceClient.GetUserImage(_userId);
 
             var roles = _umcServiceClient.GetRoles();
-
             foreach (var role in Roles)
             {
                 role.Checked -= RoleOnChecked;
@@ -259,6 +340,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                     roleViewModel.IsChecked = selectedRoleIds.Contains(roleViewModel.RoleId);
                 Roles.Add(roleViewModel);
             }
+            
+            _isAdmin = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Admin);
+            _isModeller = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Modeller);
+            _isTechnic = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Technic);
+            _isOperator = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Operator);
 
             OnPropertyChanged();
         }
@@ -270,6 +356,19 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         public UserDto GetUser()
         {
+            var positions = new List<EmployeePositionDto>();
+            if (IsAdmin)
+                positions.Add(new EmployeePositionDto{UserId = _userId, EmployeePosition = EmployeePosition.Admin, QualifyingRank = 1});
+
+            if (IsModeller)
+                positions.Add(new EmployeePositionDto { UserId = _userId, EmployeePosition = EmployeePosition.Modeller, QualifyingRank = ModellerQualifyingRank });
+
+            if (IsTechnic)
+                positions.Add(new EmployeePositionDto { UserId = _userId, EmployeePosition = EmployeePosition.Technic, QualifyingRank = TechnicQualifyingRank });
+
+            if  (IsOperator)
+                positions.Add(new EmployeePositionDto { UserId = _userId, EmployeePosition = EmployeePosition.Operator, QualifyingRank = 1 });
+
             return new UserDto
             {
                 UserId = _userId,
@@ -282,6 +381,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 IsLocked = IsLocked,
                 Description = Description,
                 Roles = Roles.Where(x => x.IsChecked).Select(x => x.ToModel()).ToArray(),
+                Positions = positions.ToArray(),
                 FileName = FileName
             };
         }
@@ -293,9 +393,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
         private void ChangeUserImageCommandHandler()
         {
-            var fileName = string.Empty;
             var filter = "Изображения|*.jpg";
-            if (_dialogAgent.ShowOpenFileDialog(filter, out fileName) == false)
+            if (_dialogAgent.ShowOpenFileDialog(filter, out var fileName) == false)
                 return;
 
             FileName = fileName;

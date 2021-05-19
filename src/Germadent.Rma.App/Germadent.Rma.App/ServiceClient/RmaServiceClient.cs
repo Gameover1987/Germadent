@@ -21,23 +21,6 @@ namespace Germadent.Rma.App.ServiceClient
             return AuthorizationInfo.Rights.Any(x => x.RightName == RmaUserRights.RunApplication);
         }
 
-        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
-        {
-            var api = Configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter";
-            return ExecuteHttpPost<OrderLiteDto[]>(api, ordersFilter);
-        }
-
-        public OrderDto GetOrderById(int workOrderId)
-        {
-            return ExecuteHttpGet<OrderDto>(Configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
-        }
-
-        public byte[] GetDataFileByWorkOrderId(int id)
-        {
-            var apiUrl = Configuration.DataServiceUrl + string.Format("/api/Rma/orders/fileDownload/{0}", id);
-            return ExecuteFileDownload(apiUrl);
-        }
-
         public OrderDto AddOrder(OrderDto order)
         {
             order.CreatorId = AuthorizationInfo.UserId;
@@ -106,11 +89,6 @@ namespace Germadent.Rma.App.ServiceClient
         public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
             return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
-        }
-
-        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
-        {
-            return ExecuteHttpGet<DictionaryItemDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
         }
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
@@ -188,11 +166,6 @@ namespace Germadent.Rma.App.ServiceClient
         public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
         {
             return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
-        }
-
-        public void UnLockOrder(int workOrderId)
-        {
-            ExecuteHttpGet<OrderDto>(Configuration.DataServiceUrl + $"/api/Rma/orders/UnlockWorkOrder/{workOrderId}");
         }
     }
 }

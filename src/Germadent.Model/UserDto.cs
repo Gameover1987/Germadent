@@ -62,8 +62,21 @@ namespace Germadent.Model
         }
     }
 
+    public enum EmployeePosition
+    {
+        Admin = 1,
+        Modeller = 2,
+        Technic = 3,
+        Operator = 4
+    }
+
     public class UserDto
     {
+        public UserDto()
+        {
+            Positions = new EmployeePositionDto[0];
+        }
+
         public int UserId { get; set; }
 
         public string FirstName { get; set; }
@@ -88,9 +101,6 @@ namespace Germadent.Model
 
         public EmployeePositionDto[] Positions { get; set; }
 
-        public string FullName
-        {
-            get { return this.GetFullName(); }
-        }
+        public string FullName => this.GetFullName();
     }
 }
