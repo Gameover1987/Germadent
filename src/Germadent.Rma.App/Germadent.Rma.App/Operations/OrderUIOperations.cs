@@ -52,7 +52,12 @@ namespace Germadent.Rma.App.Operations
             }
 
             if (labWizard.PrintAfterSave)
-                _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
+            {
+                using (var orderScope = _rmaOperations.GetOrderById(changedOrder.WorkOrderId))
+                {
+                    _printModule.Print(orderScope.Order);
+                }
+            }
 
             return changedOrder;
 
@@ -76,10 +81,14 @@ namespace Germadent.Rma.App.Operations
             }
 
             if (millingCenterWizard.PrintAfterSave)
-                _printModule.Print(_rmaOperations.GetOrderById(changedOrder.WorkOrderId));
+            {
+                using (var orderScope = _rmaOperations.GetOrderById(changedOrder.WorkOrderId))
+                {
+                    _printModule.Print(orderScope.Order);
+                }
+            }
 
             return changedOrder;
-
         }
 
         public OrdersFilter CreateOrdersFilter(OrdersFilter filter)

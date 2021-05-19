@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Germadent.Client.Common.Configuration;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Pricing;

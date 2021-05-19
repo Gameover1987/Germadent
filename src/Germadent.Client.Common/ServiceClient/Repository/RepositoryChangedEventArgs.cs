@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Germadent.Client.Common.ServiceClient
+namespace Germadent.Client.Common.ServiceClient.Repository
 {
     public class RepositoryChangedEventArgs<T> : EventArgs
     {

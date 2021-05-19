@@ -3,6 +3,7 @@ using System.Linq;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.Model.Production;

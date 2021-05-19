@@ -352,7 +352,10 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(_rmaServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId));
+            using (var orderScope = _rmaServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            {
+                _printModule.Print(orderScope.Order);
+            }
         }
 
         private bool CanOpenOrderCommandHandler()
@@ -372,23 +375,24 @@ namespace Germadent.Rma.App.ViewModels
         {
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
-            var orderDto = _rmaServiceClient.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
-            var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
-            if (orderDto.BranchType == BranchType.Laboratory)
+            using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.Model.WorkOrderId))
             {
-                changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
+                var orderDto = orderScope.Order;
+                var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
+                if (orderDto.BranchType == BranchType.Laboratory)
+                {
+                    changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
+                }
+                else if (orderDto.BranchType == BranchType.MillingCenter)
+                {
+                    changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
+                }
+
+                if (changedOrderDto == null)
+                    return;
+
+                orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
             }
-            else if (orderDto.BranchType == BranchType.MillingCenter)
-            {
-                changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
-            }
-
-            _rmaServiceClient.UnLockOrder(orderLiteViewModel.Model.WorkOrderId);
-
-            if (changedOrderDto == null)
-                return;
-
-            orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
         }
 
         private void CopyOrderToClipboardCommandHandler()

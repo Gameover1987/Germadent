@@ -1,4 +1,5 @@
 ﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient.Repository

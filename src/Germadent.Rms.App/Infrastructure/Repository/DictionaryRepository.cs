@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Model;
 using Germadent.Rms.App.ServiceClient;
 

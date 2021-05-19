@@ -1,4 +1,5 @@
-﻿using Germadent.Model;
+﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
 
@@ -7,41 +8,8 @@ namespace Germadent.Rma.App.ServiceClient
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
-    public interface IRmaServiceClient
+    public interface IRmaServiceClient : IBaseClientOperationsServiceClient
     {
-        /// <summary>
-        /// Авторизация
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
-        void Authorize(string user, string password);
-
-        /// <summary>
-        /// Данные авторизации
-        /// </summary>
-        AuthorizationInfoDto AuthorizationInfo { get; }
-
-        /// <summary>
-        /// Получить список заказнарядов
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        OrderLiteDto[] GetOrders(OrdersFilter filter);
-
-        /// <summary>
-        /// Получить детали по выбранному заказнаряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        OrderDto GetOrderById(int id);
-
-        /// <summary>
-        /// Возвращает файл по заказ наряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        byte[] GetDataFileByWorkOrderId(int id);
-
         /// <summary>
         /// Добавить заказнаряд
         /// </summary>
@@ -230,11 +198,5 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="technologyOperationId"></param>
         /// <returns></returns>
         DeleteResult DeleteTechnologyOperation(int technologyOperationId);
-
-        /// <summary>
-        /// Разблокировать заказ0наряд
-        /// </summary>
-        /// <param name="workOrderId"></param>
-        void UnLockOrder(int workOrderId);
     }
 }

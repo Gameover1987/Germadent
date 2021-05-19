@@ -1,6 +1,7 @@
 ﻿using System;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;

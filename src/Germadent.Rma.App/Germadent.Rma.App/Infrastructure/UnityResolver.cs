@@ -6,6 +6,7 @@ using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.TemplateProcessing;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common;
 using Germadent.Common.FileSystem;

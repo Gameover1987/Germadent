@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Data;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Common;
 using Germadent.Common.Extensions;
 using Germadent.Model;

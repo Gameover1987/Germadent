@@ -1,5 +1,6 @@
 ﻿using System;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Logging;
 using Germadent.Model;

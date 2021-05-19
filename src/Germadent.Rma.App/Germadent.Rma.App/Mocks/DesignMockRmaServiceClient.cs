@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Model;
 using Germadent.Model.Pricing;
@@ -66,6 +67,8 @@ namespace Germadent.Rma.App.Mocks
             });
         }
 
+        public IClientConfiguration Configuration { get; }
+
         public void Authorize(string user, string password)
         {
             throw new NotImplementedException();
@@ -73,24 +76,15 @@ namespace Germadent.Rma.App.Mocks
 
         public AuthorizationInfoDto AuthorizationInfo { get; }
 
-        public RightDto[] GetRights(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public event EventHandler<UserAuthorizedEventArgs> Authorized;
-
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
             //Thread.Sleep(2000);
             return _orders.Select(x => x.ToOrderLite()).ToArray();
         }
 
-        public OrderDto GetOrderById(int id)
+        public OrderScope GetOrderById(int workOrderId)
         {
-            //Thread.Sleep(1000);
-            return _orders.First(x => x.WorkOrderId == id);
+            throw new NotImplementedException();
         }
 
         public byte[] GetDataFileByWorkOrderId(int id)

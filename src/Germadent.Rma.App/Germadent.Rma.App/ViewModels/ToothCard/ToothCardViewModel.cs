@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Model;

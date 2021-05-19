@@ -1,28 +1,15 @@
-﻿using System.Collections.Generic;
-using Germadent.Model;
+﻿using Germadent.Client.Common.ServiceClient;
 using Germadent.Model.Production;
 
 namespace Germadent.Rms.App.ServiceClient
 {
-    public interface IRmsServiceClient
+    public interface IRmsServiceClient : IBaseClientOperationsServiceClient
     {
-        AuthorizationInfoDto AuthorizationInfo { get; set; }
-
-        void Authorize(string login, string password);
-
-        OrderLiteDto[] GetOrders(OrdersFilter filter);
-
-        OrderScope GetOrderById(int workOrderId);
-
-        void UnLockOrder(int workOrderId);
-
         /// <summary>
-        /// Возвращает словарь по его названию
+        /// Возвращает набор технологических операций по заказ-наряду доступных пользователю
         /// </summary>
-        /// <param name="dictionaryType"></param>
+        /// <param name="workOrderId"></param>
         /// <returns></returns>
-        DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
-
         TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId);
 
         /// <summary>
