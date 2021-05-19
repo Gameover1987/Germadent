@@ -12,7 +12,6 @@ CREATE PROCEDURE [dbo].[AddWork]
 	@rate money,
 	@quantity int,
 	@operationCost money,
-	@workStarted datetime,
 	@remark nvarchar(250),
 	@userId int,
 	@workId int output
@@ -42,7 +41,7 @@ BEGIN
 		INSERT INTO dbo.WorkList
 		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeID, Rate,		Quantity, OperationCost, WorkStarted,	Remark, LastEditor)
 		VALUES
-		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, @workStarted, @remark, @userId)
+		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, GETDATE(), @remark, @userId)
 
 		SET @workId = @@ROWCOUNT
 
