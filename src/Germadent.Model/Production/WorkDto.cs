@@ -9,6 +9,7 @@ namespace Germadent.Model.Production
             WorkStarted = DateTime.Now;
         }
 
+        public int WorkId { get; set; }
         /// <summary>
         /// Идентификатор заказ-наряда
         /// </summary>
@@ -55,7 +56,7 @@ namespace Germadent.Model.Production
         public decimal OperationCost { get; set; }
 
         /// <summary>
-        /// Коэффициент сложности
+        /// Коэффициент срочности
         /// </summary>
         public float UrgencyRatio { get; set; }
 
@@ -68,5 +69,10 @@ namespace Germadent.Model.Production
         /// Дата/время завершения
         /// </summary>
         public DateTime? WorkCompleted { get; set; }
+
+        /// <summary>
+        /// Идентификатор последнего редактировавшего пользователя 
+        /// </summary>
+        public int LastEditorId { get; set; }
     }
 }

@@ -23,8 +23,8 @@ RETURN
 			wl.Rate,
 			wl.Quantity,
 			wl.OperationCost, 
-			wl.Started, 
-			wl.Ended
+			wl.WorkStarted, 
+			wl.WorkCompleted
 
 	FROM dbo.WorkList wl
 		INNER JOIN dbo.TechnologyOperations teo ON wl.TechnologyOperationID = teo.TechnologyOperationID

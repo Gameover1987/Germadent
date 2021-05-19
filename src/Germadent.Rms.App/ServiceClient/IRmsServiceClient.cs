@@ -13,9 +13,23 @@ namespace Germadent.Rms.App.ServiceClient
         TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId);
 
         /// <summary>
-        /// Запускает прогресс по работам заказнаряда
+        /// Запускает работу по заказ-наряду
         /// </summary>
-        /// <param name="works"></param>
-        void StartWorks(WorkDto[] works);
+        /// <param name="work"></param>
+        /// <param name="lastEditorId"></param>
+        void StartWork(WorkDto work, int lastEditorId);
+
+        /// <summary>
+        /// Редактирует / закрывает работу по заказ-наряду
+        /// </summary>
+        /// <param name="work"></param>
+        /// <param name="lastEditorId"></param>
+        void UpdateWork(WorkDto work, int lastEditorId);
+
+        /// <summary>
+        /// Удаляет работу из заказ-наряда
+        /// </summary>
+        /// <param name="work"></param>
+        void DeleteWork(WorkDto work);
     }
 }

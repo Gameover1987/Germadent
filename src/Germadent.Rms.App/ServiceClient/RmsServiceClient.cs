@@ -23,9 +23,19 @@ namespace Germadent.Rms.App.ServiceClient
             return ExecuteHttpGet<TechnologyOperationByUserDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetRelevantOperationsByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
-        public void StartWorks(WorkDto[] works)
+        public void StartWork(WorkDto work, int lastEditorId)
         {
-            ExecuteHttpPost<TechnologyOperationByUserDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/StartWorks", works);
+            throw new System.NotImplementedException();
+        }
+
+        public void UpdateWork(WorkDto work, int lastEditorId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteWork(WorkDto work)
+        {
+            throw new System.NotImplementedException();
         }
 
         protected override bool CheckRunApplicationRight()

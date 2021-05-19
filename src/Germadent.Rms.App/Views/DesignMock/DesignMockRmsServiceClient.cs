@@ -106,10 +106,21 @@ namespace Germadent.Rms.App.Views.DesignMock
             };
         }
 
-        public void StartWorks(WorkDto[] works)
+        public void StartWork(WorkDto work, int lastEditorId)
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateWork(WorkDto work, int lastEditorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteWork(WorkDto work)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public AuthorizationInfoDto AuthorizationInfo { get; }
         public IClientConfiguration Configuration { get; }

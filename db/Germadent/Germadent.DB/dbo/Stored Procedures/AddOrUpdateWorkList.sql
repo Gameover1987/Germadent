@@ -26,10 +26,10 @@ BEGIN
 
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO dbo.WorkList
-		(WorkOrderID, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, Started, Ended, IsChecked)
-		SELECT WorkOrderID = @workOrderId, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, Started, Ended, IsChecked
+		(WorkOrderID, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, OperationCost, WorkStarted, WorkCompleted)
+		SELECT WorkOrderID = @workOrderId, ProductID, TechnologyOperationID, EmployeeID, Rate, Quantity, OperationCost, CAST(CAST(WorkStarted as datetimeoffset) as datetime), CAST(CAST(WorkCompleted as datetimeoffset) as datetime)
 		FROM OPENJSON (@jsonWorklistString)
-			WITH(ProductId int, TechnologyOperationId int, EmployeeId int, Rate money, Quantity int, Started datetime, Ended datetime, IsChecked bit)
+			WITH(ProductId int, TechnologyOperationId int, EmployeeId int, Rate money, Quantity int, OperationCost money, WorkStarted datetimeoffset, WorkCompleted datetimeoffset)
 
 	COMMIT
 
