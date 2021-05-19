@@ -3,6 +3,7 @@ using FluentAssertions;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,66 +15,42 @@ namespace Germadent.Rma.App.Test
     public class ToothViewModelTest
     {
         /// <summary>
-        /// Должен инициализироваться из DTO
-        /// </summary>
-        /// <param name="hasBridge"></param>
-        /// <param name="material"></param>
-        /// <param name="productType"></param>
-        [TestMethod]
-        [DataRow(true, "ZrO", "Каркас")]
-        [DataRow(false, "E.MAX", "другая конструкция")]
-        public void ShouldInitializeFromDto(bool hasBridge, string material, string productType)
-        {
-            // Given
-            var target = CreateTarget();
-
-            // When
-            target.Initialize(new ToothDto
-            {
-                HasBridge = hasBridge,
-            });
-
-            // Then
-            Assert.AreEqual(hasBridge, target.HasBridge);
-        }
-         
-        [TestMethod]
-        [DataRow(10, 1, "ZrO", 1, "Каркас", true)]
-        public void ShouldGetDto(int toothNumber, bool hasBridge)
-        {
-            // Given
-            var expectedDto = new ToothDto
-            {
-                HasBridge = hasBridge,
-                ToothNumber = toothNumber
-            };
-            var target = CreateTarget();
-            target.Initialize(expectedDto);
-
-            // When
-            var actualDto = target.ToDto();
-
-            // Then
-            actualDto.Should().BeEquivalentTo(expectedDto);
-        }
-
-        /// <summary>
         /// Должен возвращать описание для зуба
         /// </summary>
         [TestMethod]
-        [DataRow("Культя", "Каркас", "ZrO", true, "0 - Культя/Каркас/ZrO/Мост")]
-        [DataRow(null, "Каркас", "ZrO", true, "0 - Каркас/ZrO/Мост")]
-        [DataRow(null, null, "ZrO", true, "0 - ZrO/Мост")]
-        [DataRow(null, null, null, true, "0 - Мост")]
-        public void ShouldGetCorrectDescription(string prostheticsCondition, string prosthetics, string material, bool hasBridge, string expectedDescription)
+        [DataRow( 11,"Культя", "Полная анатомия", "ZrO2 Multicolor ST", false, "11 - Культя/ (Полная анатомия / ZrO2 Multicolor ST)")]
+        public void ShouldGetCorrectDescription(int toothNumber, string prostheticsCondition, string productName, string material, bool hasBridge, string expectedDescription)
         {
             // Given
-            var target = CreateTarget();
-            var selectedProstheticCondition = target.ProstheticConditions.FirstOrDefault(x => x.DisplayName == prostheticsCondition);
-            if (selectedProstheticCondition != null)
-                selectedProstheticCondition.IsChecked = true;
+            var products = new ProductDto[]
+            {
+                new ProductDto
+                {
+                    ProductId = 1,
+                    ProductName = productName,
+                    MaterialId = 1,
+                    MaterialName = material
+                }
+            };
+            
+            var dictionaryRepositoryMock = new Mock<IDictionaryRepository>();
+            dictionaryRepositoryMock
+                .Setup(x => x.Items)
+                .Returns(GetProstheticConditions);
+            var productRepositoryMock = new Mock<IProductRepository>();
+            productRepositoryMock.Setup(x => x.Items)
+                .Returns(products);
+            var target = new ToothViewModel(dictionaryRepositoryMock.Object, productRepositoryMock.Object);
 
-            target.HasBridge = hasBridge;
+            var toothDto = new ToothDto
+            {
+                HasBridge = hasBridge,
+                ToothNumber = toothNumber,
+                Products = products,
+                ConditionId = 1,
+                ConditionName = prostheticsCondition
+            };
+            target.Initialize(toothDto);
 
             // When
             var actualDescription = target.Description;
@@ -95,8 +72,8 @@ namespace Germadent.Rma.App.Test
         {
             var conditions = new[]
             {
-                new DictionaryItemDto{Name = "Культя", Id = 1},
-                new DictionaryItemDto{Name = "Имплант", Id = 2},
+                new DictionaryItemDto{Name = "Культя", Id = 1, Dictionary = DictionaryType.ProstheticCondition},
+                new DictionaryItemDto{Name = "Имплант", Id = 2, Dictionary = DictionaryType.ProstheticCondition},
             };
             return conditions;
         }

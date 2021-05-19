@@ -62,7 +62,8 @@ namespace Germadent.Model
                 toothCardBuilder.AppendLine(groupingBuilder.ToString().Trim(',', ' ')+ $" - {grouping.Key};   ");
             }
             var groupedToothDescription = toothCardBuilder.ToString();
-            return groupedToothDescription = groupedToothDescription.Remove(groupedToothDescription.Length - 6, 6);
+            groupedToothDescription = groupedToothDescription.Remove(groupedToothDescription.Length - 6, 6);
+            return groupedToothDescription;
         }
 
         public static string GetAdditionalEquipmentDescription(OrderDto order)
