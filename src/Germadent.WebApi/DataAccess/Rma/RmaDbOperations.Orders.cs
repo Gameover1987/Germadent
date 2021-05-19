@@ -120,7 +120,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 connection.Open();
 
-                var cmdText = string.Format("select * from GetRelevantOperationsForMC({0},{1})", userId, workOrderId);
+                var cmdText = string.Format("select * from GetRelevantOperations({0},{1})", userId, workOrderId);
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var operations = new List<TechnologyOperationByUserDto>();
