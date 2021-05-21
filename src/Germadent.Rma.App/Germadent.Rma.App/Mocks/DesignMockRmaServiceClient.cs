@@ -480,7 +480,7 @@ namespace Germadent.Rma.App.Mocks
         {
             return new EmployeePositionDto[]
             {
-                new EmployeePositionDto {EmployeePositionName = "Администратор", EmployeePositionId = 1},
+                new EmployeePositionDto {EmployeePositionName = "Администратор", EmployeePosition = EmployeePosition.Admin},
                 new EmployeePositionDto {EmployeePositionName = "Моделировщик"},
                 new EmployeePositionDto {EmployeePositionName = "Техник"},
                 new EmployeePositionDto {EmployeePositionName = "Оператор"},
