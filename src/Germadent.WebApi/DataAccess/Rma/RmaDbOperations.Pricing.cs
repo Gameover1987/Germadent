@@ -82,6 +82,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             var jsonStringProduct = pricePositionDto.Products.SerializeToJson(Formatting.Indented);
             var jsonStringPrices = pricePositionDto.Prices.SerializeToJson(Formatting.Indented);
+            var jsonStringMaterial = pricePositionDto.MaterialId;
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -94,6 +95,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@pricePositionName", SqlDbType.NVarChar)).Value = pricePositionDto.Name;
                     command.Parameters.Add(new SqlParameter("@materialId", SqlDbType.Int)).Value = pricePositionDto.MaterialId.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@jsonStringProduct", SqlDbType.NVarChar)).Value = jsonStringProduct;
+                    command.Parameters.Add(new SqlParameter("@jsonStringMaterial", SqlDbType.NVarChar)).Value = jsonStringMaterial;
                     command.Parameters.Add(new SqlParameter("@jsonStringPrices", SqlDbType.NVarChar)).Value = jsonStringPrices;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int) { Direction = ParameterDirection.Output });
                     command.ExecuteNonQuery();

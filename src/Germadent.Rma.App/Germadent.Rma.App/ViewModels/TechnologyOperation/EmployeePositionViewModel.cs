@@ -12,7 +12,7 @@ namespace Germadent.Rma.App.ViewModels.TechnologyOperation
             _employeePositionDto = employeePositionDto;
         }
 
-        public int EmployeePositionId => _employeePositionDto.EmployeePositionId;
+        public int EmployeePositionId => (int)_employeePositionDto.EmployeePosition;
 
         public string DisplayName => _employeePositionDto.EmployeePositionName;
     }

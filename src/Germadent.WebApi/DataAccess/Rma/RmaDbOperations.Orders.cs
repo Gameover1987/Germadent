@@ -573,5 +573,42 @@ namespace Germadent.WebApi.DataAccess.Rma
                 }
             }
         }
+        private WorkDto[] GetWorks (int workOrderId, int employeeId)
+        {
+            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1})", workOrderId, employeeId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var worksCollection = new List<WorkDto>();
+                    while (reader.Read())
+                    {
+                        var work = new WorkDto
+                        {
+                            WorkOrderId = reader["WorkOrderId"].ToInt(),
+                            ProductId = reader["ProductId"].ToInt(),
+                            TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
+                            TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
+                            TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
+                            EmployeeId = reader["EmployeeId"].ToInt(),
+                            EmployeeFullName = reader["EmployeeFullName"].ToString(),
+                            Rate = reader["Rate"].ToDecimal(),
+                            Quantity = reader["Quantity"].ToInt(),
+                            UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
+                            OperationCost = reader["OperationCost"].ToDecimal(),
+                            WorkStarted = reader["WorkStarted"].ToDateTime(),
+                            WorkCompleted = reader["WorkCompleted"].ToDateTime()
+                        };
+                        worksCollection.Add(work);
+                    }
+                    reader.Close();
+
+                    return worksCollection.ToArray();
+                }
+            }            
+        }
     }
 }

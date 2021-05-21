@@ -26,7 +26,7 @@ namespace Germadent.Model.Production
         public int TechnologyOperationId { get; set; }
 
         /// <summary>
-        /// Пользовательский код технилогической операции
+        /// Пользовательский код технологической операции
         /// </summary>
         public string TechnologyOperationUserCode { get; set; }
 
@@ -39,6 +39,11 @@ namespace Germadent.Model.Production
         /// Идентификатор исполнителя
         /// </summary>
         public int EmployeeId { get; set; }
+
+        /// <summary>
+        /// ФИО исполнителя
+        /// </summary>
+        public string EmployeeFullName { get; set; }
 
         /// <summary>
         /// Расценка за 1 операцию
