@@ -22,7 +22,7 @@ RETURN
 			INNER JOIN dbo.TechnologyOperations t ON ep.EmployeePositionID = t.EmployeePositionID
 			INNER JOIN dbo.Rates r ON t.TechnologyOperationID = r.TechnologyOperationID AND epc.QualifyingRank = r.QualifyingRank
 			INNER JOIN dbo.Users u ON epc.EmployeeID = u.UserID
-		WHERE epc.EmployeeID = @userId --15 --
+		WHERE epc.EmployeeID = @userId --8 --
 			AND GETDATE() BETWEEN ISNULL(r.DateBeginning, '17530101') AND ISNULL(r.DateEnd, '99991231')),
 	
 	-- Из зубной карты заказ-наряда тащим пользовательские коды ценовых позиций и коды изделий. Группируем по изделиям, считаем количество
@@ -30,7 +30,7 @@ RETURN
 		SELECT pp.PricePositionCode, tc.ProductID, COUNT(tc.ProductID) AS ProductCount
 		FROM dbo.ToothCard tc
 			INNER JOIN dbo.PricePositions pp ON tc.PricePositionID = pp.PricePositionID
-		WHERE tc.WorkOrderID = 4288--@workOrderId --
+		WHERE tc.WorkOrderID = @workOrderId --4288--
 		GROUP BY pp.PricePositionCode, tc.ProductID),
 
 	-- Тащим дополнительные коды технологических операций

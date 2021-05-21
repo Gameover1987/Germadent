@@ -6,14 +6,14 @@
 CREATE PROCEDURE [dbo].[DeleteWorkOrder] 
 
 	@workOrderId int,
-	@userId int,
-	@statusChangeDateTime datetime,
+	@userId int,	
 	@countRowsDeleted int = 0 output
 
 AS
 BEGIN
 	DECLARE
-		@woStatus int
+		@woStatus int,
+		@statusChangeDateTime datetime
 
 	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusList WHERE WorkOrderID = @workOrderId)
 		
@@ -30,7 +30,6 @@ BEGIN
 			RETURN
 
 			ELSE BEGIN
-			SET @statusChangeDateTime = GETDATE()
 			EXEC dbo.ChangeStatusWorkOrder @workOrderId, 5, @userId, null, @statusChangeDateTime
 			END
 END

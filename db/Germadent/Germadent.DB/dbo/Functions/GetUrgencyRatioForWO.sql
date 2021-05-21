@@ -18,3 +18,8 @@ BEGIN
 	RETURN @urgencyRatio
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetUrgencyRatioForWO] TO [gdl_user]
+    AS [dbo];
+

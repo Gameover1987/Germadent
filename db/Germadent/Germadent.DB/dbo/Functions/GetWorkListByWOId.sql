@@ -5,21 +5,23 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetWorkListByWOId]
 (	
-	@workOrderId int
+	@workOrderId int = NULL,
+	@userId int = NULL
 )
 
 RETURNS TABLE 
 AS
 RETURN 
 (
-	SELECT wl.WorkOrderID, 
+	SELECT 
+			wl.WorkOrderID, 
 			p.ProductID, 
 			p.ProductName, 
 			teo.TechnologyOperationID, 
 			teo.TechnologyOperationUserCode, 
 			teo.TechnologyOperationName, 
 			u.UserID, 
-			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName,
+			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS EmployeeFullName,
 			wl.Rate,
 			wl.Quantity,
 			wl.OperationCost, 
@@ -29,7 +31,8 @@ RETURN
 	FROM dbo.WorkList wl
 		INNER JOIN dbo.TechnologyOperations teo ON wl.TechnologyOperationID = teo.TechnologyOperationID
 		INNER JOIN dbo.Users u ON wl.EmployeeID = u.UserID
-		INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID
+		LEFT JOIN dbo.Products p ON wl.ProductID = p.ProductID
 
-	WHERE wl.WorkOrderID = @workOrderId
+	WHERE wl.WorkOrderID = ISNULL(@workOrderId, wl.WorkOrderID)
+		AND wl.EmployeeID = ISNULL(@userId, wl.EmployeeID)
 )
