@@ -19,35 +19,14 @@ namespace Germadent.Model
         [Description("Создан")]
         Created = 0,
         
-        [Description("Подготовка")]
-        Prepared = 1,
+        [Description("В работе")]
+        InProgress = 9,
 
-        [Description("Моделировка")]
-        Modeling = 2,
+        [Description("Реализация")]
+        Realization = 90,
         
-        [Description("Фрезеровка")]
-        Milling = 3,
-        
-        [Description("Литье")]
-        Casting = 4,
-        
-        [Description("Прессование")]
-        Pressing = 5,
-        
-        [Description("Постобработка")]
-        PostProcessing = 6,
-
-        [Description("Контроль качества")]
-        QualityControl = 7,
-
-        [Description("Доработка")]
-        Reworking = 8,
-        
-        [Description("Готов к выдаче")]
-        ReadyToIssue = 9,
-
         [Description("Закрыт")]
-        Closed = 10
+        Closed = 100
     }
 
     public class OrdersFilter

@@ -14,9 +14,19 @@ namespace Germadent.Rms.App.Views.DesignMock
             return new WorkDto[0];
         }
 
-        public void StartWorks(WorkDto[] work)
+        public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartWorks(WorkDto[] works)
         {
 
+        }
+
+        public void FinishWorks(WorkDto[] works)
+        {
+            throw new NotImplementedException();
         }
 
 

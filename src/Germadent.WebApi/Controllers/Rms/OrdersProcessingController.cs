@@ -22,11 +22,11 @@ namespace Germadent.WebApi.Controllers.Rms
         }
 
         [HttpGet("GetWorksByWorkOrder/{workOrderId}/{userId}")]
-        public IActionResult GetRelevantOperationsByWorkOrder(int workOrderId, int userid)
+        public IActionResult GetWorksByWorkOrder(int workOrderId, int userid)
         {
             try
             {
-                _logger.Info(nameof(GetRelevantOperationsByWorkOrder));
+                _logger.Info(nameof(GetWorksByWorkOrder));
                 var operations = _rmaDbOperations.GetWorksByWorkOrder(workOrderId, userid);
                 return Ok(operations);
             }
@@ -36,7 +36,23 @@ namespace Germadent.WebApi.Controllers.Rms
                 return BadRequest(exception);
             }
         }
-        
+
+        [HttpGet("GetWorksInProgressByWorkOrder/{workOrderId}/{userId}")]
+        public IActionResult GetWorksInProgressByWorkOrder(int workOrderId, int userid)
+        {
+            try
+            {
+                _logger.Info(nameof(GetWorksByWorkOrder));
+                var operations = _rmaDbOperations.GetWorksInProgressByWorkOrder(workOrderId, userid);
+                return Ok(operations);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
         [HttpPost]
         [Route("StartWorks")]
         public IActionResult StartWorks(WorkDto[] works)
@@ -45,6 +61,23 @@ namespace Germadent.WebApi.Controllers.Rms
             {
                 _logger.Info(nameof(StartWorks));
                 _rmaDbOperations.StartWorks(works);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+        [HttpPost]
+        [Route("FinishWorks")]
+        public IActionResult FinishWorks(WorkDto[] works)
+        {
+            try
+            {
+                _logger.Info(nameof(FinishWorks));
+                _rmaDbOperations.FinishWorks(works);
                 return Ok();
             }
             catch (Exception exception)

@@ -5,7 +5,7 @@ namespace Germadent.Rms.App.ViewModels
 {
     public interface IMainViewModel
     {
-        IDelegateCommand OpenOrderCommand { get; }
+        IDelegateCommand BeginWorkByWorkOrderCommand { get; }
 
         OrderLiteViewModel SelectedOrder { get; }
 

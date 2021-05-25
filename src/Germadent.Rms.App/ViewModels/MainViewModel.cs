@@ -27,7 +27,8 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IUserManager _userManager;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
-        private readonly IOrderSummaryViewModel _orderSummaryViewModel;
+        private readonly IStartWorkListViewModel _startWorkListViewModel;
+        private readonly IFinishWorkListViewModel _finishWorkListViewModel;
         private readonly ISignalRClient _signalRClient;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
@@ -42,7 +43,8 @@ namespace Germadent.Rms.App.ViewModels
             IUserManager userManager,
             IShowDialogAgent dialogAgent,
             IOrdersFilterViewModel ordersFilterViewModel,
-            IOrderSummaryViewModel orderSummaryViewModel,
+            IStartWorkListViewModel startWorkListViewModel,
+            IFinishWorkListViewModel finishWorkListViewModel,
             ISignalRClient signalRClient)
         {
             _logger = logger;
@@ -51,7 +53,8 @@ namespace Germadent.Rms.App.ViewModels
             _userManager = userManager;
             _dialogAgent = dialogAgent;
             _ordersFilterViewModel = ordersFilterViewModel;
-            _orderSummaryViewModel = orderSummaryViewModel;
+            _startWorkListViewModel = startWorkListViewModel;
+            _finishWorkListViewModel = finishWorkListViewModel;
             _signalRClient = signalRClient;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
 
@@ -59,7 +62,8 @@ namespace Germadent.Rms.App.ViewModels
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
             _collectionView.Filter = Filter;
 
-            OpenOrderCommand = new DelegateCommand(x => OpenOrderCommandHandler(), x => CanOpenOrderCommandHandler());
+            BeginWorkByWorkOrderCommand = new DelegateCommand(BeginWorksByWorkOrderCommandHandler, CanBeginWorksByWorkOrderCommandHandler);
+            FinishWorkByWorkOrderCommand = new DelegateCommand(FinishWorkByWorkOrderCommandHandler, CanFinishWorksByWorkOrderCommandHandler);
             FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
@@ -114,7 +118,9 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        public IDelegateCommand OpenOrderCommand { get; }
+        public IDelegateCommand BeginWorkByWorkOrderCommand { get; }
+
+        public IDelegateCommand FinishWorkByWorkOrderCommand { get; }
 
         public IDelegateCommand FilterOrdersCommand { get; }
 
@@ -186,21 +192,39 @@ namespace Germadent.Rms.App.ViewModels
             //_printModule.Print(_rmaOperations.GetOrderById(SelectedOrder.Model.WorkOrderId));
         }
 
-        private bool CanOpenOrderCommandHandler()
+        private bool CanBeginWorksByWorkOrderCommandHandler()
         {
             return SelectedOrder != null;
         }
 
-        private void OpenOrderCommandHandler()
+        private void BeginWorksByWorkOrderCommandHandler()
         {
             using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
             {
-                _orderSummaryViewModel.Initialize(orderScope.Order);
-                if (_dialogAgent.ShowDialog<OrderSummaryWindow>(_orderSummaryViewModel) == false)
+                _startWorkListViewModel.Initialize(orderScope.Order);
+                if (_dialogAgent.ShowDialog<StartWorksWindow>(_startWorkListViewModel) == false)
                     return;
 
-                var works = _orderSummaryViewModel.GetWorks();
+                var works = _startWorkListViewModel.GetWorks();
                 _rmsServiceClient.StartWorks(works);
+            }
+        }
+
+        private bool CanFinishWorksByWorkOrderCommandHandler()
+        {
+            return SelectedOrder != null;
+        }
+
+        private void FinishWorkByWorkOrderCommandHandler()
+        {
+            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            {
+                _finishWorkListViewModel.Initialize(orderScope.Order);
+                if (_dialogAgent.ShowDialog<FinishWorksWindow>(_finishWorkListViewModel) == false)
+                    return;
+
+                var works = _finishWorkListViewModel.GetWorks();
+                _rmsServiceClient.FinishWorks(works);
             }
         }
 

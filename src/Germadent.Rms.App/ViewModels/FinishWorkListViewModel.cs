@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.PropertyGrid;
@@ -14,7 +16,7 @@ using Germadent.UI.Commands;
 
 namespace Germadent.Rms.App.ViewModels
 {
-    public class OrderSummaryViewModel : IOrderSummaryViewModel
+    public class FinishWorkListViewModel : IFinishWorkListViewModel
     {
         private readonly IPrintableOrderConverter _printableOrderConverter;
         private readonly IPropertyItemsCollector _propertyItemsCollector;
@@ -23,7 +25,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private readonly ICollectionView _propertiesView;
 
-        public OrderSummaryViewModel(IPrintableOrderConverter printableOrderConverter,
+        public FinishWorkListViewModel(IPrintableOrderConverter printableOrderConverter,
             IPropertyItemsCollector propertyItemsCollector,
             IRmsServiceClient rmsServiceClient)
         {
@@ -57,7 +59,7 @@ namespace Germadent.Rms.App.ViewModels
                 PropertyItems.Add(propertyItem);
             }
 
-            var works = _rmsServiceClient.GetWorksByWorkOrder(_order.WorkOrderId);
+            var works = _rmsServiceClient.GetWorksInProgressByWorkOrder(_order.WorkOrderId);
             Works.Clear();
             foreach (var technologyOperationByUserDto in works)
             {
@@ -67,10 +69,15 @@ namespace Germadent.Rms.App.ViewModels
 
         public WorkDto[] GetWorks()
         {
-            return Works
+            var works = Works
                 .Where(x => x.IsChecked)
                 .Select(x => x.ToDto())
                 .ToArray();
+
+            works.ForEach(x => x.WorkCompleted = DateTime.Now);
+            works.ForEach(x => x.WorkOrderId = _order.WorkOrderId);
+
+            return works;
         }
 
         private bool CanOkCommandHandler()

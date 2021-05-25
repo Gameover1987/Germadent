@@ -163,7 +163,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         var work = new WorkDto
                         {
                             WorkOrderId = reader["WorkOrderId"].ToInt(),
-                            ProductId = reader["ProductId"].ToInt(),
+                            ProductId = reader["ProductId"].ToIntOrNull(),
                             TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
                             TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
                             TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
@@ -174,7 +174,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
                             OperationCost = reader["OperationCost"].ToDecimal(),
                             WorkStarted = reader["WorkStarted"].ToDateTime(),
-                            WorkCompleted = reader["WorkCompleted"].ToDateTime()
+                            WorkCompleted = reader["WorkCompleted"].ToDateTimeOrNull()
                         };
                         worksCollection.Add(work);
                     }
@@ -186,6 +186,25 @@ namespace Germadent.WebApi.DataAccess.Rma
         }
 
         public void StartWorks(WorkDto[] works)
+        {
+            AddOrUpdateWorkList(works);
+
+            ChangeWorkOrderStatus(works.First().WorkOrderId, OrderStatus.InProgress);
+        }
+
+        public void FinishWorks(WorkDto[] works)
+        {
+            AddOrUpdateWorkList(works);
+
+            ChangeWorkOrderStatus(works.First().WorkOrderId, OrderStatus.Realization);
+        }
+
+        private void ChangeWorkOrderStatus(int workOrderId, OrderStatus status)
+        {
+
+        }
+
+        private void AddOrUpdateWorkList(WorkDto[] works)
         {
             var workOrderId = works.First().WorkOrderId;
             var worksJson = works.SerializeToJson(Formatting.Indented);
@@ -200,76 +219,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
                     command.Parameters.Add(new SqlParameter("@jsonWorklistString", SqlDbType.NVarChar)).Value = worksJson;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void StartWork(WorkDto work, int lastEditorId)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "AddWork";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
-                    command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId;
-                    command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
-                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
-                    command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
-                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
-                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
-                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = work.WorkStarted;
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = lastEditorId;
-                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void UpdateWork(WorkDto work, int lastEditorId)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "UpdateWork";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
-                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
-                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
-                    command.Parameters.Add(new SqlParameter("@workCompleted", SqlDbType.DateTime)).Value = work.WorkCompleted;
-                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = work.WorkStarted;
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = lastEditorId;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void DeleteWork(WorkDto work)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "UpdateWork";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
-                    command.Parameters.Add(new SqlParameter("@rowCountResult", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                     command.ExecuteNonQuery();
                 }

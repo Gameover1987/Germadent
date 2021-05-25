@@ -243,5 +243,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="works"></param>
         void StartWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Подтверждает выполнение работ по заказ-наряду
+        /// </summary>
+        /// <param name="works"></param>
+        void FinishWorks(WorkDto[] works);
     }
 }

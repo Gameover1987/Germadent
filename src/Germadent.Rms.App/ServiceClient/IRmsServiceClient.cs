@@ -13,9 +13,22 @@ namespace Germadent.Rms.App.ServiceClient
         WorkDto[] GetWorksByWorkOrder(int workOrderId);
 
         /// <summary>
+        /// Возвращает набор  выполняющихся работ по заказ-наряду
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <returns></returns>
+        WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId);
+
+        /// <summary>
         /// Запускает работу по заказ-наряду
         /// </summary>
-        /// <param name="work"></param>
-        void StartWorks(WorkDto[] work);
+        /// <param name="works"></param>
+        void StartWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Подтверждает выполнение работ по заказ-наряду
+        /// </summary>
+        /// <param name="works"></param>
+        void FinishWorks(WorkDto[] works);
     }
 }

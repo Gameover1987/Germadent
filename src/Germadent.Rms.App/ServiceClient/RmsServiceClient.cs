@@ -23,9 +23,19 @@ namespace Germadent.Rms.App.ServiceClient
             return ExecuteHttpGet<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetWorksByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
+        public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId)
+        {
+            return ExecuteHttpGet<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetWorksInProgressByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
+        }
+
         public void StartWorks(WorkDto[] works)
         {
             ExecuteHttpPost<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/StartWorks", works);
+        }
+
+        public void FinishWorks(WorkDto[] works)
+        {
+            ExecuteHttpPost<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/FinishWorks", works);
         }
 
         protected override bool CheckRunApplicationRight()

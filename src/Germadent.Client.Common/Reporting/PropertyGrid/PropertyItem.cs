@@ -18,5 +18,10 @@ namespace Germadent.Client.Common.Reporting.PropertyGrid
         /// Значение
         /// </summary>
         public string Value { get; set; }
+
+        public override string ToString()
+        {
+            return $"{DisplayName} {Value}";
+        }
     }
 }

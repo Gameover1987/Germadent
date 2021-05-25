@@ -3,11 +3,11 @@
 namespace Germadent.Rms.App.Views
 {
     /// <summary>
-    /// Interaction logic for OrderSummaryWindow.xaml
+    /// Interaction logic for StartWorksWindow.xaml
     /// </summary>
-    public partial class OrderSummaryWindow : Window
+    public partial class StartWorksWindow : Window
     {
-        public OrderSummaryWindow()
+        public StartWorksWindow()
         {
             InitializeComponent();
         }

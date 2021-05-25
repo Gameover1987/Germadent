@@ -43,6 +43,14 @@ namespace Germadent.Common.Extensions
             return DateTime.Parse(obj.ToString());
         }
 
+        public static DateTime? ToDateTimeOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToDateTime();
+        }
+
         public static bool ToBool(this object obj)
         {
             if (bool.TryParse(obj.ToString(), out var boolValue))

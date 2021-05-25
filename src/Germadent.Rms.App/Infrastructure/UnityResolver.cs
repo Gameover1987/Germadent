@@ -76,7 +76,8 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<IEnvironment, WpfEnvironment>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IMainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrderSummaryViewModel, OrderSummaryViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IStartWorkListViewModel, StartWorkListViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IFinishWorkListViewModel, FinishWorkListViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
 

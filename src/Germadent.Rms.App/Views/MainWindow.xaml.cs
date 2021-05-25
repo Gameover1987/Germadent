@@ -20,7 +20,7 @@ namespace Germadent.Rms.App.Views
         private void OnOrderRowDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var mainViewModel = (IMainViewModel)DataContext;
-            mainViewModel.OpenOrderCommand.TryExecute();
+            mainViewModel.BeginWorkByWorkOrderCommand.TryExecute();
         }
 
         private void MainWindow_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

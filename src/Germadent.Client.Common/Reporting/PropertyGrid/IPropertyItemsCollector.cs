@@ -27,12 +27,14 @@ namespace Germadent.Client.Common.Reporting.PropertyGrid
                     continue;
 
                 var propetyValue = propertyInfo.GetValue(obj);
+                if (propetyValue == null || propetyValue.ToString() == string.Empty)
+                    continue;
 
                 propertyItems.Add(new PropertyItem
                 {
                     DisplayName = propertyAttribute.DisplayName,
                     GroupName = propertyAttribute.GroupName,
-                    Value = propetyValue?.ToString()
+                    Value = propetyValue.ToString()
                 });
             }
 

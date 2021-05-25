@@ -10,9 +10,9 @@ using Germadent.Rms.App.ViewModels;
 
 namespace Germadent.Rms.App.Views.DesignMock
 {
-    public class DesignMockOrderSummaryViewModel : OrderSummaryViewModel
+    public class DesignMockStartWorkListViewModelViewModel : StartWorkListViewModel
     {
-        public DesignMockOrderSummaryViewModel() : base(new PrintableOrderConverter(), new PropertyItemsCollector(), new DesignMockRmsServiceClient())
+        public DesignMockStartWorkListViewModelViewModel() : base(new PrintableOrderConverter(), new PropertyItemsCollector(), new DesignMockRmsServiceClient())
         {
             Initialize(new OrderDto() { BranchType = BranchType.MillingCenter });
 
