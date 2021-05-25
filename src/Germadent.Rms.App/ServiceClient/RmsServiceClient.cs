@@ -18,9 +18,9 @@ namespace Germadent.Rms.App.ServiceClient
         {
         }
 
-        public TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId)
+        public WorkDto[] GetWorksByWorkOrder(int workOrderId)
         {
-            return ExecuteHttpGet<TechnologyOperationByUserDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetRelevantOperationsByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
+            return ExecuteHttpGet<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/GetWorksByWorkOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
         public void StartWorks(WorkDto[] works)

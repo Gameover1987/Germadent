@@ -41,7 +41,7 @@ namespace Germadent.Rms.App.ViewModels
 
         public ObservableCollection<PropertyItem> PropertyItems { get; } = new ObservableCollection<PropertyItem>();
 
-        public ObservableCollection<TechnologyOperationByUserViewModel> Operations { get; } = new ObservableCollection<TechnologyOperationByUserViewModel>();
+        public ObservableCollection<WorkViewModel> Works { get; } = new ObservableCollection<WorkViewModel>();
 
         public IDelegateCommand OkCommand { get; }
 
@@ -57,45 +57,25 @@ namespace Germadent.Rms.App.ViewModels
                 PropertyItems.Add(propertyItem);
             }
 
-            var operations = _rmsServiceClient.GetRelevantWorkListByWorkOrder(_order.WorkOrderId);
-            Operations.Clear();
-            foreach (var technologyOperationByUserDto in operations)
+            var works = _rmsServiceClient.GetWorksByWorkOrder(_order.WorkOrderId);
+            Works.Clear();
+            foreach (var technologyOperationByUserDto in works)
             {
-                Operations.Add(new TechnologyOperationByUserViewModel(technologyOperationByUserDto));
+                Works.Add(new WorkViewModel(technologyOperationByUserDto));
             }
         }
 
         public WorkDto[] GetWorks()
         {
-            var works = new List<WorkDto>();
-
-            var selectedOperations = Operations.Where(x => x.IsChecked).ToArray();
-            foreach (var operation in selectedOperations)
-            {
-                var technologyOperationByUser = operation.ToDto();
-                var work = new WorkDto()
-                {
-                    WorkOrderId = _order.WorkOrderId,
-                    EmployeeId = _rmsServiceClient.AuthorizationInfo.UserId,
-                    ProductId = technologyOperationByUser.ProductId,
-                    Quantity = technologyOperationByUser.ProductCount,
-                    Rate = technologyOperationByUser.Rate,
-                    TechnologyOperationId = technologyOperationByUser.Operation.TechnologyOperationId,
-                    UrgencyRatio = technologyOperationByUser.UrgencyRatio,
-                    TechnologyOperationName = technologyOperationByUser.Operation.Name,
-                    TechnologyOperationUserCode = technologyOperationByUser.Operation.UserCode,
-                    OperationCost = technologyOperationByUser.TotalCost,
-                    WorkStarted = DateTime.Now
-                };
-                works.Add(work);
-            }
-
-            return works.ToArray();
+            return Works
+                .Where(x => x.IsChecked)
+                .Select(x => x.ToDto())
+                .ToArray();
         }
 
         private bool CanOkCommandHandler()
         {
-            return Operations.Any(x => x.IsChecked);
+            return Works.Any(x => x.IsChecked);
         }
     }
 }

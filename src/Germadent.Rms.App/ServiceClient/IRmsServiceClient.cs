@@ -10,7 +10,7 @@ namespace Germadent.Rms.App.ServiceClient
         /// </summary>
         /// <param name="workOrderId"></param>
         /// <returns></returns>
-        TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId);
+        WorkDto[] GetWorksByWorkOrder(int workOrderId);
 
         /// <summary>
         /// Запускает работу по заказ-наряду

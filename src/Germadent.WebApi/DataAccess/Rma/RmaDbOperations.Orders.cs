@@ -112,10 +112,8 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public TechnologyOperationByUserDto[] GetRelevantOperationsByWorkOrder(int workOrderId, int userId)
+        public WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId)
         {
-            var currentUser = _umcDbOperations.GetUsers(userId).First();
-
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -123,28 +121,66 @@ namespace Germadent.WebApi.DataAccess.Rma
                 var cmdText = string.Format("select * from GetRelevantOperations({0},{1})", userId, workOrderId);
                 using (var command = new SqlCommand(cmdText, connection))
                 {
-                    var operations = new List<TechnologyOperationByUserDto>();
+                    var operations = new List<WorkDto>();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var operation = new TechnologyOperationByUserDto();
-                            operation.User = currentUser;
-                            operation.Operation = new TechnologyOperationDto
+                            var work = new WorkDto
                             {
+                                UserFullName = reader["UserFullName"].ToString(),
+                                UserId = reader["UserId"].ToInt(),
+                                OperationCost = reader["OperationCost"].ToDecimal(),
+                                ProductId = reader["ProductId"].ToIntOrNull(),
+                                Quantity = reader["ProductCount"].ToInt(),
+                                Rate = reader["Rate"].ToDecimal(),
                                 TechnologyOperationId = reader["TechnologyOperationID"].ToInt(),
-                                Name = reader["TechnologyOperationName"].ToString(),
-                                UserCode = reader["TechnologyOperationUserCode"].ToString(),
+                                TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
+                                TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
                             };
-                            operation.UrgencyRatio = reader["UrgencyRatio"].ToFloat();
-                            operation.Rate = reader["Rate"].ToDecimal();
-                            operation.ProductCount = reader["ProductCount"].ToInt();
-                            operation.ProductId = reader["ProductId"].ToIntOrNull();
-                            operations.Add(operation);
+                            operations.Add(work);
                         }
                     }
 
                     return operations.ToArray();
+                }
+            }
+        }
+
+        public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId)
+        {
+            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1})", workOrderId, userId);
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    var reader = command.ExecuteReader();
+                    var worksCollection = new List<WorkDto>();
+                    while (reader.Read())
+                    {
+                        var work = new WorkDto
+                        {
+                            WorkOrderId = reader["WorkOrderId"].ToInt(),
+                            ProductId = reader["ProductId"].ToInt(),
+                            TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
+                            TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
+                            TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
+                            UserId = reader["UserId"].ToInt(),
+                            UserFullName = reader["UserFullName"].ToString(),
+                            Rate = reader["Rate"].ToDecimal(),
+                            Quantity = reader["Quantity"].ToInt(),
+                            UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
+                            OperationCost = reader["OperationCost"].ToDecimal(),
+                            WorkStarted = reader["WorkStarted"].ToDateTime(),
+                            WorkCompleted = reader["WorkCompleted"].ToDateTime()
+                        };
+                        worksCollection.Add(work);
+                    }
+                    reader.Close();
+
+                    return worksCollection.ToArray();
                 }
             }
         }
@@ -184,7 +220,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
                     command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId;
                     command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
-                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.EmployeeId;
+                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
                     command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
                     command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
                     command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
@@ -572,43 +608,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     return toothDtoCollection;
                 }
             }
-        }
-        private WorkDto[] GetWorks (int workOrderId, int employeeId)
-        {
-            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1})", workOrderId, employeeId);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    var worksCollection = new List<WorkDto>();
-                    while (reader.Read())
-                    {
-                        var work = new WorkDto
-                        {
-                            WorkOrderId = reader["WorkOrderId"].ToInt(),
-                            ProductId = reader["ProductId"].ToInt(),
-                            TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
-                            TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
-                            TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
-                            EmployeeId = reader["EmployeeId"].ToInt(),
-                            EmployeeFullName = reader["EmployeeFullName"].ToString(),
-                            Rate = reader["Rate"].ToDecimal(),
-                            Quantity = reader["Quantity"].ToInt(),
-                            UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
-                            OperationCost = reader["OperationCost"].ToDecimal(),
-                            WorkStarted = reader["WorkStarted"].ToDateTime(),
-                            WorkCompleted = reader["WorkCompleted"].ToDateTime()
-                        };
-                        worksCollection.Add(work);
-                    }
-                    reader.Close();
-
-                    return worksCollection.ToArray();
-                }
-            }            
         }
     }
 }

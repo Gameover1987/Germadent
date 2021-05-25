@@ -21,13 +21,13 @@ namespace Germadent.WebApi.Controllers.Rms
             _logger = logger;
         }
 
-        [HttpGet("GetRelevantOperationsByWorkOrder/{workOrderId}/{userId}")]
+        [HttpGet("GetWorksByWorkOrder/{workOrderId}/{userId}")]
         public IActionResult GetRelevantOperationsByWorkOrder(int workOrderId, int userid)
         {
             try
             {
                 _logger.Info(nameof(GetRelevantOperationsByWorkOrder));
-                var operations = _rmaDbOperations.GetRelevantOperationsByWorkOrder(workOrderId, userid);
+                var operations = _rmaDbOperations.GetWorksByWorkOrder(workOrderId, userid);
                 return Ok(operations);
             }
             catch (Exception exception)
@@ -52,7 +52,6 @@ namespace Germadent.WebApi.Controllers.Rms
                 _logger.Error(exception);
                 return BadRequest(exception);
             }
-
         }
     }
 }

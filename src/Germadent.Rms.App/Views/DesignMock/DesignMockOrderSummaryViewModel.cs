@@ -16,7 +16,7 @@ namespace Germadent.Rms.App.Views.DesignMock
         {
             Initialize(new OrderDto() { BranchType = BranchType.MillingCenter });
 
-            foreach (var technologyOperationByUserViewModel in Operations)
+            foreach (var technologyOperationByUserViewModel in Works)
             {
                 technologyOperationByUserViewModel.IsChecked = true;
             }

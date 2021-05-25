@@ -9,107 +9,14 @@ namespace Germadent.Rms.App.Views.DesignMock
 {
     public class DesignMockRmsServiceClient : IRmsServiceClient
     {
-        public TechnologyOperationByUserDto[] GetRelevantWorkListByWorkOrder(int workOrderId)
+        public WorkDto[] GetWorksByWorkOrder(int workOrderId)
         {
-            return new TechnologyOperationByUserDto[]
-            {
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        UserCode = "001",
-                        Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch Windows to FreeBSD"
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch Windows to FreeBSD"
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch Windows to FreeBSD"
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch Windows to FreeBSD"
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, Patch KDE 2.0 to FreeBSD, "
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-                new TechnologyOperationByUserDto()
-                {
-                    Operation = new TechnologyOperationDto
-                    {
-                        Name = "Patch Windows to FreeBSD"
-                    },
-                    ProductCount = 2,
-                    Rate = new decimal(1.05), UrgencyRatio = 1.33f
-                },
-            };
+            return new WorkDto[0];
         }
 
         public void StartWorks(WorkDto[] work)
         {
-            
+
         }
 
 

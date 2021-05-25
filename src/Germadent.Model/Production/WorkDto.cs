@@ -38,12 +38,12 @@ namespace Germadent.Model.Production
         /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
-        public int EmployeeId { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
         /// ФИО исполнителя
         /// </summary>
-        public string EmployeeFullName { get; set; }
+        public string UserFullName { get; set; }
 
         /// <summary>
         /// Расценка за 1 операцию

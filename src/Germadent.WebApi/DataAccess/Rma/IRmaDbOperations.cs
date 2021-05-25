@@ -228,32 +228,20 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="workOrderId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        TechnologyOperationByUserDto[] GetRelevantOperationsByWorkOrder(int workOrderId, int userId);
+        WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId);
+
+        /// <summary>
+        /// Возвращает набор технологических операций по заказ-наряду, уже взятых в работу пользователем
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId);
 
         /// <summary>
         /// Запускает работы по заказ-наряду
         /// </summary>
         /// <param name="works"></param>
         void StartWorks(WorkDto[] works);
-
-        /// <summary>
-        /// Запускает работу по заказ-наряду
-        /// </summary>
-        /// <param name="work"></param>
-        /// <param name="lastEditorId"></param>
-        void StartWork(WorkDto work, int lastEditorId);
-
-        /// <summary>
-        /// Редактирует / закрывает работу по заказ-наряду
-        /// </summary>
-        /// <param name="work"></param>
-        /// <param name="lastEditorId"></param>
-        void UpdateWork(WorkDto work, int lastEditorId);
-
-        /// <summary>
-        /// Удаляет работу из заказ-наряда
-        /// </summary>
-        /// <param name="work"></param>
-        void DeleteWork(WorkDto work);
     }
 }
