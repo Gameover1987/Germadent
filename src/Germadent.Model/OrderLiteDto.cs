@@ -26,6 +26,8 @@ namespace Germadent.Model
 
         public OrderStatus Status { get; set; }
 
+        public DateTime StatusChanged { get; set; }
+
         public UserDto LockedBy { get; set; }
 
         public DateTime? LockDate { get; set; }

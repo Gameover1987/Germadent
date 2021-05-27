@@ -462,6 +462,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     orderLiteDto.CreatorFullName = reader["CreatorFullName"].ToString();
                     
                     orderLiteDto.Status = (OrderStatus)reader[nameof(OrderLiteEntity.Status)].ToInt();
+                    orderLiteDto.StatusChanged = DateTime.Parse(reader["StatusChangeDateTime"].ToString());
 
                     var lockedBy = reader["LockedBy"];
                     if (lockedBy != DBNull.Value)

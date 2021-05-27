@@ -143,6 +143,9 @@
                 <DataGridTextColumn Header="Статус" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnStatus"
                                     Binding="{Binding Model.Status, Converter={StaticResource OrderStatusToStringConverter}}"/>
+                <DataGridTextColumn Header="Статус изменён" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnStatusChanged"
+                                    Binding="{Binding Model.StatusChanged, StringFormat='dd.MM.yyyy HH:mm'}"/>
                 <DataGridTextColumn Header="Блокировка" ElementStyle="{StaticResource DataGridTextBlockStyle}" MinWidth="100" Width="100"
                                     helpers:DataGridColumnNameHelper.Name="General_LockInfo"
                                     Binding="{Binding LockInfo}"/>
