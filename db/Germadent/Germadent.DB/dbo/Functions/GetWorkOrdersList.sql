@@ -41,8 +41,9 @@ RETURN
 		, swozero.StatusChangeDateTime as Created
 		, se.Status
 		, se.StatusName
---		, currentStatus.StatusChangeDateTime
+		, currentStatus.StatusChangeDateTime
 		, wo.FlagWorkAccept
+		, wo.FlagStl
 		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
 		, occ.UserID AS LockedBy

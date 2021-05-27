@@ -1,14 +1,14 @@
 ﻿-- =============================================
 -- Author:		Алексей Колосенок
--- Create date: 22.02.2020
+-- Create date: 24.05.2020
 -- Description:	Изменение статуса заказ-наряда
 -- =============================================
 CREATE PROCEDURE [dbo].[ChangeStatusWorkOrder] 
 	
 	@workOrderId int,
-	@status int,
 	@userId int,
-	@remark nvarchar(100),
+	@technologyOperationId int,
+	@statusNext int output,
 	@statusChangeDateTime datetime output
 
 AS
@@ -16,19 +16,46 @@ BEGIN
 
 	SET NOCOUNT, XACT_ABORT ON;
 
-	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
+	DECLARE
+	@currentStatusWO int
+
+	-- Определяем текущий статус заказ-наряда
+	SELECT @currentStatusWO = Status
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderId AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
+																	FROM dbo.StatusList
+																	WHERE WorkOrderID = @workOrderId)
+
+	-- Если заказ-наряд уже закрыт и пользователь не админ - никаких дальнейших действий
+	IF @currentStatusWO = 100
+		AND (SELECT RoleID FROM dbo.UsersAndRoles WHERE UserID = @userId) != 1
 		RETURN
 		
 	ELSE BEGIN
 
 		BEGIN TRAN
+
+		-- Вычисляем следующий статус после выполнения очередной технологической операции
+		SELECT @statusNext = StatusTo
+		FROM StatusRoute
+		WHERE TechnologyOperationID = @technologyOperationId
+		
+		IF @statusNext IS NULL BEGIN		
+			SELECT @statusNext = StatusTo
+			FROM StatusRoute
+			WHERE StatusFrom = @currentStatusWO
+				AND EmployeePositionID = (SELECT EmployeePositionID
+											FROM dbo.TechnologyOperations
+											WHERE TechnologyOperationID = @technologyOperationId)
+				AND TechnologyOperationID IS NULL
+		END
+
 		SET @statusChangeDateTime = GETDATE()
 
 		INSERT INTO dbo.StatusList
-		(WorkOrderID, Status, StatusChangeDateTime, UserID, Remark)
+		(WorkOrderID, Status, StatusChangeDateTime, UserID)
 		VALUES
-		(@workOrderId, @status, @statusChangeDateTime, @userId, @remark)
+		(@workOrderId, @statusNext, @statusChangeDateTime, @userId)
 		COMMIT
 
 	END

@@ -21,9 +21,10 @@ RETURN
 			teo.TechnologyOperationUserCode, 
 			teo.TechnologyOperationName, 
 			u.UserID, 
-			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS EmployeeFullName,
+			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName,
 			wl.Rate,
 			wl.Quantity,
+			wo.UrgencyRatio,
 			wl.OperationCost, 
 			wl.WorkStarted, 
 			wl.WorkCompleted
@@ -31,8 +32,10 @@ RETURN
 	FROM dbo.WorkList wl
 		INNER JOIN dbo.TechnologyOperations teo ON wl.TechnologyOperationID = teo.TechnologyOperationID
 		INNER JOIN dbo.Users u ON wl.EmployeeID = u.UserID
-		LEFT JOIN dbo.Products p ON wl.ProductID = p.ProductID
+		LEFT JOIN dbo.Products p ON wl.ProductID = p.ProductID,
+		dbo.WorkOrder wo
 
-	WHERE wl.WorkOrderID = ISNULL(@workOrderId, wl.WorkOrderID)
+	WHERE wl.WorkOrderID = wo.WorkOrderID
+		AND wl.WorkOrderID = ISNULL(@workOrderId, wl.WorkOrderID)
 		AND wl.EmployeeID = ISNULL(@userId, wl.EmployeeID)
 )

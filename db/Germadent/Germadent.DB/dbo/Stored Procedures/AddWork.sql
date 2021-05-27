@@ -38,12 +38,17 @@ BEGIN
 			REVERT
 		END
 
+		DECLARE @statusNext int,
+				@statusChangeDateTime datetime
+
 		INSERT INTO dbo.WorkList
 		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeID, Rate,		Quantity, OperationCost, WorkStarted,	Remark, LastEditor)
 		VALUES
 		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, GETDATE(), @remark, @userId)
 
 		SET @workId = @@ROWCOUNT
+
+		EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
 
 	COMMIT
 
