@@ -3,13 +3,12 @@
 -- Create date: 17.05.2021
 -- Description:	Редактирование работы в заказ-наряде
 -- =============================================
-CREATE PROCEDURE UpdateWork 
+CREATE PROCEDURE [dbo].[UpdateWork] 
 	
 	@workId int,
 	@workOrderId int,
 	@quantity int,
 	@operationCost money,
-	@workCompleted datetime,
 	@remark nvarchar(250),
 	@userId int
 	
@@ -27,7 +26,6 @@ BEGIN
 		UPDATE dbo.WorkList
 		SET	Quantity = @quantity
 		, OperationCost = @operationCost
-		, WorkCompleted = @workCompleted
 		, Remark = @remark
 		, LastEditor = @userId
 

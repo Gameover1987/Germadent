@@ -41,14 +41,24 @@ BEGIN
 		DECLARE @statusNext int,
 				@statusChangeDateTime datetime
 
+		-- Если в заказ-наряде нет подобных работ - переводим статус
+		IF NOT EXISTS
+			(SELECT 1
+			FROM dbo.TechnologyOperations
+			WHERE TechnologyOperationID = @technologyOperationId
+				AND EmployeePositionID IN (SELECT teop.EmployeePositionID
+											FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
+											WHERE wl.WorkOrderID = @workOrderId
+												AND wl.TechnologyOperationID = @technologyOperationId))
+			EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
+		
+		-- После этого добавляем работу в список
 		INSERT INTO dbo.WorkList
 		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeID, Rate,		Quantity, OperationCost, WorkStarted,	Remark, LastEditor)
 		VALUES
-		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, GETDATE(), @remark, @userId)
+		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, GETDATE(), @remark, @employeeId)
 
-		SET @workId = @@ROWCOUNT
-
-		EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
+		SET @workId = SCOPE_IDENTITY()
 
 	COMMIT
 

@@ -30,6 +30,7 @@ RETURN
 	, c.CustomerName
 	, wo.PatientFullName
 	, p.ProductName
+	, teop.TechnologyOperationUserCode
 	, teop.TechnologyOperationName
 	, wl.Rate
 	, wl.Quantity
@@ -45,7 +46,7 @@ RETURN
 		INNER JOIN dbo.TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
 		LEFT JOIN Products p ON wl.ProductID = p.ProductID
-	WHERE wl.EmployeeID = @userId
+	WHERE wl.EmployeeID = ISNULL(@userId, wl.EmployeeID)
 		AND ((wo.BranchTypeID = 2 AND currentStatus.Status = 100) OR (wo.BranchTypeID = 1 AND currentStatus.Status > 80))
 		AND wl.WorkStarted BETWEEN ISNULL(@dateStartedFrom, '17530101') AND ISNULL(@dateStartedTo, '99991231')
 		AND wl.WorkCompleted BETWEEN ISNULL(@dateCompletedFrom, '17530101') AND ISNULL(@dateCompletedTo, '99991231')

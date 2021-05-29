@@ -12,17 +12,34 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	-- Вытаскиваем все доступные для данного специалиста технологические операции вместе с актуальными расценками с учётом совмещения должностей	
-	WITH teop (UserID, UserFullName, 
-				EmployeePositionName, TechnologyOperationID, TechnologyOperationUserCode, TechnologyOperationName, QualifyingRank, Rate) AS (
-		SELECT u.UserID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName,
-				ep.EmployeePositionName, t.TechnologyOperationID, t.TechnologyOperationUserCode, t.TechnologyOperationName, epc.QualifyingRank, r.Rate
+	-- Вытаскиваем все доступные для данного специалиста технологические операции вместе с актуальными расценками с учётом совмещения должностей	 и наличия премиум-расценки и премиум-цены
+	WITH teop (UserID, 
+				UserFullName, 
+				EmployeePositionName, 
+				TechnologyOperationID, 
+				TechnologyOperationUserCode, 
+				TechnologyOperationName, 
+				QualifyingRank, 
+				Rate) AS (
+		SELECT u.UserID, 
+				CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName,
+				ep.EmployeePositionName, 
+				t.TechnologyOperationID, 
+				t.TechnologyOperationUserCode, 
+				t.TechnologyOperationName, 
+				epc.QualifyingRank, 
+				IIF(prem.Rate IS NULL OR (SELECT FlagStl FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 1, r.Rate, prem.Rate) AS Rate
 		FROM dbo.EmployeePositionsCombination epc
 			INNER JOIN dbo.EmployeePositions ep ON epc.EmployeePositionID = ep.EmployeePositionID
 			INNER JOIN dbo.TechnologyOperations t ON ep.EmployeePositionID = t.EmployeePositionID
-			INNER JOIN dbo.Rates r ON t.TechnologyOperationID = r.TechnologyOperationID AND epc.QualifyingRank = r.QualifyingRank
+			INNER JOIN dbo.Rates r ON t.TechnologyOperationID = r.TechnologyOperationID 
+				AND epc.QualifyingRank = r.QualifyingRank
 			INNER JOIN dbo.Users u ON epc.EmployeeID = u.UserID
-		WHERE epc.EmployeeID = @userId --8 --
+			LEFT JOIN dbo.Rates prem ON t.TechnologyOperationID = prem.TechnologyOperationID -- цепляем премиум-расценки
+				AND prem.QualifyingRank = 4 
+				AND epc.QualifyingRank = 3 
+				AND GETDATE() BETWEEN ISNULL(prem.DateBeginning, '17530101') AND ISNULL(prem.DateEnd, '99991231')
+		WHERE epc.EmployeeID = @userId
 			AND GETDATE() BETWEEN ISNULL(r.DateBeginning, '17530101') AND ISNULL(r.DateEnd, '99991231')),
 	
 	-- Из зубной карты заказ-наряда тащим пользовательские коды ценовых позиций и коды изделий. Группируем по изделиям, считаем количество
