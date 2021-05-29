@@ -22,8 +22,8 @@ namespace Germadent.Model
         [Description("В работе")]
         InProgress = 9,
 
-        [Description("Контроль")]
-        Control = 80,
+        [Description("Контроль качества")]
+        QualityControl = 80,
 
         [Description("Реализация")]
         Realization = 90,
@@ -66,7 +66,8 @@ namespace Germadent.Model
                 PeriodBegin = now.AddDays(-120),
                 PeriodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59),
                 MillingCenter = true,
-                Laboratory = true
+                Laboratory = true,
+                Statuses = Enum.GetValues<OrderStatus>()
             };
         }
     }

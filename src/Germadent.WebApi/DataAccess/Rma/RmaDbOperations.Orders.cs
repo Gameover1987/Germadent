@@ -212,7 +212,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             var worksInProgress = GetWorksInProgressByWorkOrder(workOrderId, userId);
             if (!worksInProgress.Any())
             {
-                return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.Control);
+                return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.QualityControl);
             }
 
             return null;
@@ -517,11 +517,14 @@ namespace Germadent.WebApi.DataAccess.Rma
                         command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
                     }
 
+                    var statusesJson = filter.Statuses.Select(x => new {StatusNumber = (int)x}).ToArray().SerializeToJson(Formatting.Indented);
+
                     command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@createDateFrom", SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@jsonStringStatus", SqlDbType.NVarChar)).Value = statusesJson;
                     command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
 
                     return GetOrderLiteCollectionFromReader(command, users);
@@ -531,7 +534,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private string GetFilterCommandText(OrdersFilter filter)
         {
-            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, default, default, default)";
+            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, default, default, @jsonStringStatus)";
             var cmdTextAdditional = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
 
             if (filter.Materials.Length == 0)

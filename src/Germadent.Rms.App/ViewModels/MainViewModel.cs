@@ -240,7 +240,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanRealizeWorkOrderCommandHandler()
         {
-            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.Control;
+            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.QualityControl;
         }
 
         private void RealizeWorkOrderCommandHandler()

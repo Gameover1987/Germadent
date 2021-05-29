@@ -16,6 +16,12 @@ namespace Germadent.Rma.App.Views.DesignMock
             Customer = "Какой то заказчик";
             Doctor = "Какой то сотрудник";
             Patient = "Какой то пациент";
+
+            ShowCreated = true;
+            ShowInProgress = true;
+            ShowQualityControl = true;
+            ShowRealization = true;
+            ShowClosed = true;
         }
     }
 }
