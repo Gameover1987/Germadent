@@ -7,6 +7,7 @@ using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.Model.Rights;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.Entities;
@@ -73,6 +74,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             entity.Password = reader[nameof(entity.Password)].ToString();
                             entity.RoleName = reader[nameof(entity.RoleName)].ToString();
                             entity.RoleId = reader[nameof(entity.RoleId)].ToInt();
+                            entity.QualifyingRank = reader["QualifyingRank"].ToIntOrNull();
+                            entity.EmployeePositionId = reader["EmployeePositionId"].ToIntOrNull();
 
                             userAndRolesEntities.Add(entity);
                         }
@@ -83,6 +86,19 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     foreach (var grouping in groupings)
                     {
                         var userDto = new UserDto();
+
+                        userDto.Positions = grouping
+                            .Select(x => new {x.UserId, x.EmployeePositionId, x.QualifyingRank})
+                            .Where(x => x.EmployeePositionId != null)
+                            .Distinct()
+                            .Select(x => new EmployeePositionDto
+                            {
+                                UserId = x.UserId, 
+                                EmployeePosition = (EmployeePosition)x.EmployeePositionId,
+                                QualifyingRank = x.QualifyingRank.Value
+                            })
+                            .ToArray();
+
                         userDto.UserId = grouping.First().UserId;
                         userDto.Description = grouping.First().Description;
                         userDto.FirstName = grouping.First().FirstName;
@@ -112,7 +128,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto GetUserById(int id)
         {
-            return GetUsers(id).FirstOrDefault();
+            var userDtos = GetUsers(id);
+            return userDtos.FirstOrDefault();
         }
 
         public UserDto AddUser(UserDto userDto)

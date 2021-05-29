@@ -48,6 +48,10 @@ namespace Germadent.WebApi.Entities
         public int RoleId { get; set; }
 
         public string RoleName { get; set; }
+
+        public int? EmployeePositionId { get; set; }
+
+        public int? QualifyingRank { get; set; }
     }
 
     public class RoleAndRightEntity

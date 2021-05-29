@@ -340,10 +340,24 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                     roleViewModel.IsChecked = selectedRoleIds.Contains(roleViewModel.RoleId);
                 Roles.Add(roleViewModel);
             }
-            
+
+            _isModeller = false;
+            var modellerInfo = user.Positions.FirstOrDefault(x => x.EmployeePosition == EmployeePosition.Modeller);
+            if (modellerInfo != null)
+            {
+                _isModeller = true;
+                _modellerQualifyingRank = modellerInfo.QualifyingRank;
+            }
+
+            _isTechnic = false;
+            var technicInfo  = user.Positions.FirstOrDefault(x => x.EmployeePosition == EmployeePosition.Technic);
+            if (technicInfo != null)
+            {
+                _isTechnic = true;
+                _technicQualifyingRank = technicInfo.QualifyingRank;
+            }
+
             _isAdmin = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Admin);
-            _isModeller = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Modeller);
-            _isTechnic = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Technic);
             _isOperator = user.Positions.Any(x => x.EmployeePosition == EmployeePosition.Operator);
 
             OnPropertyChanged();
