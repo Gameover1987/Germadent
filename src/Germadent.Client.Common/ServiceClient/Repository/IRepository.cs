@@ -41,6 +41,8 @@ namespace Germadent.Client.Common.ServiceClient.Repository
 
         protected void OnRepositoryChanged(object sender, RepositoryChangedEventArgs<T> e)
         {
+            _items = GetItems();
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Changed?.Invoke(sender, e);
