@@ -20,6 +20,9 @@
     <Compile Update="Views\ResponsiblePersonCatalogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SalaryCalculationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\TechnologyOperation\AddRateWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +64,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ResponsiblePersonCatalogWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SalaryCalculationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TechnologyOperation\AddRateWindow.xaml">

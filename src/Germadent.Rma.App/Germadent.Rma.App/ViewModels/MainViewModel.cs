@@ -17,6 +17,7 @@ using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Properties;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.Salary;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
@@ -45,6 +46,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IUserSettingsManager _userSettingsManager;
         private readonly IClipboardHelper _clipboardHelper;
         private readonly ISignalRClient _signalRClient;
+        private readonly ISalaryCalculationViewModel _salaryCalculationViewModel;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -66,7 +68,8 @@ namespace Germadent.Rma.App.ViewModels
             IUserManager userManager,
             IUserSettingsManager userSettingsManager,
             IClipboardHelper clipboardHelper,
-            ISignalRClient signalRClient)
+            ISignalRClient signalRClient,
+            ISalaryCalculationViewModel salaryCalculationViewModel)
         {
             _rmaServiceClient = rmaServiceClient;
             _environment = environment;
@@ -82,6 +85,7 @@ namespace Germadent.Rma.App.ViewModels
             _userSettingsManager = userSettingsManager;
             _clipboardHelper = clipboardHelper;
             _signalRClient = signalRClient;
+            _salaryCalculationViewModel = salaryCalculationViewModel;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
 
             SelectedOrder = Orders.FirstOrDefault();
@@ -97,6 +101,7 @@ namespace Germadent.Rma.App.ViewModels
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
             ShowTechnologyOperationsEditorCommand = new DelegateCommand(ShowTechnologyOperationsEditorCommandHandler, CanShowTechnologyOperationsEditorCommandHandler);
+            ShowSalaryCalculationCommand = new DelegateCommand(ShowSalaryCalculationCommandHandler, CanShowSalaryCalculationCommandHandler);
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
@@ -105,8 +110,8 @@ namespace Germadent.Rma.App.ViewModels
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
             _collectionView.Filter = Filter;
 
-
             CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
+            CanCalculateSalary = _userManager.HasRight(RmaUserRights.SalaryCalculation);
         }
 
         public string Title
@@ -120,6 +125,8 @@ namespace Germadent.Rma.App.ViewModels
         public bool CanViewPriceList { get; }
 
         public bool CanViewTechnologyOperations { get; } = true;
+
+        public bool CanCalculateSalary { get; } = true;
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -176,6 +183,8 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand ShowPriceListEditorCommand { get; }
 
         public IDelegateCommand ShowTechnologyOperationsEditorCommand { get; }
+
+        public IDelegateCommand ShowSalaryCalculationCommand { get; }
 
         public IDelegateCommand LogOutCommand { get; }
 
@@ -442,6 +451,16 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowTechnologyOperationsEditorCommandHandler()
         {
             _dialogAgent.ShowDialog<TechnologyOperationsEditorWindow>(_technologyOperationsEditorViewModel);
+        }
+
+        private bool CanShowSalaryCalculationCommandHandler()
+        {
+            return CanCalculateSalary;
+        }
+
+        private void ShowSalaryCalculationCommandHandler()
+        {
+            _dialogAgent.ShowDialog<SalaryCalculationWindow>(_salaryCalculationViewModel);
         }
 
         private void LogOutCommandHandler()

@@ -20,5 +20,8 @@
 
         [ApplicationRight("Редактирование прайслистов")]
         public const string EditPriceList = "Germadent.Rma.EditPriceList";
+
+        [ApplicationRight("Расчет заработной платы")]
+        public const string SalaryCalculation = "Germadent.Rma.SalaryCalculation";
     }
 }

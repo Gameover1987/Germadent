@@ -18,6 +18,7 @@ using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.Salary;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
@@ -122,6 +123,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<ITechnologyOperationsEditorViewModel, TechnologyOperationsEditorViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IAddTechnologyOperationViewModel, AddTechnologyOperationViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IAddRateViewModel, AddRateViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ISalaryCalculationViewModel, SalaryCalculationViewModel>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterCommonComponents()

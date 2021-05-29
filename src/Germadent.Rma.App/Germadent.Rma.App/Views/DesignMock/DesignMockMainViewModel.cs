@@ -127,7 +127,8 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockUserManager(),
                 new DesignMockUserSettingsManager(),
                 new ClipboardHelper(),
-                new DesignMockSignalRClient())
+                new DesignMockSignalRClient(),
+                new DesignMockSalaryCalculationViewModel())
         {
         }
     }

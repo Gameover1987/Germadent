@@ -122,7 +122,7 @@
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
 
-            <TextBlock Text="Работа со справочниками" VerticalAlignment="Center" FontSize="10" Margin="0,12,0,0"/>
+            <TextBlock Text="Работа со справочниками" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"/>
             <Button Content="Заказчики" Margin="0,6,0,0"
                     Command="{Binding ShowCustomersDictionaryCommand}"/>
             <Button Content="Ответственные лица" Margin="0,6,0,0"
@@ -133,6 +133,13 @@
             <Button Content="Технологические операции" Margin="0,6,0,0"
                     Visibility="{Binding CanViewTechnologyOperations, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding ShowTechnologyOperationsEditorCommand}"/>
+
+
+            <TextBlock Text="Функции руководителя" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"
+                       Visibility="{Binding CanCalculateSalary, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Button Content="Расчет ЗП" Margin="0,6,0,0"
+                    Visibility="{Binding CanCalculateSalary, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Command="{Binding ShowSalaryCalculationCommand}"/>
         </StackPanel>
 
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"
