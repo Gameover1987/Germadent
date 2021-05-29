@@ -57,6 +57,7 @@ namespace Germadent.Rms.App.ViewModels
             _finishWorkListViewModel = finishWorkListViewModel;
             _signalRClient = signalRClient;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
+            _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -199,7 +200,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private void BeginWorksByWorkOrderCommandHandler()
         {
-            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
             {
                 _startWorkListViewModel.Initialize(orderScope.Order);
                 if (_dialogAgent.ShowDialog<StartWorksWindow>(_startWorkListViewModel) == false)
@@ -217,7 +218,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private void FinishWorkByWorkOrderCommandHandler()
         {
-            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
             {
                 _finishWorkListViewModel.Initialize(orderScope.Order);
                 if (_dialogAgent.ShowDialog<FinishWorksWindow>(_finishWorkListViewModel) == false)
@@ -246,24 +247,31 @@ namespace Germadent.Rms.App.ViewModels
 
         private void SignalRClientOnWorkOrderLockedOrUnlocked(object? sender, OrderLockedEventArgs e)
         {
-            var orderLiteViewModel = Orders.FirstOrDefault(x => x.Model.WorkOrderId == e.Info.WorkOrderId);
+            var orderLiteViewModel = Orders.FirstOrDefault(x => x.WorkOrderId == e.Info.WorkOrderId);
             if (orderLiteViewModel == null)
                 return;
 
-            var model = orderLiteViewModel.Model;
-
             if (e.Info.IsLocked)
             {
-                model.LockDate = e.Info.OccupancyDateTime;
-                model.LockedBy = e.Info.User;
+                orderLiteViewModel.LockDate = e.Info.OccupancyDateTime;
+                orderLiteViewModel.LockedBy = e.Info.User;
             }
             else
             {
-                model.LockDate = null;
-                model.LockedBy = null;
+                orderLiteViewModel.LockDate = null;
+                orderLiteViewModel.LockedBy = null;
             }
+        }
 
-            orderLiteViewModel.Update(model);
+        private void SignalRClientOnWorkOrderStatusChanged(object? sender, OrderStatusChangedEventArgs e)
+        {
+            var workOrder = Orders.FirstOrDefault(x => x.WorkOrderId == e.WorkOrderId);
+            if (workOrder == null)
+                return;
+
+            workOrder.Status = e.Status;
+            workOrder.StatusChanged = e.StatusChanged;
+
         }
     }
 }

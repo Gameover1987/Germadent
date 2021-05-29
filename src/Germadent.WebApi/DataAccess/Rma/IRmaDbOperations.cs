@@ -242,12 +242,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Запускает работы по заказ-наряду
         /// </summary>
         /// <param name="works"></param>
-        void StartWorks(WorkDto[] works);
+        OrderStatusNotificationDto StartWorks(WorkDto[] works);
 
         /// <summary>
         /// Подтверждает выполнение работ по заказ-наряду
         /// </summary>
         /// <param name="works"></param>
-        void FinishWorks(WorkDto[] works);
+        OrderStatusNotificationDto FinishWorks(WorkDto[] works);
     }
 }

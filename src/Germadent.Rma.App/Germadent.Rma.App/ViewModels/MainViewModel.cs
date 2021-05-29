@@ -87,6 +87,7 @@ namespace Germadent.Rma.App.ViewModels
             _signalRClient = signalRClient;
             _salaryCalculationViewModel = salaryCalculationViewModel;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
+            _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -241,24 +242,30 @@ namespace Germadent.Rma.App.ViewModels
 
         private void SignalRClientOnWorkOrderLockedOrUnlocked(object sender, OrderLockedEventArgs e)
         {
-            var orderLiteViewModel = Orders.FirstOrDefault(x => x.Model.WorkOrderId == e.Info.WorkOrderId);
+            var orderLiteViewModel = Orders.FirstOrDefault(x => x.WorkOrderId == e.Info.WorkOrderId);
             if (orderLiteViewModel == null)
                 return;
 
-            var model = orderLiteViewModel.Model;
-
             if (e.Info.IsLocked)
             {
-                model.LockDate = e.Info.OccupancyDateTime;
-                model.LockedBy = e.Info.User;
+                orderLiteViewModel.LockDate = e.Info.OccupancyDateTime;
+                orderLiteViewModel.LockedBy = e.Info.User;
             }
             else
             {
-                model.LockDate = null;
-                model.LockedBy = null;
+                orderLiteViewModel.LockDate = null;
+                orderLiteViewModel.LockedBy = null;
             }
+        }
 
-            orderLiteViewModel.Update(model);
+        private void SignalRClientOnWorkOrderStatusChanged(object? sender, OrderStatusChangedEventArgs e)
+        {
+            var workOrder = Orders.FirstOrDefault(x => x.WorkOrderId == e.WorkOrderId);
+            if (workOrder == null)
+                return;
+
+            workOrder.Status = e.Status;
+            workOrder.StatusChanged = e.StatusChanged;
         }
 
         private void ChangeColumnsVisibilityCommandHandler(object sender)
@@ -343,14 +350,14 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanCloseOrderCommandHandler()
         {
-            return SelectedOrder != null && SelectedOrder.Model.Closed == null;
+            return SelectedOrder != null && !SelectedOrder.IsClosed;
         }
 
         private void CloseOrderCommandHandler()
         {
             if (_dialogAgent.ShowMessageDialog("После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
-            var order = _rmaServiceClient.CloseOrder(SelectedOrder.Model.WorkOrderId);
+            var order = _rmaServiceClient.CloseOrder(SelectedOrder.WorkOrderId);
             SelectedOrder.Update(order.ToOrderLite());
         }
 
@@ -361,7 +368,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            using (var orderScope = _rmaServiceClient.GetOrderById(SelectedOrder.Model.WorkOrderId))
+            using (var orderScope = _rmaServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
             {
                 _printModule.Print(orderScope.Order);
             }
@@ -384,7 +391,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
-            using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.Model.WorkOrderId))
+            using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.WorkOrderId))
             {
                 var orderDto = orderScope.Order;
                 var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
@@ -406,7 +413,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CopyOrderToClipboardCommandHandler()
         {
-            var reports = _rmaServiceClient.GetWorkReport(SelectedOrder.Model.WorkOrderId);
+            var reports = _rmaServiceClient.GetWorkReport(SelectedOrder.WorkOrderId);
             if (reports.Length == 0)
                 return;
 

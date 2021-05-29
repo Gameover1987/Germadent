@@ -13,7 +13,7 @@ namespace Germadent.Client.Common.ViewModels
             var order1 = (OrderLiteViewModel) x;
             var order2 = (OrderLiteViewModel)y;
 
-            return DateTime.Compare(order2.Model.Created, order1.Model.Created);
+            return DateTime.Compare(order2.Created, order1.Created);
         }
     }
 }

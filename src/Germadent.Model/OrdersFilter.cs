@@ -22,6 +22,9 @@ namespace Germadent.Model
         [Description("В работе")]
         InProgress = 9,
 
+        [Description("Контроль")]
+        Control = 80,
+
         [Description("Реализация")]
         Realization = 90,
         

@@ -43,6 +43,7 @@ namespace Germadent.Client.Common.ServiceClient.Notifications
             await _connection.StartAsync();
             _connection.On<string>("Send", OnNotification);
             _connection.On<string>("LockOrUnlock", OnWorkOrderLockedOrUnlocked);
+            _connection.On<string>("OrderStatusChanged", OrderStatusChanged);
         }
 
         public event EventHandler<RepositoryChangedEventArgs<PriceGroupDto>> PriceGroupRepositoryChanged;
@@ -52,6 +53,7 @@ namespace Germadent.Client.Common.ServiceClient.Notifications
         public event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
         public event EventHandler<OrderLockedEventArgs> WorkOrderLockedOrUnlocked;
+        public event EventHandler<OrderStatusChangedEventArgs> WorkOrderStatusChanged;
 
         private void OnNotification(string arg)
         {
@@ -101,6 +103,12 @@ namespace Germadent.Client.Common.ServiceClient.Notifications
                 return;
 
             WorkOrderLockedOrUnlocked?.Invoke(this, new OrderLockedEventArgs(lockInfo));
+        }
+
+        private void OrderStatusChanged(string arg)
+        {
+            var orderStatusNotificationDto = arg.DeserializeFromJson<OrderStatusNotificationDto>();
+            WorkOrderStatusChanged?.Invoke(this, new OrderStatusChangedEventArgs(orderStatusNotificationDto));
         }
 
         private static RepositoryChangedEventArgs<T> CreateRepositoryChangedEventArgs<T>(RepositoryNotificationDto notification)

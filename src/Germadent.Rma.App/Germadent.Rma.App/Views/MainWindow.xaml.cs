@@ -39,8 +39,6 @@ namespace Germadent.Rma.App.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            
-
             UpdateColumns(_mainViewModel.SettingsManager.Columns);
         }
 
@@ -79,7 +77,8 @@ namespace Germadent.Rma.App.Views
                     dataGridColumn.Width = columnInfo.Width;
                 dataGridColumn.Visibility = columnInfo.IsVisible ? Visibility.Visible : Visibility.Collapsed;
                 dataGridColumn.SortDirection = columnInfo.SortDirection;
-                dataGridColumn.DisplayIndex = columnInfo.DisplayIndex;
+                if (columnInfo.DisplayIndex < OrdersGrid.Columns.Count)
+                    dataGridColumn.DisplayIndex = columnInfo.DisplayIndex;
             }
         }
 

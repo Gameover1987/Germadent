@@ -149,7 +149,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId)
         {
-            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1})", workOrderId, userId);
+            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -163,6 +163,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                         var work = new WorkDto
                         {
                             WorkOrderId = reader["WorkOrderId"].ToInt(),
+                            WorkId = reader["WorkId"].ToInt(),
                             ProductId = reader["ProductId"].ToIntOrNull(),
                             TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
                             TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
@@ -185,23 +186,115 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public void StartWorks(WorkDto[] works)
+        public OrderStatusNotificationDto StartWorks(WorkDto[] works)
         {
-            AddOrUpdateWorkList(works);
+            var workOrderId = works.First().WorkOrderId;
+            var userId = works.First().UserId;
 
-            ChangeWorkOrderStatus(works.First().WorkOrderId, OrderStatus.InProgress);
+            foreach (var workDto in works)
+            {
+                StartWork(workDto);
+            }
+
+            return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.InProgress);
         }
 
-        public void FinishWorks(WorkDto[] works)
+        public OrderStatusNotificationDto FinishWorks(WorkDto[] works)
         {
-            AddOrUpdateWorkList(works);
+            var workOrderId = works.First().WorkOrderId;
+            var userId = works.First().UserId;
 
-            ChangeWorkOrderStatus(works.First().WorkOrderId, OrderStatus.Realization);
+            foreach (var workDto in works)
+            {
+                FinishWork(workDto);
+            }
+
+            var worksInProgress = GetWorksInProgressByWorkOrder(workOrderId, userId);
+            if (!worksInProgress.Any())
+            {
+                return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.Control);
+            }
+
+            return null;
         }
 
-        private void ChangeWorkOrderStatus(int workOrderId, OrderStatus status)
+        private void StartWork(WorkDto work)
         {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
 
+                var cmdText = "AddWork";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
+                    command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
+                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
+                    command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
+                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
+                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
+                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = DBNull.Value;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        
+        private void FinishWork(WorkDto work)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "FinishWork";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                    command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private OrderStatusNotificationDto ChangeWorkOrderStatus(int workOrderId, int userId, OrderStatus status)
+        {
+            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            {
+                connection.Open();
+
+                var cmdText = "ChangeStatusWorkOrderEasy";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
+                    command.Parameters.Add(new SqlParameter("@statusNext", SqlDbType.Int)).Value = (int)status;
+                    command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
+
+                    command.ExecuteNonQuery();
+
+                    var statusChangeDateTime = command.Parameters["@statusChangeDateTime"].Value.ToDateTimeOrNull();
+                    if (statusChangeDateTime == null)
+                        return null;
+
+                    return new OrderStatusNotificationDto
+                    {
+                        WorkOrderId = workOrderId,
+                        UserId = userId,
+                        Status = status,
+                        StatusChangeDateTime = statusChangeDateTime.Value
+                    };
+                }
+            }
         }
 
         private void AddOrUpdateWorkList(WorkDto[] works)

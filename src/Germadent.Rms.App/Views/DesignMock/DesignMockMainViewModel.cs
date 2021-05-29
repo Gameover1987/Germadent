@@ -61,6 +61,7 @@ namespace Germadent.Rms.App.Views.DesignMock
         public event EventHandler<RepositoryChangedEventArgs<ProductDto>> ProductRepositoryChanged;
         public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
         public event EventHandler<OrderLockedEventArgs> WorkOrderLockedOrUnlocked;
+        public event EventHandler<OrderStatusChangedEventArgs> WorkOrderStatusChanged;
     }
 
     public class DesignMockMainViewModel : MainViewModel

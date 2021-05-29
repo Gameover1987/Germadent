@@ -1,9 +1,11 @@
 ﻿using System;
+using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Model.Production;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.Rms
 {
@@ -14,11 +16,13 @@ namespace Germadent.WebApi.Controllers.Rms
     {
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly ILogger _logger;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public OrdersProcessingController(IRmaDbOperations rmaDbOperations, ILogger logger)
+        public OrdersProcessingController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
         {
             _rmaDbOperations = rmaDbOperations;
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         [HttpGet("GetWorksByWorkOrder/{workOrderId}/{userId}")]
@@ -60,7 +64,9 @@ namespace Germadent.WebApi.Controllers.Rms
             try
             {
                 _logger.Info(nameof(StartWorks));
-                _rmaDbOperations.StartWorks(works);
+                var notificationDto = _rmaDbOperations.StartWorks(works);
+                if (notificationDto != null)
+                    _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
                 return Ok();
             }
             catch (Exception exception)
@@ -77,7 +83,9 @@ namespace Germadent.WebApi.Controllers.Rms
             try
             {
                 _logger.Info(nameof(FinishWorks));
-                _rmaDbOperations.FinishWorks(works);
+                var notificationDto = _rmaDbOperations.FinishWorks(works);
+                if (notificationDto != null)
+                    _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
                 return Ok();
             }
             catch (Exception exception)

@@ -7,6 +7,7 @@
         xmlns:viewModels="clr-namespace:Germadent.Client.Common.ViewModels;assembly=Germadent.Client.Common"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:designMock="clr-namespace:Germadent.Rms.App.Views.DesignMock"
+        xmlns:model="clr-namespace:Germadent.Model;assembly=Germadent.Model"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         MinWidth="1024"
@@ -118,34 +119,72 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnIdentifier"
-                                    Binding="{Binding Model.WorkOrderId}"/>
-                <DataGridTextColumn Header="№" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto" 
-                                    helpers:DataGridColumnNameHelper.Name="General_ColumnDocNumber"
-                                    Binding="{Binding Model.DocNumber}"/>
+                                    Binding="{Binding WorkOrderId}"/>
+                <DataGridTemplateColumn Header="№" Width="Auto" 
+                                        helpers:DataGridColumnNameHelper.Name="General_ColumnDocNumber">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="2" Margin="3">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.InProgress}">
+                                                <Setter Property="Background" Value="ForestGreen"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.Control}">
+                                                <Setter Property="Background" Value="Yellow"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.Realization}">
+                                                <Setter Property="Background" Value="DeepSkyBlue"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding DocNumber}" Margin="3,1,3,1">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DataGridTextBlockStyle}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.InProgress}">
+                                                    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=Background, Converter={StaticResource ReadableColorConverter}}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.Control}">
+                                                    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=Background, Converter={StaticResource ReadableColorConverter}}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding  Status}" Value="{x:Static model:OrderStatus.Realization}">
+                                                    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=Background, Converter={StaticResource ReadableColorConverter}}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Дата создания" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnCreated"
-                                    Binding="{Binding Model.Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                                    Binding="{Binding Created, StringFormat='dd.MM.yyyy HH:mm'}"/>
                 <DataGridTextColumn Header="ЗТЛ/ФЦ" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnBranchType"
-                                    Binding="{Binding Model.BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
+                                    Binding="{Binding BranchType, Converter={StaticResource BranchTypeToStringConverter}}"/>
                 <DataGridTextColumn Header="Заказчик" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnCustomer"
-                                    Binding="{Binding Model.CustomerName}"/>
+                                    Binding="{Binding CustomerName}"/>
                 <DataGridTextColumn Header="Пациент" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnPatient"
-                                    Binding="{Binding Model.PatientFnp}"/>
+                                    Binding="{Binding PatientFullName}"/>
                 <DataGridTextColumn Header="Доктор/техник" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnDoctor"
-                                    Binding="{Binding Model.DoctorFullName}"/>
+                                    Binding="{Binding DoctorFullName}"/>
                 <DataGridTextColumn Header="Создатель" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnCreator"
-                                    Binding="{Binding Model.CreatorFullName}"/>
+                                    Binding="{Binding CreatorFullName}"/>
                 <DataGridTextColumn Header="Статус" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnStatus"
-                                    Binding="{Binding Model.Status, Converter={StaticResource OrderStatusToStringConverter}}"/>
+                                    Binding="{Binding Status, Converter={StaticResource OrderStatusToStringConverter}}"/>
                 <DataGridTextColumn Header="Статус изменён" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="*"
                                     helpers:DataGridColumnNameHelper.Name="General_ColumnStatusChanged"
-                                    Binding="{Binding Model.StatusChanged, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                                    Binding="{Binding StatusChanged, StringFormat='dd.MM.yyyy HH:mm'}"/>
                 <DataGridTextColumn Header="Блокировка" ElementStyle="{StaticResource DataGridTextBlockStyle}" MinWidth="100" Width="100"
                                     helpers:DataGridColumnNameHelper.Name="General_LockInfo"
                                     Binding="{Binding LockInfo}"/>

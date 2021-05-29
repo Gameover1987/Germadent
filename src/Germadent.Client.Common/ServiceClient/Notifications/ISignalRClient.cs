@@ -6,16 +6,6 @@ using Germadent.Model.Production;
 
 namespace Germadent.Client.Common.ServiceClient.Notifications
 {
-    public class OrderLockedEventArgs
-    {
-        public OrderLockedEventArgs(OrderLockInfoDto lockInfo)
-        {
-            Info = lockInfo;
-        }
-
-        public OrderLockInfoDto Info { get; }
-    }
-
     public interface ISignalRClient : IDisposable
     {
         void Initialize(AuthorizationInfoDto info);
@@ -33,5 +23,7 @@ namespace Germadent.Client.Common.ServiceClient.Notifications
         event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> TechnologyOperationRepositoryChanged;
 
         event EventHandler<OrderLockedEventArgs> WorkOrderLockedOrUnlocked;
+
+        event EventHandler<OrderStatusChangedEventArgs> WorkOrderStatusChanged;
     }
 }
