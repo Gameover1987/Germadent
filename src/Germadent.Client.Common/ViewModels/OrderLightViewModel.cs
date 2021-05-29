@@ -80,6 +80,7 @@ namespace Germadent.Client.Common.ViewModels
                 if (_dto.LockedBy == value)
                     return;
                 _dto.LockedBy = value;
+                OnPropertyChanged(() => IsLocked);
                 OnPropertyChanged(() => LockedBy);
                 OnPropertyChanged(() => LockInfo);
             }

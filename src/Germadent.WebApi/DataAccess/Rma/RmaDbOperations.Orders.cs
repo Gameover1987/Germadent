@@ -94,24 +94,6 @@ namespace Germadent.WebApi.DataAccess.Rma
             return orderDto;
         }
 
-        public void UnlockWorkOrder(int workOrderId)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "AddOrDeleteOccupancyWO";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@workOrderID", SqlDbType.Int)).Value = workOrderId;
-                    command.Parameters.Add(new SqlParameter("@userID", SqlDbType.Int)).Value = DBNull.Value;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
         public WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -150,13 +132,18 @@ namespace Germadent.WebApi.DataAccess.Rma
         public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId)
         {
             var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
 
-                using (var command = new SqlCommand(cmdText, connection))
+            return ExecuteInTransactionScope(transaction => GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId));
+        }
+
+        private WorkDto[] GetWorksInProgressByWorkOrderImpl(SqlTransaction transaction, int workOrderId, int userId)
+        {
+            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId);
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
+            {
+                command.Transaction = transaction;
+                using (var reader = command.ExecuteReader())
                 {
-                    var reader = command.ExecuteReader();
                     var worksCollection = new List<WorkDto>();
                     while (reader.Read())
                     {
@@ -179,8 +166,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                         };
                         worksCollection.Add(work);
                     }
-                    reader.Close();
-
                     return worksCollection.ToArray();
                 }
             }
@@ -191,12 +176,15 @@ namespace Germadent.WebApi.DataAccess.Rma
             var workOrderId = works.First().WorkOrderId;
             var userId = works.First().UserId;
 
-            foreach (var workDto in works)
+            return ExecuteInTransactionScope(transaction =>
             {
-                StartWork(workDto);
-            }
+                foreach (var workDto in works)
+                {
+                    StartWork(workDto, transaction);
+                }
 
-            return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.InProgress);
+                return ChangeWorkOrderStatusImpl(transaction, workOrderId, userId, OrderStatus.InProgress);
+            });
         }
 
         public OrderStatusNotificationDto FinishWorks(WorkDto[] works)
@@ -204,122 +192,95 @@ namespace Germadent.WebApi.DataAccess.Rma
             var workOrderId = works.First().WorkOrderId;
             var userId = works.First().UserId;
 
-            foreach (var workDto in works)
+            return ExecuteInTransactionScope(transaction =>
             {
-                FinishWork(workDto);
-            }
+                foreach (var workDto in works)
+                {
+                    FinishWork(workDto, transaction);
+                }
 
-            var worksInProgress = GetWorksInProgressByWorkOrder(workOrderId, userId);
-            if (!worksInProgress.Any())
-            {
-                return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.QualityControl);
-            }
+                var worksInProgress = GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId);
+                if (!worksInProgress.Any())
+                {
+                    return ChangeWorkOrderStatusImpl(transaction, workOrderId, userId, OrderStatus.QualityControl);
+                }
 
-            return null;
+                return null;
+            });
         }
 
         public OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId)
         {
-            return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.Realization);
+            return ExecuteInTransactionScope(tran =>
+            {
+                return ChangeWorkOrderStatusImpl(tran, workOrderId, userId, OrderStatus.Realization);
+            });
         }
 
-        private void StartWork(WorkDto work)
+        private void StartWork(WorkDto work, SqlTransaction transaction)
         {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            var cmdText = "AddWork";
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
-                connection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Transaction = transaction;
 
-                var cmdText = "AddWork";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
+                command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId.GetValueOrDbNull();
+                command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
+                command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
+                command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
+                command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
+                command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
+                command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = DBNull.Value;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
-                    command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
-                    command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
-                    command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
-                    command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
-                    command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
-                    command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = DBNull.Value;
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
-                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-        
-        private void FinishWork(WorkDto work)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "FinishWork";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
-                    command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
-
-                    command.ExecuteNonQuery();
-                }
+                command.ExecuteNonQuery();
             }
         }
 
-        private OrderStatusNotificationDto ChangeWorkOrderStatus(int workOrderId, int userId, OrderStatus status)
+        private void FinishWork(WorkDto work, SqlTransaction transaction)
         {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            var cmdText = "FinishWork";
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
-                connection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Transaction = transaction;
 
-                var cmdText = "ChangeStatusWorkOrderEasy";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
-                    command.Parameters.Add(new SqlParameter("@statusNext", SqlDbType.Int)).Value = (int)status;
-                    command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
+                command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
-                    command.ExecuteNonQuery();
-
-                    var statusChangeDateTime = command.Parameters["@statusChangeDateTime"].Value.ToDateTimeOrNull();
-                    if (statusChangeDateTime == null)
-                        return null;
-
-                    return new OrderStatusNotificationDto
-                    {
-                        WorkOrderId = workOrderId,
-                        UserId = userId,
-                        Status = status,
-                        StatusChangeDateTime = statusChangeDateTime.Value
-                    };
-                }
+                command.ExecuteNonQuery();
             }
         }
 
-        private void AddOrUpdateWorkList(WorkDto[] works)
+        private OrderStatusNotificationDto ChangeWorkOrderStatusImpl(SqlTransaction transaction, int workOrderId, int userId, OrderStatus status)
         {
-            var workOrderId = works.First().WorkOrderId;
-            var worksJson = works.SerializeToJson(Formatting.Indented);
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
+            var cmdText = "ChangeStatusWorkOrderEasy";
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
-                connection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Transaction = transaction;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
+                command.Parameters.Add(new SqlParameter("@statusNext", SqlDbType.Int)).Value = (int)status;
+                command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
-                var cmdText = "AddOrUpdateWorkList";
-                using (var command = new SqlCommand(cmdText, connection))
+                command.ExecuteNonQuery();
+
+                var statusChangeDateTime = command.Parameters["@statusChangeDateTime"].Value.ToDateTimeOrNull();
+                if (statusChangeDateTime == null)
+                    return null;
+
+                return new OrderStatusNotificationDto
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
-                    command.Parameters.Add(new SqlParameter("@jsonWorklistString", SqlDbType.NVarChar)).Value = worksJson;
-
-                    command.ExecuteNonQuery();
-                }
+                    WorkOrderId = workOrderId,
+                    UserId = userId,
+                    Status = status,
+                    StatusChangeDateTime = statusChangeDateTime.Value
+                };
             }
         }
 
@@ -445,218 +406,18 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        private LockWorkOrderInfoEntity[] GetWorkOrdersLockInfo(int? workOrderId = null)
+        private T ExecuteInTransactionScope<T>(Func<SqlTransaction, T> func)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-
-                string idText = workOrderId == null ? "NULL" : workOrderId.Value.ToString();
-                var cmdText = string.Format("select * from GetOccupancyWO({0})", idText);
-                var lockers = new List<LockWorkOrderInfoEntity>();
-                using (var command = new SqlCommand(cmdText, connection))
+                using (var transaction = connection.BeginTransaction("StartWorks"))
                 {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var entity = new LockWorkOrderInfoEntity();
-                            entity.WorkOrderId = reader[nameof(entity.WorkOrderId)].ToInt();
-                            entity.UserId = reader[nameof(entity.UserId)].ToInt();
-                            entity.OccupancyDateTime = reader[nameof(entity.OccupancyDateTime)].ToDateTime();
-                            lockers.Add(entity);
-                        }
-                    }
-                }
+                    var result = func(transaction);
 
-                return lockers.ToArray();
-            }
-        }
+                    transaction.Commit();
 
-        private void LockWorkOrder(int workOrderId, int userId)
-        {
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                var cmdText = "AddOrDeleteOccupancyWO";
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@workOrderID", SqlDbType.Int)).Value = workOrderId;
-                    command.Parameters.Add(new SqlParameter("@userID", SqlDbType.Int)).Value = userId;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public OrderLiteDto[] GetOrders(OrdersFilter filter)
-        {
-            return GetOrdersByFilter(filter);
-        }
-
-        private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
-        {
-            var cmdText = GetFilterCommandText(filter);
-
-            var users = _umcDbOperations.GetUsers();
-
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    if (filter.Laboratory && filter.MillingCenter)
-                    {
-                        command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = DBNull.Value;
-                    }
-                    else
-                    {
-                        command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = filter.Laboratory ? 2 : 1;
-                    }
-
-                    var statusesJson = filter.Statuses.Select(x => new {StatusNumber = (int)x}).ToArray().SerializeToJson(Formatting.Indented);
-
-                    command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@createDateFrom", SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@jsonStringStatus", SqlDbType.NVarChar)).Value = statusesJson;
-                    command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
-
-                    return GetOrderLiteCollectionFromReader(command, users);
-                }
-            }
-        }
-
-        private string GetFilterCommandText(OrdersFilter filter)
-        {
-            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, default, default, @jsonStringStatus)";
-            var cmdTextAdditional = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
-
-            if (filter.Materials.Length == 0)
-            {
-                return cmdTextDefault;
-            }
-
-            return cmdTextDefault + cmdTextAdditional;
-        }
-
-        private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command, UserDto[] users)
-        {
-            using (var reader = command.ExecuteReader())
-            {
-                var orders = new List<OrderLiteDto>();
-                while (reader.Read())
-                {
-                    var orderLiteDto = new OrderLiteDto();
-                    orderLiteDto.WorkOrderId = int.Parse(reader["WorkOrderId"].ToString());
-                    orderLiteDto.BranchType = (BranchType)int.Parse(reader["BranchTypeId"].ToString());
-                    orderLiteDto.CustomerName = reader["CustomerName"].ToString();
-                    orderLiteDto.PatientFnp = reader["PatientFullName"].ToString();
-                    orderLiteDto.DoctorFullName = reader["DoctorFullName"].ToString();
-                    orderLiteDto.DocNumber = reader["DocNumber"].ToString();
-                    orderLiteDto.Created = DateTime.Parse(reader["Created"].ToString());
-                    orderLiteDto.CreatorFullName = reader["CreatorFullName"].ToString();
-                    
-                    orderLiteDto.Status = (OrderStatus)reader[nameof(OrderLiteEntity.Status)].ToInt();
-                    orderLiteDto.StatusChanged = DateTime.Parse(reader["StatusChangeDateTime"].ToString());
-
-                    var lockedBy = reader["LockedBy"];
-                    if (lockedBy != DBNull.Value)
-                        orderLiteDto.LockedBy = users.First(x => x.UserId == lockedBy.ToInt());
-
-                    var lockDate = reader["LockDate"];
-                    if (lockDate != DBNull.Value)
-                        orderLiteDto.LockDate = lockDate.ToDateTime();
-
-                    var closed = reader["Closed"];
-                    if (closed != DBNull.Value)
-                        orderLiteDto.Closed = DateTime.Parse(closed.ToString());
-
-                    orders.Add(orderLiteDto);
-                }
-
-                return orders.ToArray();
-            }
-        }
-
-        private StatusListDto[] GetStatusListForWO(int workOrderId)
-        {
-            var cmdText = string.Format("select * from GetStatusListForWO({0})", workOrderId);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-
-                    var entities = new List<StatusListEntity>();
-
-                    while (reader.Read())
-                    {
-                        var statusEntity = new StatusListEntity();
-
-                        statusEntity.WorkOrderId = reader[nameof(statusEntity.WorkOrderId)].ToInt();
-                        statusEntity.Status = reader[nameof(statusEntity.Status)].ToInt();
-                        statusEntity.StatusName = reader[nameof(statusEntity.StatusName)].ToString();
-                        statusEntity.StatusChangeDateTime = reader[nameof(statusEntity.StatusChangeDateTime)].ToDateTime();
-                        statusEntity.UserId = reader[nameof(statusEntity.UserId)].ToInt();
-                        statusEntity.UserFullName = reader[nameof(statusEntity.UserFullName)].ToString();
-                        statusEntity.Remark = reader[nameof(statusEntity.Remark)].ToString();
-
-                        entities.Add(statusEntity);
-                    }
-                    reader.Close();
-
-                    var statusListDtoCollection = entities.Select(x => _converter.ConvertToStatusList(x)).ToArray();
-                    return statusListDtoCollection;
-                }
-            }
-        }
-
-        private ToothDto[] GetToothCard(int id, bool getPricesAsStl)
-        {
-            var cmdText = string.Format("select * from GetToothCardByWOId({0})", id);
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    var reader = command.ExecuteReader();
-
-                    var entities = new List<ToothEntity>();
-                    while (reader.Read())
-                    {
-                        var toothEntity = new ToothEntity();
-
-                        toothEntity.WorkOrderId = reader[nameof(toothEntity.WorkOrderId)].ToInt();
-                        toothEntity.ToothNumber = reader[nameof(toothEntity.ToothNumber)].ToInt();
-                        toothEntity.MaterialId = reader[nameof(toothEntity.MaterialId)].ToIntOrNull();
-                        toothEntity.MaterialName = reader[nameof(toothEntity.MaterialName)].ToString();
-                        toothEntity.ConditionId = reader[nameof(toothEntity.ConditionId)].ToInt();
-                        toothEntity.ConditionName = reader[nameof(toothEntity.ConditionName)].ToString();
-                        toothEntity.ProductId = reader[nameof(toothEntity.ProductId)].ToInt();
-                        toothEntity.ProductName = reader[nameof(toothEntity.ProductName)].ToString();
-                        toothEntity.Price = reader[nameof(toothEntity.Price)].ToDecimal();
-                        toothEntity.HasBridge = reader[nameof(toothEntity.HasBridge)].ToBool();
-                        toothEntity.PricePositionId = reader[nameof(toothEntity.PricePositionId)].ToInt();
-                        toothEntity.PricePositionCode = reader[nameof(toothEntity.PricePositionCode)].ToString();
-                        toothEntity.PricePositionName = reader[nameof(toothEntity.PricePositionName)].ToString();
-                        toothEntity.PriceGroupId = reader[nameof(toothEntity.PriceGroupId)].ToInt();
-
-                        entities.Add(toothEntity);
-                    }
-
-                    reader.Close();
-
-                    var toothDtoCollection = _converter.ConvertToToothCard(entities.ToArray(), getPricesAsStl);
-                    return toothDtoCollection;
+                    return result;
                 }
             }
         }
