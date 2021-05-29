@@ -30,5 +30,11 @@ namespace Germadent.Rms.App.ServiceClient
         /// </summary>
         /// <param name="works"></param>
         void FinishWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Провести контроль качества
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        void PerformQualityControl(int workOrderId);
     }
 }

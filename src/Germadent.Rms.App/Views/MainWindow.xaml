@@ -25,7 +25,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -41,6 +41,9 @@
                     Command="{Binding BeginWorkByWorkOrderCommand}"/>
             <Button Content="Закончить работы по З-Н" Margin="0,6,0,0"
                     Command="{Binding FinishWorkByWorkOrderCommand}"/>
+            <Button Content="Подтвердить прохождение контроля" Margin="0,6,0,0"
+                    Visibility="{Binding CanQualityControl, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Command="{Binding RealizeWorkOrderCommand}"/>
             <Button Content="Распечатать З-Н" Margin="0,6,0,0"
                     Command="{Binding PrintOrderCommand}"/>
             <Button Content="Настроить фильтр" Margin="0,6,0,0"
@@ -83,6 +86,8 @@
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Закончить работы"
                                           Command="{Binding FinishWorkByWorkOrderCommand}"/>
+                                <MenuItem Header="Подтвердить прохождение контроля"
+                                          Command="{Binding RealizeWorkOrderCommand}"/>
                                 <Separator/>
                                 <MenuItem Header="Распечатать" 
                                           Command="{Binding PrintOrderCommand}"

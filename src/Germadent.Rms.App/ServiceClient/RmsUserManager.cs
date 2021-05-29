@@ -1,4 +1,5 @@
-﻿using Germadent.Model;
+﻿using System.Linq;
+using Germadent.Model;
 
 namespace Germadent.Rms.App.ServiceClient
 {
@@ -13,8 +14,7 @@ namespace Germadent.Rms.App.ServiceClient
 
         public bool HasRight(string rightName)
         {
-            return true;
-            //return _rmsServiceClient.AuthorizationInfo.Rights.Any(x => x.RightName == rightName);
+            return _rmsServiceClient.AuthorizationInfo.Rights.Any(x => x.RightName == rightName);
         }
 
         public AuthorizationInfoDto AuthorizationInfo

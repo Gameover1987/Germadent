@@ -218,6 +218,11 @@ namespace Germadent.WebApi.DataAccess.Rma
             return null;
         }
 
+        public OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId)
+        {
+            return ChangeWorkOrderStatus(workOrderId, userId, OrderStatus.Realization);
+        }
+
         private void StartWork(WorkDto work)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))

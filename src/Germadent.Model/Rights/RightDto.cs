@@ -23,5 +23,10 @@
         /// Признак что право устарело
         /// </summary>
         public bool IsObsolete { get; set; }
+
+        public override string ToString()
+        {
+            return RightName;
+        }
     }
 }

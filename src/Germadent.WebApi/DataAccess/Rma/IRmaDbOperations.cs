@@ -26,7 +26,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        OrderDto AddOrder(OrderDto order);       
+        OrderDto AddOrder(OrderDto order);
 
         /// <summary>
         /// Обновляет заказ наряд
@@ -249,5 +249,13 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="works"></param>
         OrderStatusNotificationDto FinishWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Переводит заказ-наряд в из статуса "Контроль" в cтатус "Реализация"
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId);
     }
 }

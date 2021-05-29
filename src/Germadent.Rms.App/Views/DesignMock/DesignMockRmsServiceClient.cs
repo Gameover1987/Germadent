@@ -29,6 +29,11 @@ namespace Germadent.Rms.App.Views.DesignMock
             throw new NotImplementedException();
         }
 
+        public void PerformQualityControl(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public AuthorizationInfoDto AuthorizationInfo { get; }
         public IClientConfiguration Configuration { get; }

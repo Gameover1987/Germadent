@@ -12,6 +12,7 @@ using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Model;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.Views;
 using Germadent.Rms.App.Properties;
 using Germadent.Rms.App.ServiceClient;
@@ -65,10 +66,14 @@ namespace Germadent.Rms.App.ViewModels
 
             BeginWorkByWorkOrderCommand = new DelegateCommand(BeginWorksByWorkOrderCommandHandler, CanBeginWorksByWorkOrderCommandHandler);
             FinishWorkByWorkOrderCommand = new DelegateCommand(FinishWorkByWorkOrderCommandHandler, CanFinishWorksByWorkOrderCommandHandler);
+            RealizeWorkOrderCommand = new DelegateCommand(RealizeWorkOrderCommandHandler, CanRealizeWorkOrderCommandHandler);
+
             FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
+
+            CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);
         }
 
         private bool Filter(object obj)
@@ -119,9 +124,13 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
+        public bool CanQualityControl { get; }
+
         public IDelegateCommand BeginWorkByWorkOrderCommand { get; }
 
         public IDelegateCommand FinishWorkByWorkOrderCommand { get; }
+
+        public IDelegateCommand RealizeWorkOrderCommand { get; }
 
         public IDelegateCommand FilterOrdersCommand { get; }
 
@@ -227,6 +236,20 @@ namespace Germadent.Rms.App.ViewModels
                 var works = _finishWorkListViewModel.GetWorks();
                 _rmsServiceClient.FinishWorks(works);
             }
+        }
+
+        private bool CanRealizeWorkOrderCommandHandler()
+        {
+            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.Control;
+        }
+
+        private void RealizeWorkOrderCommandHandler()
+        {
+            var msg = $"Подтвердить прохождение контроля качества по заказ-наряду '{SelectedOrder.DocNumber}'?";
+            if (_dialogAgent.ShowMessageDialog(msg, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
+            _rmsServiceClient.PerformQualityControl(SelectedOrder.WorkOrderId);
         }
 
         private void LogOutCommandHandler()

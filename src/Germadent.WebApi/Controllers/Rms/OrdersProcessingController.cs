@@ -94,5 +94,24 @@ namespace Germadent.WebApi.Controllers.Rms
                 return BadRequest(exception);
             }
         }
+
+        [HttpGet]
+        [Route("PerformQualityControl/{workOrderId}/{userId}")]
+        public IActionResult PerformQualityControl(int workOrderId, int userId)
+        {
+            try
+            {
+                _logger.Info(nameof(PerformQualityControl));
+                var notificationDto = _rmaDbOperations.PerformQualityControl(workOrderId, userId);
+                if (notificationDto != null)
+                    _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
     }
 }

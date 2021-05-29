@@ -38,6 +38,11 @@ namespace Germadent.Rms.App.ServiceClient
             ExecuteHttpPost<WorkDto[]>(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/FinishWorks", works);
         }
 
+        public void PerformQualityControl(int workOrderId)
+        {
+            ExecuteHttpGet(Configuration.DataServiceUrl + $"/api/Rms/OrdersProcessing/PerformQualityControl/{workOrderId}/{AuthorizationInfo.UserId}");
+        }
+
         protected override bool CheckRunApplicationRight()
         {
             return AuthorizationInfo.Rights.Any(x => x.RightName == RmsUserRights.RunApplication);
