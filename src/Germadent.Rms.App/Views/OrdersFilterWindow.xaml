@@ -63,20 +63,33 @@
                             SelectedDate="{Binding PeriodEnd}"/>
             </StackPanel>
 
-            <TextBlock Grid.Row="2" Text="Заказчик"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Статус" VerticalAlignment="Top"/>
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <CheckBox Content="Создан" Margin="6,6,0,0"
+                          IsChecked="{Binding ShowCreated}"/>
+                <CheckBox Content="В работе" Margin="6,6,0,0"
+                          IsChecked="{Binding ShowInProgress}"/>
+                <CheckBox Content="Контроль качества" Margin="6,6,0,0"
+                          IsChecked="{Binding ShowQualityControl}"/>
+                <CheckBox Content="Реализация" Margin="6,6,0,0"
+                          IsChecked="{Binding ShowRealization}"/>
+                <CheckBox Content="Закрыт" Margin="6,6,0,0"
+                          IsChecked="{Binding ShowClosed}"/>
+            </StackPanel>
+            <TextBlock Grid.Row="3" Text="Заказчик"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" 
                      Text="{Binding Customer}"/>
 
-            <TextBlock Grid.Row="3" Text="Сотрудник"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="4" Text="Сотрудник"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
                      Text="{Binding Doctor}"/>
 
-            <TextBlock Grid.Row="4" Text="Пациент"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="5" Text="Пациент"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
                      Text="{Binding Patient}"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <ListBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="6" Grid.Column="1" Margin="6,6,0,0" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Materials}">
                 <ListBox.ItemTemplate>
