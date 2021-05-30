@@ -32,3 +32,8 @@ BEGIN
 	COMMIT
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[UpdateWork] TO [gdl_user]
+    AS [dbo];
+

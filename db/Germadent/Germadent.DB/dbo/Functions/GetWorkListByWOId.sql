@@ -14,6 +14,7 @@ AS
 RETURN 
 (
 	SELECT 
+			wl.WorkID,
 			wl.WorkOrderID, 
 			p.ProductID, 
 			p.ProductName, 
