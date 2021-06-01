@@ -16,10 +16,10 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             using (var connection = CreateAndOpenSqlConnection())
             {
-                var cmdText = "select * from dbo.GetReportSalary(@userId, null, null, @dateCompletedFrom, @dateCompletedTo)";
+                var cmdText = $"select * from dbo.GetReportSalary(@userId, null, null, @dateCompletedFrom, @dateCompletedTo)";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
-                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = salaryFilter.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = salaryFilter.UserId.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@dateCompletedFrom", SqlDbType.DateTime)).Value = salaryFilter.DateFrom;
                     command.Parameters.Add(new SqlParameter("@dateCompletedTo", SqlDbType.DateTime)).Value = salaryFilter.DateTo;
 
@@ -42,6 +42,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                                 TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
                                 TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
                                 TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
+                                CustomerName = reader["CustomerName"].ToString(),
+                                PatientFullName = reader["PatientFullName"].ToString(),
                                 UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
                                 UserFullName = reader["UserFullName"].ToString(),
                                 WorkCompleted = reader["WorkCompleted"].ToDateTime(),

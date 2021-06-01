@@ -35,6 +35,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
             Works.CollectionChanged+= WorksOnCollectionChanged;
             _salaryView = CollectionViewSource.GetDefaultView(Works);
             _salaryView.GroupDescriptions.Clear();
+            _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.UserFullName)));
             _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.DocNumber)));
 
             CalculateSalaryCommand = new DelegateCommand(CalculateSalaryCommandHandler, CanCalculateSalaryCommandHandler);
@@ -137,6 +138,9 @@ namespace Germadent.Rma.App.ViewModels.Salary
             _dateFrom = DateTime.Now.AddMonths(-1).Date;
             _dateTo = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
 
+            Employees.Clear();
+            Works.Clear();
+
             try
             {
                 BusyReason = "Инициализация";
@@ -145,16 +149,18 @@ namespace Germadent.Rma.App.ViewModels.Salary
                 {
                     allUsers = _rmaServiceClient
                         .GetAllUsers()
+                        .Where(x => x.IsEmployee)
                         .OrderBy(x => x.FullName)
                         .ToArray();
                 });
 
-                Employees.Clear();
                 Employees.Add(AllEmployeeViewModel.Instance);
                 foreach (var userDto in allUsers)
                 {
                     Employees.Add(new EmployeeViewModel(userDto));
                 }
+
+                SelectedEmployee = AllEmployeeViewModel.Instance;
             }
             catch (Exception exception)
             {

@@ -204,7 +204,8 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanBeginWorksByWorkOrderCommandHandler()
         {
-            return SelectedOrder != null;
+            return SelectedOrder != null && (SelectedOrder.Status == OrderStatus.Created ||
+                                             SelectedOrder.Status == OrderStatus.InProgress);
         }
 
         private void BeginWorksByWorkOrderCommandHandler()
@@ -222,7 +223,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanFinishWorksByWorkOrderCommandHandler()
         {
-            return SelectedOrder != null;
+            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.InProgress;
         }
 
         private void FinishWorkByWorkOrderCommandHandler()

@@ -47,6 +47,16 @@ namespace Germadent.Model.Production
         public string TechnologyOperationName { get; set; }
 
         /// <summary>
+        /// Заказчик
+        /// </summary>
+        public string CustomerName { get; set; }
+
+        /// <summary>
+        /// ФИО пациента
+        /// </summary>
+        public string PatientFullName { get; set; }
+
+        /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
         public int UserId { get; set; }

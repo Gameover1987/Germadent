@@ -41,6 +41,7 @@ namespace Germadent.Client.Common.ViewModels
                     return;
                 _dto.Status = value;
                 OnPropertyChanged(() => Status);
+                OnPropertyChanged(() => IsClosed);
             }
         }
 

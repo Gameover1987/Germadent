@@ -76,22 +76,10 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public OrderDto CloseOrder(int id)
+        public OrderStatusNotificationDto CloseOrder(int workOrderId, int userId)
         {
-            var cmdText = "CloseWorkOrder";
-            using (var connection = new SqlConnection(_configuration.ConnectionString))
-            {
-                connection.Open();
-                using (var command = new SqlCommand(cmdText, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = id;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            var orderDto = GetWorkOrderById(id);
-            return orderDto;
+            return ExecuteInTransactionScope(transaction =>
+                ChangeWorkOrderStatusImpl(transaction, workOrderId, userId, OrderStatus.Closed));
         }
 
         public WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId)

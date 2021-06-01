@@ -28,9 +28,9 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Закрыть заказ-наряд
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="workOrderId"></param>
         /// <returns></returns>
-        OrderDto CloseOrder(int id);
+        void CloseOrder(int workOrderId);
 
         /// <summary>
         /// Скопировать данные заказ-наряда в буфер обмена

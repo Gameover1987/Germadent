@@ -102,5 +102,7 @@ namespace Germadent.Model
         public EmployeePositionDto[] Positions { get; set; }
 
         public string FullName => this.GetFullName();
+
+        public bool IsEmployee => Positions.Any();
     }
 }

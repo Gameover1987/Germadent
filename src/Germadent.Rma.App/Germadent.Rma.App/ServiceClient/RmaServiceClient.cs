@@ -39,9 +39,9 @@ namespace Germadent.Rma.App.ServiceClient
             return updatedOrder;
         }
 
-        public OrderDto CloseOrder(int id)
+        public void CloseOrder(int workOrderId)
         {
-            return ExecuteHttpDelete<OrderDto>(Configuration.DataServiceUrl + $"/api/Rma/orders/close/{id}");
+            ExecuteHttpGet(Configuration.DataServiceUrl + $"/api/Rma/orders/CloseOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
         public ReportListDto[] GetWorkReport(int id)

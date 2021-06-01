@@ -35,17 +35,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         void UpdateOrder(OrderDto order);
 
         /// <summary>
-        /// Закрывает заказ-наряд по id
-        /// </summary>
-        /// <param name="id"></param>
-        OrderDto CloseOrder(int id);
-
-        /// <summary>
-        /// Возвращает список статусов для заказ-наряда
+        /// Закрывает заказ-наряд
         /// </summary>
         /// <param name="workOrderId"></param>
-        /// <returns></returns>
-        StatusListDto[] GetStatusListForWO(int workOrderId);
+        /// <param name="userId"></param>
+        OrderStatusNotificationDto CloseOrder(int workOrderId, int userId);
 
         /// <summary>
         /// Возвращает словарь

@@ -228,7 +228,7 @@ namespace Germadent.Rma.App.ViewModels
             FillOrders();
 
             ColumnContextMenuItems.Clear();
-            foreach (var columnInfo in  _userSettingsManager.Columns)
+            foreach (var columnInfo in _userSettingsManager.Columns)
             {
                 ColumnContextMenuItems.Add(new ContextMenuItemViewModel
                 {
@@ -350,15 +350,16 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanCloseOrderCommandHandler()
         {
-            return SelectedOrder != null && !SelectedOrder.IsClosed;
+            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.Realization;
         }
 
         private void CloseOrderCommandHandler()
         {
-            if (_dialogAgent.ShowMessageDialog("После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            var message = "После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?";
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
-            var order = _rmaServiceClient.CloseOrder(SelectedOrder.WorkOrderId);
-            SelectedOrder.Update(order.ToOrderLite());
+            _rmaServiceClient.CloseOrder(SelectedOrder.WorkOrderId);
+            SelectedOrder.Status = OrderStatus.Closed;
         }
 
         private bool CanPrintOrderCommandHandler()

@@ -107,6 +107,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public void CloseOrder(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UploadStlFile(int id, byte[] stlFile)
         {
             throw new NotImplementedException();
@@ -128,10 +133,7 @@ namespace Germadent.Rma.App.Mocks
             return GetMaterials().Select(x => new DictionaryItemDto { Id = x.Id, Name = x.Name }).ToArray();
         }
 
-        public OrderDto CloseOrder(int id)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public string CopyToClipboard(OrderDto orderDto)
         {
@@ -540,6 +542,7 @@ namespace Germadent.Rma.App.Mocks
             {
                 new WorkDto
                 {
+                    UserFullName = "Ленин В.И",
                     TechnologyOperationName = "Patch Kde 2.0 for FreeBSD",
                     WorkStarted = DateTime.Now,
                     WorkCompleted = DateTime.Now,
@@ -549,6 +552,7 @@ namespace Germadent.Rma.App.Mocks
                 },
                 new WorkDto
                 {
+                    UserFullName = "Сталин В.И",
                     TechnologyOperationName = "Install Windows 100500 on MAC with M1",
                     WorkStarted = DateTime.Now,
                     WorkCompleted = DateTime.Now,

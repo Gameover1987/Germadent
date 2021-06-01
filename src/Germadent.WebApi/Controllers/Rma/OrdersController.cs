@@ -127,14 +127,17 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpDelete("Close/{id:int}")]
-        public IActionResult CloseOrder(int id)
+        [HttpGet]
+        [Route("CloseOrder/{workOrderId}/{userId}")]
+        public IActionResult CloseOrder(int workOrderId, int userId)
         {
             try
             {
                 _logger.Info(nameof(CloseOrder));
-                var order = _rmaDbOperations.CloseOrder(id);
-                return Ok(order);
+                var notificationDto = _rmaDbOperations.CloseOrder(workOrderId, userId);
+                if (notificationDto != null)
+                    _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
+                return Ok();
             }
             catch (Exception exception)
             {
