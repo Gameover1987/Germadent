@@ -71,4 +71,13 @@ namespace Germadent.Model
             };
         }
     }
+
+    public class SalaryFilter
+    {
+        public int UserId { get; set; }
+
+        public DateTime DateFrom { get; set; }
+
+        public DateTime DateTo { get; set; }
+    }
 }

@@ -135,7 +135,6 @@
                     Visibility="{Binding CanViewTechnologyOperations, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding ShowTechnologyOperationsEditorCommand}"/>
 
-
             <TextBlock Text="Функции руководителя" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"
                        Visibility="{Binding CanCalculateSalary, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Button Content="Расчет ЗП" Margin="0,6,0,0"

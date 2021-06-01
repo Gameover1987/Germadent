@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Germadent.Rma.App.Views"
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
+        xmlns:salary="clr-namespace:Germadent.Rma.App.ViewModels.Salary"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
@@ -12,10 +14,133 @@
         Title="Расчет заработной платы" 
         MinHeight="450"
         Height="450" 
-        MinWidth="800"
-        Width="800"
+        MinWidth="900"
+        Width="900"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockSalaryCalculationViewModel}, IsDesignTimeCreatable=True}">
-    <Grid>
-        
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Сотрудник" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Margin="6,0,0,0" Width="350"
+                      ItemsSource="{Binding Employees}"
+                      SelectedItem="{Binding SelectedEmployee}">
+                <ComboBox.Resources>
+                    <DataTemplate DataType="{x:Type salary:AllEmployeeViewModel}">
+                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type salary:EmployeeViewModel}">
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ComboBox.Resources>
+            </ComboBox>
+            <TextBlock Grid.Column="2" Text="Период с" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <DatePicker Grid.Column="3" Margin="6,0,0,0" Width="100"
+                        SelectedDate="{Binding DateFrom}"/>
+            <TextBlock Grid.Column="4" Text="по" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <DatePicker Grid.Column="5" Margin="6,0,0,0" Width="100"
+                        SelectedDate="{Binding DateTo}"/>
+            <Button Grid.Column="6" Margin="12,0,0,0" Content="Расчитать" Width="100"
+                    Command="{Binding CalculateSalaryCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Row="0" Margin="0,12,0,0"
+                      ItemsSource="{Binding Works}">
+                <DataGrid.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"/>
+
+                                                <ItemsPresenter Grid.Row="1" Margin="0,6,0,12"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Work ID" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkId}"/>
+
+                    <DataGridTextColumn Header="Order ID" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkOrderId}"/>
+
+                    <DataGridTextColumn Header="Технологическая операция" Width="*"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding TechnologyOperationName}"/>
+
+                    <DataGridTextColumn Header="Начата" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkStarted}"/>
+
+                    <DataGridTextColumn Header="Закончена" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkCompleted}"/>
+
+                    <DataGridTextColumn Header="Цена" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding OperationCost}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Grid.Row="1" HorizontalAlignment="Right" FontSize="14" Margin="0,6,0,0">
+                <Run Text="Итого:"/>
+                <Run Text="{Binding Salary, Mode=OneWay}"/>
+                <Run Text="руб."/>
+            </TextBlock>
+
+            <Border Grid.Row="0" Grid.RowSpan="2" Background="{x:Static SystemColors.ControlBrush}"
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <controls:BusyIndicator IsBusy="{Binding IsBusy}"/>
+                    <TextBlock Text="{Binding BusyReason}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Separator Grid.Row="2" Margin="-12,12,-12,12"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,6,0,0"
+                    Visibility="{Binding IsValid, Converter={StaticResource BoolToInvisibilityConverter}, ConverterParameter='Hidden'}">
+            <Path Width="14" Height="14" Stretch="Fill" Data="{StaticResource InfoButtonGeometry}" Fill="Gray"/>
+            <TextBlock Text="{Binding DatesValidationError}" Margin="3,0,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Закрыть" Width="100" IsCancel="True"/>
+        </StackPanel>
     </Grid>
 </Window>

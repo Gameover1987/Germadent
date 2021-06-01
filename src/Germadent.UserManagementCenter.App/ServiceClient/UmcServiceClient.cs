@@ -13,13 +13,11 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     {
         private readonly IUmcConfiguration _configuration;
         private readonly IFileManager _fileManager;
-        private readonly RestClient _client;
 
         public UmcServiceClient(IUmcConfiguration configuration, IFileManager fileManager)
         {
             _configuration = configuration;
             _fileManager = fileManager;
-            _client = new RestClient();
         }
 
         public void Authorize(string login, string password)

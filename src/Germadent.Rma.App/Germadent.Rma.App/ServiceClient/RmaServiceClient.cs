@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
@@ -166,6 +168,18 @@ namespace Germadent.Rma.App.ServiceClient
         public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
         {
             return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
+        }
+
+        public UserDto[] GetAllUsers()
+        {
+            Thread.Sleep(3000);
+            return ExecuteHttpGet<UserDto[]>(Configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
+        }
+
+        public WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo)
+        {
+            var api = Configuration.DataServiceUrl + "/api/Rma/Works/GetByUserId";
+            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter{ UserId = AuthorizationInfo.UserId, DateFrom = dateFrom, DateTo = dateTo} );
         }
     }
 }

@@ -10,10 +10,16 @@ namespace Germadent.Model.Production
         }
 
         public int WorkId { get; set; }
+
         /// <summary>
         /// Идентификатор заказ-наряда
         /// </summary>
         public int WorkOrderId { get; set; }
+
+        /// <summary>
+        /// Номер заказ-наряда
+        /// </summary>
+        public string DocNumber { get; set; }
 
         /// <summary>
         /// Идентификатор изделия

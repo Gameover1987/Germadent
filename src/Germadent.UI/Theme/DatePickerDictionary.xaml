@@ -53,7 +53,7 @@
 										</ControlTemplate.Triggers>
 									</ControlTemplate>
 								</Grid.Resources>
-								<DatePickerTextBox x:Name="PART_TextBox" Background="Transparent" Style="{StaticResource DatePickerTextBoxStyle}" Foreground="{TemplateBinding Foreground}" Margin="2,1,2,0"  IsReadOnly="true" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"  />
+								<DatePickerTextBox x:Name="PART_TextBox" Background="Transparent" Style="{StaticResource DatePickerTextBoxStyle}" Foreground="{TemplateBinding Foreground}" Margin="2,1,2,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"  />
 								<Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_TextBox}" StaysOpen="False"/>
 								<Button x:Name="PART_Button" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Stretch" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Stretch" />
 							</Grid>

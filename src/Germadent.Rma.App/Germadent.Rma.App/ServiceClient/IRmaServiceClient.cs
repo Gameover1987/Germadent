@@ -1,4 +1,5 @@
-﻿using Germadent.Client.Common.ServiceClient;
+﻿using System;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
@@ -66,7 +67,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
         /// </summary>
-        /// <param name="customerId"></param>
         /// <returns></returns>
         ResponsiblePersonDto[] GetResponsiblePersons();
 
@@ -90,13 +90,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="responsiblePersonId"></param>
         /// <returns></returns>
         DeleteResult DeleteResponsiblePerson(int responsiblePersonId);
-
-        /// <summary>
-        /// Возвращает словарь по его названию
-        /// </summary>
-        /// <param name="dictionaryType"></param>
-        /// <returns></returns>
-        DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
 
         /// <summary>
         /// Возвращает прайс по выбранному типу филиала
@@ -198,5 +191,17 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="technologyOperationId"></param>
         /// <returns></returns>
         DeleteResult DeleteTechnologyOperation(int technologyOperationId);
+
+        /// <summary>
+        /// Возвращает список всех пользователей
+        /// </summary>
+        /// <returns></returns>
+        UserDto[] GetAllUsers();
+
+        /// <summary>
+        /// Возвращает список выполненных сотрудником работ за период
+        /// </summary>
+        /// <returns></returns>
+        WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo);
     }
 }

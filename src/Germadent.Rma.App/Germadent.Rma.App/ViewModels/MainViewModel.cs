@@ -467,6 +467,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void ShowSalaryCalculationCommandHandler()
         {
+            _salaryCalculationViewModel.Initialize();
             _dialogAgent.ShowDialog<SalaryCalculationWindow>(_salaryCalculationViewModel);
         }
 

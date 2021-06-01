@@ -515,6 +515,59 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public UserDto[] GetAllUsers()
+        {
+            return new UserDto[]
+            {
+                new UserDto
+                {
+                    FirstName = "Vasya",
+                    Surname = "Popov",
+                    Patronymic = "Alibabaevich",
+                },
+                new UserDto
+                {
+                    FirstName = "Petya",
+                    Surname = "Petrov",
+                    Patronymic = "Vasilievich",
+                },
+            };
+        }
+
+        public WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo)
+        {
+            return new WorkDto[]
+            {
+                new WorkDto
+                {
+                    TechnologyOperationName = "Patch Kde 2.0 for FreeBSD",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1017-MC~21",
+                    OperationCost = 200,
+                },
+                new WorkDto
+                {
+                    TechnologyOperationName = "Install Windows 100500 on MAC with M1",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1017-MC~21",
+                    OperationCost = 100500
+                },
+                new WorkDto
+                {
+                    TechnologyOperationName = "Germadent develop",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1010-DL~21",
+                    OperationCost = 800
+                },
+            };
+        }
+
         public void UnLockOrder(int workOrderId)
         {
             throw new NotImplementedException();

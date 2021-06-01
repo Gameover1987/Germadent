@@ -61,7 +61,7 @@
                     Command="{Binding UploadFileCommand}"/>
             <Button Content="Скачать файл" Margin="6,0,0,0"
                     Command="{Binding DownloadFileCommand}"/>
-            <controls:BusyIndicator Width="23" Height="23" IsBusy="{Binding IsBusy}" Fill="#2D2D2D" Margin="6,0,0,0"/>
+            <controls:BusyIndicator IsBusy="{Binding IsBusy}" Margin="6,0,0,0"/>
         </StackPanel>
     </Grid>
 </UserControl>
