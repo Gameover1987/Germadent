@@ -395,7 +395,7 @@ namespace Germadent.Rma.App.ViewModels
             using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.WorkOrderId))
             {
                 var orderDto = orderScope.Order;
-                var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
+                var wizardMode = orderDto.Status == OrderStatus.Closed ? WizardMode.Edit : WizardMode.View;
                 if (orderDto.BranchType == BranchType.Laboratory)
                 {
                     changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);

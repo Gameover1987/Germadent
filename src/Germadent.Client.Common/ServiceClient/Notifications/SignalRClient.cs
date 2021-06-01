@@ -99,7 +99,7 @@ namespace Germadent.Client.Common.ServiceClient.Notifications
         private void OnWorkOrderLockedOrUnlocked(string arg)
         {
             var lockInfo = arg.DeserializeFromJson<OrderLockInfoDto>();
-            if (lockInfo.IsLocked && lockInfo.User.UserId == _authorizationInfo.UserId)
+            if (lockInfo.IsLocked && lockInfo.User?.UserId == _authorizationInfo.UserId)
                 return;
 
             WorkOrderLockedOrUnlocked?.Invoke(this, new OrderLockedEventArgs(lockInfo));

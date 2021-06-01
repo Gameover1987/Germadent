@@ -317,7 +317,10 @@ namespace Germadent.WebApi.DataAccess.Rma
             LockWorkOrder(workOrderId, userId);
 
             var lockers = GetWorkOrdersLockInfo(workOrderId);
-            var lockInfo = lockers.First(x => x.WorkOrderId == workOrderId);
+            var lockInfo = lockers.FirstOrDefault(x => x.WorkOrderId == workOrderId);
+            if (lockInfo == null)
+                return orderDto;
+
             orderDto.LockedBy = _umcDbOperations.GetUserById(lockInfo.UserId);
             orderDto.LockDate = lockInfo.OccupancyDateTime;
 
