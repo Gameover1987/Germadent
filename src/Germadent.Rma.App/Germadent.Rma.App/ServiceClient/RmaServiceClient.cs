@@ -172,14 +172,13 @@ namespace Germadent.Rma.App.ServiceClient
 
         public UserDto[] GetAllUsers()
         {
-            Thread.Sleep(3000);
             return ExecuteHttpGet<UserDto[]>(Configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
         }
 
-        public WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo)
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
         {
-            var api = Configuration.DataServiceUrl + "/api/Rma/Works/GetByUserId";
-            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter{ UserId = AuthorizationInfo.UserId, DateFrom = dateFrom, DateTo = dateTo} );
+            var api = Configuration.DataServiceUrl + "/api/Rma/Reports/GetSalaryReport";
+            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter{ UserId = userId, DateFrom = dateFrom, DateTo = dateTo} );
         }
     }
 }

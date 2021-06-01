@@ -257,5 +257,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <param name="userId"></param>
         /// <returns></returns>
         OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId);
+
+        /// <summary>
+        /// Возвращает список выполненных сотрудником работ за указанный период
+        /// </summary>
+        /// <param name="salaryFilter"></param>
+        /// <returns></returns>
+        WorkDto[] GetSalaryReport(SalaryFilter salaryFilter);
     }
 }

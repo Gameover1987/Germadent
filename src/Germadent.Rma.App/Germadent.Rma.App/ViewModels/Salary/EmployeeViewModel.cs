@@ -6,8 +6,11 @@ namespace Germadent.Rma.App.ViewModels.Salary
     {
         public EmployeeViewModel(UserDto user)
         {
+            UserId = user.UserId;
             DisplayName = user.GetFullName();
         }
+
+        public int? UserId { get; protected set; }
 
         public string DisplayName { get; protected set; }
     }
@@ -18,6 +21,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         public AllEmployeeViewModel() : base(new UserDto())
         {
+            UserId = null;
             DisplayName = "Все сотрудники";
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Accessibility;
 using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ViewModels.Salary
@@ -16,6 +17,12 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         public string TechnologyOperationName => _work.TechnologyOperationName;
 
+        public string TechnologyOperationUserCode => _work.TechnologyOperationUserCode;
+
+        public int Quantity => _work.Quantity;
+
+        public float UrgencyRatio => _work.UrgencyRatio;
+
         public DateTime WorkStarted => _work.WorkStarted;
 
         public DateTime WorkCompleted => _work.WorkCompleted.Value;
@@ -25,5 +32,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
         public string DocNumber => _work.DocNumber;
 
         public decimal OperationCost => _work.OperationCost;
+
+        public decimal Rate => _work.Rate;
     }
 }

@@ -197,7 +197,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
                 WorkDto[] salaryReport = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    salaryReport = _rmaServiceClient.GetSalaryReport(DateFrom, DateTo);
+                    salaryReport = _rmaServiceClient.GetSalaryReport(SelectedEmployee.UserId, DateFrom, DateTo);
                 });
 
                 foreach (var workDto in salaryReport)

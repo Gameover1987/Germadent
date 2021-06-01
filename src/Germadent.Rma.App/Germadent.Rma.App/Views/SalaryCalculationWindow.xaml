@@ -64,6 +64,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="0" Margin="0,12,0,0"
+                      AlternationCount="2"
                       ItemsSource="{Binding Works}">
                 <DataGrid.GroupStyle>
                     <GroupStyle>
@@ -98,28 +99,45 @@
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding WorkOrderId}"/>
 
+                    <DataGridTextColumn Header="Код" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding TechnologyOperationUserCode}"/>
+
                     <DataGridTextColumn Header="Технологическая операция" Width="*"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding TechnologyOperationName}"/>
 
                     <DataGridTextColumn Header="Начата" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding WorkStarted}"/>
+                                        Binding="{Binding WorkStarted, StringFormat='dd MMMM yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
 
                     <DataGridTextColumn Header="Закончена" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding WorkCompleted}"/>
+                                        Binding="{Binding WorkCompleted, StringFormat='dd MMMM yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
 
                     <DataGridTextColumn Header="Цена" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
-                                        Binding="{Binding OperationCost}"/>
+                                        Binding="{Binding Rate, StringFormat=C, ConverterCulture='ru-RU'}"/>
+
+                    <DataGridTextColumn Header="Количество" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding Quantity}"/>
+
+                    <DataGridTextColumn Header="Срочность" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding UrgencyRatio}"/>
+
+                    <DataGridTextColumn Header="Стоимость" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding OperationCost, StringFormat=C, ConverterCulture='ru-RU'}"/>
+
+                   
                 </DataGrid.Columns>
             </DataGrid>
 
             <TextBlock Grid.Row="1" HorizontalAlignment="Right" FontSize="14" Margin="0,6,0,0">
                 <Run Text="Итого:"/>
-                <Run Text="{Binding Salary, Mode=OneWay}"/>
-                <Run Text="руб."/>
+                <Run Text="{Binding Salary, Mode=OneWay, StringFormat=C, ConverterCulture='ru-RU'}" FontWeight="SemiBold"/>
             </TextBlock>
 
             <Border Grid.Row="0" Grid.RowSpan="2" Background="{x:Static SystemColors.ControlBrush}"

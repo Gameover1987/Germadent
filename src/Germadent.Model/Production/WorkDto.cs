@@ -27,6 +27,11 @@ namespace Germadent.Model.Production
         public int? ProductId { get; set; }
 
         /// <summary>
+        /// Название изделия
+        /// </summary>
+        public string ProductName { get; set; }
+
+        /// <summary>
         /// Идентификатор технологической операции
         /// </summary>
         public int TechnologyOperationId { get; set; }

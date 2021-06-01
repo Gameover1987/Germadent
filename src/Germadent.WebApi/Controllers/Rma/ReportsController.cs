@@ -1,6 +1,6 @@
 ﻿using System;
 using Germadent.Common.Logging;
-using Germadent.WebApi.DataAccess;
+using Germadent.Model;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +21,14 @@ namespace Germadent.WebApi.Controllers.Rma
             _logger = logger;
         }
 
-        [HttpGet("{id:int}")]
-        public IActionResult GetReports(int id)
+        [HttpPost]
+        [Route("GetSalaryReport")]
+        public IActionResult GetSalaryReport(SalaryFilter salaryFilter)
         {
             try
             {
-                _logger.Info(nameof(GetReports));
-                return Ok(_rmaDbOperations.GetWorkReport(id));
+                _logger.Info(nameof(GetSalaryReport));
+                return Ok(_rmaDbOperations.GetSalaryReport(salaryFilter));
             }
             catch (Exception exception)
             {

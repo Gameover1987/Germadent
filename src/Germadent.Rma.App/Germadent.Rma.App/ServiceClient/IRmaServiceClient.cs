@@ -202,6 +202,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// Возвращает список выполненных сотрудником работ за период
         /// </summary>
         /// <returns></returns>
-        WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo);
+        WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo);
     }
 }

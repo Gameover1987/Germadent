@@ -74,7 +74,7 @@ namespace Germadent.Model
 
     public class SalaryFilter
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public DateTime DateFrom { get; set; }
 

@@ -534,7 +534,7 @@ namespace Germadent.Rma.App.Mocks
             };
         }
 
-        public WorkDto[] GetSalaryReport(DateTime dateFrom, DateTime dateTo)
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
         {
             return new WorkDto[]
             {
