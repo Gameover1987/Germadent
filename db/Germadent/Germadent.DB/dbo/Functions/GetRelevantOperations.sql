@@ -78,5 +78,5 @@ RETURN
 	SELECT teop.*, wl.ProductID, wl.Quantity, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, wl.OperationCost
 	FROM dbo.WorkList wl, teop
 	WHERE wl.WorkOrderID = @workOrderId
-		AND wl.WorkCompleted IS NULL
+--		AND wl.WorkCompleted IS NULL
 )

@@ -42,15 +42,15 @@ BEGIN
 				@statusChangeDateTime datetime
 
 		-- Если в заказ-наряде нет подобных работ - переводим статус
-		IF NOT EXISTS
-			(SELECT 1
-			FROM dbo.TechnologyOperations
-			WHERE TechnologyOperationID = @technologyOperationId
-				AND EmployeePositionID IN (SELECT teop.EmployeePositionID
-											FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
-											WHERE wl.WorkOrderID = @workOrderId
-												AND wl.TechnologyOperationID = @technologyOperationId))
-			EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
+		--IF NOT EXISTS
+		--	(SELECT 1
+		--	FROM dbo.TechnologyOperations
+		--	WHERE TechnologyOperationID = @technologyOperationId
+		--		AND EmployeePositionID IN (SELECT teop.EmployeePositionID
+		--									FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
+		--									WHERE wl.WorkOrderID = @workOrderId
+		--										AND wl.TechnologyOperationID = @technologyOperationId))
+		--	EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
 		
 		-- После этого добавляем работу в список
 		INSERT INTO dbo.WorkList
@@ -63,3 +63,8 @@ BEGIN
 	COMMIT
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[AddWork] TO [gdl_user]
+    AS [dbo];
+
