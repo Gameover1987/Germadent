@@ -65,7 +65,7 @@ BEGIN
 		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC dbo.AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
-		EXEC dbo.ChangeStatusWorkOrder @workOrderId, 0, @creatorId, '', @created
+		EXEC dbo.ChangeStatusWorkOrderEasy @workOrderId, @creatorId, 0, @created output
 	
 	COMMIT
 END

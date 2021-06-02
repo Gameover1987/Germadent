@@ -34,6 +34,10 @@ BEGIN
 				WHERE WorkOrderID = @workOrderId 
 					AND Status = @statusNext)
 		RETURN
+	
+	-- Попытка закрыть заказ-наряд раньше срока заканчивается ничем
+	IF @currentStatusWO < 90 AND @statusNext = 100
+		RETURN
 
 	ELSE BEGIN
 		BEGIN TRAN

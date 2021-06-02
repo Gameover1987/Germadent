@@ -41,7 +41,7 @@ BEGIN
 																	FROM dbo.StatusList
 																	WHERE WorkOrderID = @workOrderId)
 
-	-- Если заказ-наряд уже закрыт и пользователь не админ - никаких дальнейших действий
+	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
 	IF @currentStatusWO = 100
 		RETURN
 	

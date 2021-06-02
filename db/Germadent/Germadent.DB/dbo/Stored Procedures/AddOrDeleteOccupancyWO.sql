@@ -11,9 +11,19 @@ AS
 BEGIN
 	
 	SET NOCOUNT ON;
+	
+	DECLARE
+	@currentStatusWO int
 
-	-- Никаких изменений, если заказ-наряд закрыт
-	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
+	-- Определяем текущий статус заказ-наряда
+	SELECT @currentStatusWO = Status
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderId AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
+																	FROM dbo.StatusList
+																	WHERE WorkOrderID = @workOrderId)
+
+	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
+	IF @currentStatusWO = 100
 		RETURN
 
 	IF @userID IS NULL

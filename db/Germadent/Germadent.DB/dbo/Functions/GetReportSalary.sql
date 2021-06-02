@@ -26,12 +26,16 @@ RETURN
 
 	SELECT u.UserID
 	, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
+	, wo.WorkOrderID
 	, wo.DocNumber
 	, c.CustomerName
 	, wo.PatientFullName
+	, p.ProductID
 	, p.ProductName
+	, teop.TechnologyOperationID
 	, teop.TechnologyOperationUserCode
 	, teop.TechnologyOperationName
+	, wl.WorkID
 	, wl.Rate
 	, wl.Quantity
 	, wo.UrgencyRatio

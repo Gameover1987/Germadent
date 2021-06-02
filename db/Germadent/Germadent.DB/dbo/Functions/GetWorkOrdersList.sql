@@ -38,6 +38,7 @@ RETURN
 		, c.CustomerName
 		, wo.PatientFullName
 		, rp.ResponsiblePerson AS DoctorFullName
+		, swozero.UserID AS CreatorID
 		, swozero.StatusChangeDateTime as Created
 		, se.Status
 		, se.StatusName
@@ -55,9 +56,9 @@ RETURN
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
 		INNER JOIN StatusEnumeration se ON currentStatus.Status = se.Status
 		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
-		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 9
+		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 100
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
+		LEFT JOIN dbo.Users u ON swozero.UserID = u.UserID
 		LEFT JOIN dbo.OccupancyWO occ ON wo.WorkOrderID = occ.WorkOrderID
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
