@@ -35,7 +35,7 @@ namespace Germadent.Rms.App.ViewModels
         private bool _isBusy;
         private string _searchString;
 
-        private readonly ListCollectionView _collectionView;
+        private readonly ListCollectionView _ordersView;
         private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
         public MainViewModel(ILogger logger,
@@ -60,9 +60,9 @@ namespace Germadent.Rms.App.ViewModels
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
             _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
-            _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
-            _collectionView.CustomSort = new OrderLiteComparerByDateTime();
-            _collectionView.Filter = Filter;
+            _ordersView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
+            _ordersView.CustomSort = new OrderLiteComparerByDateTime();
+            _ordersView.Filter = Filter;
 
             BeginWorkByWorkOrderCommand = new DelegateCommand(BeginWorksByWorkOrderCommandHandler, CanBeginWorksByWorkOrderCommandHandler);
             FinishWorkByWorkOrderCommand = new DelegateCommand(FinishWorkByWorkOrderCommandHandler, CanFinishWorksByWorkOrderCommandHandler);
@@ -78,10 +78,13 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool Filter(object obj)
         {
+            var order = (OrderLiteViewModel)obj;
+            if (order.Status == OrderStatus.Closed)
+                return false;
+
             if (SearchString.IsNullOrWhiteSpace())
                 return true;
 
-            var order = (OrderLiteViewModel)obj;
             return order.MatchBySearchString(SearchString);
         }
 
@@ -96,7 +99,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private void RefreshView()
         {
-            _collectionView.Refresh();
+            _ordersView.Refresh();
         }
 
         public OrderLiteViewModel SelectedOrder
@@ -173,7 +176,9 @@ namespace Germadent.Rms.App.ViewModels
                 OrderLiteDto[] orders = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    orders = _rmsServiceClient.GetOrders(_ordersFilter);
+                    orders = _rmsServiceClient.GetOrders(_ordersFilter)
+                        .Where(x => x.Status != OrderStatus.Closed)
+                        .ToArray();
                 });
 
                 foreach (var order in orders)
@@ -296,6 +301,7 @@ namespace Germadent.Rms.App.ViewModels
             workOrder.Status = e.Status;
             workOrder.StatusChanged = e.StatusChanged;
 
+            _ordersView.Refresh();
         }
     }
 }
