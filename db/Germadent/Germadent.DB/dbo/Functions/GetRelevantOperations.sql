@@ -73,10 +73,9 @@ RETURN
 	FROM teop, codes
 	WHERE LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL
 
-	-- Исключаем из перечня те операции, что уже выбраны для выполнения, но ещё не были завершены
+	-- Исключаем из перечня те операции, что уже выбраны для выполнения, кроме операторских
 	EXCEPT
 	SELECT teop.*, wl.ProductID, wl.Quantity, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, wl.OperationCost
 	FROM dbo.WorkList wl, teop
 	WHERE wl.WorkOrderID = @workOrderId
---		AND wl.WorkCompleted IS NULL
 )

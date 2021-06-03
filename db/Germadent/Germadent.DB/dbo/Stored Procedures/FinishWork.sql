@@ -6,7 +6,7 @@
 CREATE PROCEDURE [dbo].[FinishWork] 
 	
 	@workId int,
-	@userId int,
+	@userIdCompleted int,
 	@statusChangeDateTime datetime output
 	
 
@@ -23,7 +23,7 @@ BEGIN
 
 		UPDATE dbo.WorkList
 		SET WorkCompleted = @statusChangeDateTime
-			, LastEditor = @userId
+			, EmployeeIDCompleted = @userIdCompleted
 		WHERE WorkID = @workId
 
 		--IF NOT EXISTS

@@ -45,12 +45,12 @@ RETURN
 
 	FROM WorkOrder wo 
 		INNER JOIN dbo.WorkList wl ON wo.WorkOrderID = wl.WorkOrderID
-		INNER JOIN dbo.Users u ON wl.EmployeeID = u.UserID
+		INNER JOIN dbo.Users u ON wl.EmployeeIDStarted = u.UserID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
 		INNER JOIN dbo.TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
 		LEFT JOIN Products p ON wl.ProductID = p.ProductID
-	WHERE wl.EmployeeID = ISNULL(@userId, wl.EmployeeID)
+	WHERE wl.EmployeeIDStarted = ISNULL(@userId, wl.EmployeeIDStarted)
 		AND ((wo.BranchTypeID = 2 AND currentStatus.Status = 100) OR (wo.BranchTypeID = 1 AND currentStatus.Status > 80))
 		AND wl.WorkStarted BETWEEN ISNULL(@dateStartedFrom, '17530101') AND ISNULL(@dateStartedTo, '99991231')
 		AND wl.WorkCompleted BETWEEN ISNULL(@dateCompletedFrom, '17530101') AND ISNULL(@dateCompletedTo, '99991231')

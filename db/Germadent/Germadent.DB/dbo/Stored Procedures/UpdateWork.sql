@@ -9,8 +9,8 @@ CREATE PROCEDURE [dbo].[UpdateWork]
 	@workOrderId int,
 	@quantity int,
 	@operationCost money,
-	@remark nvarchar(250),
-	@userId int
+	@remark nvarchar(250)
+--	@userId int
 	
 AS
 BEGIN
@@ -27,7 +27,7 @@ BEGIN
 		SET	Quantity = @quantity
 		, OperationCost = @operationCost
 		, Remark = @remark
-		, LastEditor = @userId
+--		, LastEditor = @userId
 
 	COMMIT
 

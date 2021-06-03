@@ -8,12 +8,11 @@ CREATE PROCEDURE [dbo].[AddWork]
 	@workOrderId int, 
 	@productId int,
 	@technologyOperationId int,
-	@employeeId int,
 	@rate money,
 	@quantity int,
 	@operationCost money,
 	@remark nvarchar(250),
-	@userId int,
+	@userIdStarted int,
 	@workId int output
 
 AS
@@ -64,9 +63,9 @@ BEGIN
 		
 		-- После этого добавляем работу в список
 		INSERT INTO dbo.WorkList
-		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeID, Rate,		Quantity, OperationCost, WorkStarted,	Remark, LastEditor)
+		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeIDStarted, Rate,		Quantity, OperationCost, WorkStarted,	Remark)
 		VALUES
-		(@workOrderId, @productId, @technologyOperationId, @employeeId, @rate, @quantity, @operationCost, GETDATE(), @remark, @employeeId)
+		(@workOrderId, @productId, @technologyOperationId, @userIdStarted,	@rate,		@quantity, @operationCost, GETDATE(), @remark)
 
 		SET @workId = SCOPE_IDENTITY()
 
