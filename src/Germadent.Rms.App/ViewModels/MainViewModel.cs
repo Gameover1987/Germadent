@@ -66,7 +66,7 @@ namespace Germadent.Rms.App.ViewModels
 
             BeginWorkByWorkOrderCommand = new DelegateCommand(BeginWorksByWorkOrderCommandHandler, CanBeginWorksByWorkOrderCommandHandler);
             FinishWorkByWorkOrderCommand = new DelegateCommand(FinishWorkByWorkOrderCommandHandler, CanFinishWorksByWorkOrderCommandHandler);
-            RealizeWorkOrderCommand = new DelegateCommand(RealizeWorkOrderCommandHandler, CanRealizeWorkOrderCommandHandler);
+            RealizeWorkOrderCommand = new DelegateCommand(PerfrormQualityControlCommandHandler, CanRealizeWorkOrderCommandHandler);
 
             FilterOrdersCommand = new DelegateCommand(x => FilterOrdersCommandHandler());
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
@@ -246,10 +246,13 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanRealizeWorkOrderCommandHandler()
         {
+            if (!CanQualityControl)
+                return false;
+
             return SelectedOrder != null && SelectedOrder.Status == OrderStatus.QualityControl;
         }
 
-        private void RealizeWorkOrderCommandHandler()
+        private void PerfrormQualityControlCommandHandler()
         {
             var msg = $"Подтвердить прохождение контроля качества по заказ-наряду '{SelectedOrder.DocNumber}'?";
             if (_dialogAgent.ShowMessageDialog(msg, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
