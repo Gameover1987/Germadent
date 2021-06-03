@@ -74,6 +74,7 @@ namespace Germadent.Rms.App.ViewModels
                 .Select(x => x.ToDto())
                 .ToArray();
 
+            works.ForEach(x => x.UserIdCompleted = _rmsServiceClient.AuthorizationInfo.UserId);
             works.ForEach(x => x.WorkCompleted = DateTime.Now);
             works.ForEach(x => x.WorkOrderId = _order.WorkOrderId);
 

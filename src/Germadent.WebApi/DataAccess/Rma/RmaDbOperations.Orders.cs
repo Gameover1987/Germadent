@@ -178,8 +178,11 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public OrderStatusNotificationDto FinishWorks(WorkDto[] works)
         {
+            if (works.Any(x => x.UserIdCompleted == null))
+                throw new InvalidOperationException("У как минимум одной из работ не указан пользователь, завершивший ее");
+
             var workOrderId = works.First().WorkOrderId;
-            var userId = works.First().UserIdStarted;
+            var userId = works.First().UserIdCompleted.Value;
 
             return ExecuteInTransactionScope(transaction =>
             {
@@ -200,10 +203,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId)
         {
-            return ExecuteInTransactionScope(tran =>
-            {
-                return ChangeWorkOrderStatusImpl(tran, workOrderId, userId, OrderStatus.Realization);
-            });
+            return ExecuteInTransactionScope(tran => ChangeWorkOrderStatusImpl(tran, workOrderId, userId, OrderStatus.Realization));
         }
 
         private void StartWork(WorkDto work, SqlTransaction transaction)
