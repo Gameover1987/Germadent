@@ -38,6 +38,18 @@ namespace Germadent.Rms.App.ViewModels
 
         public decimal TotalCost => _work.OperationCost;
 
+        public string Comment
+        {
+            get => _work.Comment;
+            set
+            {
+                if (_work.Comment == value)
+                    return;
+                _work.Comment = value;
+                OnPropertyChanged(() => Comment);
+            }
+        }
+
         public WorkDto ToDto() => _work;
     }
 }

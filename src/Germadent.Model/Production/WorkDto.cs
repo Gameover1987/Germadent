@@ -110,5 +110,10 @@ namespace Germadent.Model.Production
         /// Идентификатор последнего редактировавшего пользователя 
         /// </summary>
         public int? LastEditorId { get; set; }
+
+        /// <summary>
+        /// Комментарий
+        /// </summary>
+        public string Comment { get; set; }
     }
 }

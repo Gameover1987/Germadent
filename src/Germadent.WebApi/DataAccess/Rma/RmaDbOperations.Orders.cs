@@ -120,8 +120,6 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId)
         {
-            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId);
-
             return ExecuteInTransactionScope(transaction => GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId));
         }
 
@@ -151,7 +149,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                             UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
                             OperationCost = reader["OperationCost"].ToDecimal(),
                             WorkStarted = reader["WorkStarted"].ToDateTime(),
-                            WorkCompleted = reader["WorkCompleted"].ToDateTimeOrNull()
+                            WorkCompleted = reader["WorkCompleted"].ToDateTimeOrNull(),
+                            Comment = reader["Comment"].ToString()
                         };
                         worksCollection.Add(work);
                     }
@@ -220,8 +219,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
                 command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
                 command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
-                command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = DBNull.Value;
                 command.Parameters.Add(new SqlParameter("@userIdStarted", SqlDbType.Int)).Value = work.UserIdStarted;
+                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment;
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();
@@ -238,6 +237,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
                 command.Parameters.Add(new SqlParameter("@userIdCompleted", SqlDbType.Int)).Value = work.UserIdCompleted;
+                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment;
                 command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();

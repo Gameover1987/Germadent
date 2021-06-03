@@ -95,6 +95,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Работы к подтверждению" FontSize="14" FontWeight="SemiBold"/>
                 <DataGrid Grid.Row="1" Margin="0,6,0,0"
+                          IsReadOnly="False"
                           AlternationCount="2"
                           ItemsSource="{Binding Works}">
                     <DataGrid.Columns>
@@ -107,24 +108,31 @@
                             </DataGridCheckBoxColumn.ElementStyle>
                         </DataGridCheckBoxColumn>
 
-                        <DataGridTextColumn Header="Код" Width="Auto"
+                        <DataGridTextColumn Header="Код" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}" 
                                             Binding="{Binding UserCode}"/>
-                        <DataGridTextColumn Header="Название операции" Width="*"
+                        <DataGridTextColumn Header="Название операции" Width="*" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding DisplayName}"/>
-                        <DataGridTextColumn Header="Кол-во" Width="Auto"
+                        <DataGridTextColumn Header="Кол-во" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding ProductCount}"/>
-                        <DataGridTextColumn Header="Расценка" Width="Auto"
+                        <DataGridTextColumn Header="Расценка" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding Rate, StringFormat=C, ConverterCulture='ru-RU'}"/>
-                        <DataGridTextColumn Header="Срочность" Width="Auto"
+                        <DataGridTextColumn Header="Срочность" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding UrgencyRatio}"/>
-                        <DataGridTextColumn Header="Итого" Width="Auto"
+                        <DataGridTextColumn Header="Итого" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding TotalCost, StringFormat=C, ConverterCulture='ru-RU'}"/>
+                        <DataGridTextColumn Header="Комментарий" Width="Auto" MinWidth="200" IsReadOnly="False"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
