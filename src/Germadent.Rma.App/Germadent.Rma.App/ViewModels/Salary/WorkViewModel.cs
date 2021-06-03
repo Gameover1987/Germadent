@@ -15,7 +15,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         public int WorkId => _work.WorkId;
 
-        public string UserFullName => _work.UserFullName;
+        public string UserFullName => _work.UserFullNameStarted;
 
         public string TechnologyOperationName => _work.TechnologyOperationName;
 

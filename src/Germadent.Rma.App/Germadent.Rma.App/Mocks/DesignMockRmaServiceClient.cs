@@ -542,7 +542,7 @@ namespace Germadent.Rma.App.Mocks
             {
                 new WorkDto
                 {
-                    UserFullName = "Ленин В.И",
+                    UserFullNameStarted = "Ленин В.И",
                     TechnologyOperationName = "Patch Kde 2.0 for FreeBSD",
                     WorkStarted = DateTime.Now,
                     WorkCompleted = DateTime.Now,
@@ -552,7 +552,7 @@ namespace Germadent.Rma.App.Mocks
                 },
                 new WorkDto
                 {
-                    UserFullName = "Сталин В.И",
+                    UserFullNameStarted = "Сталин В.И",
                     TechnologyOperationName = "Install Windows 100500 on MAC with M1",
                     WorkStarted = DateTime.Now,
                     WorkCompleted = DateTime.Now,

@@ -98,12 +98,13 @@ namespace Germadent.WebApi.DataAccess.Rma
                         {
                             var work = new WorkDto
                             {
-                                UserFullName = reader["UserFullName"].ToString(),
-                                UserId = reader["UserId"].ToInt(),
+                                UserFullNameStarted = reader["UserFullName"].ToString(),
+                                UserIdStarted = reader["UserId"].ToInt(),
                                 OperationCost = reader["OperationCost"].ToDecimal(),
                                 ProductId = reader["ProductId"].ToIntOrNull(),
                                 Quantity = reader["ProductCount"].ToInt(),
                                 Rate = reader["Rate"].ToDecimal(),
+                                UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
                                 TechnologyOperationId = reader["TechnologyOperationID"].ToInt(),
                                 TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
                                 TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
@@ -143,8 +144,8 @@ namespace Germadent.WebApi.DataAccess.Rma
                             TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
                             TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
                             TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
-                            UserId = reader["UserId"].ToInt(),
-                            UserFullName = reader["UserFullName"].ToString(),
+                            UserIdStarted = reader["UserIdStarted"].ToInt(),
+                            UserFullNameStarted = reader["UserFullNameStarted"].ToString(),
                             Rate = reader["Rate"].ToDecimal(),
                             Quantity = reader["Quantity"].ToInt(),
                             UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
@@ -162,7 +163,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         public OrderStatusNotificationDto StartWorks(WorkDto[] works)
         {
             var workOrderId = works.First().WorkOrderId;
-            var userId = works.First().UserId;
+            var userId = works.First().UserIdStarted;
 
             return ExecuteInTransactionScope(transaction =>
             {
@@ -178,7 +179,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         public OrderStatusNotificationDto FinishWorks(WorkDto[] works)
         {
             var workOrderId = works.First().WorkOrderId;
-            var userId = works.First().UserId;
+            var userId = works.First().UserIdStarted;
 
             return ExecuteInTransactionScope(transaction =>
             {
@@ -216,12 +217,11 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = work.WorkOrderId;
                 command.Parameters.Add(new SqlParameter("@productId", SqlDbType.Int)).Value = work.ProductId.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = work.TechnologyOperationId;
-                command.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int)).Value = work.UserId;
                 command.Parameters.Add(new SqlParameter("@rate", SqlDbType.Money)).Value = work.Rate;
                 command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
                 command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
                 command.Parameters.Add(new SqlParameter("@remark", SqlDbType.NVarChar)).Value = DBNull.Value;
-                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                command.Parameters.Add(new SqlParameter("@userIdStarted", SqlDbType.Int)).Value = work.UserIdStarted;
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();
@@ -237,7 +237,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Transaction = transaction;
 
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
-                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = work.UserId;
+                command.Parameters.Add(new SqlParameter("@userIdCompleted", SqlDbType.Int)).Value = work.UserIdCompleted;
                 command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();

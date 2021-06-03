@@ -59,12 +59,22 @@ namespace Germadent.Model.Production
         /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
-        public int UserId { get; set; }
+        public int UserIdStarted { get; set; }
 
         /// <summary>
         /// ФИО исполнителя
         /// </summary>
-        public string UserFullName { get; set; }
+        public string UserFullNameStarted { get; set; }
+
+        /// <summary>
+        /// Идентификатор исполнителя, закончившего технологическую операцию
+        /// </summary>
+        public int? UserIdCompleted { get; set; }
+
+        /// <summary>
+        /// ФИО исполнителя, закончившего технологическую операцию
+        /// </summary>
+        public string? UserFullNameCompleted { get; set; }
 
         /// <summary>
         /// Расценка за 1 операцию
@@ -99,6 +109,6 @@ namespace Germadent.Model.Production
         /// <summary>
         /// Идентификатор последнего редактировавшего пользователя 
         /// </summary>
-        public int LastEditorId { get; set; }
+        public int? LastEditorId { get; set; }
     }
 }
