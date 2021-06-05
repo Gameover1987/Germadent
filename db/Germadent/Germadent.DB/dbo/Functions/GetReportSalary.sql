@@ -51,7 +51,7 @@ RETURN
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
 		LEFT JOIN Products p ON wl.ProductID = p.ProductID
 	WHERE wl.EmployeeIDStarted = ISNULL(@userId, wl.EmployeeIDStarted)
-		AND ((wo.BranchTypeID = 2 AND currentStatus.Status = 100) OR (wo.BranchTypeID = 1 AND currentStatus.Status > 80))
+		AND ((wo.BranchTypeID = 2 AND currentStatus.Status = 100) OR (wo.BranchTypeID = 1 AND currentStatus.Status > 89))
 		AND wl.WorkStarted BETWEEN ISNULL(@dateStartedFrom, '17530101') AND ISNULL(@dateStartedTo, '99991231')
 		AND wl.WorkCompleted BETWEEN ISNULL(@dateCompletedFrom, '17530101') AND ISNULL(@dateCompletedTo, '99991231')
 )

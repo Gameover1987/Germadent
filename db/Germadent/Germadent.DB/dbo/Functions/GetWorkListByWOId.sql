@@ -36,7 +36,8 @@ RETURN
 			wl.WorkStarted, 
 			wl.WorkCompleted,
 			wl.EmployeeIDCompleted AS UserIdCompleted,
-			CONCAT(uc.FamilyName,' ', LEFT(uc.FirstName, 1), '.', LEFT(uc.Patronymic, 1), '.') AS UserFullNameCompleted
+			CONCAT(uc.FamilyName,' ', LEFT(uc.FirstName, 1), '.', LEFT(uc.Patronymic, 1), '.') AS UserFullNameCompleted,
+			wl.Comment
 
 	FROM dbo.WorkList wl
 		INNER JOIN dbo.TechnologyOperations teo ON wl.TechnologyOperationID = teo.TechnologyOperationID

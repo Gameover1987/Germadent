@@ -10,7 +10,7 @@
     [WorkStarted]           DATETIME       NULL,
     [WorkCompleted]         DATETIME       NULL,
     [EmployeeIDCompleted]   INT            NULL,
-    [Remark]                NVARCHAR (250) NULL,
+    [Comment]               NVARCHAR (MAX) NULL,
     CONSTRAINT [PK_WorkList] PRIMARY KEY CLUSTERED ([WorkID] ASC),
     CONSTRAINT [FK_WorkList_Products] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[Products] ([ProductID]),
     CONSTRAINT [FK_WorkList_TechnologyOperations] FOREIGN KEY ([TechnologyOperationID]) REFERENCES [dbo].[TechnologyOperations] ([TechnologyOperationID]),
@@ -18,6 +18,8 @@
     CONSTRAINT [FK_WorkList_Users1] FOREIGN KEY ([EmployeeIDCompleted]) REFERENCES [dbo].[Users] ([UserID]),
     CONSTRAINT [FK_WorkList_WorkOrder] FOREIGN KEY ([WorkOrderID]) REFERENCES [dbo].[WorkOrder] ([WorkOrderID]) ON DELETE CASCADE
 );
+
+
 
 
 
