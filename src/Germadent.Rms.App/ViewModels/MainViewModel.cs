@@ -262,26 +262,27 @@ namespace Germadent.Rms.App.ViewModels
         private void PerfrormQualityControlCommandHandler()
         {
             var msg = $"Подтвердить прохождение контроля качества по заказ-наряду '{SelectedOrder.DocNumber}'?";
-            if (_dialogAgent.ShowMessageDialog(msg, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return;
-
-            _rmsServiceClient.PerformQualityControl(SelectedOrder.WorkOrderId);
+            if (_dialogAgent.ShowMessageDialog(msg, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _rmsServiceClient.PerformQualityControl(SelectedOrder.WorkOrderId);
+            }
         }
 
         private void LogOutCommandHandler()
         {
-            if (_dialogAgent.ShowMessageDialog("Выйти из приложения, и зайти под другим пользователем?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return;
-
-            _environment.Restart();
+            var msg = "Выйти из приложения, и зайти под другим пользователем?";
+            if (_dialogAgent.ShowMessageDialog(msg, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _environment.Restart();
+            }
         }
 
         private void ExitCommandHandler()
         {
-            if (_dialogAgent.ShowMessageDialog("Выйти из приложения?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return;
-
-            _environment.Shutdown();
+            if (_dialogAgent.ShowMessageDialog("Выйти из приложения?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _environment.Shutdown();
+            }
         }
 
         private void SignalRClientOnWorkOrderLockedOrUnlocked(object? sender, OrderLockedEventArgs e)

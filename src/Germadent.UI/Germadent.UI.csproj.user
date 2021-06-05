@@ -4,12 +4,18 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Windows\InputBox.xaml.cs">
+    <Compile Update="Windows\InputBoxWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\MessageBoxWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Windows\InputBox.xaml">
+    <Page Update="Windows\InputBoxWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\MessageBoxWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

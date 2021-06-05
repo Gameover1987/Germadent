@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,11 +15,11 @@ using System.Windows.Shapes;
 namespace Germadent.UI.Windows
 {
     /// <summary>
-    /// Interaction logic for InputBox.xaml
+    /// Interaction logic for MessageBoxWindow.xaml
     /// </summary>
-    public partial class InputBox : Window
+    public partial class MessageBoxWindow : Window
     {
-        public InputBox()
+        public MessageBoxWindow()
         {
             InitializeComponent();
         }

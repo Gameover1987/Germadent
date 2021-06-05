@@ -7,12 +7,7 @@ namespace Germadent.UI.Infrastructure
     /// </summary>
     public interface IShowDialogAgent
 	{
-		/// <summary>
-		/// Заголовок окна по умолчанию для отображения в ShowMessageDialog, если не удалось получить активное окно
-		/// </summary>
-		string DefaultWindowTitle { get; set; }
-
-		/// <summary>
+        /// <summary>
 		/// Показать диалог.
 		/// </summary>
 		/// <param name="dialogViewModel">ViewModel диалога.</param>		
@@ -22,24 +17,12 @@ namespace Germadent.UI.Infrastructure
 		/// </returns>
 		bool? ShowDialog<T>(object dialogViewModel) where T : Window, new();
 
-		/// <summary>
-		/// Показать диалог.
-		/// </summary>
-		/// <param name="dialogViewModel">ViewModel диалога.</param>
-		/// <param name="owner">Владелец создаваемого окна, возможно null</param>
-		/// <typeparam name="T">Тип View диалога.</typeparam>
-		/// <returns>
-		/// Возвращаемое значение такое же как у System.Windows.Window.ShowDialog().
-		/// </returns>
-		bool? ShowDialog<T>(object dialogViewModel, IWindow owner) where T : Window, new();
-
-		/// <summary>
+        /// <summary>
 		/// Показать окно в немодальном режиме, owner у окна указывается текущее активное окно
 		/// </summary>
 		/// <param name="viewModel">ViewModel окна.</param>
 		/// <returns>Интерфейс окна для управления закрытием</returns>
-		IWindow Show<T>(object viewModel)
-			where T : Window, IWindow, new();
+		IWindow Show<T>(object viewModel) where T : Window, IWindow, new();
 
 		/// <summary>
 		/// Показать окно в немодальном режиме
@@ -48,91 +31,14 @@ namespace Germadent.UI.Infrastructure
 		/// <param name="viewModel">ViewModel окна.</param>
 		/// <param name="owner">Владелец создаваемого окна</param>
 		/// <returns>Интерфейс окна для управления закрытием</returns>
-		IWindow Show<T>(object viewModel, IWindow owner)
-			where T : Window, IWindow, new();
+		IWindow Show<T>(object viewModel, IWindow owner) where T : Window, IWindow, new();
 
         /// <summary>
-        /// Показать MessageBox.
-        /// </summary>
-        /// <param name="message">Текст для отображения.</param>
-        /// <param name="caption">Заголовок. если пустой то берётся заголовок активного окна</param>
-        /// <param name="button">
-        /// Параметр, определяющий какие кнопки должен содержать MessageBox.
-        /// </param>
-        /// <param name="icon">Иконка для отображения.</param>
-        /// <returns>
-        /// MessageBoxResult определяет какую кнопку нажал пользователь.
-        /// </returns>
-        MessageBoxResult ShowMessageDialog(string message, string caption,
-            MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage icon = MessageBoxImage.Information);
-
-		/// <summary>
-		/// Показать MessageBox. с установкой Caption из текущего активного окна
-		/// </summary>
-		/// <param name="message">Текст для отображения.</param>
-		/// <param name="button">
-		/// Параметр, определяющий какие кнопки должен содержать MessageBox.
-		/// </param>
-		/// <param name="icon">Иконка для отображения.</param>
-		/// <returns>
-		/// MessageBoxResult определяет какую кнопку нажал пользователь.
-		/// </returns>
-		MessageBoxResult ShowMessageDialog(string message, MessageBoxButton button = MessageBoxButton.OK,
-			MessageBoxImage icon = MessageBoxImage.Information);
-
-        /// <summary>
-        /// Показать MessageBox.
-        /// </summary>
-        /// <param name="message">Текст для отображения.</param>
-        /// <param name="caption">Заголовок. если пустой то берётся заголовок активного окна</param>
-        /// <param name="button">
-        /// Параметр, определяющий какие кнопки должен содержать MessageBox.
-        /// </param>
-        /// <param name="icon">Иконка для отображения.</param>
-        /// <param name="defaultButton">Параметр определяющий какая кнопка будет выбрана по умолчанию</param>
-        /// <param name="options">Specifies special display options for a message box.</param>
-        /// <returns>
-        /// MessageBoxResult определяет какую кнопку нажал пользователь.
-        /// </returns>
-        MessageBoxResult ShowMessageDialog(string message, string caption,
-            MessageBoxButton button, MessageBoxImage icon,
-            MessageBoxResult defaultButton, MessageBoxOptions options);
-
-		/// <summary>
-		/// Показать MessageBox.
-		/// </summary>
-		/// <param name="owner">Владелец окна, возможно null</param>
-		/// <param name="message">Текст для отображения.</param>
-		/// <param name="caption">Заголовок. если пустой то берётся заголовок активного окна</param>
-		/// <param name="button">
-		/// Параметр, определяющий какие кнопки должен содержать MessageBox.
-		/// </param>
-		/// <param name="icon">Иконка для отображения.</param>
-		/// <param name="defaultButton">Параметр определяющий какая кнопка будет выбрана по умолчанию</param>
-		/// <param name="options">Specifies special display options for a message box.</param>
-		/// <returns>
-		/// MessageBoxResult определяет какую кнопку нажал пользователь.
-		/// </returns>
-		MessageBoxResult ShowMessageDialog(
-			IWindow owner, 
-			string message, 
-			string caption = null,
-			MessageBoxButton button = MessageBoxButton.OK, 
-			MessageBoxImage icon = MessageBoxImage.Information, 
-			MessageBoxResult defaultButton = MessageBoxResult.OK,
-			MessageBoxOptions options = MessageBoxOptions.None);
-
-		/// <summary>
 		/// Показать диалог с сообщением об ошибке для активного окна.
 		/// </summary>
 		void ShowErrorMessageDialog(string message, string details, string caption = null);
 
-		/// <summary>
-		/// Показать диалог с сообщением об ошибке с указанием owner.
-		/// </summary>
-		void ShowErrorMessageDialog(IWindow owner, string message, string details, string caption = null);
-
-		/// <summary>
+        /// <summary>
 		/// Показать диалог открытия файла
 		/// </summary>
 		/// <param name="filter"></param>
@@ -159,5 +65,15 @@ namespace Germadent.UI.Infrastructure
 		/// <param name="inputString">Начальное значение параметра</param>
 		/// <returns></returns>
         string ShowInputBox(string title, string parameterName, string inputString = null);
-    }
+
+        /// <summary>
+        /// Показать MessageBox. Позволяет задать заголовок
+        /// </summary>
+        MessageBoxResult ShowMessageDialog(string message, string caption, MessageBoxButton button, MessageBoxImage icon);
+
+        /// <summary>
+        /// Показать MessageBox.
+        /// </summary>
+        MessageBoxResult ShowMessageDialog(string message, MessageBoxButton button, MessageBoxImage icon);
+	}
 }
