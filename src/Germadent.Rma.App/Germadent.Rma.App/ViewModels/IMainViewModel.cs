@@ -11,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels
 
         OrderLiteViewModel SelectedOrder { get; }
 
-        IUserSettingsManager SettingsManager { get; }
+        IRmaUserSettingsManager SettingsManager { get; }
 
         event EventHandler ColumnSettingsChanged;
 

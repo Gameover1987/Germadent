@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Germadent.Rma.App.Infrastructure
 {
-    public interface IUserSettingsManager : IDisposable
+    public interface IRmaUserSettingsManager : IDisposable
     {
         string LastLogin { get; set; }
 

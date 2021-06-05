@@ -12,9 +12,9 @@ namespace Germadent.Rma.App.ViewModels
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
         private readonly IRmaServiceClient _serviceClient;
-        private readonly IUserSettingsManager _userSettingsManager;
+        private readonly IRmaUserSettingsManager _userSettingsManager;
 
-        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient, IUserSettingsManager userSettingsManager)
+        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient, IRmaUserSettingsManager userSettingsManager)
             : base(agent)
         {
             _serviceClient = serviceClient;

@@ -66,6 +66,8 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterInstance<IClientConfiguration>(_configuration, new ContainerControlledLifetimeManager());
 
             var dispatcher = new DispatcherAdapter(Application.Current.Dispatcher);
+
+            _container.RegisterType<IRmsUserSettingsManager, RmsUserSettingsManager>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(typeof(IDispatcher), dispatcher);
             _container.RegisterType<IAppInitializer, AppInitializer>();
             _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();

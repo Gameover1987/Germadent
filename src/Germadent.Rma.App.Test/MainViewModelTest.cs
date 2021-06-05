@@ -46,7 +46,7 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IPrintModule>(),
                 Mock.Of<ILogger>(),
                 Mock.Of<IUserManager>(),
-                Mock.Of<IUserSettingsManager>(),
+                Mock.Of<IRmaUserSettingsManager>(),
                 Mock.Of<IClipboardHelper>(),
                 Mock.Of<ISignalRClient>(),
                 Mock.Of<ISalaryCalculationViewModel>());

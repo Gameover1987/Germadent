@@ -30,7 +30,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
     }
 
-    public class DesignMockUserSettingsManager : IUserSettingsManager
+    public class DesignMockUserSettingsManager : IRmaUserSettingsManager
     {
         public void Dispose()
         {

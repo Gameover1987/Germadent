@@ -81,7 +81,7 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<ISplashScreenViewModel, SplashScreenViewModel>();
             _container.RegisterType<IAuthorizationViewModel, AuthorizationViewModel>();
             _container.RegisterType<IUserManager, RmaUserManager>();
-            _container.RegisterType<IUserSettingsManager, UserSettingsManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IRmaUserSettingsManager, RmaUserSettingsManager>(new ContainerControlledLifetimeManager());
             
             RegisterServiceClient();
 

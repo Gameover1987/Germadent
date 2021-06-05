@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace Germadent.Rma.App.Infrastructure
 {
-    public class UserSettingsManager : IUserSettingsManager
+    public class RmaUserSettingsManager : IRmaUserSettingsManager
     {
         private const string SettingsFile = "UserSettings.json";
 
         private readonly IFileManager _fileManager;
 
-        public UserSettingsManager(IFileManager fileManager)
+        public RmaUserSettingsManager(IFileManager fileManager)
         {
             _fileManager = fileManager;
 
@@ -20,7 +20,7 @@ namespace Germadent.Rma.App.Infrastructure
                 return;
 
             var userSettingsJson = _fileManager.ReadAllText(SettingsFile);
-            var userSettings = userSettingsJson.DeserializeFromJson<UserSettings>();
+            var userSettings = userSettingsJson.DeserializeFromJson<RmaUserSettings>();
 
             LastLogin = userSettings.LastLogin;
 
@@ -37,9 +37,9 @@ namespace Germadent.Rma.App.Infrastructure
             _fileManager.SaveAsText(userSettingsJson, SettingsFile);
         }
 
-        private UserSettings CollectSettings()
+        private RmaUserSettings CollectSettings()
         {
-            return new UserSettings
+            return new RmaUserSettings
             {
                 LastLogin = LastLogin,
                 Columns = Columns

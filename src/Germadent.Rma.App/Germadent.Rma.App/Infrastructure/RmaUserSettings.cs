@@ -37,14 +37,10 @@ namespace Germadent.Rma.App.Infrastructure
         public int DisplayIndex { get; set; }
     }
 
-    public class UserSettings
+    public class RmaUserSettings
     {
         public string LastLogin { get; set; }
 
         public ColumnInfo[] Columns { get; set; }
-
-        public double MainWindowWidth { get; set; }
-
-        public double MainWindowHeight { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
         private readonly IUserManager _userManager;
-        private readonly IUserSettingsManager _userSettingsManager;
+        private readonly IRmaUserSettingsManager _userSettingsManager;
         private readonly IClipboardHelper _clipboardHelper;
         private readonly ISignalRClient _signalRClient;
         private readonly ISalaryCalculationViewModel _salaryCalculationViewModel;
@@ -66,7 +66,7 @@ namespace Germadent.Rma.App.ViewModels
             IPrintModule printModule,
             ILogger logger,
             IUserManager userManager,
-            IUserSettingsManager userSettingsManager,
+            IRmaUserSettingsManager userSettingsManager,
             IClipboardHelper clipboardHelper,
             ISignalRClient signalRClient,
             ISalaryCalculationViewModel salaryCalculationViewModel)
@@ -144,7 +144,7 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
-        public IUserSettingsManager SettingsManager
+        public IRmaUserSettingsManager SettingsManager
         {
             get { return _userSettingsManager; }
         }
@@ -395,7 +395,7 @@ namespace Germadent.Rma.App.ViewModels
             using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.WorkOrderId))
             {
                 var orderDto = orderScope.Order;
-                var wizardMode = orderDto.Status == OrderStatus.Closed ? WizardMode.View : WizardMode.Edit;
+                var wizardMode = orderDto.Status != OrderStatus.Closed ? WizardMode.Edit : WizardMode.View;
                 if (orderDto.BranchType == BranchType.Laboratory)
                 {
                     changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
