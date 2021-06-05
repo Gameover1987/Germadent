@@ -136,7 +136,6 @@ namespace Germadent.Rma.App.Infrastructure
 
         private void RegisterServiceClient()
         {
-            _container.RegisterType<IRmaServiceClient, RmaServiceClient>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICustomerRepository, CustomerRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IResponsiblePersonRepository, ResponsiblePersonRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
@@ -147,6 +146,11 @@ namespace Germadent.Rma.App.Infrastructure
             _container.RegisterType<IEmployeePositionRepository, EmployeePositionRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITechnologyOperationRepository, TechnologyOperationRepository>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());
+
+            var signalR = _container.Resolve<ISignalRClient>();
+            var rmaServiceClient = new RmaServiceClient(_configuration, signalR);
+            _container.RegisterInstance<IRmaServiceClient>(rmaServiceClient);
+            _container.RegisterInstance<IBaseClientOperationsServiceClient>(rmaServiceClient);
         }
 
         private void RegisterPrintModule()

@@ -4,6 +4,7 @@ using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.PropertyGrid;
+using Germadent.Client.Common.Reporting.TemplateProcessing;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ServiceClient.Repository;
@@ -78,14 +79,20 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IStartWorkListViewModel, StartWorkListViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IFinishWorkListViewModel, FinishWorkListViewModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
-
-            _container.RegisterType<IRmsServiceClient, RmsServiceClient>(new ContainerControlledLifetimeManager());
+            
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IDictionaryRepository, DictionaryRepository>(new ContainerControlledLifetimeManager());
 
+            var signalR = _container.Resolve<ISignalRClient>();
+            var rmsServiceClient = new RmsServiceClient(_configuration, signalR);
+            _container.RegisterInstance<IRmsServiceClient>(rmsServiceClient);
+            _container.RegisterInstance<IBaseClientOperationsServiceClient>(rmsServiceClient);
+
+            _container.RegisterType<IPrintableOrderConverter, PrintableOrderConverter>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IWordAssembler, WordJsonAssembler>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPrintModule, PrintModule>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IClipboardHelper, ClipboardHelper>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommandExceptionHandler, CommandExceptionHandler>(new ContainerControlledLifetimeManager());

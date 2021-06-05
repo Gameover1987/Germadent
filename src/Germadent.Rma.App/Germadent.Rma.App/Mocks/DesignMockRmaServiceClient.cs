@@ -222,6 +222,11 @@ namespace Germadent.Rma.App.Mocks
             }
         }
 
+        public byte[] GetTemplate(DocumentTemplateType documentTemplateType)
+        {
+            throw new NotImplementedException();
+        }
+
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
             var groups = new PriceGroupDto[]

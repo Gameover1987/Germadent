@@ -1,5 +1,6 @@
 ﻿using System;
 using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.WebApi.DataAccess.Rma;
@@ -17,12 +18,14 @@ namespace Germadent.WebApi.Controllers.Rma
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly ILogger _logger;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IFileManager _fileManager;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
+        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext, IFileManager fileManager)
         {
             _rmaDbOperations = rmaDbOperations;
             _logger = logger;
             _hubContext = hubContext;
+            _fileManager = fileManager;
         }
         
         [HttpPost]

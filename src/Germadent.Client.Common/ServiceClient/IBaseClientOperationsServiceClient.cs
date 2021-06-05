@@ -33,5 +33,12 @@ namespace Germadent.Client.Common.ServiceClient
         /// <param name="dictionaryType"></param>
         /// <returns></returns>
         DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
+
+        /// <summary>
+        /// Возвращает шаблон документа определенного типа
+        /// </summary>
+        /// <param name="documentTemplateType"></param>
+        /// <returns></returns>
+        byte[] GetTemplate(DocumentTemplateType documentTemplateType);
     }
 }

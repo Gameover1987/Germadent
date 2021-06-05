@@ -24,7 +24,7 @@ namespace Germadent.Model
         public OrderStatus Status { get; set; }
 
         public string DocNumber { get; set; }
-        
+
         public BranchType BranchType { get; set; }
 
         public int CustomerId { get; set; }
@@ -73,7 +73,7 @@ namespace Germadent.Model
 
         public string MaterialsStr { get; set; }
 
-        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }        
+        public AdditionalEquipmentDto[] AdditionalEquipment { get; set; }
 
         public AttributeDto[] Attributes { get; set; }
 

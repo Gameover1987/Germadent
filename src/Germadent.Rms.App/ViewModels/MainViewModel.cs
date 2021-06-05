@@ -9,6 +9,7 @@ using System.Windows.Data;
 using Germadent.Common.Extensions;
 using System.Windows;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Model;
@@ -31,6 +32,7 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IStartWorkListViewModel _startWorkListViewModel;
         private readonly IFinishWorkListViewModel _finishWorkListViewModel;
         private readonly ISignalRClient _signalRClient;
+        private readonly IPrintModule _printModule;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
@@ -46,7 +48,8 @@ namespace Germadent.Rms.App.ViewModels
             IOrdersFilterViewModel ordersFilterViewModel,
             IStartWorkListViewModel startWorkListViewModel,
             IFinishWorkListViewModel finishWorkListViewModel,
-            ISignalRClient signalRClient)
+            ISignalRClient signalRClient,
+            IPrintModule printModule)
         {
             _logger = logger;
             _rmsServiceClient = rmsServiceClient;
@@ -57,6 +60,7 @@ namespace Germadent.Rms.App.ViewModels
             _startWorkListViewModel = startWorkListViewModel;
             _finishWorkListViewModel = finishWorkListViewModel;
             _signalRClient = signalRClient;
+            _printModule = printModule;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
             _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
@@ -204,7 +208,10 @@ namespace Germadent.Rms.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            //_printModule.Print(_rmaOperations.GetOrderById(SelectedOrder.Model.WorkOrderId));
+            using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
+            {
+                _printModule.Print(orderScope.Order);
+            }
         }
 
         private bool CanBeginWorksByWorkOrderCommandHandler()

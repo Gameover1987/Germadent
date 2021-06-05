@@ -2,12 +2,8 @@
 using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
-using Germadent.Common;
-using Germadent.Common.Web;
-using Germadent.Model;
 using Germadent.Model.Production;
 using Germadent.Model.Rights;
-using RestSharp;
 
 namespace Germadent.Rms.App.ServiceClient
 {

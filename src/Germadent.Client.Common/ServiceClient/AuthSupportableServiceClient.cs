@@ -1,4 +1,5 @@
-﻿using Germadent.Client.Common.Configuration;
+﻿using System;
+using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Common;
 using Germadent.Common.Web;

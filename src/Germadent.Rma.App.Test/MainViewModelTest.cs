@@ -10,6 +10,7 @@ using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.Salary;
 using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.UI.Infrastructure;
@@ -47,7 +48,8 @@ namespace Germadent.Rma.App.Test
                 Mock.Of<IUserManager>(),
                 Mock.Of<IUserSettingsManager>(),
                 Mock.Of<IClipboardHelper>(),
-                Mock.Of<ISignalRClient>());
+                Mock.Of<ISignalRClient>(),
+                Mock.Of<ISalaryCalculationViewModel>());
 
             ThreadTaskExtensions.IsSyncRun = true;
 

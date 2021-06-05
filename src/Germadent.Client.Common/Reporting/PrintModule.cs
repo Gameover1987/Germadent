@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Germadent.Client.Common.Reporting.TemplateProcessing;
+using Germadent.Client.Common.ServiceClient;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Model;
@@ -14,22 +15,20 @@ namespace Germadent.Client.Common.Reporting
         private readonly IWordAssembler _wordAssembler;
         private readonly IFileManager _fileManager;
         private readonly IPrintableOrderConverter _converter;
+        private readonly IBaseClientOperationsServiceClient _baseClientOperationsServiceClient;
 
-        private const string PathToMcTemplate = @"Templates\GermadentLab_MC.docx";
-        private const string PathToZtlTemplate = @"Templates\GermadentLab_ZTL.docx";
-
-        public PrintModule(IShowDialogAgent dialogAgent, IWordAssembler wordAssembler, IFileManager fileManager, IPrintableOrderConverter converter)
+        public PrintModule(IShowDialogAgent dialogAgent, IWordAssembler wordAssembler, IFileManager fileManager, IPrintableOrderConverter converter, IBaseClientOperationsServiceClient baseClientOperationsServiceClient)
         {
             _dialogAgent = dialogAgent;
             _wordAssembler = wordAssembler;
             _fileManager = fileManager;
             _converter = converter;
+            _baseClientOperationsServiceClient = baseClientOperationsServiceClient;
         }
 
         public void Print(OrderDto order)
         {
-            var pathToTemplate = GetTemplatePathForOrder(order);
-            var template = _fileManager.ReadAllBytes(pathToTemplate);
+            var template = _baseClientOperationsServiceClient.GetTemplate(GetDocumentTemplateTypeByWorkOrder(order));
             var printableOrder = _converter.ConvertFrom(order);
             var wordDocument = _wordAssembler.Assembly(template, printableOrder.SerializeToJson());
 
@@ -43,15 +42,15 @@ namespace Germadent.Client.Common.Reporting
             _fileManager.OpenFileByOS(fileName);
         }
 
-        private string GetTemplatePathForOrder(OrderDto order)
+        private DocumentTemplateType GetDocumentTemplateTypeByWorkOrder(OrderDto order)
         {
             switch (order.BranchType)
             {
                 case BranchType.Laboratory:
-                    return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathToZtlTemplate);
+                    return DocumentTemplateType.Laboratory;
 
                 case BranchType.MillingCenter:
-                    return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathToMcTemplate);
+                    return DocumentTemplateType.MillingCenter;
 
                 default:
                     throw new NotSupportedException("Неизвестный тип филиала");

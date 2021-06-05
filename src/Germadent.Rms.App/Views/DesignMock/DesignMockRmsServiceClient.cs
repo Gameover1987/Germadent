@@ -61,5 +61,10 @@ namespace Germadent.Rms.App.Views.DesignMock
         {
             throw new NotImplementedException();
         }
+
+        public byte[] GetTemplate(DocumentTemplateType documentTemplateType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

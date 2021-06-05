@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Germadent.Client.Common.DesignMock;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
@@ -75,7 +77,8 @@ namespace Germadent.Rms.App.Views.DesignMock
                 new DesignMockOrdersFilterViewModel(), 
                 new DesignMockStartWorkListViewModelViewModel(), 
                 new DesignMockFinishWorkListViewModel(), 
-                new DesignMockSignalRClient())
+                new DesignMockSignalRClient(),
+                new DesignMockPrintModule())
         {
         }
     }
