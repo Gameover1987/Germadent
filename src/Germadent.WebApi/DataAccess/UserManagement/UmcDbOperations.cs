@@ -261,6 +261,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             roleAndRightEntity.RightDescription = reader[nameof(roleAndRightEntity.RightDescription)].ToString();
                             roleAndRightEntity.ApplicationName = reader[nameof(roleAndRightEntity.ApplicationName)].ToString();
                             roleAndRightEntity.ApplicationModule = (ApplicationModule)reader["ApplicationId"].ToInt();
+                            roleAndRightEntity.IsObsolete = reader["IsObsolete"].ToBool();
 
                             rolesAndRights.Add(roleAndRightEntity);
                         }
@@ -281,7 +282,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                                 RightId = roleAndRightEntity.RightId,
                                 ApplicationModule = roleAndRightEntity.ApplicationModule,
                                 RightName = roleAndRightEntity.RightName,
-                                RightDescription = roleAndRightEntity.RightDescription
+                                RightDescription = roleAndRightEntity.RightDescription,
+                                IsObsolete = roleAndRightEntity.IsObsolete
                             });
                         }
 
