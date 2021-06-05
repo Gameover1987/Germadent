@@ -112,20 +112,15 @@ namespace Germadent.Rma.App.ViewModels
             _collectionView.Filter = Filter;
 
             CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
+            CanViewTechnologyOperations = _userManager.HasRight(RmaUserRights.EditTechnologyOperations);
             CanCalculateSalary = _userManager.HasRight(RmaUserRights.SalaryCalculation);
         }
 
-        public string Title
-        {
-            get
-            {
-                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
-            }
-        }
+        public string Title => $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
 
         public bool CanViewPriceList { get; }
 
-        public bool CanViewTechnologyOperations { get; } = true;
+        public bool CanViewTechnologyOperations { get; }
 
         public bool CanCalculateSalary { get; } = true;
 

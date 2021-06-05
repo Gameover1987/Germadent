@@ -324,7 +324,7 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (_userId != 0)
                 _image = _umcServiceClient.GetUserImage(_userId);
 
-            var roles = _umcServiceClient.GetRoles();
+            var roles = _umcServiceClient.GetRoles().OrderBy(x => x.RoleName);
             foreach (var role in Roles)
             {
                 role.Checked -= RoleOnChecked;
