@@ -220,7 +220,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int)).Value = work.Quantity;
                 command.Parameters.Add(new SqlParameter("@operationCost", SqlDbType.Money)).Value = work.OperationCost;
                 command.Parameters.Add(new SqlParameter("@userIdStarted", SqlDbType.Int)).Value = work.UserIdStarted;
-                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment;
+                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();
@@ -237,7 +237,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                 command.Parameters.Add(new SqlParameter("@workId", SqlDbType.Int)).Value = work.WorkId;
                 command.Parameters.Add(new SqlParameter("@userIdCompleted", SqlDbType.Int)).Value = work.UserIdCompleted;
-                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment;
+                command.Parameters.Add(new SqlParameter("@comment", SqlDbType.NVarChar)).Value = work.Comment.GetValueOrDbNull();
                 command.Parameters.Add(new SqlParameter("@statusChangeDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
 
                 command.ExecuteNonQuery();

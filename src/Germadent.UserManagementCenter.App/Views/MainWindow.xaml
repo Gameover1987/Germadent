@@ -10,7 +10,7 @@
         Background="{x:Static SystemColors.ControlBrush}"
         Title="Центр управления пользователями" 
         MinHeight="450"
-        Height="450" 
+        Height="900" 
         MinWidth="800"
         Width="800"
         WindowStartupLocation="CenterScreen"
