@@ -6,7 +6,8 @@
 CREATE PROCEDURE [dbo].[AddOrUpdateMaterialSet] 
 	
 	@pricePositionId int, 
-	@jsonStringMaterial nvarchar(max)
+	@materialId int
+--	@jsonStringMaterial nvarchar(max)
 
 AS
 BEGIN
@@ -20,12 +21,14 @@ BEGIN
 		FROM dbo.MaterialSet
 		WHERE PricePositionID = @pricePositionId
 
-		-- Наполняем новым содержимым, распарсив строку json
+		-- Наполняем новым содержимым [, распарсив строку json]
 		INSERT INTO dbo.MaterialSet
 		(PricePositionID, MaterialID)
-		SELECT PricePositionID = @pricePositionId, MaterialId
-		FROM OPENJSON (@jsonStringMaterial)
-		WITH (MaterialId int)
+		VALUES
+		(@pricePositionId, @materialId)
+		--SELECT PricePositionID = @pricePositionId, MaterialId
+		--FROM OPENJSON (@jsonStringMaterial)
+		--WITH (MaterialId int)
 
 	COMMIT
 

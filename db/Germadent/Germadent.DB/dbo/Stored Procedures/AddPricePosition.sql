@@ -10,7 +10,7 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 	@pricePositionName nvarchar(MAX),
 	@materialId int,	
 	@jsonStringProduct nvarchar(MAX),
-	@jsonStringMaterial nvarchar(MAX),
+--	@jsonStringMaterial nvarchar(MAX),
 	@jsonStringPrices nvarchar(MAX),
 	@pricePositionId int output
 	
@@ -43,7 +43,7 @@ BEGIN
 		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
 
 		-- Добавление набора материалов:
-		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @jsonStringMaterial
+		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @materialId --@jsonStringMaterial
 	
 		-- Добавление цены:
 		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices

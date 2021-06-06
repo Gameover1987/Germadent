@@ -45,7 +45,6 @@ RETURN
 		, currentStatus.StatusChangeDateTime
 		, wo.FlagWorkAccept
 		, wo.FlagStl
-		, swoend.StatusChangeDateTime Closed
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
 		, occ.UserID AS LockedBy
 		, occ.OccupancyDateTime as LockDate
@@ -56,7 +55,6 @@ RETURN
 		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
 		INNER JOIN StatusEnumeration se ON currentStatus.Status = se.Status
 		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
-		LEFT JOIN dbo.StatusList swoend ON wo.WorkOrderID = swoend.WorkOrderID AND swoend.Status = 100
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
 		LEFT JOIN dbo.Users u ON swozero.UserID = u.UserID
 		LEFT JOIN dbo.OccupancyWO occ ON wo.WorkOrderID = occ.WorkOrderID
@@ -71,7 +69,5 @@ RETURN
 		AND (rp.ResponsiblePerson LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
 				OR (rp.ResponsiblePerson IS NULL AND @doctorFullName IS NULL))
 		AND (swozero.StatusChangeDateTime BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
-		AND	(swoend.StatusChangeDateTime BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
-				OR (swoend.StatusChangeDateTime IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
 		AND (se.Status IN (SELECT StatusNumber FROM OPENJSON(@jsonStringStatus) WITH (StatusNumber int)) OR @jsonStringStatus IS NULL)
 )
