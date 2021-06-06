@@ -18,7 +18,6 @@ namespace Germadent.Client.Common.Reporting
                 DateComment = order.DateComment,
                 DocNumber = order.DocNumber,
                 CarcassColor = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ConstructionColor"),
-                Closed = order.Closed,
                 ColorAndFeatures = OrderDescriptionBuilder.GetAttributesValuesToReport(order, "ConstructionColor"),
                 ResponsiblePerson = order.ResponsiblePerson,
                 Created = order.Created,

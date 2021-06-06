@@ -370,11 +370,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                             CreatorFullName = reader["CreatorFullName"].ToString(),
                         };
 
-                        if (DateTime.TryParse(reader[nameof(orderEntity.Closed)].ToString(), out var closed))
-                        {
-                            orderEntity.Closed = closed;
-                        }
-
                         if (DateTime.TryParse(reader[nameof(orderEntity.FittingDate)].ToString(), out var fittingDate))
                         {
                             orderEntity.FittingDate = fittingDate;

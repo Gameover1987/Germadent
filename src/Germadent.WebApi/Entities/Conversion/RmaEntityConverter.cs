@@ -16,7 +16,6 @@ namespace Germadent.WebApi.Entities.Conversion
                 BranchType = (BranchType)entity.BranchTypeId,
                 CustomerId = entity.CustomerId,
                 Customer = entity.CustomerName,
-                Closed = entity.Closed,
                 Created = entity.Created,
                 FittingDate = entity.FittingDate,
                 DocNumber = entity.DocNumber,

@@ -44,7 +44,6 @@ namespace Germadent.Rma.App.Mocks
             _orders.Add(new OrderDto
             {
                 BranchType = BranchType.MillingCenter,
-                Closed = DateTime.Now,
                 Created = DateTime.Now.AddDays(-1),
                 Customer = "ООО Рога и копыта",
                 DocNumber = "001-ФЦ",

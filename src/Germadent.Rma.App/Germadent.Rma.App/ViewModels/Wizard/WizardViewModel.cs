@@ -174,7 +174,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.WorkOrderId = _order.WorkOrderId;
             order.BranchType = _order.BranchType;
             order.DocNumber = _order.DocNumber;
-            order.Closed = _order.Closed;
             order.CreatorFullName = _order.CreatorFullName;
 
             foreach (var step in Steps)

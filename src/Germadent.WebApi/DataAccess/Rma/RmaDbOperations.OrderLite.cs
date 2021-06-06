@@ -95,10 +95,6 @@ namespace Germadent.WebApi.DataAccess.Rma
                     if (lockDate != DBNull.Value)
                         orderLiteDto.LockDate = lockDate.ToDateTime();
 
-                    var closed = reader["Closed"];
-                    if (closed != DBNull.Value)
-                        orderLiteDto.Closed = DateTime.Parse(closed.ToString());
-
                     orders.Add(orderLiteDto);
                 }
 

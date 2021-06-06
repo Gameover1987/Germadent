@@ -22,8 +22,6 @@ namespace Germadent.Model
 
         public string CreatorFullName { get; set; }
 
-        public DateTime? Closed { get; set; }
-
         public OrderStatus Status { get; set; }
 
         public DateTime StatusChanged { get; set; }

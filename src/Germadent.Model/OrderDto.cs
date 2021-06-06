@@ -35,8 +35,6 @@ namespace Germadent.Model
 
         public DateTime Created { get; set; }
 
-        public DateTime? Closed { get; set; }
-
         public string DateComment { get; set; }
 
         public int ResponsiblePersonId { get; set; }

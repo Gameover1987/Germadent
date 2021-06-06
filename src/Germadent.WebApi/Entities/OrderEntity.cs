@@ -98,11 +98,6 @@ namespace Germadent.WebApi.Entities
         public bool FlagCashless { get; set; }
 
         /// <summary>
-        /// Дата закрытия заказа
-        /// </summary>
-        public DateTime? Closed { get; set; }
-
-        /// <summary>
         /// Артикул материалов
         /// </summary>
         public string ProstheticArticul { get; set; }

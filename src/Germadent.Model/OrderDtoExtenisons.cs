@@ -8,7 +8,6 @@
             {
                 WorkOrderId = orderDto.WorkOrderId,
                 BranchType = orderDto.BranchType,
-                Closed = orderDto.Closed,
                 Created = orderDto.Created,
                 CustomerName = orderDto.Customer,
                 PatientFnp = orderDto.Patient,
