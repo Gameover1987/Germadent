@@ -31,6 +31,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private int _responsiblePersonId;
         private bool _stl;
         private bool _cashless;
+        private float _urgencyRatio;
 
         public LaboratoryInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
@@ -255,6 +256,18 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
+        public float UrgencyRatio
+        {
+            get { return _urgencyRatio; }
+            set
+            {
+                if (_urgencyRatio == value)
+                    return;
+                _urgencyRatio = value;
+                OnPropertyChanged(() => UrgencyRatio);
+            }
+        }
+
         public IDelegateCommand SelectCustomerCommand { get; }
 
         public IDelegateCommand AddCustomerCommand { get; }
@@ -282,6 +295,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             DateComment = order.DateComment;
             Stl = order.Stl;
             Cashless = order.Cashless;
+            UrgencyRatio = order.UrgencyRatio;
         }
 
         public override void AssemblyOrder(OrderDto order)
@@ -300,6 +314,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.DateComment = DateComment;
             order.Stl = Stl;
             order.Cashless = Cashless;
+            order.UrgencyRatio = UrgencyRatio;
         }
 
         private void CustomerRepositoryOnChanged(object sender, EventArgs e)

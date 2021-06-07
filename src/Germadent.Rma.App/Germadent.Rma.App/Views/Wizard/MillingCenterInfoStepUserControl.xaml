@@ -39,6 +39,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0"
@@ -135,6 +136,13 @@
                          IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
             <RadioButton Content="Безналичный" Margin="12,0,0,0"
                          IsChecked="{Binding Cashless}"/>
+        </StackPanel>
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="Коэффициент срочности"/>
+        <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
+            <RadioButton Content="1"
+                         IsChecked="{Binding UrgencyRatio}"/>
+            <RadioButton Content="1,3" Margin="12,0,0,0"
+                         IsChecked="{Binding UrgencyRatio}"/>
         </StackPanel>
     </Grid>
 </UserControl>
