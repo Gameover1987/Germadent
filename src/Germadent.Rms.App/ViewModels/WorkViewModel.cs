@@ -37,6 +37,7 @@ namespace Germadent.Rms.App.ViewModels
         public float UrgencyRatio => _work.UrgencyRatio;
 
         public decimal TotalCost => _work.OperationCost;
+        public string ProductName => _work.ProductName;
 
         public string Comment
         {
