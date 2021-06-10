@@ -114,6 +114,9 @@
                         <DataGridTextColumn Header="Название операции" Width="*" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding DisplayName}"/>
+                        <DataGridTextColumn Header="Изделие" Width="*" IsReadOnly="True"
+                                            ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                            Binding="{Binding ProductName}"/>
                         <DataGridTextColumn Header="Кол-во" Width="Auto" IsReadOnly="True"
                                             ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                             Binding="{Binding ProductCount}"/>

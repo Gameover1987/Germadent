@@ -102,6 +102,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                                 UserIdStarted = reader["UserId"].ToInt(),
                                 OperationCost = reader["OperationCost"].ToDecimal(),
                                 ProductId = reader["ProductId"].ToIntOrNull(),
+                                ProductName = reader["ProductName"].ToString(),
                                 Quantity = reader["ProductCount"].ToInt(),
                                 Rate = reader["Rate"].ToDecimal(),
                                 UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
