@@ -6,8 +6,8 @@
 CREATE FUNCTION [dbo].[GetReportWorkOrders] 
 (	
 	@beginningDate datetime = NULL, 
-	@endDate datetime = NULL
---	@jsonStringWOId varchar(max) = NULL
+	@endDate datetime = NULL,
+	@jsonStringWOId varchar(max) = NULL
 )
 RETURNS TABLE 
 AS
@@ -48,10 +48,49 @@ WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNU
 	AND a.AttributeID = 2
 ),
 
--- Соединяем это с основной выборкой...
-ord (Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName,  MaterialName, Color, ImplantSystem, Cashless, Cash) AS
+-- Тащим работы моделировщика
+modelWorks(WorkOrderID, ProductID, ModellerRate, Employee, EmployeePositionID) AS
 (
-SELECT  created.CreateDateTime,	wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
+SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+FROM WorkList wl
+	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
+	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
+	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
+	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
+WHERE EmployeePositionID = 2
+	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+),
+
+-- Тащим работы техника
+techWorks(WorkOrderID, ProductID, TechnicRate, Employee, EmployeePositionID) AS
+(
+SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+FROM WorkList wl
+	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
+	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
+	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
+	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
+WHERE EmployeePositionID = 3
+	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+),
+
+-- Тащим работы оператора
+operWorks(WorkOrderID, ProductID, OperatorRate, Employee, EmployeePositionID) AS
+(
+SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+FROM WorkList wl
+	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
+	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
+	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
+	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
+WHERE EmployeePositionID = 4
+	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+),
+
+-- Соединяем это с основной выборкой...
+ord (		Created,				DocNumber,			CustomerName, EquipmentName, PatientFullName, ProductName,	  MaterialName,		 Color, Modeller, ModellerRate, Technic, TechnicRate, Operator, OperatorRate, ImplantSystem, Cashless, Cash) AS
+(
+SELECT  created.CreateDateTime,	wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, p.ProductName,  m.MaterialName, cs.Color, modelWorks.Employee, modelWorks.ModellerRate, techWorks.Employee, techWorks.TechnicRate, operWorks.Employee, operWorks.OperatorRate, ims.ImplantSystem,
 	CASE wo.FlagCashless WHEN 1 THEN tc.Price END Cashless,
 	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash
 FROM dbo.WorkOrder wo
@@ -65,12 +104,15 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.Equipments e ON ae.EquipmentID = e.EquipmentID
 	LEFT JOIN cs ON cs.WorkOrderID = wo.WorkOrderID
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
+	LEFT JOIN modelWorks ON modelWorks.WorkOrderID = wo.WorkOrderID
+	LEFT JOIN techWorks ON techWorks.WorkOrderID = wo.WorkOrderID AND techWorks.ProductID = tc.ProductID
+	LEFT JOIN operWorks ON operWorks.WorkOrderID = wo.WorkOrderID AND operWorks.ProductID = tc.ProductID
 WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
---	AND wo.WorkOrderID IN (SELECT ISNULL(OrderId, wo.WorkOrderID) FROM OPENJSON (@jsonStringWOId) WITH (OrderId int))
+	AND (wo.WorkOrderID IN (SELECT OrderId FROM OPENJSON (@jsonStringWOId) WITH (OrderId int)) OR @jsonStringWOId IS NULL)
 )
 -- ... и агрегируем
-SELECT 
+SELECT
 FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') AS Created,
 DocNumber, 
 CustomerName, 
@@ -80,11 +122,17 @@ ProductName,
 ISNULL(MaterialName, '') MaterialName,
 ISNULL(Color, '') Color,
 COUNT(ProductName) Quantity,
-'' E1, '' E2, '' E3, '' E4,
+'' E1,
+ISNULL(Modeller, '') Modeller,
+ISNULL(SUM(ModellerRate), 0) ModellerCost,
+ISNULL(Technic, '') Technic,
+ISNULL(SUM(TechnicRate), 0) TechnicCost,
+ISNULL(Operator, '') Operator,
+ISNULL(SUM(OperatorRate), 0) OperatorCost,
 ISNULL(ImplantSystem, '') ImplantSystem,
 ISNULL(SUM(Cashless), 0) Cashless, 
 ISNULL(SUM(Cash), 0) Cash
 FROM ord
-GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName,  MaterialName, Color, ImplantSystem
+GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName,  MaterialName, Color, Modeller, Technic, Operator, ImplantSystem
 
 )
