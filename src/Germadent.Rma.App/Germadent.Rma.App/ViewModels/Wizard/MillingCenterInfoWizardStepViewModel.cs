@@ -18,7 +18,6 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private readonly ICatalogUIOperations _catalogUIOperations;
         private readonly ICustomerRepository _customerRepository;
         private readonly IResponsiblePersonRepository _responsiblePersonRepository;
-        private readonly IAttributeRepository _attributeRepository;
 
         private int _customerId;
         private int _responsiblePersonId;
@@ -31,6 +30,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private bool _stl;
         private bool _cashless;
         private float _urgencyRatio;
+        private bool _isNormalUrgencyRatio;
+        private bool _isHighUrgencyRatio;
 
         public MillingCenterInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
@@ -217,6 +218,32 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
+        public bool IsNormalUrgencyRatio
+        {
+            get { return _isNormalUrgencyRatio; }
+            set
+            {
+                _isNormalUrgencyRatio = value;
+                OnPropertyChanged(() => IsNormalUrgencyRatio);
+
+                if (IsNormalUrgencyRatio)
+                    UrgencyRatio = OrderDto.NormalUrgencyRatio;
+            }
+        }
+
+        public bool IsHighUrgencyRatio
+        {
+            get { return _isHighUrgencyRatio; }
+            set
+            {
+                _isHighUrgencyRatio = value;
+                OnPropertyChanged(() => IsHighUrgencyRatio);
+
+                if (IsHighUrgencyRatio)
+                    UrgencyRatio = OrderDto.HighUrgencyRatio;
+            }
+        }
+
         public float UrgencyRatio
         {
             get { return _urgencyRatio; }
@@ -254,6 +281,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             _stl = order.Stl;
             _cashless = order.Cashless;
             _urgencyRatio = order.UrgencyRatio;
+            _isNormalUrgencyRatio = UrgencyRatio == OrderDto.NormalUrgencyRatio;
+            _isHighUrgencyRatio = UrgencyRatio == OrderDto.HighUrgencyRatio;
         }
 
         public override void AssemblyOrder(OrderDto order)

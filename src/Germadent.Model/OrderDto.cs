@@ -7,6 +7,9 @@ namespace Germadent.Model
     /// </summary>
     public class OrderDto
     {
+        public const float NormalUrgencyRatio = 1.0f;
+        public const float HighUrgencyRatio = 1.3f;
+
         public OrderDto()
         {
             Created = DateTime.Now;
@@ -17,6 +20,7 @@ namespace Germadent.Model
             AdditionalEquipment = new AdditionalEquipmentDto[0];
             Attributes = new AttributeDto[0];
             WorkAccepted = true;
+            UrgencyRatio = NormalUrgencyRatio;
         }
 
         public int WorkOrderId { get; set; }
