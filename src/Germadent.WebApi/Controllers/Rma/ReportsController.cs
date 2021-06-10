@@ -36,5 +36,20 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
+
+        [HttpGet("GetWorkReport/{workOrderId}")]
+        public IActionResult GetWorkReport(int workOrderId)
+        {
+            try
+            {
+                _logger.Info(nameof(GetWorkReport));
+                return Ok(_rmaDbOperations.GetWorkReport(workOrderId));
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
     }
 }

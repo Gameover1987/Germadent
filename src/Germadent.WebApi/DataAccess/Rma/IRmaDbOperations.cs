@@ -51,9 +51,9 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <summary>
         /// Возвращает список свойств для вставки в Excel
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="workOrderId"></param>
         /// <returns></returns>
-        ReportListDto[] GetWorkReport(int id);
+        ReportListDto[] GetWorkReport(int workOrderId);
 
         /// <summary>
         /// Возвращает список клиентов по вхождению в наименование

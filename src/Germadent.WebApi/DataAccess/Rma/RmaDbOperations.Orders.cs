@@ -140,6 +140,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             WorkOrderId = reader["WorkOrderId"].ToInt(),
                             WorkId = reader["WorkId"].ToInt(),
                             ProductId = reader["ProductId"].ToIntOrNull(),
+                            ProductName = reader["ProductName"].ToString(),
                             TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
                             TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
                             TechnologyOperationName = reader["TechnologyOperationName"].ToString(),

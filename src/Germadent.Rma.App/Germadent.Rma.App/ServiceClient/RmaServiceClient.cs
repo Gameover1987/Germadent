@@ -44,9 +44,9 @@ namespace Germadent.Rma.App.ServiceClient
             ExecuteHttpGet(Configuration.DataServiceUrl + $"/api/Rma/orders/CloseOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
-        public ReportListDto[] GetWorkReport(int id)
+        public ReportListDto[] GetWorkReport(int workOrderId)
         {
-            return ExecuteHttpGet<ReportListDto[]>(Configuration.DataServiceUrl + $"/api/Rma/reports/{id}");
+            return ExecuteHttpGet<ReportListDto[]>(Configuration.DataServiceUrl + $"/api/Rma/reports/GetWorkReport/{workOrderId}");
         }
 
         public CustomerDto[] GetCustomers(string mask)

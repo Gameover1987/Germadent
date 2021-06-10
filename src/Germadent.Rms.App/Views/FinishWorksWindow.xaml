@@ -12,7 +12,7 @@
         MinHeight="815"
         Height="815" 
         MinWidth="1024"
-        Width="1024"
+        Width="1400"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Background="{x:Static SystemColors.ControlBrush}"
