@@ -11,8 +11,8 @@ RETURNS TABLE
 AS
 RETURN 
 (
-WITH currentStatus (WorkOrderID, Status) AS (
-	SELECT WorkOrderID, Status
+WITH currentStatus (WorkOrderID, Status, StatusChangeDateTime) AS (
+	SELECT WorkOrderID, Status, StatusChangeDateTime
 	FROM dbo.StatusList
 	WHERE WorkOrderID = @workOrderID AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
 																	FROM dbo.StatusList
@@ -38,6 +38,7 @@ SELECT wo.WorkOrderID,
 			ISNULL(wo.PatientFullName, '') AS PatientFullName,
 			created.CreateDateTime AS Created, 
 			currentStatus.Status,
+			currentStatus.StatusChangeDateTime,
 			ISNULL(wo.DateComment, '') AS DateComment,
 			ISNULL(wo.ProstheticArticul, '') AS ProstheticArticul,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,

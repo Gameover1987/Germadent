@@ -57,7 +57,7 @@ BEGIN
 		INSERT INTO dbo.WorkOrder
 			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, 	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, UrgencyRatio, FlagStl,  FlagCashless)
 		VALUES 
-			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId,  @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription,		1,		@flagStl, @flagCashless)
+			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId,  @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription,	ROUND(@urgencyRatio, 2), @flagStl, @flagCashless)
 
 		SET @workOrderID = SCOPE_IDENTITY()
 		

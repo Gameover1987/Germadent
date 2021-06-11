@@ -59,7 +59,7 @@ BEGIN
 			, DateComment = @dateComment
 			, ProstheticArticul = @prostheticArticul
 			, WorkDescription = @workDescription
-			, UrgencyRatio = 1 -- @urgencyRatio
+			, UrgencyRatio = ROUND(@urgencyRatio, 2)
 			, FlagWorkAccept = @flagWorkAccept
 			, FlagStl = @flagStl
 			, FlagCashless = @flagCashless
