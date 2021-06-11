@@ -137,17 +137,17 @@
         <TextBlock Grid.Row="10" Grid.Column="0" Text="Цена"/>
         <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="Premium" Margin="0,0,0,0"
-                         IsChecked="{Binding Stl}"/>
-            <RadioButton Content="Standard"  Margin="12,0,0,0"
                          IsChecked="{Binding Stl, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="Standard"  Margin="12,0,0,0"
+                         IsChecked="{Binding Stl}"/>
         </StackPanel>
 
         <TextBlock Grid.Row="11" Grid.Column="0" Text="Тип расчета"/>
         <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">
             <RadioButton Content="Наличный"
-                         IsChecked="{Binding Cashless}"/>
-            <RadioButton Content="Безналичный" Margin="12,0,0,0"
                          IsChecked="{Binding Cashless, Converter={StaticResource InvertBoolConverter}}"/>
+            <RadioButton Content="Безналичный" Margin="12,0,0,0"
+                         IsChecked="{Binding Cashless}"/>
         </StackPanel>
         <TextBlock Grid.Row="12" Grid.Column="0" Text="Срочность" VerticalAlignment="Top"/>
         <StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal" Margin="6,6,0,0">

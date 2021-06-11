@@ -175,6 +175,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.BranchType = _order.BranchType;
             order.DocNumber = _order.DocNumber;
             order.CreatorFullName = _order.CreatorFullName;
+            order.Status = _order.Status;
 
             foreach (var step in Steps)
             {

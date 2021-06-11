@@ -63,7 +63,7 @@ namespace Germadent.Model
 
             return new OrdersFilter
             {
-                PeriodBegin = now.AddDays(-120),
+                PeriodBegin = now.AddMonths(-1),
                 PeriodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59),
                 MillingCenter = true,
                 Laboratory = true,
