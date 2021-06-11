@@ -360,6 +360,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                             UrgencyRatio = (float)reader["UrgencyRatio"].ToDecimal(),
                             WorkDescription = reader["WorkDescription"].ToString(),
                             Status = reader["Status"].ToInt(),
+                            StatusChanged = reader["StatusChangeDateTime"].ToDateTime(),
                             ResponsiblePersonId = reader["ResponsiblePersonId"].ToInt(),
                             DoctorFullName = reader["DoctorFullName"].ToString(),
                             TechnicFullName = reader["TechnicFullName"].ToString(),

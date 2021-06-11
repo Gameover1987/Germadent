@@ -176,6 +176,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.DocNumber = _order.DocNumber;
             order.CreatorFullName = _order.CreatorFullName;
             order.Status = _order.Status;
+            order.StatusChanged = _order.StatusChanged;
+            order.LockDate = _order.LockDate;
+            order.LockedBy = _order.LockedBy;
 
             foreach (var step in Steps)
             {

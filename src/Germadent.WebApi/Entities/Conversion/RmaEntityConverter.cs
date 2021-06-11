@@ -13,6 +13,7 @@ namespace Germadent.WebApi.Entities.Conversion
             {
                 WorkOrderId = entity.WorkOrderId,
                 Status = (OrderStatus)entity.Status,
+                StatusChanged = entity.StatusChanged,
                 BranchType = (BranchType)entity.BranchTypeId,
                 CustomerId = entity.CustomerId,
                 Customer = entity.CustomerName,

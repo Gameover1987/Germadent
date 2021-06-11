@@ -13,6 +13,7 @@
                 PatientFnp = orderDto.Patient,
                 DoctorFullName = orderDto.ResponsiblePerson,
                 Status = orderDto.Status,
+                StatusChanged = orderDto.StatusChanged,
                 DocNumber = orderDto.DocNumber,
                 CreatorFullName = orderDto.CreatorFullName
             };

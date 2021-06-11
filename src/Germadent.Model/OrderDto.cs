@@ -14,6 +14,7 @@ namespace Germadent.Model
         {
             Created = DateTime.Now;
             LockDate = DateTime.Now;
+            StatusChanged = DateTime.Now;
             Gender = Gender.Male;
             CreatorFullName = " ";
             ToothCard = new ToothDto[0];
@@ -21,11 +22,15 @@ namespace Germadent.Model
             Attributes = new AttributeDto[0];
             WorkAccepted = true;
             UrgencyRatio = NormalUrgencyRatio;
+            Cashless = true;
+            Stl = true;
         }
 
         public int WorkOrderId { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public DateTime StatusChanged { get; set; }
 
         public string DocNumber { get; set; }
 

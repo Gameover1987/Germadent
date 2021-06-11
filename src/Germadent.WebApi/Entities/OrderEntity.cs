@@ -23,6 +23,11 @@ namespace Germadent.WebApi.Entities
         public int Status { get; set; }
 
         /// <summary>
+        /// Дата изменения статуса
+        /// </summary>
+        public DateTime StatusChanged { get; set; }
+
+        /// <summary>
         /// Номер заказ-наряда
         /// </summary>
         public string DocNumber { get; set; }
