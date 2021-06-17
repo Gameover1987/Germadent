@@ -38,7 +38,7 @@ namespace Germadent.Rms.App.Views.DesignMock
     {
         public bool HasRight(string rightName)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public AuthorizationInfoDto AuthorizationInfo { get; }

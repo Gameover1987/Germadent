@@ -17,7 +17,7 @@
         WindowStartupLocation="CenterScreen" 
         Background="{x:Static SystemColors.ControlBrush}"
         DataContextChanged="MainWindow_OnDataContextChanged"
-        d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=designMock:DesignMockMainViewModel, IsDesignTimeCreatable=False}"
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Grid Margin="12">
         <Grid.RowDefinitions>

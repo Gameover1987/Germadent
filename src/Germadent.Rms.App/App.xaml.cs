@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using Germadent.Client.Common.Views;
 using Germadent.Rms.App.Infrastructure;
 using Germadent.Rms.App.Views;
+using Germadent.Rms.App.Views.DesignMock;
 using Germadent.UI.Commands;
 using Germadent.UI.Windows;
 

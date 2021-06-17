@@ -28,6 +28,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
                 UriKind.Absolute));
         }
 
+        protected override string[] GetUserNames()
+        {
+            return new string[0];
+        }
+
         protected override bool Authorize()
         {
             try
