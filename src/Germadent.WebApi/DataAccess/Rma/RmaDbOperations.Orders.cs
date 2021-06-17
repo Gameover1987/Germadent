@@ -124,9 +124,9 @@ namespace Germadent.WebApi.DataAccess.Rma
             return ExecuteInTransactionScope(transaction => GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId));
         }
 
-        private WorkDto[] GetWorksInProgressByWorkOrderImpl(SqlTransaction transaction, int workOrderId, int userId)
+        private WorkDto[] GetWorksInProgressByWorkOrderImpl(SqlTransaction transaction, int workOrderId, int? userId)
         {
-            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId);
+            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId == null ? "NULL" : userId.Value.ToString());
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.Transaction = transaction;
@@ -192,7 +192,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     FinishWork(workDto, transaction);
                 }
 
-                var worksInProgress = GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId);
+                var worksInProgress = GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, null);
                 if (!worksInProgress.Any())
                 {
                     return ChangeWorkOrderStatusImpl(transaction, workOrderId, userId, OrderStatus.QualityControl);
