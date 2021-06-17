@@ -39,7 +39,14 @@ namespace Germadent.Rma.App.Infrastructure
 
     public class RmaUserSettings
     {
+        public RmaUserSettings()
+        {
+            UserNames = new string[0];
+        }
+
         public string LastLogin { get; set; }
+
+        public string[] UserNames { get; set; }
 
         public ColumnInfo[] Columns { get; set; }
     }

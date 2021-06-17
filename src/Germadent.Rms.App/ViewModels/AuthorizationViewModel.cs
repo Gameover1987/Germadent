@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Germadent.Common;
 using Germadent.Rms.App.Infrastructure;
@@ -33,12 +34,18 @@ namespace Germadent.Rms.App.ViewModels
                 UriKind.Absolute));
         }
 
+        protected override string[] GetUserNames()
+        {
+            return _userSettingsManager.UserNames.OrderBy(x => x).ToArray();
+        }
+
         protected override bool Authorize()
         {
             try
             {
                 _serviceClient.Authorize(UserName, Password);
                 _userSettingsManager.LastLogin = UserName;
+                _userSettingsManager.UserNames.Add(UserName);
                 _userSettingsManager.Save();
             }
             catch (Exception e)

@@ -1,4 +1,6 @@
-﻿using Germadent.Common.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Newtonsoft.Json;
 
@@ -21,9 +23,12 @@ namespace Germadent.Rms.App.Infrastructure
             var userSettings = userSettingsJson.DeserializeFromJson<RmsUserSettings>();
 
             LastLogin = userSettings.LastLogin;
+            UserNames = userSettings.UserNames.ToList();
         }
 
         public string LastLogin { get; set; }
+
+        public List<string> UserNames { get; set; } = new List<string>();
 
         public void Save()
         {
@@ -36,6 +41,7 @@ namespace Germadent.Rms.App.Infrastructure
             return new RmsUserSettings
             {
                 LastLogin = LastLogin,
+                UserNames = UserNames.Distinct().ToArray()
             };
         }
 
@@ -47,6 +53,13 @@ namespace Germadent.Rms.App.Infrastructure
 
     public class RmsUserSettings
     {
+        public RmsUserSettings()
+        {
+            UserNames = new string[0];
+        }
+
         public string LastLogin { get; set; }
+
+        public string[] UserNames { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Germadent.Common.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Newtonsoft.Json;
 
@@ -23,12 +25,14 @@ namespace Germadent.Rma.App.Infrastructure
             var userSettings = userSettingsJson.DeserializeFromJson<RmaUserSettings>();
 
             LastLogin = userSettings.LastLogin;
+            UserNames = userSettings.UserNames?.ToList();
 
             if (userSettings.Columns != null)
                 Columns = userSettings.Columns;
         }
 
         public string LastLogin { get; set; }
+        public List<string> UserNames { get; set; } = new List<string>();
         public ColumnInfo[] Columns { get; set; }
 
         public void Save()
@@ -42,6 +46,7 @@ namespace Germadent.Rma.App.Infrastructure
             return new RmaUserSettings
             {
                 LastLogin = LastLogin,
+                UserNames = UserNames.Distinct().ToArray(),
                 Columns = Columns
             };
         }

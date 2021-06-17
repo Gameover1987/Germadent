@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
@@ -38,6 +39,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public string LastLogin { get; set; }
+        public List<string> UserNames { get; set; }
         public ColumnInfo[] Columns { get; set; }
         public void Save()
         {

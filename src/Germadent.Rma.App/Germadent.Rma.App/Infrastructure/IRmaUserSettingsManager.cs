@@ -8,6 +8,8 @@ namespace Germadent.Rma.App.Infrastructure
     {
         string LastLogin { get; set; }
 
+        List<string> UserNames { get; set; }
+
         ColumnInfo[] Columns { get; set; }
 
         void Save();

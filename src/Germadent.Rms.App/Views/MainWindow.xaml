@@ -21,6 +21,7 @@
         FocusManager.FocusedElement="{Binding ElementName=SearchComboBox}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -29,7 +30,18 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+        <Menu Grid.Row="0" Margin="-6,-6,-6,6" Grid.ColumnSpan="2">
+            <MenuItem Header="Программа">
+                <MenuItem Header="Зайти под другим пользователем"
+                          InputGestureText="Ctrl+Alt+L"
+                          Command="{Binding LogOutCommand}"/>
+                <MenuItem Header="Выйти"
+                          InputGestureText="F10"
+                          Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
             <controls:SearchComboBox x:Name="SearchComboBox" Height="23" Margin="0,0,0,0"
                                      LabelText="Поиск заказ-нарядов" 
                                      SearchEventTimeDelay="00:00:3"
@@ -50,7 +62,7 @@
                     Command="{Binding FilterOrdersCommand}"/>
         </StackPanel>
 
-        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="0" Margin="6,0,0,0"
+        <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   EnableColumnVirtualization="True"

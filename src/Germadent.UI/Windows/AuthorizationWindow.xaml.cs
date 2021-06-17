@@ -18,6 +18,7 @@ namespace Germadent.UI.Windows
 	    private void UserNameTextBoxDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 	    {
 		    var authorizationViewModel = (AuthorizationViewModelBase) e.NewValue;
+			authorizationViewModel.Initialize();
 		    if (string.IsNullOrEmpty(authorizationViewModel.UserName))
 			    UserNameTextBox.Focus();
 		    else
