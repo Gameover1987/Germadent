@@ -7,6 +7,7 @@
         xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
         xmlns:salary="clr-namespace:Germadent.Rma.App.ViewModels.Salary"
         xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:converters="clr-namespace:Germadent.Rma.App.Views.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
@@ -17,6 +18,11 @@
         MinWidth="1000"
         Width="1200"
         d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockSalaryCalculationViewModel}, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <converters:WorksCollectionToSummaryConverter x:Key="WorksCollectionToSummaryConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,7 +60,7 @@
             <TextBlock Grid.Column="4" Text="по" VerticalAlignment="Center" Margin="12,0,0,0"/>
             <DatePicker Grid.Column="5" Margin="6,0,0,0" Width="100"
                         SelectedDate="{Binding DateTo}"/>
-            <Button Grid.Column="6" Margin="12,0,0,0" Content="Расчитать" Width="100"
+            <Button Grid.Column="6" Margin="12,0,0,0" Content="Рассчитать" Width="100"
                     Command="{Binding CalculateSalaryCommand}"/>
         </Grid>
 
@@ -77,12 +83,21 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="6,6,0,0" FontSize="14" FontWeight="SemiBold"
-                                                           HorizontalAlignment="Left" Background="White"/>
+                                                <Border Grid.Row="0" HorizontalAlignment="Left" Background="White" Margin="6,6,0,0" CornerRadius="3">
+                                                    <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" FontWeight="SemiBold"/>
+                                                </Border>
 
-                                                <ItemsPresenter Grid.Row="1" Margin="0,6,0,12"/>
+                                                <ItemsPresenter Grid.Row="1" Margin="0,6,0,0"/>
+
+                                                <Border Grid.Row="2" Margin="6,6,0,12" Background="White">
+                                                    <TextBlock FontSize="14" FontWeight="SemiBold">
+                                                        <Run Text="Итого:"/>
+                                                        <Run Text="{Binding Items, Converter={StaticResource WorksCollectionToSummaryConverter}, Mode=OneWay, StringFormat=C, ConverterCulture='ru-RU'}"/>
+                                                    </TextBlock>
+                                                </Border>
                                             </Grid>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -92,6 +107,10 @@
                     </GroupStyle>
                 </DataGrid.GroupStyle>
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Заказ-наряд" Width="Auto"
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding DocNumber}"/>
+
                     <DataGridTextColumn Header="Код" Width="Auto"
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding TechnologyOperationUserCode}"/>

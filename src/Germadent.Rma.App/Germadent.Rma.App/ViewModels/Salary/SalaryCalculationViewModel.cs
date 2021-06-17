@@ -34,9 +34,6 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
             Works.CollectionChanged+= WorksOnCollectionChanged;
             _salaryView = CollectionViewSource.GetDefaultView(Works);
-            _salaryView.GroupDescriptions.Clear();
-            _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.UserFullName)));
-            _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.DocNumber)));
 
             CalculateSalaryCommand = new DelegateCommand(CalculateSalaryCommandHandler, CanCalculateSalaryCommandHandler);
         }
@@ -198,8 +195,15 @@ namespace Germadent.Rma.App.ViewModels.Salary
         {
             try
             {
-                BusyReason = $"Расчет заработной платы по сотруднику '{SelectedEmployee.DisplayName}'";
+                BusyReason = $"Расчет заработной платы";
                 Works.Clear();
+
+                _salaryView.GroupDescriptions.Clear();
+                if (SelectedEmployee == AllEmployeeViewModel.Instance)
+                {
+                    _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.UserFullName)));
+                }
+
                 WorkDto[] salaryReport = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
