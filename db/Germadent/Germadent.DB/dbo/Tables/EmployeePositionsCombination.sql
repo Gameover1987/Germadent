@@ -10,3 +10,10 @@
 
 
 
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_EmployeePositionsCombination]
+    ON [dbo].[EmployeePositionsCombination]([EmployeeID] ASC, [EmployeePositionID] ASC, [QualifyingRank] ASC);
+

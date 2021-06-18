@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Logging;
-using Germadent.Rma.App.ServiceClient.Repository;
-using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 
@@ -27,6 +29,11 @@ namespace Germadent.Rma.App.ViewModels
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
         private bool _isBusy;
+        private bool _showCreated;
+        private bool _showInProgress;
+        private bool _showQualityControl;
+        private bool _showRealization;
+        private bool _showClosed;
 
         public OrdersFilterViewModel(IDictionaryRepository dictionaryRepository, ILogger logger)
         {
@@ -93,6 +100,66 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
+        public bool ShowCreated
+        {
+            get { return _showCreated; }
+            set
+            {
+                if (_showCreated == value)
+                    return;
+                _showCreated = value;
+                OnPropertyChanged(() => ShowCreated);
+            }
+        }
+
+        public bool ShowInProgress
+        {
+            get { return _showInProgress; }
+            set
+            {
+                if (_showInProgress == value)
+                    return;
+                _showInProgress = value;
+                OnPropertyChanged(() => ShowInProgress);
+            }
+        }
+
+        public bool ShowQualityControl
+        {
+            get { return _showQualityControl; }
+            set
+            {
+                if (_showQualityControl == value)
+                    return;
+                _showQualityControl = value;
+                OnPropertyChanged(() => ShowQualityControl);
+            }
+        }
+
+        public bool ShowRealization
+        {
+            get { return _showRealization; }
+            set
+            {
+                if (_showRealization == value)
+                    return;
+                _showRealization = value;
+                OnPropertyChanged(() => ShowQualityControl);
+            }
+        }
+
+        public bool ShowClosed
+        {
+            get { return _showClosed; }
+            set
+            {
+                if (_showClosed == value)
+                    return;
+                _showClosed = value;
+                OnPropertyChanged(() => ShowClosed);
+            }
+        }
+
         public string Customer
         {
             get => _customer;
@@ -151,7 +218,6 @@ namespace Germadent.Rma.App.ViewModels
 
         public ICommand OKCommand { get; }
 
-
         private bool CanOkCommandHandler()
         {
             return IsValid;
@@ -190,6 +256,18 @@ namespace Germadent.Rma.App.ViewModels
 
         public OrdersFilter GetFilter()
         {
+            var statuses = new List<OrderStatus>();
+            if (ShowCreated)
+                statuses.Add(OrderStatus.Created);
+            if (ShowInProgress)
+                statuses.Add(OrderStatus.InProgress);
+            if (ShowQualityControl)
+                statuses.Add(OrderStatus.QualityControl);
+            if (ShowRealization)
+                statuses.Add(OrderStatus.Realization);
+            if (ShowClosed)
+                statuses.Add(OrderStatus.Closed);
+
             var filter = new OrdersFilter
             {
                 MillingCenter = MillingCenter,
@@ -199,7 +277,8 @@ namespace Germadent.Rma.App.ViewModels
                 Customer = Customer,
                 Doctor = Doctor,
                 Patient = Patient,
-                Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray()
+                Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray(),
+                Statuses = statuses.ToArray()
             };
             return filter;
         }
@@ -227,6 +306,12 @@ namespace Germadent.Rma.App.ViewModels
                     checkableDictionaryItemViewModel.IsChecked = selectedMaterialIds.Contains(material.Id);
                     Materials.Add(checkableDictionaryItemViewModel);
                 }
+
+                ShowCreated = filter.Statuses.Any(x => x == OrderStatus.Created);
+                ShowInProgress = filter.Statuses.Any(x => x == OrderStatus.InProgress);
+                ShowQualityControl = filter.Statuses.Any(x => x == OrderStatus.QualityControl);
+                ShowRealization = filter.Statuses.Any(x => x == OrderStatus.Realization);
+                ShowClosed = filter.Statuses.Any(x => x == OrderStatus.Closed);
             }
             catch (Exception e)
             {

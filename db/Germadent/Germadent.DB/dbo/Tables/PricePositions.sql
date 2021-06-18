@@ -6,10 +6,11 @@
     [MaterialID]         INT            NULL,
     [IsObsoletePosition] BIT            NULL,
     CONSTRAINT [PK_PriceGroups] PRIMARY KEY CLUSTERED ([PricePositionID] ASC),
-    CONSTRAINT [FK_PricePositions_Materials] FOREIGN KEY ([MaterialID]) REFERENCES [dbo].[Materials] ([MaterialID]),
     CONSTRAINT [FK_PricePositions_PriceGroups] FOREIGN KEY ([PriceGroupID]) REFERENCES [dbo].[PriceGroups] ([PriceGroupID]),
     CONSTRAINT [UK_PricePositionCode] UNIQUE NONCLUSTERED ([PricePositionCode] ASC)
 );
+
+
 
 
 

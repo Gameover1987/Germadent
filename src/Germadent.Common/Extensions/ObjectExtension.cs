@@ -17,6 +17,11 @@ namespace Germadent.Common.Extensions
             return obj.ToInt();
         }
 
+        public static float ToFloat(this object obj)
+        {
+            return float.Parse(obj.ToString());
+        }
+
         public static decimal ToDecimal(this object obj)
         {
             if (obj == null || obj == DBNull.Value)
@@ -36,6 +41,14 @@ namespace Germadent.Common.Extensions
         public static DateTime ToDateTime(this object obj)
         {
             return DateTime.Parse(obj.ToString());
+        }
+
+        public static DateTime? ToDateTimeOrNull(this object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+                return null;
+
+            return obj.ToDateTime();
         }
 
         public static bool ToBool(this object obj)

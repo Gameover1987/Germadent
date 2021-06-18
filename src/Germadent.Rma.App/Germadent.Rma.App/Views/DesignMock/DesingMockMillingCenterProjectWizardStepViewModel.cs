@@ -1,8 +1,8 @@
-﻿using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Reporting;
+﻿using Germadent.Client.Common.Infrastructure;
+using Germadent.Model;
+using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

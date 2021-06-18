@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.UI.Commands;
 
@@ -10,7 +11,7 @@ namespace Germadent.Rma.App.ViewModels
 
         OrderLiteViewModel SelectedOrder { get; }
 
-        IUserSettingsManager SettingsManager { get; }
+        IRmaUserSettingsManager SettingsManager { get; }
 
         event EventHandler ColumnSettingsChanged;
 

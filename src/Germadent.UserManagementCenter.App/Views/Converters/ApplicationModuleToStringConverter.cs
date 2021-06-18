@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows.Data;
-using Germadent.UserManagementCenter.Model.Rights;
+using Germadent.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.Views.Converters
 {
@@ -19,6 +17,9 @@ namespace Germadent.UserManagementCenter.App.Views.Converters
 
                 case ApplicationModule.Umc:
                     return "Центр управления пользователями";
+
+                case ApplicationModule.Rms:
+                    return "Рабочее место специалиста";
 
                 default:
                     throw new NotSupportedException();

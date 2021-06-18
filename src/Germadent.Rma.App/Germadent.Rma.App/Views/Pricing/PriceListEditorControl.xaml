@@ -81,7 +81,7 @@
                         <Setter.Value>
                             <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
                                 <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding EditPricePositionCommand}"
-                                          InputGestureText="F2"/>
+                                          InputGestureText="Enter"/>
                                 <MenuItem Header="Удалить" Command="{Binding DeletePricePositionCommand}"
                                           InputGestureText="Delete"/>
                             </ContextMenu>
@@ -92,14 +92,12 @@
             <DataGrid.InputBindings>
                 <KeyBinding Key="N" Modifiers="Control"
                             Command="{Binding AddPricePositionCommand}"/>
-                <KeyBinding Key="F2"
+                <KeyBinding Key="Enter"
                             Command="{Binding EditPricePositionCommand}"/>
                 <KeyBinding Key="Delete"
                             Command="{Binding DeletePricePositionCommand}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" ElementStyle="{StaticResource DataGridTextBlockStyle}" Width="Auto"
-                                    Binding="{Binding PricePositionId}"/>
                 <DataGridTextColumn Header="Код" Width="Auto" ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                     Binding="{Binding UserCode}"/>
                <DataGridTextColumn Header="Наименование" Width="*" ElementStyle="{StaticResource DataGridTextBlockStyle}"

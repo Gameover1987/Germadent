@@ -6,9 +6,13 @@
              xmlns:local="clr-namespace:Germadent.UserManagementCenter.App.Views"
              xmlns:designTime="clr-namespace:Germadent.UserManagementCenter.App.Views.DesignTime"
              xmlns:viewModels="clr-namespace:Germadent.UserManagementCenter.App.ViewModels"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance d:Type={x:Type designTime:DesignMockUsersManagerViewModel}, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <helpers:BindingProxy x:Key="BindingProxy" Data="{Binding}"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -19,10 +23,34 @@
                  ItemsSource="{Binding Users}"
                  SelectedItem="{Binding SelectedUser}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.InputBindings>
+                <KeyBinding Key="Enter"
+                            Command="{Binding EditUSerCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeleteUserCommand}"/>
+            </ListBox.InputBindings>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить пользователя"
+                              Command="{Binding AddUserCommand}"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
                     <Grid Margin="3,0,3,0" Background="Transparent"
+                          MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown"
                           ToolTip="{Binding Description}">
+                        <Grid.ContextMenu>
+                            <ContextMenu DataContext="{Binding Source={StaticResource BindingProxy}, Path=Data}">
+                                <MenuItem Header="Редактировать пользователя" FontWeight="SemiBold"
+                                          InputGestureText="Enter"
+                                          Command="{Binding EditUSerCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="Удалить пользователя"
+                                          InputGestureText="Delete"
+                                          Command="{Binding EditUSerCommand}"/>
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>

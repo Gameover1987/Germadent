@@ -4,8 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.DataAccess.UserManagement;
 using Germadent.WebApi.Entities;
@@ -242,11 +241,11 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
-        public ReportListDto[] GetWorkReport(int id)
+        public ReportListDto[] GetWorkReport(int workOrderId)
         {
-            var orderDto = GetWorkOrderById(id);
+            var orderDto = GetWorkOrderById(workOrderId);
 
-            var toothCard = GetToothCard(id, orderDto.Stl);
+            var toothCard = GetToothCard(workOrderId, orderDto.Stl);
 
             var products = toothCard
                 .SelectMany(x => x.Products)

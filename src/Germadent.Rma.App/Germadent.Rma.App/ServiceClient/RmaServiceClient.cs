@@ -1,191 +1,184 @@
-﻿using System.Linq;
-using Germadent.Common;
-using Germadent.Common.Web;
-using Germadent.Rma.App.Configuration;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
-using RestSharp;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using Germadent.Client.Common.Configuration;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
+using Germadent.Model.Rights;
 
 namespace Germadent.Rma.App.ServiceClient
 {
-    public class RmaServiceClient : ServiceClientBase, IRmaServiceClient
+    public class RmaServiceClient : BaseClientOperationsServiceClient, IRmaServiceClient
     {
-        private readonly IConfiguration _configuration;
-        private readonly ISignalRClient _signalRClient;
-
-        public RmaServiceClient(IConfiguration configuration, ISignalRClient signalRClient)
+        public RmaServiceClient(IClientConfiguration configuration, ISignalRClient signalRClient) 
+            : base(configuration, signalRClient)
         {
-            _configuration = configuration;
-            _signalRClient = signalRClient;
         }
 
-        public void Authorize(string login, string password)
+        protected override bool CheckRunApplicationRight()
         {
-            var info = ExecuteHttpGet<AuthorizationInfoDto>(
-                _configuration.DataServiceUrl + string.Format("/api/auth/authorize/{0}/{1}", login, password));
-
-            AuthorizationInfo = info;
-            AuthenticationToken = info.Token;
-
-            if (AuthorizationInfo.IsLocked)
-                throw new UserMessageException("Учетная запись заблокирована.");
-
-            if (AuthorizationInfo.Rights.Count(x => x.RightName == RmaUserRights.RunApplication) == 0)
-                throw new UserMessageException("Отсутствует право на запуск приложения");
-
-            _signalRClient.Initialize();
-        }
-        public AuthorizationInfoDto AuthorizationInfo { get; protected set; }
-
-        public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter)
-        {
-            var api = _configuration.DataServiceUrl + "/api/Rma/Orders/getByFilter";
-            return ExecuteHttpPost<OrderLiteDto[]>(api, ordersFilter);
-        }
-
-        public OrderDto GetOrderById(int workOrderId)
-        {
-            return ExecuteHttpGet<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/{workOrderId}/{AuthorizationInfo.UserId}");
-        }
-
-        public byte[] GetDataFileByWorkOrderId(int id)
-        {
-            var apiUrl = _configuration.DataServiceUrl + string.Format("/api/Rma/orders/fileDownload/{0}", id);
-            return ExecuteFileDownload(apiUrl);
+            return AuthorizationInfo.Rights.Any(x => x.RightName == RmaUserRights.RunApplication);
         }
 
         public OrderDto AddOrder(OrderDto order)
         {
             order.CreatorId = AuthorizationInfo.UserId;
             
-            var addedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/Orders/add", order);
+            var addedOrder = ExecuteHttpPost<OrderDto>(Configuration.DataServiceUrl + "/api/Rma/Orders/add", order);
 
             return addedOrder;
         }
 
         public OrderDto UpdateOrder(OrderDto order)
         {
-            var updatedOrder = ExecuteHttpPost<OrderDto>(_configuration.DataServiceUrl + "/api/Rma/orders/update", order);
+            var updatedOrder = ExecuteHttpPost<OrderDto>(Configuration.DataServiceUrl + "/api/Rma/orders/update", order);
 
             return updatedOrder;
         }
 
-        public OrderDto CloseOrder(int id)
+        public void CloseOrder(int workOrderId)
         {
-            return ExecuteHttpDelete<OrderDto>(_configuration.DataServiceUrl + $"/api/Rma/orders/close/{id}");
+            ExecuteHttpGet(Configuration.DataServiceUrl + $"/api/Rma/orders/CloseOrder/{workOrderId}/{AuthorizationInfo.UserId}");
         }
 
-        public ReportListDto[] GetWorkReport(int id)
+        public ReportListDto[] GetWorkReport(int workOrderId)
         {
-            return ExecuteHttpGet<ReportListDto[]>(_configuration.DataServiceUrl + $"/api/Rma/reports/{id}");
+            return ExecuteHttpGet<ReportListDto[]>(Configuration.DataServiceUrl + $"/api/Rma/reports/GetWorkReport/{workOrderId}");
         }
 
         public CustomerDto[] GetCustomers(string mask)
         {
-            return ExecuteHttpGet<CustomerDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Customers?mask={mask}");
+            return ExecuteHttpGet<CustomerDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Customers?mask={mask}");
         }
 
         public CustomerDto AddCustomer(CustomerDto сustomerDto)
         {
-            var addedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/add", сustomerDto);
+            var addedCustomer = ExecuteHttpPost<CustomerDto>(Configuration.DataServiceUrl + "/api/Rma/customers/add", сustomerDto);
             return addedCustomer;
         }
 
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
         {
-            var updatedCustomer = ExecuteHttpPost<CustomerDto>(_configuration.DataServiceUrl + "/api/Rma/customers/update", customerDto);
+            var updatedCustomer = ExecuteHttpPost<CustomerDto>(Configuration.DataServiceUrl + "/api/Rma/customers/update", customerDto);
             return updatedCustomer;
         }
 
         public DeleteResult DeleteCustomer(int customerId)
         {
-            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Customers/{customerId}");
+            return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Customers/{customerId}");
         }
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
         {
-            return ExecuteHttpGet<ResponsiblePersonDto[]>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons");
+            return ExecuteHttpGet<ResponsiblePersonDto[]>(Configuration.DataServiceUrl + "/api/Rma/responsiblePersons");
         }
 
         public ResponsiblePersonDto AddResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
-            var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/add", responsiblePersonDto);
+            var addedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(Configuration.DataServiceUrl + "/api/Rma/responsiblePersons/add", responsiblePersonDto);
             return addedResponsiblePerson;
         }
 
         public ResponsiblePersonDto UpdateResponsiblePerson(ResponsiblePersonDto responsiblePersonDto)
         {
-            var updatedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(_configuration.DataServiceUrl + "/api/Rma/responsiblePersons/update", responsiblePersonDto);
+            var updatedResponsiblePerson = ExecuteHttpPost<ResponsiblePersonDto>(Configuration.DataServiceUrl + "/api/Rma/responsiblePersons/update", responsiblePersonDto);
             return updatedResponsiblePerson;
         }
 
         public DeleteResult DeleteResponsiblePerson(int responsiblePersonId)
         {
-            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
-        }
-
-        public DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType)
-        {
-            return ExecuteHttpGet<DictionaryItemDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Dictionaries/{dictionaryType}");
+            return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/responsiblePersons/{responsiblePersonId}");
         }
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
-            return ExecuteHttpGet<PriceGroupDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
+            return ExecuteHttpGet<PriceGroupDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/PriceGroups/" + (int)branchType);
         }
 
         public PriceGroupDto AddPriceGroup(PriceGroupDto priceGroupDto)
         {
-            var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
+            var addedPriceGroup = ExecuteHttpPost<PriceGroupDto>(Configuration.DataServiceUrl + "/api/Rma/Pricing/AddPriceGroup", priceGroupDto);
             return addedPriceGroup;
         }
 
         public PriceGroupDto UpdatePriceGroup(PriceGroupDto priceGroupDto)
         {
-            var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(_configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
+            var updatedPriceGroup = ExecuteHttpPost<PriceGroupDto>(Configuration.DataServiceUrl + "/api/Rma/Pricing/UpdatePriceGroup", priceGroupDto);
             return updatedPriceGroup;
         }
 
         public DeleteResult DeletePriceGroup(int priceGroupId)
         {
-            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
+            return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePriceGroup/" + priceGroupId);
         }
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            return ExecuteHttpGet<PricePositionDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);
+            return ExecuteHttpGet<PricePositionDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/PricePositions/" + (int)branchType);
         }
 
         public PricePositionDto AddPricePosition(PricePositionDto pricePositionDto)
         {
-            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
+            return ExecuteHttpPost<PricePositionDto>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/AddPricePosition", pricePositionDto);
         }
 
         public PricePositionDto UpdatePricePosition(PricePositionDto pricePositionDto)
         {
-            return ExecuteHttpPost<PricePositionDto>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
+            return ExecuteHttpPost<PricePositionDto>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/UpdatePricePosition", pricePositionDto);
         }
 
         public DeleteResult DeletePricePosition(int pricePositionId)
         {
-            return ExecuteHttpDelete<DeleteResult>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
+            return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/DeletePricePosition/" + pricePositionId);
         }
 
         public ProductDto[] GetProducts()
         {
-            return ExecuteHttpGet<ProductDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts");
+            return ExecuteHttpGet<ProductDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Pricing/GetProducts");
         }
 
         public AttributeDto[] GetAttributes()
         {
-            return ExecuteHttpGet<AttributeDto[]>(_configuration.DataServiceUrl + $"/api/Rma/Attributes/GetAttributesAndValues");
+            return ExecuteHttpGet<AttributeDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Attributes/GetAttributesAndValues");
         }
 
-        protected override void HandleError(IRestResponse response)
+        public EmployeePositionDto[] GetEmployeePositions()
         {
-            throw new ServerSideException(response);
+            return ExecuteHttpGet<EmployeePositionDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Technology/EmployeePositions");
+        }
+
+        public TechnologyOperationDto[] GetTechnologyOperations()
+        {
+            return ExecuteHttpGet<TechnologyOperationDto[]>(Configuration.DataServiceUrl + $"/api/Rma/Technology/Operations");
+        }
+
+        public TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteHttpPost<TechnologyOperationDto>(Configuration.DataServiceUrl + $"/api/Rma/Technology/AddOperation", technologyOperationDto);
+        }
+
+        public TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            return ExecuteHttpPost<TechnologyOperationDto>(Configuration.DataServiceUrl + $"/api/Rma/Technology/UpdateOperation", technologyOperationDto);
+        }
+
+        public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
+        {
+            return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
+        }
+
+        public UserDto[] GetAllUsers()
+        {
+            return ExecuteHttpGet<UserDto[]>(Configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
+        }
+
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
+        {
+            var api = Configuration.DataServiceUrl + "/api/Rma/Reports/GetSalaryReport";
+            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter{ UserId = userId, DateFrom = dateFrom, DateTo = dateTo} );
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Client.Common.Infrastructure;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
 using Germadent.Rma.App.ViewModels.Pricing;

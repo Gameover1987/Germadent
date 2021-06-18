@@ -1,6 +1,6 @@
 ﻿using System;
+using Germadent.Model;
 using Germadent.Rma.App.ViewModels.Wizard;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -21,6 +21,8 @@ namespace Germadent.Rma.App.Views.DesignMock
             DateOfCompletion = DateTime.Now;
 
             DateComment = "Какой то комментарий к срокам выполнения";
+
+            UrgencyRatio = OrderDto.NormalUrgencyRatio;
         }
     }
 }

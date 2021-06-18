@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Rates] (
     [TechnologyOperationID] INT     NOT NULL,
-    [QualifyingRank]        TINYINT NULL,
+    [QualifyingRank]        TINYINT NOT NULL,
     [Rate]                  MONEY   NOT NULL,
     [DateBeginning]         DATE    NOT NULL,
     [DateEnd]               DATE    NULL,
@@ -16,7 +16,11 @@
 
 
 
+
+
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Rates]
-    ON [dbo].[Rates]([TechnologyOperationID] ASC, [QualifyingRank] ASC);
+    ON [dbo].[Rates]([TechnologyOperationID] ASC, [QualifyingRank] ASC, [DateBeginning] ASC);
+
+
 

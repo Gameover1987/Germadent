@@ -1,5 +1,5 @@
-﻿using Germadent.UserManagementCenter.App.ViewModels;
-using Germadent.UserManagementCenter.Model;
+﻿using Germadent.Model;
+using Germadent.UserManagementCenter.App.ViewModels;
 
 namespace Germadent.UserManagementCenter.App.UIOperations
 {

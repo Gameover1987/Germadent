@@ -7,9 +7,13 @@
              xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
              xmlns:designTime="clr-namespace:Germadent.UserManagementCenter.App.Views.DesignTime"
              xmlns:viewModels="clr-namespace:Germadent.UserManagementCenter.App.ViewModels"
+             xmlns:helpers="clr-namespace:Germadent.UI.Helpers;assembly=Germadent.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockRolesManagerViewModel}, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <helpers:BindingProxy x:Key="BindingProxy" Data="{Binding}"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -28,9 +32,33 @@
             <ListBox Grid.Row="1" Margin="0,6,0,0"
                      ItemsSource="{Binding Roles}"
                      SelectedItem="{Binding SelectedRole}">
+                <ListBox.InputBindings>
+                    <KeyBinding Key="Enter"
+                                Command="{Binding EditRoleCommand}"/>
+                    <KeyBinding Key="Delete"
+                                Command="{Binding DeleteRoleCommand}"/>
+                </ListBox.InputBindings>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Добавить роль"
+                                  Command="{Binding AddRoleCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:RoleViewModel}">
-                        <Grid Margin="3,0,3,0">
+                        <Grid Margin="3,0,3,0" Background="Transparent"
+                              MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown">
+                            <Grid.ContextMenu>
+                                <ContextMenu DataContext="{Binding Source={StaticResource BindingProxy}, Path=Data}">
+                                    <MenuItem Header="Редактировать роль" FontWeight="SemiBold"
+                                              InputGestureText="Enter"
+                                              Command="{Binding EditRoleCommand}"/>
+                                    <Separator/>
+                                    <MenuItem Header="Удалить роль"
+                                              InputGestureText="Delete"
+                                              Command="{Binding DeleteRoleCommand}"/>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
                             <TextBlock Text="{Binding Name}"/>
                         </Grid>
                     </DataTemplate>
@@ -85,23 +113,29 @@
                 </ListBox.GroupStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:RightViewModel}">
-                        <Grid>
+                        <Grid Background="Transparent">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsObsolete}" Value="True">
+                                            <Setter Property="ToolTip" Value="Данное право является устаревшим"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Data="M 0,7.87402L 4.72441,14.1733L 14.1732,4.72443L 14.1732,0L 4.72441,11.0237L 0,4.72443L 0,7.87402 Z" Fill="Green" Width="10" Height="10" Stretch="Uniform" />
 
-                            <TextBlock Grid.Column="1" Text="{Binding RightDescription}" Margin="3,0,0,0"/>
+                            <TextBlock Grid.Column="1" Text="{Binding RightDescription}" Margin="3,0,0,0"
+                                       IsEnabled="{Binding IsObsolete, Converter={StaticResource InvertBoolConverter}}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
             </ListBox>
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-
-            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

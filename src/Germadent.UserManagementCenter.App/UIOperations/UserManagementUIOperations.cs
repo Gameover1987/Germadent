@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using Germadent.Model;
 using Germadent.UI.Infrastructure;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.ViewModels;
 using Germadent.UserManagementCenter.App.Views;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.UIOperations
 {
@@ -43,13 +42,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public bool DeleteUser(UserViewModel user)
         {
-            if (_dialogAgent.ShowMessageDialog(
-                    string.Format("Вы действительно хотите удалить пользователя '{0}'", user.FullName),
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return false;
+            var message = string.Format("Вы действительно хотите удалить пользователя '{0}'", user.FullName);
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _umcServiceClient.DeleteUser(user.Id);
+                return true;
+            }
 
-            _umcServiceClient.DeleteUser(user.Id);
-            return true;
+            return false;
         }
 
         public RoleDto AddRole()
@@ -72,12 +72,14 @@ namespace Germadent.UserManagementCenter.App.UIOperations
 
         public bool DeleteRole(RoleViewModel role)
         {
-            if (_dialogAgent.ShowMessageDialog(string.Format("Вы действительно хотите удалить роль '{0}'", role.Name),
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return false;
+            var message = $"Вы действительно хотите удалить роль '{role.Name}'";
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _umcServiceClient.DeleteRole(role.RoleId);
+                return true;
+            }
 
-            _umcServiceClient.DeleteRole(role.RoleId);
-            return true;
+            return false;
         }
     }
 }

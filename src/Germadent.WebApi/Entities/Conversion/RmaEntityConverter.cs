@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 
 namespace Germadent.WebApi.Entities.Conversion
 {
@@ -12,11 +12,11 @@ namespace Germadent.WebApi.Entities.Conversion
             var orderDto = new OrderDto
             {
                 WorkOrderId = entity.WorkOrderId,
-                Status = entity.Status,
+                Status = (OrderStatus)entity.Status,
+                StatusChanged = entity.StatusChanged,
                 BranchType = (BranchType)entity.BranchTypeId,
                 CustomerId = entity.CustomerId,
                 Customer = entity.CustomerName,
-                Closed = entity.Closed,
                 Created = entity.Created,
                 FittingDate = entity.FittingDate,
                 DocNumber = entity.DocNumber,
@@ -29,6 +29,7 @@ namespace Germadent.WebApi.Entities.Conversion
                 WorkDescription = entity.WorkDescription,
                 CreatorFullName = entity.CreatorFullName,
                 WorkAccepted = entity.FlagWorkAccept,
+                UrgencyRatio = entity.UrgencyRatio,
                 Stl = entity.FlagStl,
                 Cashless = entity.FlagCashless,
                 ProstheticArticul = entity.ProstheticArticul,
@@ -99,24 +100,6 @@ namespace Germadent.WebApi.Entities.Conversion
             }
 
             return toothCollection.ToArray();
-        }
-
-        public OrderLiteDto ConvertToOrderLite(OrderLiteEntity entity)
-        {
-            return new OrderLiteDto
-            {
-                WorkOrderId = entity.WorkOrderId,
-                BranchType = (BranchType)entity.BranchTypeId,
-                CustomerName = entity.CustomerName,
-                PatientFnp = entity.PatientFullName,
-                DocNumber = entity.DocNumber,
-                DoctorFullName = entity.DoctorFullName,
-                TechnicFullName = entity.TechnicFullName,
-                Status = entity.Status,
-                Created = entity.Created,
-                CreatorFullName = entity.CreatorFullName,
-                Closed = entity.Closed,
-            };
         }
 
         public DictionaryItemDto ConvertToDictionaryItem(DictionaryItemEntity entity)
@@ -227,6 +210,20 @@ namespace Germadent.WebApi.Entities.Conversion
                 PriceGroupId = entity.PriceGroupId,
                 ProductName = entity.ProductName,
                 PricePositionCode = entity.PricePositionCode
+            };
+        }
+
+        public StatusListDto ConvertToStatusList(StatusListEntity entity)
+        {
+            return new StatusListDto
+            {
+                WorkOrderId = entity.WorkOrderId,
+                Status = entity.Status,
+                StatusName = entity.StatusName,
+                StatusChangeDateTime = entity.StatusChangeDateTime,
+                UserId = entity.UserId,
+                UserFullName = entity.UserFullName,
+                Remark = entity.Remark
             };
         }
 

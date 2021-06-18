@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Germadent.UserManagementCenter.Model.Rights;
+using Germadent.Model.Rights;
 
 namespace Germadent.WebApi.Entities
 {
@@ -48,6 +48,10 @@ namespace Germadent.WebApi.Entities
         public int RoleId { get; set; }
 
         public string RoleName { get; set; }
+
+        public int? EmployeePositionId { get; set; }
+
+        public int? QualifyingRank { get; set; }
     }
 
     public class RoleAndRightEntity
@@ -65,6 +69,7 @@ namespace Germadent.WebApi.Entities
         public string ApplicationName { get; set; }
 
         public ApplicationModule ApplicationModule { get; set; }
+        public bool IsObsolete { get; set; }
     }
 
     public class RightEntity

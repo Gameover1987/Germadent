@@ -1,4 +1,3 @@
-
 src/Germadent.Rma.App/.vs/Germadent.Rma.App/v16/.suo
 src/_ReSharper.Caches/ReSharperPlatformVs16191_45414a2b.Germadent.00/~Mutex
 *.sst
@@ -44,7 +43,6 @@ src/Germadent.ServiceClient/bin/
 src/Germadent.ServiceClient/obj/
 src/Germadent.Rma.Model/bin/
 src/Germadent.Rma.Model/obj/
-
 src/Germadent.DataAccessService/bin/
 src/Germadent.DataAccessService/obj/
 db/Germadent/.vs/
@@ -80,3 +78,9 @@ src/Utils/Corcon/Corcon/obj/
 src/Utils/Corcon/.vs/
 src/Utils/CorrectionConstructionFile/bin/
 src/Utils/CorrectionConstructionFile/obj/
+src/Germadent.Rms.App/bin/
+src/Germadent.Rms.App/obj/
+src/Germadent.Client.Common/bin/
+src/Germadent.Client.Common/obj/
+src/Germadent.Model/obj/
+src/Germadent.Model/bin/

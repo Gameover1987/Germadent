@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Germadent.Model;
 using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.UIOperations;
 using Germadent.UserManagementCenter.App.ViewModels;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {

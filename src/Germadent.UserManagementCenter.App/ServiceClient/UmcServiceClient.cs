@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using Germadent.Common;
-using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Web;
+using Germadent.Model;
+using Germadent.Model.Rights;
 using Germadent.UserManagementCenter.App.Configuration;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 using RestSharp;
 
 namespace Germadent.UserManagementCenter.App.ServiceClient
@@ -14,13 +13,11 @@ namespace Germadent.UserManagementCenter.App.ServiceClient
     {
         private readonly IUmcConfiguration _configuration;
         private readonly IFileManager _fileManager;
-        private readonly RestClient _client;
 
         public UmcServiceClient(IUmcConfiguration configuration, IFileManager fileManager)
         {
             _configuration = configuration;
             _fileManager = fileManager;
-            _client = new RestClient();
         }
 
         public void Authorize(string login, string password)

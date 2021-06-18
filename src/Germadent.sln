@@ -9,15 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Common", "Germade
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UI", "Germadent.UI\Germadent.UI.csproj", "{E3944E28-D2B6-471B-ACC7-316315C602A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Rma.Model", "Germadent.Rma.Model\Germadent.Rma.Model.csproj", "{20C51207-C072-4C58-B653-5BC624B00CC3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4DD6BEFD-A887-4337-8312-58A00439E1AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Rma.App.Test", "Germadent.Rma.App.Test\Germadent.Rma.App.Test.csproj", "{E56DD068-AC0C-4F93-9448-23A7E7058701}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UserManagementCenter.App", "Germadent.UserManagementCenter.App\Germadent.UserManagementCenter.App.csproj", "{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UserManagementCenter.Model", "Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj", "{2F85C943-0255-4443-817F-50D13FB15943}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.UserManagementCenter.App.Test", "Germadent.UserManagementCenter.App.Test\Germadent.UserManagementCenter.App.Test.csproj", "{E50944A7-D140-4F58-A567-51B6AB2BCDC4}"
 EndProject
@@ -30,11 +26,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.DataGenerator.App", "Germadent.DataGenerator.App\Germadent.DataGenerator.App.csproj", "{20827526-D3E2-49D6-A9D8-2B4A638B0688}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{0EBFAB04-80DB-4A0B-AD53-AEB7B3B20270}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.CorrectionConstructionFile.App", "Utils\CorrectionConstructionFile\Germadent.CorrectionConstructionFile.App.csproj", "{92E02116-3E9D-4574-AB0A-DF9815F77739}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Rms.App", "Germadent.Rms.App\Germadent.Rms.App.csproj", "{E1148A8E-FA60-4343-A49D-4AEB0734242E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Client.Common", "Germadent.Client.Common\Germadent.Client.Common.csproj", "{DA5F5CA7-1B22-4121-8146-60D08349B033}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germadent.Model", "Germadent.Model\Germadent.Model.csproj", "{3F880A36-57F6-4401-AB15-582DCE05209E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,10 +54,6 @@ Global
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3944E28-D2B6-471B-ACC7-316315C602A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20C51207-C072-4C58-B653-5BC624B00CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20C51207-C072-4C58-B653-5BC624B00CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E56DD068-AC0C-4F93-9448-23A7E7058701}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,10 +62,6 @@ Global
 		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB1CC4C-14C9-459C-B96D-07D370EFDA40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F85C943-0255-4443-817F-50D13FB15943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F85C943-0255-4443-817F-50D13FB15943}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F85C943-0255-4443-817F-50D13FB15943}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F85C943-0255-4443-817F-50D13FB15943}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50944A7-D140-4F58-A567-51B6AB2BCDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -82,14 +74,22 @@ Global
 		{9B061191-CD14-499A-A2F8-E87BDEF00941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B061191-CD14-499A-A2F8-E87BDEF00941}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B061191-CD14-499A-A2F8-E87BDEF00941}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20827526-D3E2-49D6-A9D8-2B4A638B0688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20827526-D3E2-49D6-A9D8-2B4A638B0688}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20827526-D3E2-49D6-A9D8-2B4A638B0688}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20827526-D3E2-49D6-A9D8-2B4A638B0688}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92E02116-3E9D-4574-AB0A-DF9815F77739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92E02116-3E9D-4574-AB0A-DF9815F77739}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92E02116-3E9D-4574-AB0A-DF9815F77739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92E02116-3E9D-4574-AB0A-DF9815F77739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1148A8E-FA60-4343-A49D-4AEB0734242E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1148A8E-FA60-4343-A49D-4AEB0734242E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1148A8E-FA60-4343-A49D-4AEB0734242E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1148A8E-FA60-4343-A49D-4AEB0734242E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5F5CA7-1B22-4121-8146-60D08349B033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5F5CA7-1B22-4121-8146-60D08349B033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5F5CA7-1B22-4121-8146-60D08349B033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5F5CA7-1B22-4121-8146-60D08349B033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F880A36-57F6-4401-AB15-582DCE05209E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F880A36-57F6-4401-AB15-582DCE05209E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F880A36-57F6-4401-AB15-582DCE05209E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F880A36-57F6-4401-AB15-582DCE05209E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,7 +101,7 @@ Global
 		{92E02116-3E9D-4574-AB0A-DF9815F77739} = {0EBFAB04-80DB-4A0B-AD53-AEB7B3B20270}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {B7001376-BEB5-422B-B392-1B1F9BB2B7F3}
 	EndGlobalSection
 EndGlobal

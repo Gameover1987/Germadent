@@ -1,7 +1,7 @@
 ﻿using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ViewModels;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {

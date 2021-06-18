@@ -1,9 +1,12 @@
 ﻿using System;
+using Germadent.Common.Extensions;
+using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
-using Germadent.Rma.Model;
+using Germadent.Model;
 using Germadent.WebApi.DataAccess.Rma;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Germadent.WebApi.Controllers.Rma
 {
@@ -14,11 +17,15 @@ namespace Germadent.WebApi.Controllers.Rma
     {
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly ILogger _logger;
+        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IFileManager _fileManager;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger)
+        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext, IFileManager fileManager)
         {
             _rmaDbOperations = rmaDbOperations;
             _logger = logger;
+            _hubContext = hubContext;
+            _fileManager = fileManager;
         }
         
         [HttpPost]
@@ -45,6 +52,16 @@ namespace Germadent.WebApi.Controllers.Rma
             {
                 _logger.Info(nameof(GetWorkOrderById));
                 var order = _rmaDbOperations.GetOrderDetails(workOrderId, userId);
+
+                var lockDto = new OrderLockInfoDto
+                {
+                    WorkOrderId = workOrderId,
+                    OccupancyDateTime = order.LockDate,
+                    User = order.LockedBy,
+                    IsLocked = true
+                };
+
+                _hubContext.Clients.All.SendAsync("LockOrUnlock", lockDto.SerializeToJson());
                 return Ok(order);
             }
             catch (Exception exception)
@@ -53,7 +70,32 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
-        
+
+        [HttpGet("UnlockWorkOrder/{workOrderId}")]
+        public IActionResult UnlockWorkOrder(int workOrderId)
+        {
+            try
+            {
+                _logger.Info(nameof(UnlockWorkOrder));
+                _rmaDbOperations.UnlockWorkOrder(workOrderId);
+
+                var lockInfo = new OrderLockInfoDto
+                {
+                    WorkOrderId = workOrderId,
+                    IsLocked = false
+                };
+
+                _hubContext.Clients.All.SendAsync("LockOrUnlock", lockInfo.SerializeToJson());
+                return Ok(lockInfo);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+
         [HttpPost]
         [Route("add")]
         public IActionResult AddOrder([FromBody] OrderDto orderDto)
@@ -88,14 +130,17 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpDelete("Close/{id:int}")]
-        public IActionResult CloseOrder(int id)
+        [HttpGet]
+        [Route("CloseOrder/{workOrderId}/{userId}")]
+        public IActionResult CloseOrder(int workOrderId, int userId)
         {
             try
             {
                 _logger.Info(nameof(CloseOrder));
-                var order = _rmaDbOperations.CloseOrder(id);
-                return Ok(order);
+                var notificationDto = _rmaDbOperations.CloseOrder(workOrderId, userId);
+                if (notificationDto != null)
+                    _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
+                return Ok();
             }
             catch (Exception exception)
             {

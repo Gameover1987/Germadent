@@ -1,4 +1,4 @@
-﻿using Germadent.Rma.App.Reporting;
+﻿using Germadent.Client.Common.Infrastructure;
 using Germadent.Rma.App.ViewModels.ToothCard;
 using Germadent.Rma.App.ViewModels.Wizard;
 

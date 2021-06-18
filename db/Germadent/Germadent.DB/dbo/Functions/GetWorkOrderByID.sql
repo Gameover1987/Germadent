@@ -1,16 +1,29 @@
 ﻿-- =============================================
 -- Author:		Alexey Kolosenok
 -- Create date: 21.11.2019
--- Description:	Возвращает заказ-наряд по ID. Если не указан конкретный id - выводим весь список
+-- Description:	Возвращает заказ-наряд по ID
 -- =============================================
 CREATE FUNCTION [dbo].[GetWorkOrderById] 
 (	
-	@workOrderID int = NULL
+	@workOrderID int
 )
 RETURNS TABLE 
 AS
 RETURN 
 (
+WITH currentStatus (WorkOrderID, Status, StatusChangeDateTime) AS (
+	SELECT WorkOrderID, Status, StatusChangeDateTime
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderID AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
+																	FROM dbo.StatusList
+																	WHERE WorkOrderID = @workOrderID)
+	),
+	created (WorkOrderID, CreateDateTime, CreatorID) AS (
+	SELECT WorkOrderID, StatusChangeDateTime, UserID
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderID 
+		AND Status = 0
+	)
 	
 SELECT wo.WorkOrderID, 
 			wo.DocNumber,
@@ -23,15 +36,16 @@ SELECT wo.WorkOrderID,
 			ISNULL(rp.ResponsiblePerson, '') AS ResponsiblePerson,
 			ISNULL(rp.RP_Phone, '') AS RP_Phone,
 			ISNULL(wo.PatientFullName, '') AS PatientFullName,
-			ISNULL(wo.Created, '') AS Created,
-			wo.Status,
+			created.CreateDateTime AS Created, 
+			currentStatus.Status,
+			currentStatus.StatusChangeDateTime,
 			ISNULL(wo.DateComment, '') AS DateComment,
 			ISNULL(wo.ProstheticArticul, '') AS ProstheticArticul,
 			ISNULL(wo.WorkDescription, '') AS WorkDescription,
+			wo.UrgencyRatio,
 			wo.FlagWorkAccept,
 			wo.FlagStl,
 			wo.FlagCashless,
-			wo.Closed,
 			CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName,
 			ISNULL(rp.ResponsiblePerson, '') AS TechnicFullName,
 			ISNULL(rp.RP_Phone, '') AS TechnicPhone,
@@ -45,8 +59,10 @@ SELECT wo.WorkOrderID,
 	FROM 	dbo.WorkOrder wo 
 			INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 			INNER JOIN dbo.Customers cs ON wo.CustomerID = cs.CustomerID
+			INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
+			INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
 			LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-			LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
+			LEFT JOIN dbo.Users u ON created.CreatorID = u.UserID
 
 	WHERE wo.WorkOrderID = ISNULL(@workOrderID, wo.WorkOrderID)
 )

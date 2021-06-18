@@ -23,6 +23,11 @@ namespace Germadent.WebApi.Entities
         public int Status { get; set; }
 
         /// <summary>
+        /// Дата изменения статуса
+        /// </summary>
+        public DateTime StatusChanged { get; set; }
+
+        /// <summary>
         /// Номер заказ-наряда
         /// </summary>
         public string DocNumber { get; set; }
@@ -78,6 +83,11 @@ namespace Germadent.WebApi.Entities
         public string CreatorFullName { get; set; }
 
         /// <summary>
+        /// Коэффициент срочности
+        /// </summary>
+        public float UrgencyRatio { get; set; }
+
+        /// <summary>
         /// Флаг согласования работ
         /// </summary>
         public bool FlagWorkAccept { get; set; }
@@ -91,11 +101,6 @@ namespace Germadent.WebApi.Entities
         /// Флаг безналичного расчёта
         /// </summary>
         public bool FlagCashless { get; set; }
-
-        /// <summary>
-        /// Дата закрытия заказа
-        /// </summary>
-        public DateTime? Closed { get; set; }
 
         /// <summary>
         /// Артикул материалов

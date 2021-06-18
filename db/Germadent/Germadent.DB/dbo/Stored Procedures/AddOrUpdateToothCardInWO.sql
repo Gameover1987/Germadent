@@ -15,10 +15,14 @@ BEGIN
 	SET NOCOUNT, XACT_ABORT ON;
 
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
-		BEGIN
-			RETURN
-		END
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
+		RETURN
+
+	-- Тащим коэффициент срочности
+	DECLARE @urgencyRatio float
+	SELECT @urgencyRatio = UrgencyRatio 
+		FROM dbo.WorkOrder
+		WHERE WorkOrderID = @workOrderId
 
 	BEGIN TRAN
 		-- Чистим зубную карту от старого содержимого
@@ -29,7 +33,7 @@ BEGIN
 		-- Наполняем новым содержимым, распарсив строку json
 		INSERT INTO dbo.ToothCard
 			(WorkOrderID, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge)
-		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price, HasBridge
+		SELECT WorkOrderID = @workOrderId, ToothNumber, PricePositionID, ConditionID, MaterialID, ProductID, Price * @urgencyRatio, HasBridge
 		FROM OPENJSON (@jsonToothCardString)
 			WITH (ToothNumber int, PricePositionId int, ConditionId int, MaterialId int, ProductId int, Price money, HasBridge bit)
 

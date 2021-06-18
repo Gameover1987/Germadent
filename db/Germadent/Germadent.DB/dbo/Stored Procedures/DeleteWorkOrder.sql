@@ -5,33 +5,33 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[DeleteWorkOrder] 
 
-	@workOrderId int
---	@countRowsDeleted int output
+	@workOrderId int,
+	@userId int,	
+	@countRowsDeleted int = 0 output
 
 AS
 BEGIN
 	DECLARE
-		@woStatus int
+		@woStatus int,
+		@statusChangeDateTime datetime
 
-	SET @woStatus = (SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId)
-
+	SET @woStatus = (SELECT MAX(Status) FROM dbo.StatusList WHERE WorkOrderID = @workOrderId)
+		
 	IF @woStatus = 0
 			BEGIN
 				DELETE 
 				FROM dbo.WorkOrder
 				WHERE WorkOrderID = @workOrderId
+
+				SELECT @countRowsDeleted = @@ROWCOUNT
 			END
-		ELSE IF @woStatus = 1
-			UPDATE dbo.WorkOrder 
-				SET Status = -1
-				WHERE WorkOrderID = @workOrderId
-	
-	--UPDATE StlAndPhotos
-	--SET file_stream = CONVERT(varbinary(max), '0')
-	--WHERE stream_id NOT IN (SELECT stream_id FROM LinksFileStreams)
 
---	SELECT @countRowsDeleted = @@ROWCOUNT
+		ELSE IF @woStatus = 5 OR @woStatus = 100
+			RETURN
 
+			ELSE BEGIN
+			EXEC dbo.ChangeStatusWorkOrder @workOrderId, 5, @userId, null, @statusChangeDateTime
+			END
 END
 GO
 GRANT EXECUTE

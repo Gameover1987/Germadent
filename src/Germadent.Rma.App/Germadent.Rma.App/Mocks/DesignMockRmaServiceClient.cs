@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Germadent.Common.Extensions;
+using Germadent.Client.Common.Configuration;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.ServiceClient;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.Mocks
 {
@@ -43,7 +44,6 @@ namespace Germadent.Rma.App.Mocks
             _orders.Add(new OrderDto
             {
                 BranchType = BranchType.MillingCenter,
-                Closed = DateTime.Now,
                 Created = DateTime.Now.AddDays(-1),
                 Customer = "ООО Рога и копыта",
                 DocNumber = "001-ФЦ",
@@ -66,6 +66,8 @@ namespace Germadent.Rma.App.Mocks
             });
         }
 
+        public IClientConfiguration Configuration { get; }
+
         public void Authorize(string user, string password)
         {
             throw new NotImplementedException();
@@ -73,24 +75,15 @@ namespace Germadent.Rma.App.Mocks
 
         public AuthorizationInfoDto AuthorizationInfo { get; }
 
-        public RightDto[] GetRights(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public event EventHandler<UserAuthorizedEventArgs> Authorized;
-
         public OrderLiteDto[] GetOrders(OrdersFilter ordersFilter = null)
         {
             //Thread.Sleep(2000);
             return _orders.Select(x => x.ToOrderLite()).ToArray();
         }
 
-        public OrderDto GetOrderById(int id)
+        public OrderScope GetOrderById(int workOrderId)
         {
-            //Thread.Sleep(1000);
-            return _orders.First(x => x.WorkOrderId == id);
+            throw new NotImplementedException();
         }
 
         public byte[] GetDataFileByWorkOrderId(int id)
@@ -109,6 +102,11 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public OrderDto UpdateOrder(OrderDto order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseOrder(int workOrderId)
         {
             throw new NotImplementedException();
         }
@@ -134,10 +132,7 @@ namespace Germadent.Rma.App.Mocks
             return GetMaterials().Select(x => new DictionaryItemDto { Id = x.Id, Name = x.Name }).ToArray();
         }
 
-        public OrderDto CloseOrder(int id)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public string CopyToClipboard(OrderDto orderDto)
         {
@@ -224,6 +219,11 @@ namespace Germadent.Rma.App.Mocks
                 default:
                     throw new NotImplementedException("Неизвестный тип словаря");
             }
+        }
+
+        public byte[] GetTemplate(DocumentTemplateType documentTemplateType)
+        {
+            throw new NotImplementedException();
         }
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
@@ -478,6 +478,105 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public AttributeDto[] GetAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public EmployeePositionDto[] GetEmployeePositions()
+        {
+            return new EmployeePositionDto[]
+            {
+                new EmployeePositionDto {EmployeePositionName = "Администратор", EmployeePosition = EmployeePosition.Admin},
+                new EmployeePositionDto {EmployeePositionName = "Моделировщик"},
+                new EmployeePositionDto {EmployeePositionName = "Техник"},
+                new EmployeePositionDto {EmployeePositionName = "Оператор"},
+            };
+        }
+
+        public TechnologyOperationDto[] GetTechnologyOperations()
+        {
+            return new TechnologyOperationDto[]
+            {
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Титановые основания ОРТОС (включая винт)", UserCode = "152", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "Единица  фрезерованного каркаса на винтовой фиксации с уровня мультиюнита опорная часть (не включая винта)", UserCode = "117", EmployeePositionId = 1},
+                new TechnologyOperationDto{Name = "VITA ENAMIC Monocolor", UserCode = "126", EmployeePositionId = 1},
+            };
+        }
+
+        public TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DeleteResult DeleteTechnologyOperation(int technologyOperationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserDto[] GetAllUsers()
+        {
+            return new UserDto[]
+            {
+                new UserDto
+                {
+                    FirstName = "Vasya",
+                    Surname = "Popov",
+                    Patronymic = "Alibabaevich",
+                },
+                new UserDto
+                {
+                    FirstName = "Petya",
+                    Surname = "Petrov",
+                    Patronymic = "Vasilievich",
+                },
+            };
+        }
+
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
+        {
+            return new WorkDto[]
+            {
+                new WorkDto
+                {
+                    UserFullNameStarted = "Ленин В.И",
+                    TechnologyOperationName = "Patch Kde 2.0 for FreeBSD",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1017-MC~21",
+                    OperationCost = 200,
+                },
+                new WorkDto
+                {
+                    UserFullNameStarted = "Сталин В.И",
+                    TechnologyOperationName = "Install Windows 100500 on MAC with M1",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1017-MC~21",
+                    OperationCost = 100500
+                },
+                new WorkDto
+                {
+                    TechnologyOperationName = "Germadent develop",
+                    WorkStarted = DateTime.Now,
+                    WorkCompleted = DateTime.Now,
+                    WorkOrderId = 1,
+                    DocNumber = "1010-DL~21",
+                    OperationCost = 800
+                },
+            };
+        }
+
+        public void UnLockOrder(int workOrderId)
         {
             throw new NotImplementedException();
         }

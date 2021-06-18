@@ -15,6 +15,7 @@ CREATE PROCEDURE [dbo].[UpdateWorkOrder]
 	, @dateComment nvarchar(50)
 	, @prostheticArticul nvarchar(50)
 	, @workDescription nvarchar(250)
+	, @urgencyRatio float
 	, @patientFullName nvarchar(150)
 	, @patientGender bit
 	, @patientAge tinyint	
@@ -30,12 +31,21 @@ BEGIN
 
 	SET NOCOUNT, XACT_ABORT ON;
 
-	-- Никаких изменений, если заказ-наряд закрыт
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
-		BEGIN
-			RETURN
-		END
+	DECLARE
+	@currentStatusWO int
 
+	-- Определяем текущий статус заказ-наряда
+	SELECT @currentStatusWO = Status
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderId AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
+																	FROM dbo.StatusList
+																	WHERE WorkOrderID = @workOrderId)
+
+	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
+	IF @currentStatusWO = 100
+		RETURN
+	
+	ELSE BEGIN
 	BEGIN TRAN
 	
 		UPDATE dbo.WorkOrder
@@ -49,6 +59,7 @@ BEGIN
 			, DateComment = @dateComment
 			, ProstheticArticul = @prostheticArticul
 			, WorkDescription = @workDescription
+			, UrgencyRatio = ROUND(@urgencyRatio, 2)
 			, FlagWorkAccept = @flagWorkAccept
 			, FlagStl = @flagStl
 			, FlagCashless = @flagCashless
@@ -63,8 +74,8 @@ BEGIN
 	COMMIT
 
 	-- Напоминаем программе дату и время создания заказ-наряда
-	SELECT @created = Created FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID
-
+	SELECT @created = StatusChangeDateTime FROM dbo.StatusList WHERE WorkOrderID = @workOrderID AND Status = 0
+	END
 END
 GO
 GRANT EXECUTE

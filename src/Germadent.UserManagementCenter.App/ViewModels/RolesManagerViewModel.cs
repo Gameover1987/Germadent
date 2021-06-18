@@ -1,11 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
+using Germadent.Common.Extensions;
+using Germadent.Model.Rights;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 using Germadent.UserManagementCenter.App.ServiceClient;
 using Germadent.UserManagementCenter.App.UIOperations;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
@@ -26,7 +28,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             EditRoleCommand = new DelegateCommand(EditRoleCommandHandler, CanEditRoleCommandHandler);
             DeleteRoleCommand = new DelegateCommand(DeleteRoleCommandHandler, CanDeleteRoleCommandHandler);
 
-            InitializeRightsView();
+            _rightsView = CollectionViewSource.GetDefaultView(Rights);
+            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(RightViewModel.ApplicationModule)));
         }
 
         public ObservableCollection<RoleViewModel> Roles { get; } = new ObservableCollection<RoleViewModel>();
@@ -64,13 +67,6 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             }
         }
 
-        private void InitializeRightsView()
-        {
-            var rightViewModel = new RightViewModel(new RightDto());
-            _rightsView = CollectionViewSource.GetDefaultView(Rights);
-            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.ApplicationModule)));
-        }
-
         private void LoadRightsByRole()
         {
             Rights.Clear();
@@ -78,7 +74,11 @@ namespace Germadent.UserManagementCenter.App.ViewModels
             if (_selectedRole == null)
                 return;
 
-            var rightsByRole = SelectedRole.ToModel().Rights;
+            var rightsByRole = SelectedRole.ToModel()
+                .Rights
+                .OrderBy(x => x.ApplicationModule.GetDescription())
+                .ThenBy(x => x.RightDescription)
+                .ToArray();
             foreach (var rightDto in rightsByRole)
             {
                 Rights.Add(new RightViewModel(rightDto));

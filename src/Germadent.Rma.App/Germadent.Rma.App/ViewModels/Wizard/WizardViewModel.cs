@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Germadent.Rma.App.Reporting;
+using Germadent.Client.Common.Reporting;
+using Germadent.Model;
 using Germadent.Rma.App.Views.Wizard;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
@@ -174,8 +174,11 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.WorkOrderId = _order.WorkOrderId;
             order.BranchType = _order.BranchType;
             order.DocNumber = _order.DocNumber;
-            order.Closed = _order.Closed;
             order.CreatorFullName = _order.CreatorFullName;
+            order.Status = _order.Status;
+            order.StatusChanged = _order.StatusChanged;
+            order.LockDate = _order.LockDate;
+            order.LockedBy = _order.LockedBy;
 
             foreach (var step in Steps)
             {

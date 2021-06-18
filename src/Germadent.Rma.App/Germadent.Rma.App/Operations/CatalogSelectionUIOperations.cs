@@ -1,6 +1,6 @@
-﻿using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
+﻿using Germadent.Model;
+using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
-using Germadent.Rma.Model;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Operations

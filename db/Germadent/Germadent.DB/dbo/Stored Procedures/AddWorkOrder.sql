@@ -14,6 +14,7 @@ CREATE PROCEDURE [dbo].[AddWorkOrder]
 	@dateComment nvarchar(50) = NULL,
 	@prostheticArticul nvarchar(50) = NULL,
 	@workDescription nvarchar(250) = NULL,
+	@urgencyRatio float,
 	@flagStl bit = NULL,
 	@flagCashless bit = 1,
 	@creatorId int,
@@ -52,12 +53,11 @@ BEGIN
 				END
 
 		-- Собственно вставка, сначала в основную таблицу:
-		SET	@created = GETDATE()
 
 		INSERT INTO dbo.WorkOrder
-			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, Created,	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, FlagStl,  FlagCashless,  CreatorID)
+			(BranchTypeID,	 DocNumber, CustomerID,	PatientFullName, PatientGender,		PatientAge, ResponsiblePersonID, 	FittingDate, DateOfCompletion,	DateComment, ProstheticArticul,		WorkDescription, UrgencyRatio, FlagStl,  FlagCashless)
 		VALUES 
-			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId, @created, @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription, @flagStl, @flagCashless, @creatorId)
+			(@branchTypeID, @docNumber, @customerID, @patientFullName, @patientGender, @patientAge, @responsiblePersonId,  @fittingDate, @dateOfCompletion, @dateComment, @prostheticArticul, @workDescription,	ROUND(@urgencyRatio, 2), @flagStl, @flagCashless)
 
 		SET @workOrderID = SCOPE_IDENTITY()
 		
@@ -65,6 +65,7 @@ BEGIN
 		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
 		EXEC dbo.AddOrUpdateAttributesSet @workOrderID, @jsonAttributesString
+		EXEC dbo.ChangeStatusWorkOrderEasy @workOrderId, @creatorId, 0, @created output
 	
 	COMMIT
 END

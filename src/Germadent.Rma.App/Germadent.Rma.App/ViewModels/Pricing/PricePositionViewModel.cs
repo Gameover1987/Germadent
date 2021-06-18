@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Germadent.Common;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Pricing

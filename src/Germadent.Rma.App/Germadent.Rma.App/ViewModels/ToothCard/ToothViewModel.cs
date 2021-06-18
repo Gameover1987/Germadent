@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard

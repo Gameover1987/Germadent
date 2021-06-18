@@ -7,6 +7,7 @@ namespace Germadent.WebApi.Entities
         public int WorkOrderId { get; set; }
 
         public int UserId { get; set; }
+
         public DateTime OccupancyDateTime { get; set; }
     }
 }

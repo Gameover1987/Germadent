@@ -1,6 +1,7 @@
 ﻿using System.IO;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
 
 namespace Germadent.WebApi.DataAccess.Rma
 {
@@ -25,7 +26,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// Добавляет заказ наряд
         /// </summary>
         /// <param name="order"></param>
-        OrderDto AddOrder(OrderDto order);       
+        OrderDto AddOrder(OrderDto order);
 
         /// <summary>
         /// Обновляет заказ наряд
@@ -34,10 +35,11 @@ namespace Germadent.WebApi.DataAccess.Rma
         void UpdateOrder(OrderDto order);
 
         /// <summary>
-        /// Закрывает заказ-наряд по id
+        /// Закрывает заказ-наряд
         /// </summary>
-        /// <param name="id"></param>
-        OrderDto CloseOrder(int id);
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        OrderStatusNotificationDto CloseOrder(int workOrderId, int userId);
 
         /// <summary>
         /// Возвращает словарь
@@ -49,9 +51,9 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// <summary>
         /// Возвращает список свойств для вставки в Excel
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="workOrderId"></param>
         /// <returns></returns>
-        ReportListDto[] GetWorkReport(int id);
+        ReportListDto[] GetWorkReport(int workOrderId);
 
         /// <summary>
         /// Возвращает список клиентов по вхождению в наименование
@@ -174,5 +176,87 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <returns></returns>
         AttributeDto[] GetAllAttributesAndValues();
+
+        /// <summary>
+        /// Возвращает список должностей
+        /// </summary>
+        /// <returns></returns>
+        EmployeePositionDto[] GetEmployeePositions();
+
+        /// <summary>
+        /// Возвращает список технологических операций
+        /// </summary>
+        /// <returns></returns>
+        TechnologyOperationDto[] GetTechnologyOperations();
+
+        /// <summary>
+        /// Удаляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationId"></param>
+        /// <returns></returns>
+        DeleteResult DeleteTechnologyOperation(int technologyOperationId);
+
+        /// <summary>
+        /// Добавляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Обновляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Раздлокирует заказ-наряд
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        void UnlockWorkOrder(int workOrderId);
+
+        /// <summary>
+        /// Возвращает набор технологических операций по заказ-наряду, которые можно взять в работу пользователю
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId);
+
+        /// <summary>
+        /// Возвращает набор технологических операций по заказ-наряду, уже взятых в работу пользователем
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        WorkDto[] GetWorksInProgressByWorkOrder(int workOrderId, int userId);
+
+        /// <summary>
+        /// Запускает работы по заказ-наряду
+        /// </summary>
+        /// <param name="works"></param>
+        OrderStatusNotificationDto StartWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Подтверждает выполнение работ по заказ-наряду
+        /// </summary>
+        /// <param name="works"></param>
+        OrderStatusNotificationDto FinishWorks(WorkDto[] works);
+
+        /// <summary>
+        /// Переводит заказ-наряд в из статуса "Контроль" в cтатус "Реализация"
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        OrderStatusNotificationDto PerformQualityControl(int workOrderId, int userId);
+
+        /// <summary>
+        /// Возвращает список выполненных сотрудником работ за указанный период
+        /// </summary>
+        /// <param name="salaryFilter"></param>
+        /// <returns></returns>
+        WorkDto[] GetSalaryReport(SalaryFilter salaryFilter);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ViewModels.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.ViewModels.DesignTime;
 
 namespace Germadent.Rma.App.Views.DesignMock

@@ -111,26 +111,6 @@ namespace Germadent.UI.Infrastructure
         }
 
         /// <summary>
-        /// Показать MessageBox. с установкой Caption из текущего активного окна
-        /// </summary>
-        /// <param name="message">Текст для отображения.</param>
-        /// <param name="button">
-        /// Параметр, определяющий какие кнопки должен содержать MessageBox.
-        /// </param>
-        /// <param name="icon">Иконка для отображения.</param>
-        /// <returns>
-        /// MessageBoxResult определяет какую кнопку нажал пользователь.
-        /// </returns>
-        public MessageBoxResult ShowMessageDialog(
-            string message, 
-            MessageBoxButton button = MessageBoxButton.OK,
-            MessageBoxImage icon = MessageBoxImage.Information)
-        {
-            return ShowMessageDialogInternal(ActiveWindow, message, null, button, icon,
-                MessageBoxResult.OK, MessageBoxOptions.None);
-        }
-
-        /// <summary>
         /// Показать MessageBox.
         /// </summary>
         /// <param name="message">Текст для отображения.</param>
@@ -152,59 +132,10 @@ namespace Germadent.UI.Infrastructure
                 MessageBoxResult.OK, MessageBoxOptions.None);
         }
 
-        /// <summary>
-        /// Показать MessageBox.
-        /// </summary>
-        /// <param name="message">Текст для отображения.</param>
-        /// <param name="caption">Заголовок. если пустой то берётся заголовок активного окна</param>
-        /// <param name="button">
-        /// Параметр, определяющий какие кнопки должен содержать MessageBox.
-        /// </param>
-        /// <param name="icon">Иконка для отображения.</param>
-        /// <param name="defaultButton">Параметр определяющий какая кнопка будет выбрана по умолчанию</param>
-        /// <param name="options">Specifies special display options for a message box.</param>
-        /// <returns>
-        /// MessageBoxResult определяет какую кнопку нажал пользователь.
-        /// </returns>
-        public MessageBoxResult ShowMessageDialog(
-            string message,
-            string caption,
-            MessageBoxButton button,
-            MessageBoxImage icon,
-            MessageBoxResult defaultButton,
-            MessageBoxOptions options)
+        public MessageBoxResult ShowMessageDialog(string message, MessageBoxButton button, MessageBoxImage icon)
         {
-            return ShowMessageDialogInternal(ActiveWindow, message, caption, button, icon, 
-                defaultButton, options);
-        }
-
-        /// <summary>
-        /// Показать MessageBox.
-        /// </summary>
-        /// <param name="owner">Владелец окна, допускает передачу null</param>
-        /// <param name="message">Текст для отображения.</param>
-        /// <param name="caption">Заголовок. если пустой то берётся заголовок активного окна</param>
-        /// <param name="button">
-        /// Параметр, определяющий какие кнопки должен содержать MessageBox.
-        /// </param>
-        /// <param name="icon">Иконка для отображения.</param>
-        /// <param name="defaultButton">Параметр определяющий какая кнопка будет выбрана по умолчанию</param>
-        /// <param name="options">Specifies special display options for a message box.</param>
-        /// <returns>
-        /// MessageBoxResult определяет какую кнопку нажал пользователь.
-        /// </returns>
-        public MessageBoxResult ShowMessageDialog(
-            IWindow owner, 
-            string message, 
-            string caption = null,
-            MessageBoxButton button = MessageBoxButton.OK, 
-            MessageBoxImage icon = MessageBoxImage.Information, 
-            MessageBoxResult defaultButton = MessageBoxResult.OK,
-            MessageBoxOptions options = MessageBoxOptions.None)
-        {
-            ThrowArgumentExceptionInNotWindow(owner);
-            return ShowMessageDialogInternal((Window)owner, message, caption, button, icon, 
-                defaultButton, options);
+            return ShowMessageDialogInternal(ActiveWindow, message, MainWindow.Title, button, icon,
+                MessageBoxResult.OK, MessageBoxOptions.None);
         }
 
         /// <summary>
@@ -213,12 +144,6 @@ namespace Germadent.UI.Infrastructure
         public void ShowErrorMessageDialog(string message, string details, string caption = null)
         {
             ShowErrorMessageDialogInternal(ActiveWindow, message, details, caption);
-        }
-
-        public void ShowErrorMessageDialog(IWindow owner, string message, string details, string caption = null)
-        {
-            ThrowArgumentExceptionInNotWindow(owner);
-            ShowErrorMessageDialogInternal((Window)owner, message, details, caption);
         }
 
         /// <summary>
@@ -285,7 +210,7 @@ namespace Germadent.UI.Infrastructure
                 ParameterName = parameterName
             };
 
-            if (ShowDialog<InputBox>(inputBoxViewModel) == false)
+            if (ShowDialog<InputBoxWindow>(inputBoxViewModel) == false)
                 return null;
 
             return inputBoxViewModel.InputString;
@@ -304,7 +229,7 @@ namespace Germadent.UI.Infrastructure
 
             try
             {
-                var dialog = new T
+                var dialog = new T 
                 {
                     Owner = owner != null && owner.IsLoaded ? owner : null,
                     DataContext = dialogViewModel
@@ -394,9 +319,13 @@ namespace Germadent.UI.Infrastructure
 
             var messageBoxCaption = GetMessageDialogCaption(owner, caption);
 
-            return owner != null
-                ? MessageBox.Show(owner, messageBoxText, messageBoxCaption, button, icon, defaultButton, options)
-                : MessageBox.Show(messageBoxText, messageBoxCaption, button, icon, defaultButton);
+            var messageBoxWindow = new MessageBoxWindow();
+            messageBoxWindow.Owner = owner;
+            var messageBoxViewModel = new MessageBoxViewModel(messageBoxCaption, messageBoxText, button, icon);
+            messageBoxWindow.DataContext = messageBoxViewModel;
+            messageBoxWindow.ShowDialog();
+
+            return messageBoxViewModel.Result;
         }
 
         /// <summary>

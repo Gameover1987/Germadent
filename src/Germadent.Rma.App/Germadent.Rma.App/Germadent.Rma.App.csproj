@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -27,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Germadent.Client.Common\Germadent.Client.Common.csproj" />
     <ProjectReference Include="..\..\Germadent.Common\Germadent.Common.csproj" />
-    <ProjectReference Include="..\..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
+    <ProjectReference Include="..\..\Germadent.Model\Germadent.Model.csproj" />
     <ProjectReference Include="..\..\Germadent.UI\Germadent.UI.csproj" />
-    <ProjectReference Include="..\..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,12 +41,6 @@
 
   <ItemGroup>
     <None Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\GermadentLab_MC.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\GermadentLab_ZTL.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -10,6 +10,7 @@ CREATE PROCEDURE [dbo].[AddPricePosition]
 	@pricePositionName nvarchar(MAX),
 	@materialId int,	
 	@jsonStringProduct nvarchar(MAX),
+--	@jsonStringMaterial nvarchar(MAX),
 	@jsonStringPrices nvarchar(MAX),
 	@pricePositionId int output
 	
@@ -32,14 +33,17 @@ BEGIN
 	BEGIN TRAN
 		-- Собственно вставка, сначала - в основную таблицу:
 		INSERT INTO dbo.PricePositions
-		(PricePositionCode, PriceGroupID, PricePositionName, MaterialID)
+		(PricePositionCode, PriceGroupID, PricePositionName)
 		VALUES
-		(@pricePositionCode, @priceGroupId, @pricePositionName, @materialId)
+		(@pricePositionCode, @priceGroupId, @pricePositionName)
 
 		SET @pricePositionId = SCOPE_IDENTITY()
 
 		-- Добавление набора изделий:
 		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+
+		-- Добавление набора материалов:
+		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @materialId --@jsonStringMaterial
 	
 		-- Добавление цены:
 		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices

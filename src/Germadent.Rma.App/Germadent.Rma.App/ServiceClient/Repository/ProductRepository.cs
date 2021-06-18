@@ -1,13 +1,11 @@
 ﻿using System.Linq;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Notifications;
+using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Model.Pricing;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IProductRepository : IRepository<ProductDto>
-    {
-
-    }
-
     public class ProductRepository : Repository<ProductDto>, IProductRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;
@@ -22,7 +20,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
 
         private void SignalRClientOnProductRepositoryChanged(object? sender, RepositoryChangedEventArgs<ProductDto> e)
         {
-            ReLoad();
+            OnRepositoryChanged(this, e);
         }
 
         protected override ProductDto[] GetItems()

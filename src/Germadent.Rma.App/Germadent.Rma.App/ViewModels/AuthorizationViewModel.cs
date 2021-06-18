@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Germadent.Common;
 using Germadent.Rma.App.Infrastructure;
@@ -12,9 +13,9 @@ namespace Germadent.Rma.App.ViewModels
     public class AuthorizationViewModel : AuthorizationViewModelBase
     {
         private readonly IRmaServiceClient _serviceClient;
-        private readonly IUserSettingsManager _userSettingsManager;
+        private readonly IRmaUserSettingsManager _userSettingsManager;
 
-        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient, IUserSettingsManager userSettingsManager)
+        public AuthorizationViewModel(IShowDialogAgent agent, IRmaServiceClient serviceClient, IRmaUserSettingsManager userSettingsManager)
             : base(agent)
         {
             _serviceClient = serviceClient;
@@ -33,12 +34,18 @@ namespace Germadent.Rma.App.ViewModels
                 UriKind.Absolute));
         }
 
+        protected override string[] GetUserNames()
+        {
+            return _userSettingsManager.UserNames.OrderBy(x => x).ToArray();
+        }
+
         protected override bool Authorize()
         {
             try
             {
                 _serviceClient.Authorize(UserName, Password);
                 _userSettingsManager.LastLogin = UserName;
+                _userSettingsManager.UserNames.Add(UserName);
                 _userSettingsManager.Save();
             }
             catch (Exception e)

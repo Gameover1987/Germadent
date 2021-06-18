@@ -10,4 +10,7 @@
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
     <converters:EnumToInvisibilityConverter x:Key="EnumToInvisibilityConverter"/>
     <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
+    <converters:ColorConverter x:Key="ColorConverter"/>
+    <converters:ReadableColorConverter x:Key="ReadableColorConverter"/>
+    <converters:SystemIconConverter x:Key="SystemIconConverter"/>
 </ResourceDictionary>

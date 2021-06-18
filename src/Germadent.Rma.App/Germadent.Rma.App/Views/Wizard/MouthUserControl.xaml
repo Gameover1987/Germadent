@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toothCard="clr-namespace:Germadent.Rma.App.ViewModels.ToothCard"
+             xmlns:viewModels="clr-namespace:Germadent.Client.Common.ViewModels;assembly=Germadent.Client.Common"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type toothCard:CheckableDictionaryItemViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:CheckableDictionaryItemViewModel}">
             <TextBlock Text="{Binding Item.Name}"/>
         </DataTemplate>
     </UserControl.Resources>

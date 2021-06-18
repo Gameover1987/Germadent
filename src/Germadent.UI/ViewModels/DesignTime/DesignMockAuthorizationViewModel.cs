@@ -10,7 +10,12 @@
 			Password = "123456";
 		}
 
-		protected override bool Authorize()
+        protected override string[] GetUserNames()
+        {
+            return new string[0];
+        }
+
+        protected override bool Authorize()
 		{
 			return true;
 		}

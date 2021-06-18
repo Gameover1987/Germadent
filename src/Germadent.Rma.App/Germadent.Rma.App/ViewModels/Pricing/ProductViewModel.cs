@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model.Pricing;
 using Germadent.UI.ViewModels;
 
 namespace Germadent.Rma.App.ViewModels.Pricing

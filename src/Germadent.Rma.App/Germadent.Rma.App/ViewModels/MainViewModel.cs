@@ -1,114 +1,93 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Data;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.ServiceClient.Notifications;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
+using Germadent.Model;
+using Germadent.Model.Rights;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.Properties;
-using Germadent.Rma.App.Reporting;
 using Germadent.Rma.App.ServiceClient;
 using Germadent.Rma.App.ViewModels.Pricing;
+using Germadent.Rma.App.ViewModels.Salary;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
 using Germadent.Rma.App.Views;
 using Germadent.Rma.App.Views.Pricing;
+using Germadent.Rma.App.Views.TechnologyOperation;
 using Germadent.Rma.App.Views.Wizard;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
 
 namespace Germadent.Rma.App.ViewModels
 {
-    public class ContextMenuItemViewModel : ViewModelBase
-    {
-        private bool _isChecked;
-
-        public string Header { get; set; }
-
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked == value)
-                    return;
-                _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
-            }
-        }
-
-        public object Parameter { get; set; }
-
-        public IDelegateCommand Command { get; set; }
-    }
-
-    public class OrderLiteComparerByDateTime : IComparer
-    {
-        public int Compare(object x, object y)
-        {
-            if (x == null || y == null)
-                return 0;
-
-            var order1 = (OrderLiteViewModel) x;
-            var order2 = (OrderLiteViewModel)y;
-
-            return DateTime.Compare(order2.Model.Created, order1.Model.Created);
-        }
-    }
-
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private readonly IRmaServiceClient _rmaOperations;
+        private readonly IRmaServiceClient _rmaServiceClient;
         private readonly IEnvironment _environment;
         private readonly IOrderUIOperations _orderUIOperations;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
         private readonly IPriceListEditorContainerViewModel _priceListEditorContainerViewModel;
+        private readonly ITechnologyOperationsEditorViewModel _technologyOperationsEditorViewModel;
         private readonly IPrintModule _printModule;
         private readonly ILogger _logger;
-        private readonly IReporter _reporter;
         private readonly IUserManager _userManager;
-        private readonly IUserSettingsManager _userSettingsManager;
+        private readonly IRmaUserSettingsManager _userSettingsManager;
+        private readonly IClipboardHelper _clipboardHelper;
+        private readonly ISignalRClient _signalRClient;
+        private readonly ISalaryCalculationViewModel _salaryCalculationViewModel;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
         private string _searchString;
 
-        private ListCollectionView _collectionView;
+        private readonly ListCollectionView _collectionView;
 
         private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
 
-        public MainViewModel(IRmaServiceClient rmaOperations,
+        public MainViewModel(IRmaServiceClient rmaServiceClient,
             IEnvironment environment,
             IOrderUIOperations orderUIOperations,
             IShowDialogAgent dialogAgent,
             ICustomerCatalogViewModel customerCatalogViewModel,
             IResponsiblePersonCatalogViewModel responsiblePersonCatalogViewModel,
             IPriceListEditorContainerViewModel priceListEditorContainerContainerViewModel,
+            ITechnologyOperationsEditorViewModel technologyOperationsEditorViewModel,
             IPrintModule printModule,
             ILogger logger,
-            IReporter reporter, 
             IUserManager userManager,
-            IUserSettingsManager userSettingsManager)
+            IRmaUserSettingsManager userSettingsManager,
+            IClipboardHelper clipboardHelper,
+            ISignalRClient signalRClient,
+            ISalaryCalculationViewModel salaryCalculationViewModel)
         {
-            _rmaOperations = rmaOperations;
+            _rmaServiceClient = rmaServiceClient;
             _environment = environment;
             _orderUIOperations = orderUIOperations;
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
             _priceListEditorContainerViewModel = priceListEditorContainerContainerViewModel;
+            _technologyOperationsEditorViewModel = technologyOperationsEditorViewModel;
             _printModule = printModule;
             _logger = logger;
-            _reporter = reporter;
             _userManager = userManager;
             _userSettingsManager = userSettingsManager;
+            _clipboardHelper = clipboardHelper;
+            _signalRClient = signalRClient;
+            _salaryCalculationViewModel = salaryCalculationViewModel;
+            _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
+            _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -122,6 +101,8 @@ namespace Germadent.Rma.App.ViewModels
             ShowCustomersDictionaryCommand = new DelegateCommand(ShowCustomersDictionaryCommandHandler);
             ShowResponsiblePersonsDictionaryCommand = new DelegateCommand(ShowResponsiblePersonsDictionaryCommandHandler);
             ShowPriceListEditorCommand = new DelegateCommand(ShowPriceListEditorCommandHandler, CanShowPriceListEditorCommandHandler);
+            ShowTechnologyOperationsEditorCommand = new DelegateCommand(ShowTechnologyOperationsEditorCommandHandler, CanShowTechnologyOperationsEditorCommandHandler);
+            ShowSalaryCalculationCommand = new DelegateCommand(ShowSalaryCalculationCommandHandler, CanShowSalaryCalculationCommandHandler);
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
@@ -130,19 +111,18 @@ namespace Germadent.Rma.App.ViewModels
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
             _collectionView.Filter = Filter;
 
-
             CanViewPriceList = _userManager.HasRight(RmaUserRights.ViewPriceList);
+            CanViewTechnologyOperations = _userManager.HasRight(RmaUserRights.EditTechnologyOperations);
+            CanCalculateSalary = _userManager.HasRight(RmaUserRights.SalaryCalculation);
         }
 
-        public string Title
-        {
-            get
-            {
-                return $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
-            }
-        }
+        public string Title => $"{Resources.AppTitle} - {_userManager.AuthorizationInfo.GetFullName()} ({_userManager.AuthorizationInfo.Login})";
 
         public bool CanViewPriceList { get; }
+
+        public bool CanViewTechnologyOperations { get; }
+
+        public bool CanCalculateSalary { get; } = true;
 
         public ObservableCollection<OrderLiteViewModel> Orders { get; } = new ObservableCollection<OrderLiteViewModel>();
 
@@ -159,7 +139,7 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
-        public IUserSettingsManager SettingsManager
+        public IRmaUserSettingsManager SettingsManager
         {
             get { return _userSettingsManager; }
         }
@@ -197,6 +177,10 @@ namespace Germadent.Rma.App.ViewModels
         public IDelegateCommand ShowResponsiblePersonsDictionaryCommand { get; }
 
         public IDelegateCommand ShowPriceListEditorCommand { get; }
+
+        public IDelegateCommand ShowTechnologyOperationsEditorCommand { get; }
+
+        public IDelegateCommand ShowSalaryCalculationCommand { get; }
 
         public IDelegateCommand LogOutCommand { get; }
 
@@ -239,7 +223,7 @@ namespace Germadent.Rma.App.ViewModels
             FillOrders();
 
             ColumnContextMenuItems.Clear();
-            foreach (var columnInfo in  _userSettingsManager.Columns)
+            foreach (var columnInfo in _userSettingsManager.Columns)
             {
                 ColumnContextMenuItems.Add(new ContextMenuItemViewModel
                 {
@@ -249,6 +233,34 @@ namespace Germadent.Rma.App.ViewModels
                     IsChecked = columnInfo.IsVisible
                 });
             }
+        }
+
+        private void SignalRClientOnWorkOrderLockedOrUnlocked(object sender, OrderLockedEventArgs e)
+        {
+            var orderLiteViewModel = Orders.FirstOrDefault(x => x.WorkOrderId == e.Info.WorkOrderId);
+            if (orderLiteViewModel == null)
+                return;
+
+            if (e.Info.IsLocked)
+            {
+                orderLiteViewModel.LockDate = e.Info.OccupancyDateTime;
+                orderLiteViewModel.LockedBy = e.Info.User;
+            }
+            else
+            {
+                orderLiteViewModel.LockDate = null;
+                orderLiteViewModel.LockedBy = null;
+            }
+        }
+
+        private void SignalRClientOnWorkOrderStatusChanged(object? sender, OrderStatusChangedEventArgs e)
+        {
+            var workOrder = Orders.FirstOrDefault(x => x.WorkOrderId == e.WorkOrderId);
+            if (workOrder == null)
+                return;
+
+            workOrder.Status = e.Status;
+            workOrder.StatusChanged = e.StatusChanged;
         }
 
         private void ChangeColumnsVisibilityCommandHandler(object sender)
@@ -264,7 +276,7 @@ namespace Germadent.Rma.App.ViewModels
             var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto
             {
                 BranchType = BranchType.Laboratory,
-                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+                CreatorFullName = _rmaServiceClient.AuthorizationInfo.GetShortFullName()
             }, WizardMode.Create);
 
             if (labOrder == null)
@@ -280,11 +292,13 @@ namespace Germadent.Rma.App.ViewModels
             var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto
             {
                 BranchType = BranchType.MillingCenter,
-                CreatorFullName = _rmaOperations.AuthorizationInfo.GetShortFullName()
+                CreatorFullName = _rmaServiceClient.AuthorizationInfo.GetShortFullName()
             }, WizardMode.Create);
 
             if (millingCenterOrder == null)
+            {
                 return;
+            }
 
             var orderLiteViewModel = new OrderLiteViewModel(millingCenterOrder.ToOrderLite());
             Orders.Add(orderLiteViewModel);
@@ -310,7 +324,7 @@ namespace Germadent.Rma.App.ViewModels
                 OrderLiteDto[] orders = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    orders = _rmaOperations.GetOrders(_ordersFilter);
+                    orders = _rmaServiceClient.GetOrders(_ordersFilter);
                 });
 
                 foreach (var order in orders)
@@ -331,15 +345,16 @@ namespace Germadent.Rma.App.ViewModels
 
         private bool CanCloseOrderCommandHandler()
         {
-            return SelectedOrder != null && SelectedOrder.Model.Closed == null;
+            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.Realization;
         }
 
         private void CloseOrderCommandHandler()
         {
-            if (_dialogAgent.ShowMessageDialog("После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            var message = "После закрытия заказ-наряда изменить его будет невозможно, только открыть или распечатать.\nВы действительно хотите закрыть заказ наряд?";
+            if (_dialogAgent.ShowMessageDialog(message, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
-            var order = _rmaOperations.CloseOrder(SelectedOrder.Model.WorkOrderId);
-            SelectedOrder.Update(order.ToOrderLite());
+            _rmaServiceClient.CloseOrder(SelectedOrder.WorkOrderId);
+            SelectedOrder.Status = OrderStatus.Closed;
         }
 
         private bool CanPrintOrderCommandHandler()
@@ -349,39 +364,66 @@ namespace Germadent.Rma.App.ViewModels
 
         private void PrintOrderCommandHandler()
         {
-            _printModule.Print(_rmaOperations.GetOrderById(SelectedOrder.Model.WorkOrderId));
+            using (var orderScope = _rmaServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
+            {
+                _printModule.Print(orderScope.Order);
+            }
         }
 
         private bool CanOpenOrderCommandHandler()
         {
-            return SelectedOrder != null;
+            if (SelectedOrder == null)
+                return false;
+
+            if (SelectedOrder.IsLocked && SelectedOrder.LockedBy.UserId != _rmaServiceClient.AuthorizationInfo.UserId)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void OpenOrderCommandHandler()
         {
             OrderDto changedOrderDto = null;
             var orderLiteViewModel = SelectedOrder;
-            var orderDto = _rmaOperations.GetOrderById(orderLiteViewModel.Model.WorkOrderId);
-            var wizardMode = orderDto.Closed == null ? WizardMode.Edit : WizardMode.View;
-            if (orderDto.BranchType == BranchType.Laboratory)
+            using (var orderScope = _rmaServiceClient.GetOrderById(orderLiteViewModel.WorkOrderId))
             {
-                changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
-            }
-            else if (orderDto.BranchType == BranchType.MillingCenter)
-            {
-                changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
-            }
+                var orderDto = orderScope.Order;
+                var wizardMode = orderDto.Status != OrderStatus.Closed ? WizardMode.Edit : WizardMode.View;
+                if (orderDto.BranchType == BranchType.Laboratory)
+                {
+                    changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
+                }
+                else if (orderDto.BranchType == BranchType.MillingCenter)
+                {
+                    changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
+                }
 
-            if (changedOrderDto == null)
-                return;
+                if (changedOrderDto == null)
+                    return;
 
-            orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
+                orderLiteViewModel.Update(changedOrderDto.ToOrderLite());
+            }
         }
 
         private void CopyOrderToClipboardCommandHandler()
         {
-            var orderId = SelectedOrder.Model.WorkOrderId;
-            _reporter.CreateReport(orderId);
+            var reports = _rmaServiceClient.GetWorkReport(SelectedOrder.WorkOrderId);
+            if (reports.Length == 0)
+                return;
+
+            var builder = new StringBuilder();
+
+            foreach (var report in reports)
+            {
+                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ConstructionColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ImplantSystem, "\t", report.TotalPriceCashless, "\t", report.TotalPrice, "\t", report.ResponsiblePerson, "\n").Trim();
+                builder.AppendLine(line);
+            }
+
+            var data = builder.ToString();
+
+            _clipboardHelper.CopyToClipboard(data);
         }
 
         private void ShowCustomersDictionaryCommandHandler()
@@ -402,6 +444,27 @@ namespace Germadent.Rma.App.ViewModels
         private void ShowPriceListEditorCommandHandler()
         {
             _dialogAgent.ShowDialog<PriceListEditorWindow>(_priceListEditorContainerViewModel);
+        }
+
+        private bool CanShowTechnologyOperationsEditorCommandHandler()
+        {
+            return CanViewTechnologyOperations;
+        }
+
+        private void ShowTechnologyOperationsEditorCommandHandler()
+        {
+            _dialogAgent.ShowDialog<TechnologyOperationsEditorWindow>(_technologyOperationsEditorViewModel);
+        }
+
+        private bool CanShowSalaryCalculationCommandHandler()
+        {
+            return CanCalculateSalary;
+        }
+
+        private void ShowSalaryCalculationCommandHandler()
+        {
+            _salaryCalculationViewModel.Initialize();
+            _dialogAgent.ShowDialog<SalaryCalculationWindow>(_salaryCalculationViewModel);
         }
 
         private void LogOutCommandHandler()

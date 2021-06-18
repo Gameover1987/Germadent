@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using Germadent.Common.FileSystem;
+using Germadent.Model;
 using Germadent.UI.ViewModels.DesignTime;
 using Germadent.UserManagementCenter.App.Mocks;
 using Germadent.UserManagementCenter.App.ViewModels;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.Views.DesignTime
 {
@@ -77,6 +77,13 @@ namespace Germadent.UserManagementCenter.App.Views.DesignTime
             Description = "Какое то описание какогото юзверя";
 
             Roles.First().IsChecked = true;
+
+            IsAdmin = true;
+            IsOperator = true;
+            IsTechnic = true;
+            TechnicQualifyingRank = 3;
+            IsModeller = true;
+            ModellerQualifyingRank = 2;
         }
     }
 }

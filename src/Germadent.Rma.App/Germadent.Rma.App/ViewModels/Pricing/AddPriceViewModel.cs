@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Windows.Input;
+using Germadent.Model.Pricing;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model.Pricing;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {
-    public interface IAddPriceViewModel
-    {
-        void Initialize(PriceDto price);
-
-        PriceDto GetPrice();
-    }
-
     public class AddPriceViewModel : ValidationSupportableViewModel, IAddPriceViewModel
     {
         private DateTime _dateBeginning;

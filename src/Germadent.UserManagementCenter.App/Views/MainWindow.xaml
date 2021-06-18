@@ -10,9 +10,9 @@
         Background="{x:Static SystemColors.ControlBrush}"
         Title="Центр управления пользователями" 
         MinHeight="450"
-        Height="450" 
-        MinWidth="800"
-        Width="800"
+        Height="900" 
+        MinWidth="1000"
+        Width="1000"
         WindowStartupLocation="CenterScreen"
         DataContextChanged="MainWindow_OnDataContextChanged"
         d:DataContext="{d:DesignInstance Type={x:Type designTime:DesignMockMainViewModel}, IsDesignTimeCreatable=True}">

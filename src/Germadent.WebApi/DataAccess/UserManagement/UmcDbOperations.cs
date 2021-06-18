@@ -6,8 +6,9 @@ using System.IO;
 using System.Linq;
 using Germadent.Common.Extensions;
 using Germadent.Common.FileSystem;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
+using Germadent.Model;
+using Germadent.Model.Production;
+using Germadent.Model.Rights;
 using Germadent.WebApi.Configuration;
 using Germadent.WebApi.Entities;
 using Germadent.WebApi.Entities.Conversion;
@@ -47,13 +48,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
             }
         }
 
-        public UserDto[] GetUsers()
+        public UserDto[] GetUsers(int? userId = null)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
 
-                var cmdText = "select * from umc_GetUsersAndRoles()";
+                var idText = userId == null ? "NULL" : userId.Value.ToString();
+                var cmdText = $"select * from umc_GetUsersAndRoles({idText})";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var userAndRolesEntities = new List<UserAndRoleEntity>();
@@ -72,6 +74,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             entity.Password = reader[nameof(entity.Password)].ToString();
                             entity.RoleName = reader[nameof(entity.RoleName)].ToString();
                             entity.RoleId = reader[nameof(entity.RoleId)].ToInt();
+                            entity.QualifyingRank = reader["QualifyingRank"].ToIntOrNull();
+                            entity.EmployeePositionId = reader["EmployeePositionId"].ToIntOrNull();
 
                             userAndRolesEntities.Add(entity);
                         }
@@ -82,6 +86,19 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     foreach (var grouping in groupings)
                     {
                         var userDto = new UserDto();
+
+                        userDto.Positions = grouping
+                            .Select(x => new {x.UserId, x.EmployeePositionId, x.QualifyingRank})
+                            .Where(x => x.EmployeePositionId != null)
+                            .Distinct()
+                            .Select(x => new EmployeePositionDto
+                            {
+                                UserId = x.UserId, 
+                                EmployeePosition = (EmployeePosition)x.EmployeePositionId,
+                                QualifyingRank = x.QualifyingRank.Value
+                            })
+                            .ToArray();
+
                         userDto.UserId = grouping.First().UserId;
                         userDto.Description = grouping.First().Description;
                         userDto.FirstName = grouping.First().FirstName;
@@ -111,7 +128,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
 
         public UserDto GetUserById(int id)
         {
-            return null;
+            var userDtos = GetUsers(id);
+            return userDtos.FirstOrDefault();
         }
 
         public UserDto AddUser(UserDto userDto)
@@ -120,6 +138,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 .Select(x => new { userDto.UserId, x.RoleId })
                 .ToArray()
                 .SerializeToJson(formatting: Formatting.Indented);
+            var positionsJson = userDto.Positions
+                .Select(x => new
+                {
+                    EmployeeID = x.UserId,
+                    EmployeePositionID = (int)x.EmployeePosition,
+                    x.QualifyingRank
+                })
+                .SerializeToJson(Formatting.Indented);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -136,7 +162,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                     command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                     command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int) { Direction = ParameterDirection.Output });
-                    command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
+                    command.Parameters.Add(new SqlParameter("@jsonStringRoles", SqlDbType.NVarChar)).Value = rolesJson;
+                    command.Parameters.Add(new SqlParameter("@jsonStringPositions", SqlDbType.NVarChar)).Value = positionsJson;
 
                     command.ExecuteNonQuery();
 
@@ -158,6 +185,14 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 .Select(x => new { userDto.UserId, x.RoleId })
                 .ToArray()
                 .SerializeToJson(formatting: Formatting.Indented);
+            var positionsJson = userDto.Positions
+                .Select(x => new
+                {
+                    EmployeeID = x.UserId,
+                    EmployeePositionID = (int) x.EmployeePosition,
+                    x.QualifyingRank
+                })
+                .SerializeToJson(Formatting.Indented);
 
             using (var command = new SqlCommand("umc_UpdateUser", connection))
             {
@@ -171,7 +206,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                 command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar)).Value = userDto.Password;
                 command.Parameters.Add(new SqlParameter("@isLocked", SqlDbType.Bit)).Value = userDto.IsLocked;
                 command.Parameters.Add(new SqlParameter("@description", SqlDbType.NVarChar)).Value = userDto.Description;
-                command.Parameters.Add(new SqlParameter("@jsonString", SqlDbType.NVarChar)).Value = rolesJson;
+                command.Parameters.Add(new SqlParameter("@jsonStringRoles", SqlDbType.NVarChar)).Value = rolesJson;
+                command.Parameters.Add(new SqlParameter("@jsonStringPositions", SqlDbType.NVarChar)).Value = positionsJson;
 
                 command.ExecuteNonQuery();
             }
@@ -225,6 +261,7 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                             roleAndRightEntity.RightDescription = reader[nameof(roleAndRightEntity.RightDescription)].ToString();
                             roleAndRightEntity.ApplicationName = reader[nameof(roleAndRightEntity.ApplicationName)].ToString();
                             roleAndRightEntity.ApplicationModule = (ApplicationModule)reader["ApplicationId"].ToInt();
+                            roleAndRightEntity.IsObsolete = reader["IsObsolete"].ToBool();
 
                             rolesAndRights.Add(roleAndRightEntity);
                         }
@@ -245,7 +282,8 @@ namespace Germadent.WebApi.DataAccess.UserManagement
                                 RightId = roleAndRightEntity.RightId,
                                 ApplicationModule = roleAndRightEntity.ApplicationModule,
                                 RightName = roleAndRightEntity.RightName,
-                                RightDescription = roleAndRightEntity.RightDescription
+                                RightDescription = roleAndRightEntity.RightDescription,
+                                IsObsolete = roleAndRightEntity.IsObsolete
                             });
                         }
 

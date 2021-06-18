@@ -14,7 +14,8 @@ CREATE PROCEDURE [dbo].[umc_UpdateUser]
 	, @password nvarchar(MAX)
 	, @isLocked bit
 	, @description nvarchar(MAX)
-	, @jsonString varchar(MAX)
+	, @jsonStringRoles varchar(MAX)
+	, @jsonStringPositions varchar(MAX)
 	
 
 AS
@@ -44,8 +45,20 @@ BEGIN
 		INSERT INTO dbo.UsersAndRoles
 		(UserID, RoleID)
 		SELECT UserID, RoleID
-		FROM OPENJSON(@jsonString)
+		FROM OPENJSON(@jsonStringRoles)
 		WITH(UserId int, RoleId int)
+
+		-- То же самое проделываем для набора должностей и разрядов
+		DELETE
+		FROM dbo.EmployeePositionsCombination
+		WHERE EmployeeID = @userId
+
+		INSERT INTO dbo.EmployeePositionsCombination
+		(EmployeeID, EmployeePositionID, QualifyingRank)
+		SELECT EmployeeID, EmployeePositionID, QualifyingRank
+		FROM OPENJSON (@jsonStringPositions)
+		WITH(EmployeeID int, EmployeePositionID int, QualifyingRank int)
+
 	COMMIT
 
 END

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Germadent.Model;
 using Germadent.Rma.App.ViewModels.Pricing;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {

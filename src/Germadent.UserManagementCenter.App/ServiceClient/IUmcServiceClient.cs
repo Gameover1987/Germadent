@@ -1,5 +1,5 @@
-﻿using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
+﻿using Germadent.Model;
+using Germadent.Model.Rights;
 
 namespace Germadent.UserManagementCenter.App.ServiceClient
 {

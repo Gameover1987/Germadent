@@ -1,6 +1,6 @@
-﻿using Germadent.UserManagementCenter.App.ServiceClient;
-using Germadent.UserManagementCenter.Model;
-using Germadent.UserManagementCenter.Model.Rights;
+﻿using Germadent.Model;
+using Germadent.Model.Rights;
+using Germadent.UserManagementCenter.App.ServiceClient;
 
 namespace Germadent.UserManagementCenter.App.Mocks
 {

@@ -3,6 +3,7 @@ using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.Properties;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,14 +22,12 @@ namespace Germadent.UI.ViewModels
 		private bool? _dialogResult;
 		private readonly IShowDialogAgent _agent;
 
-		public AuthorizationViewModelBase(IShowDialogAgent agent)
+        protected AuthorizationViewModelBase(IShowDialogAgent agent)
 		{
 			if (agent == null) throw new ArgumentNullException("agent");
 			_agent = agent;
 
-			InitializeLanguage();
-
-			OkCommand = new DelegateCommand(OkCommandHandler, CanOkCommandHandler);
+            OkCommand = new DelegateCommand(OkCommandHandler, CanOkCommandHandler);
 		}
 
 		/// <summary>
@@ -46,6 +45,11 @@ namespace Germadent.UI.ViewModels
 				OnPropertyChanged(() => UserName);
 			}
 		}
+
+		/// <summary>
+		/// Список логинов для выпадашки
+		/// </summary>
+		public ObservableCollection<string> UserNames { get; } = new ObservableCollection<string>();
 
 		/// <summary>
 		/// Пароль пользователя
@@ -108,7 +112,19 @@ namespace Germadent.UI.ViewModels
 
 		public ICommand OkCommand { get; private set; }
 
-		private bool CanOkCommandHandler(object obj)
+        public void Initialize()
+        {
+            InitializeLanguage();
+
+            foreach (var userName in GetUserNames())
+            {
+                UserNames.Add(userName);
+            }
+		}
+
+        protected abstract string[] GetUserNames();
+
+        private bool CanOkCommandHandler(object obj)
 		{
 			if (string.IsNullOrWhiteSpace(UserName))
 				return false;
@@ -149,7 +165,7 @@ namespace Germadent.UI.ViewModels
 		/// <summary>
 		/// Инициализация языка
 		/// </summary>
-		protected virtual void InitializeLanguage()
+		private void InitializeLanguage()
 		{
 			_languageManager = InputLanguageManager.Current;
 			_languageManager.InputLanguageChanged += InputLanguageChanged;
@@ -157,25 +173,7 @@ namespace Germadent.UI.ViewModels
 			InputLanguageChanged(this, null);
 		}
 
-		/// <summary>
-		/// Открытие/закрытие выпадающего списока серверов
-		/// </summary>
-		/// <param name="isDropDown">true - открыт, false - закрыт</param>
-		protected virtual void OnServersDropDownChanged(bool isDropDown)
-		{
-			
-		}
-
-		/// <summary>
-		/// Открытие/закрытие выпадающего списока БД
-		/// </summary>
-		/// <param name="isDropDown">true - открыт, false - закрыт</param>
-		protected virtual void OnDataBasesDropDownChanged(bool isDropDown)
-		{
-
-		}
-
-		private void InputLanguageChanged(object sender, InputLanguageEventArgs e)
+        private void InputLanguageChanged(object sender, InputLanguageEventArgs e)
 		{
 			InputLanguage = _languageManager.CurrentInputLanguage.TwoLetterISOLanguageName.ToUpper();
 		}

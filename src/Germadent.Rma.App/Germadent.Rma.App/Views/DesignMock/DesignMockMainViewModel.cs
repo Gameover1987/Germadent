@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Common.Logging;
+using Germadent.Model;
+using Germadent.Model.Production;
 using Germadent.Rma.App.Infrastructure;
 using Germadent.Rma.App.Mocks;
-using Germadent.Rma.App.Reporting;
+using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels;
-using Germadent.Rma.Model;
+using Germadent.Rma.App.ViewModels.TechnologyOperation;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.DesignTime;
 
@@ -23,7 +31,7 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
     }
 
-    public class DesignMockUserSettingsManager : IUserSettingsManager
+    public class DesignMockUserSettingsManager : IRmaUserSettingsManager
     {
         public void Dispose()
         {
@@ -31,8 +39,75 @@ namespace Germadent.Rma.App.Views.DesignMock
         }
 
         public string LastLogin { get; set; }
+        public List<string> UserNames { get; set; }
         public ColumnInfo[] Columns { get; set; }
         public void Save()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DesignMockEmployeePositionRepository : IEmployeePositionRepository
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        
+
+        public EmployeePositionDto[] Items
+        {
+            get
+            {
+                var mockServiceClient = new DesignMockRmaServiceClient();
+                return mockServiceClient.GetEmployeePositions();
+            }
+        }
+
+        public event EventHandler<RepositoryChangedEventArgs<EmployeePositionDto>> Changed;
+    }
+
+    public class DesignMockTechnologyOperationsEditorViewModel : TechnologyOperationsEditorViewModel
+    {
+        public DesignMockTechnologyOperationsEditorViewModel() : base(new DesignMockEmployeePositionRepository(), new DesignMockTechnologyOperationRepository(), new DesignMockShowDialogAgent(), new DesignMockAddTechnologyOperationViewModel())
+        {
+            Initialize();
+
+            SelectedEmployeePosition = EmployeePositions.FirstOrDefault();
+        }
+    }
+
+    public class DesignMockTechnologyOperationRepository : ITechnologyOperationRepository
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        
+        public TechnologyOperationDto[] Items
+        {
+            get
+            {
+                var mockServiceClient = new DesignMockRmaServiceClient();
+                return mockServiceClient.GetTechnologyOperations();
+            }
+        }
+
+        public event EventHandler<RepositoryChangedEventArgs<TechnologyOperationDto>> Changed;
+
+        public void AddTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditTechnologyOperation(TechnologyOperationDto technologyOperationDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTechnologyOperation(int technologyOperationId)
         {
             throw new NotImplementedException();
         }
@@ -48,11 +123,14 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockCustomerCatalogViewModel(),
                 new DesignMockResponsiblePersonsCatalogViewModel(),
                 new DesignMockPriceListEditorContainerViewModel(), 
+                new DesignMockTechnologyOperationsEditorViewModel(), 
                 new DesignMockPrintModule(), 
-                new MockLogger(), 
-                new ClipboardReporter(new ClipboardHelper(), new DesignMockRmaServiceClient()), 
+                new MockLogger(),
                 new DesignMockUserManager(),
-                new DesignMockUserSettingsManager() )
+                new DesignMockUserSettingsManager(),
+                new ClipboardHelper(),
+                new DesignMockSignalRClient(),
+                new DesignMockSalaryCalculationViewModel())
         {
         }
     }

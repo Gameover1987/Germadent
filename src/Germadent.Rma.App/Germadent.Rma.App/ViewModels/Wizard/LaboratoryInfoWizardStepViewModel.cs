@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.Rma.App.Operations;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Wizard.Catalogs;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
@@ -29,6 +32,9 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         private int _responsiblePersonId;
         private bool _stl;
         private bool _cashless;
+        private float _urgencyRatio;
+        private bool _isNormalUrgencyRatio;
+        private bool _isHighUrgencyRatio;
 
         public LaboratoryInfoWizardStepViewModel(ICatalogSelectionUIOperations catalogSelectionOperations,
             ICatalogUIOperations catalogUIOperations,
@@ -153,7 +159,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public Gender Gender
         {
             get => _gender;
-            set {
+            set
+            {
                 if (_gender == value)
                     return;
                 _gender = value;
@@ -176,7 +183,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public string PatientFio
         {
             get => _patientFio;
-            set {
+            set
+            {
                 if (_patientFio == value)
                     return;
                 _patientFio = value;
@@ -187,7 +195,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public DateTime Created
         {
             get => _created;
-            set {
+            set
+            {
                 if (_created == value)
                     return;
                 _created = value;
@@ -198,7 +207,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public DateTime? FittingDate
         {
             get => _fittingDate;
-            set {
+            set
+            {
                 if (_fittingDate == value)
                     return;
                 _fittingDate = value;
@@ -209,7 +219,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public DateTime? DateOfCompletion
         {
             get => _dateOfCompletion;
-            set {
+            set
+            {
                 if (_dateOfCompletion == value)
                     return;
                 _dateOfCompletion = value;
@@ -253,6 +264,44 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             }
         }
 
+        public bool IsNormalUrgencyRatio
+        {
+            get { return _isNormalUrgencyRatio; }
+            set
+            {
+                _isNormalUrgencyRatio = value;
+                OnPropertyChanged(() => IsNormalUrgencyRatio);
+
+                if (IsNormalUrgencyRatio)
+                    UrgencyRatio = OrderDto.NormalUrgencyRatio;
+            }
+        }
+
+        public bool IsHighUrgencyRatio
+        {
+            get { return _isHighUrgencyRatio; }
+            set
+            {
+                _isHighUrgencyRatio = value;
+                OnPropertyChanged(() => IsHighUrgencyRatio);
+
+                if (IsHighUrgencyRatio)
+                    UrgencyRatio = OrderDto.HighUrgencyRatio;
+            }
+        }
+
+        public float UrgencyRatio
+        {
+            get { return _urgencyRatio; }
+            set
+            {
+                if (_urgencyRatio == value)
+                    return;
+                _urgencyRatio = value;
+                OnPropertyChanged(() => UrgencyRatio);
+            }
+        }
+
         public IDelegateCommand SelectCustomerCommand { get; }
 
         public IDelegateCommand AddCustomerCommand { get; }
@@ -280,6 +329,10 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             DateComment = order.DateComment;
             Stl = order.Stl;
             Cashless = order.Cashless;
+            UrgencyRatio = order.UrgencyRatio;
+
+            _isNormalUrgencyRatio = UrgencyRatio == OrderDto.NormalUrgencyRatio;
+            _isHighUrgencyRatio = UrgencyRatio == OrderDto.HighUrgencyRatio;
         }
 
         public override void AssemblyOrder(OrderDto order)
@@ -298,6 +351,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
             order.DateComment = DateComment;
             order.Stl = Stl;
             order.Cashless = Cashless;
+            order.UrgencyRatio = UrgencyRatio;
         }
 
         private void CustomerRepositoryOnChanged(object sender, EventArgs e)

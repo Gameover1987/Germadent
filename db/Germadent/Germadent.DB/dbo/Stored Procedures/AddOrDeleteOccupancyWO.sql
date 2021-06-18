@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		Алексей Колосенок
 -- Create date: 09.02.2021
--- Description:	Установка или уборка признака занятости заказ-наряда
+-- Description:	Установка или снятие признака занятости заказ-наряда
 -- =============================================
 CREATE PROCEDURE [dbo].[AddOrDeleteOccupancyWO] 
 	
@@ -11,12 +11,20 @@ AS
 BEGIN
 	
 	SET NOCOUNT ON;
+	
+	DECLARE
+	@currentStatusWO int
 
-	-- Никаких изменений, если заказ-наряд закрыт
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID) = 9)
-		BEGIN
-			RETURN
-		END
+	-- Определяем текущий статус заказ-наряда
+	SELECT @currentStatusWO = Status
+	FROM dbo.StatusList
+	WHERE WorkOrderID = @workOrderId AND StatusChangeDateTime = (SELECT MAX(StatusChangeDateTime)
+																	FROM dbo.StatusList
+																	WHERE WorkOrderID = @workOrderId)
+
+	-- Если заказ-наряд уже закрыт - никаких дальнейших действий
+	IF @currentStatusWO = 100
+		RETURN
 
 	IF @userID IS NULL
 		BEGIN

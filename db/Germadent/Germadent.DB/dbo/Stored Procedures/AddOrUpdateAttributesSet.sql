@@ -15,10 +15,8 @@ BEGIN
 
     
 	-- Если заказ-наряд закрыт - никаких дальнейших действий
-	IF((SELECT Status FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderId) = 9)
-		BEGIN
-			RETURN
-		END
+	IF EXISTS (SELECT 1 FROM dbo.StatusList WHERE WorkOrderID = @workOrderId AND Status = 100)
+		RETURN
 
 	BEGIN TRAN
 		-- Чистим набор атрибутов от старого содержимого

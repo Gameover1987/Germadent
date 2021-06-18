@@ -1,58 +1,16 @@
 ﻿using System;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
-using Germadent.UserManagementCenter.Model;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Model;
+using Germadent.Model.Pricing;
+using Germadent.Model.Production;
 
 namespace Germadent.Rma.App.ServiceClient
 {
-    public class UserAuthorizedEventArgs : EventArgs
-    {
-        public UserAuthorizedEventArgs(AuthorizationInfoDto info)
-        {
-            AuthorizationInfo = info;
-        }
-
-        public AuthorizationInfoDto AuthorizationInfo { get; }
-    }
-
     /// <summary>
     /// Интерфейс для взаимодействия с сервисом данных РМА
     /// </summary>
-    public interface IRmaServiceClient
+    public interface IRmaServiceClient : IBaseClientOperationsServiceClient
     {
-        /// <summary>
-        /// Авторизация
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
-        void Authorize(string user, string password);
-
-        /// <summary>
-        /// Данные авторизации
-        /// </summary>
-        AuthorizationInfoDto AuthorizationInfo { get; }
-
-        /// <summary>
-        /// Получить список заказнарядов
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        OrderLiteDto[] GetOrders(OrdersFilter filter);
-
-        /// <summary>
-        /// Получить детали по выбранному заказнаряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        OrderDto GetOrderById(int id);
-
-        /// <summary>
-        /// Возвращает файл по заказ наряду
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        byte[] GetDataFileByWorkOrderId(int id);
-
         /// <summary>
         /// Добавить заказнаряд
         /// </summary>
@@ -70,9 +28,9 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Закрыть заказ-наряд
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="workOrderId"></param>
         /// <returns></returns>
-        OrderDto CloseOrder(int id);
+        void CloseOrder(int workOrderId);
 
         /// <summary>
         /// Скопировать данные заказ-наряда в буфер обмена
@@ -109,7 +67,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <summary>
         /// Возвращает список ответственных лиц по Id заказчика
         /// </summary>
-        /// <param name="customerId"></param>
         /// <returns></returns>
         ResponsiblePersonDto[] GetResponsiblePersons();
 
@@ -133,13 +90,6 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="responsiblePersonId"></param>
         /// <returns></returns>
         DeleteResult DeleteResponsiblePerson(int responsiblePersonId);
-
-        /// <summary>
-        /// Возвращает словарь по его названию
-        /// </summary>
-        /// <param name="dictionaryType"></param>
-        /// <returns></returns>
-        DictionaryItemDto[] GetDictionary(DictionaryType dictionaryType);
 
         /// <summary>
         /// Возвращает прайс по выбранному типу филиала
@@ -208,5 +158,50 @@ namespace Germadent.Rma.App.ServiceClient
         /// </summary>
         /// <returns></returns>
         AttributeDto[] GetAttributes();
+
+        /// <summary>
+        /// Возвращает список специализаций работников
+        /// </summary>
+        /// <returns></returns>
+        EmployeePositionDto[] GetEmployeePositions();
+
+        /// <summary>
+        /// Возвращает список технологичесикх операций
+        /// </summary>
+        /// <returns></returns>
+        TechnologyOperationDto[] GetTechnologyOperations();
+
+        /// <summary>
+        /// Добавляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto AddTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Обновляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationDto"></param>
+        /// <returns></returns>
+        TechnologyOperationDto UpdateTechnologyOperation(TechnologyOperationDto technologyOperationDto);
+
+        /// <summary>
+        /// Удаляет технологическую операцию
+        /// </summary>
+        /// <param name="technologyOperationId"></param>
+        /// <returns></returns>
+        DeleteResult DeleteTechnologyOperation(int technologyOperationId);
+
+        /// <summary>
+        /// Возвращает список всех пользователей
+        /// </summary>
+        /// <returns></returns>
+        UserDto[] GetAllUsers();
+
+        /// <summary>
+        /// Возвращает список выполненных сотрудником работ за период
+        /// </summary>
+        /// <returns></returns>
+        WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo);
     }
 }

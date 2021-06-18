@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Germadent.UI.Commands;
+﻿using Germadent.UI.Commands;
 
 namespace Germadent.UI.ViewModels
 {

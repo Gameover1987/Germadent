@@ -10,6 +10,7 @@ CREATE PROCEDURE [dbo].[UpdatePricePosition]
 	@priceGroupId int,
 	@pricePositionName nvarchar(max),
 	@materialId int,
+--	@jsonStringMaterial nvarchar(MAX),
 	@jsonStringProduct nvarchar(max),
 	@jsonStringPrices nvarchar(max)
 
@@ -23,11 +24,12 @@ BEGIN
 		UPDATE dbo.PricePositions
 		SET PricePositionCode = @pricePositionCode,
 			PriceGroupID = @priceGroupId,
-			PricePositionName = @pricePositionName,
-			MaterialID = @materialId
+			PricePositionName = @pricePositionName
 		WHERE PricePositionID = @pricePositionId
 
 		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
+
+		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @materialId --@jsonStringMaterial
 
 		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices
 

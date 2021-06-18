@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.9.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
@@ -31,8 +31,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Germadent.Common\Germadent.Common.csproj" />
-    <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
-    <ProjectReference Include="..\Germadent.UserManagementCenter.Model\Germadent.UserManagementCenter.Model.csproj" />
+    <ProjectReference Include="..\Germadent.Model\Germadent.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\GermadentLab_MC.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\GermadentLab_ZTL.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

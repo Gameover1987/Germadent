@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Germadent.Model;
 using Germadent.Rma.App.ViewModels.Pricing;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.ToothCard
 {

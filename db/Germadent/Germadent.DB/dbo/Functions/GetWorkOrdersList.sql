@@ -16,11 +16,21 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @createDateTo datetime = NULL
 	, @closeDateFrom datetime = NULL
 	, @closeDateTo datetime = NULL
+	, @jsonStringStatus nvarchar(max) = NULL --'[{"StatusName": "Формируется"}]'
 )
 RETURNS TABLE 
 AS
 RETURN 
 (	
+	WITH statusChanged (WorkOrderID, StatusChangeDateTime) AS
+	(SELECT WorkOrderID, MAX(StatusChangeDateTime) AS StatusChangeDateTime
+		FROM dbo.StatusList
+		GROUP BY WorkOrderID),
+
+	currentStatus (WorkOrderID, Status, StatusChangeDateTime) AS 
+	(SELECT statusChanged.WorkOrderID, sls.Status, statusChanged.StatusChangeDateTime
+		FROM dbo.StatusList sls INNER JOIN  statusChanged ON sls.WorkOrderID = statusChanged.WorkOrderID AND sls.StatusChangeDateTime = statusChanged.StatusChangeDateTime)
+
 		SELECT  b.BranchTypeID
 		, b.BranchType
 		, wo.WorkOrderID
@@ -28,17 +38,26 @@ RETURN
 		, c.CustomerName
 		, wo.PatientFullName
 		, rp.ResponsiblePerson AS DoctorFullName
-		, wo.Created 
-		, wo.Status
+		, swozero.UserID AS CreatorID
+		, swozero.StatusChangeDateTime as Created
+		, se.Status
+		, se.StatusName
+		, currentStatus.StatusChangeDateTime
 		, wo.FlagWorkAccept
-		, wo.Closed
+		, wo.FlagStl
 		, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS CreatorFullName
+		, occ.UserID AS LockedBy
+		, occ.OccupancyDateTime as LockDate
 
 	FROM dbo.WorkOrder wo 
 		INNER JOIN dbo.BranchTypes b ON wo.BranchTypeID = b.BranchTypeID
 		INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
+		INNER JOIN currentStatus ON wo.WorkOrderID = currentStatus.WorkOrderID
+		INNER JOIN StatusEnumeration se ON currentStatus.Status = se.Status
+		INNER JOIN dbo.StatusList swozero ON wo.WorkOrderID = swozero.WorkOrderID AND swozero.Status = 0
 		LEFT JOIN dbo.ResponsiblePersons rp ON wo.ResponsiblePersonID = rp.ResponsiblePersonID
-		LEFT JOIN dbo.Users u ON wo.CreatorID = u.UserID
+		LEFT JOIN dbo.Users u ON swozero.UserID = u.UserID
+		LEFT JOIN dbo.OccupancyWO occ ON wo.WorkOrderID = occ.WorkOrderID
 	
 	WHERE b.BranchTypeID = ISNULL(@branchTypeID, b.BranchTypeID)
 		AND b.BranchType LIKE '%'+ISNULL(@branchType, '')+'%'
@@ -49,8 +68,6 @@ RETURN
 				OR (PatientFullName IS NULL AND @patientFullName IS NULL))
 		AND (rp.ResponsiblePerson LIKE '%'+ISNULL(@doctorFullName, '')+'%' 
 				OR (rp.ResponsiblePerson IS NULL AND @doctorFullName IS NULL))
-		AND (wo.Created BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
-		AND	(wo.Closed BETWEEN ISNULL(@closeDateFrom, '17530101') AND ISNULL(@closeDateTo, '99991231') 
-				OR (Closed IS NULL AND @closeDateFrom IS NULL AND @closeDateTo IS NULL))
-		
+		AND (swozero.StatusChangeDateTime BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
+		AND (se.Status IN (SELECT StatusNumber FROM OPENJSON(@jsonStringStatus) WITH (StatusNumber int)) OR @jsonStringStatus IS NULL)
 )

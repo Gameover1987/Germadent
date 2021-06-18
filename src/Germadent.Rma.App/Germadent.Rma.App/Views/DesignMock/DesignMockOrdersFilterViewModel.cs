@@ -1,5 +1,7 @@
 ﻿using System;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Rma.App.ViewModels;
+using OrdersFilterViewModel = Germadent.Rma.App.ViewModels.OrdersFilterViewModel;
 
 namespace Germadent.Rma.App.Views.DesignMock
 {
@@ -14,6 +16,12 @@ namespace Germadent.Rma.App.Views.DesignMock
             Customer = "Какой то заказчик";
             Doctor = "Какой то сотрудник";
             Patient = "Какой то пациент";
+
+            ShowCreated = true;
+            ShowInProgress = true;
+            ShowQualityControl = true;
+            ShowRealization = true;
+            ShowClosed = true;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Germadent.Model;
 using Germadent.Rma.App.ViewModels.ToothCard;
-using Germadent.Rma.Model;
 
 namespace Germadent.Rma.App.ViewModels.Pricing
 {

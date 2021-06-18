@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Germadent.Common.Extensions;
-using Germadent.Rma.Model;
-using Germadent.Rma.Model.Pricing;
+using Germadent.Model;
+using Germadent.Model.Pricing;
 using Germadent.WebApi.Entities;
 using Newtonsoft.Json;
 
@@ -82,6 +82,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             var jsonStringProduct = pricePositionDto.Products.SerializeToJson(Formatting.Indented);
             var jsonStringPrices = pricePositionDto.Prices.SerializeToJson(Formatting.Indented);
+            var jsonStringMaterial = pricePositionDto.MaterialId;
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {

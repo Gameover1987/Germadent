@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Germadent.Model\Germadent.Model.csproj" />
     <ProjectReference Include="..\Germadent.Rma.App\Germadent.Rma.App\Germadent.Rma.App.csproj" />
-    <ProjectReference Include="..\Germadent.Rma.Model\Germadent.Rma.Model.csproj" />
     <ProjectReference Include="..\Germadent.TestUtils\Germadent.TestUtils.csproj" />
   </ItemGroup> 
 

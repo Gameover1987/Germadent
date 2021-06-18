@@ -3,11 +3,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
-using Germadent.Rma.App.Reporting;
+using Germadent.Model;
 using Germadent.Rma.App.ServiceClient.Repository;
 using Germadent.Rma.App.ViewModels.Pricing;
-using Germadent.Rma.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 

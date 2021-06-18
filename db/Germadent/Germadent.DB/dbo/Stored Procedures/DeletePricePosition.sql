@@ -11,12 +11,16 @@ CREATE PROCEDURE [dbo].[DeletePricePosition]
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT, XACT_ABORT ON;
 
-    IF NOT EXISTS (SELECT PricePositionID FROM dbo.ToothCard WHERE PricePositionID = @pricePositionId)
-			BEGIN
+    IF NOT EXISTS (SELECT PricePositionID FROM dbo.ToothCard WHERE PricePositionID = @pricePositionId) BEGIN
+			BEGIN TRAN
 				DELETE
 				FROM dbo.ProductSet
+				WHERE PricePositionID = @pricePositionId
+
+				DELETE
+				FROM dbo.MaterialSet
 				WHERE PricePositionID = @pricePositionId
 				
 				DELETE
@@ -24,12 +28,12 @@ BEGIN
 				WHERE PricePositionID = @pricePositionId
 
 				SET @resultCount = @@rowcount
+			COMMIT
 			END
 
-			ELSE BEGIN
-				SET @resultCount = 0
-			END	
-
+			ELSE 
+			SET @resultCount = 0
+			
 END
 GO
 GRANT EXECUTE

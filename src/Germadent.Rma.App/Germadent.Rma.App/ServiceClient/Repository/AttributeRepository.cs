@@ -1,9 +1,9 @@
-﻿using Germadent.Rma.Model;
+﻿using Germadent.Client.Common.ServiceClient;
+using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient.Repository
 {
-    public interface IAttributeRepository : IRepository<AttributeDto> { }
-
     public class AttributeRepository : Repository<AttributeDto>, IAttributeRepository
     {
         private readonly IRmaServiceClient _rmaServiceClient;

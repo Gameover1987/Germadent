@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using Germadent.Common.Extensions;
+using Germadent.Model;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels.Validation;
 using Germadent.UserManagementCenter.App.ServiceClient;
-using Germadent.UserManagementCenter.Model;
 
 namespace Germadent.UserManagementCenter.App.ViewModels
 {
@@ -22,7 +23,8 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         {
             _umcServiceClient = umcServiceClient;
 
-            InitializeRightsView();
+            _rightsView = CollectionViewSource.GetDefaultView(Rights);
+            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(RightViewModel.ApplicationModule)));
 
             OkCommand = new DelegateCommand(() => { }, CanOkCommandHandler);
 
@@ -74,7 +76,10 @@ namespace Germadent.UserManagementCenter.App.ViewModels
 
             Rights.Clear();
 
-            var rights = _umcServiceClient.GetRights();
+            var rights = _umcServiceClient.GetRights()
+                .OrderBy(x => x.ApplicationModule.GetDescription())
+                .ThenBy(x => x.RightDescription)
+                .ToArray();
             foreach (var right in rights)
             {
                 var rightViewModel = new RightViewModel(right);
@@ -105,13 +110,6 @@ namespace Germadent.UserManagementCenter.App.ViewModels
         private void RightViewModelOnChecked(object sender, EventArgs e)
         {
             OnPropertyChanged(() => AtLeastOneRightChecked);
-        }
-
-        private void InitializeRightsView()
-        {
-            RightViewModel rightViewModel;
-            _rightsView = CollectionViewSource.GetDefaultView(Rights);
-            _rightsView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(rightViewModel.ApplicationModule)));
         }
 
         private bool CanOkCommandHandler()

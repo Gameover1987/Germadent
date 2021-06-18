@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Germadent.UserManagementCenter.Model;
+using Germadent.Model;
 
 namespace Germadent.Rma.App.ServiceClient
 {

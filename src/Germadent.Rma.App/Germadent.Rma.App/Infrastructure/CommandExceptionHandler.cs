@@ -1,14 +1,10 @@
 ﻿using System;
+using Germadent.Client.Common.Infrastructure;
 using Germadent.Common.Logging;
 using Germadent.UI.Infrastructure;
 
 namespace Germadent.Rma.App.Infrastructure
 {
-    public interface ICommandExceptionHandler
-    {
-        void HandleCommandException(Exception exception);
-    }
-
     public class CommandExceptionHandler : ICommandExceptionHandler
     {
         private readonly IShowDialogAgent _dialogAgent;
