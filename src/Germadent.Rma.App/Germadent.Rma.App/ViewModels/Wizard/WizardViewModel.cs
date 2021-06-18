@@ -133,7 +133,7 @@ namespace Germadent.Rma.App.ViewModels.Wizard
 
         private void PrintCommandHandler()
         {
-            _printModule.Print(_order);
+            _printModule.PrintOrder(_order);
         }
 
         public void Initialize(WizardMode wizardMode, OrderDto order)

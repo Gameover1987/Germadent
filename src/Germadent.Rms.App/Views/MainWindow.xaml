@@ -86,8 +86,7 @@
                             Key="P" Modifiers="Control"/>
             </DataGrid.InputBindings>
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}"
-                       d:DataContext="{d:DesignInstance Type=viewModels:OrderLiteViewModel, IsDesignTimeCreatable=True}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
                     <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
                     <Setter Property="ContextMenu">

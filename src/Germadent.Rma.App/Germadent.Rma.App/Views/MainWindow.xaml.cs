@@ -26,7 +26,7 @@ namespace Germadent.Rma.App.Views
             Closing += OnClosing;
         }
 
-        private void MainViewModelOnColumnSettingsChanged(object? sender, EventArgs e)
+        private void MainViewModelOnColumnSettingsChanged(object sender, EventArgs e)
         {
             UpdateColumns(_mainViewModel.SettingsManager.Columns);
         }

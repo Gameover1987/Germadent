@@ -4,6 +4,8 @@ namespace Germadent.Client.Common.Reporting
 {
     public interface IPrintModule
     {
-        void Print(OrderDto order);
+        void PrintOrder(OrderDto order);
+
+        void PrintSalaryReport(SalaryReport salaryReport);
     }
 }

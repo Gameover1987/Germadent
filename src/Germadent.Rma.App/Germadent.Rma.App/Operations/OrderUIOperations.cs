@@ -55,7 +55,7 @@ namespace Germadent.Rma.App.Operations
             {
                 using (var orderScope = _rmaOperations.GetOrderById(changedOrder.WorkOrderId))
                 {
-                    _printModule.Print(orderScope.Order);
+                    _printModule.PrintOrder(orderScope.Order);
                 }
             }
 
@@ -84,7 +84,7 @@ namespace Germadent.Rma.App.Operations
             {
                 using (var orderScope = _rmaOperations.GetOrderById(changedOrder.WorkOrderId))
                 {
-                    _printModule.Print(orderScope.Order);
+                    _printModule.PrintOrder(orderScope.Order);
                 }
             }
 

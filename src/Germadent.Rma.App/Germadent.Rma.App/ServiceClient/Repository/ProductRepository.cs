@@ -18,7 +18,7 @@ namespace Germadent.Rma.App.ServiceClient.Repository
             _signalRClient.ProductRepositoryChanged += SignalRClientOnProductRepositoryChanged;
         }
 
-        private void SignalRClientOnProductRepositoryChanged(object? sender, RepositoryChangedEventArgs<ProductDto> e)
+        private void SignalRClientOnProductRepositoryChanged(object sender, RepositoryChangedEventArgs<ProductDto> e)
         {
             OnRepositoryChanged(this, e);
         }

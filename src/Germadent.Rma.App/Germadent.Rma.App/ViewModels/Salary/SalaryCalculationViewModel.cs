@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using Germadent.Client.Common.Infrastructure;
+using Germadent.Client.Common.Reporting;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Production;
@@ -18,6 +19,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
     {
         private readonly IRmaServiceClient _rmaServiceClient;
         private readonly ICommandExceptionHandler _commandExceptionHandler;
+        private readonly IPrintModule _printModule;
         private EmployeeViewModel _selectedEmployee;
         private DateTime _dateFrom;
         private DateTime _dateTo;
@@ -26,16 +28,19 @@ namespace Germadent.Rma.App.ViewModels.Salary
         private readonly ICollectionView _salaryView;
         private string _busyReason;
         private bool _isBusy;
+        private SalaryReport _salaryReport;
 
-        public SalaryCalculationViewModel(IRmaServiceClient rmaServiceClient, ICommandExceptionHandler commandExceptionHandler)
+        public SalaryCalculationViewModel(IRmaServiceClient rmaServiceClient, ICommandExceptionHandler commandExceptionHandler, IPrintModule printModule)
         {
             _rmaServiceClient = rmaServiceClient;
             _commandExceptionHandler = commandExceptionHandler;
+            _printModule = printModule;
 
             Works.CollectionChanged+= WorksOnCollectionChanged;
             _salaryView = CollectionViewSource.GetDefaultView(Works);
 
             CalculateSalaryCommand = new DelegateCommand(CalculateSalaryCommandHandler, CanCalculateSalaryCommandHandler);
+            PrintSalaryReportCommand = new DelegateCommand(SaveSalaryReportCommandHandler, CanSaveSalaryReportCommandHandler);
         }
 
         public ObservableCollection<EmployeeViewModel> Employees { get; } = new ObservableCollection<EmployeeViewModel>();
@@ -129,6 +134,8 @@ namespace Germadent.Rma.App.ViewModels.Salary
         public bool IsValid => DatesValidationError == null;
 
         public IDelegateCommand CalculateSalaryCommand { get; }
+        
+        public IDelegateCommand PrintSalaryReportCommand { get; }
 
         public async void Initialize()
         {
@@ -197,22 +204,35 @@ namespace Germadent.Rma.App.ViewModels.Salary
             {
                 BusyReason = $"Расчет заработной платы";
                 Works.Clear();
-
+                _salaryReport = null;
+                
                 _salaryView.GroupDescriptions.Clear();
                 if (SelectedEmployee == AllEmployeeViewModel.Instance)
                 {
                     _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.UserFullName)));
                 }
 
-                WorkDto[] salaryReport = null;
+                WorkDto[] works = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    salaryReport = _rmaServiceClient.GetSalaryReport(SelectedEmployee.UserId, DateFrom, DateTo);
+                    works = _rmaServiceClient.GetSalaryReport(SelectedEmployee.UserId, DateFrom, DateTo);
                 });
 
-                foreach (var workDto in salaryReport)
+                foreach (var workDto in works)
                 {
                     Works.Add(new WorkViewModel(workDto));
+                }
+
+
+                if (SelectedEmployee != AllEmployeeViewModel.Instance)
+                {
+                    _salaryReport = new SalaryReport
+                    {
+                        EmployeeFullName = SelectedEmployee.DisplayName,
+                        DateFrom = DateFrom,
+                        DateTo = DateTo,
+                        Works = works
+                    };
                 }
             }
             catch (Exception exception)
@@ -222,10 +242,21 @@ namespace Germadent.Rma.App.ViewModels.Salary
             finally
             {
                 BusyReason = null;
+                DelegateCommand.NotifyCanExecuteChangedForAll();
             }
         }
 
-        private void WorksOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private bool CanSaveSalaryReportCommandHandler()
+        {
+            return _salaryReport != null && _salaryReport.Works.Any();
+        }
+
+        private void SaveSalaryReportCommandHandler()
+        {
+            _printModule.PrintSalaryReport(_salaryReport);
+        }
+
+        private void WorksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(() => Salary);
         }

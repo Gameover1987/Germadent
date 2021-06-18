@@ -39,7 +39,8 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         ToothNumber = 12
                     },
-                }
+                },
+                Status = OrderStatus.Created
             });
             _orders.Add(new OrderDto
             {
@@ -62,7 +63,80 @@ namespace Germadent.Rma.App.Mocks
                         HasBridge = true,
                         ToothNumber = 12
                     },
-                }
+                },
+                Status = OrderStatus.InProgress
+            });
+            _orders.Add(new OrderDto
+            {
+                BranchType = BranchType.MillingCenter,
+                Created = DateTime.Now.AddDays(-1),
+                Customer = "ООО Рога и копыта",
+                DocNumber = "001-ФЦ",
+                ResponsiblePerson = "Техников Техник Техникович",
+                Patient = "Пациентов Пациент Пациентович",
+                WorkOrderId = 2,
+                ToothCard = new ToothDto[]
+                {
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 11
+                    },
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 12
+                    },
+                },
+                Status = OrderStatus.QualityControl
+            });
+            _orders.Add(new OrderDto
+            {
+                BranchType = BranchType.MillingCenter,
+                Created = DateTime.Now.AddDays(-1),
+                Customer = "ООО Рога и копыта",
+                DocNumber = "001-ФЦ",
+                ResponsiblePerson = "Техников Техник Техникович",
+                Patient = "Пациентов Пациент Пациентович",
+                WorkOrderId = 2,
+                ToothCard = new ToothDto[]
+                {
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 11
+                    },
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 12
+                    },
+                },
+                Status = OrderStatus.Realization
+            });
+            _orders.Add(new OrderDto
+            {
+                BranchType = BranchType.MillingCenter,
+                Created = DateTime.Now.AddDays(-1),
+                Customer = "ООО Рога и копыта",
+                DocNumber = "001-ФЦ",
+                ResponsiblePerson = "Техников Техник Техникович",
+                Patient = "Пациентов Пациент Пациентович",
+                WorkOrderId = 2,
+                ToothCard = new ToothDto[]
+                {
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 11
+                    },
+                    new ToothDto
+                    {
+                        HasBridge = true,
+                        ToothNumber = 12
+                    },
+                },
+                Status = OrderStatus.Closed
             });
         }
 

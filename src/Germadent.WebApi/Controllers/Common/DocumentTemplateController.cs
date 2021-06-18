@@ -18,6 +18,7 @@ namespace Germadent.WebApi.Controllers.Common
     {
         private const string PathToMC = @"Templates\GermadentLab_MC.docx";
         private const string PathToZtl = @"Templates\GermadentLab_ZTL.docx";
+        private const string PathToSalary = @"Templates\GermadentLab_Salary.docx";
 
         private readonly ILogger _logger;
         private readonly IFileManager _fileManager;
@@ -55,6 +56,9 @@ namespace Germadent.WebApi.Controllers.Common
 
                 case DocumentTemplateType.MillingCenter:
                     return Path.Combine(baseDirectory, PathToMC);
+                
+                case DocumentTemplateType.Salary:
+                    return Path.Combine(baseDirectory, PathToSalary);
 
                 default:
                     throw new InvalidOperationException("Неизвестный тип шаблона");

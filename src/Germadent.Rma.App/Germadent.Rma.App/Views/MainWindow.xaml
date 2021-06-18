@@ -102,6 +102,8 @@
                           Visibility="{Binding CanViewTechnologyOperations, Converter={StaticResource BoolToVisibilityConverter}}"
                           Command="{Binding ShowTechnologyOperationsEditorCommand}"/>
             </MenuItem>
+            <MenuItem Header="О программе"
+                      Command="{Binding ShowAboutCommand}"/>
         </Menu>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
@@ -140,7 +142,7 @@
 
             <TextBlock Text="Функции руководителя" VerticalAlignment="Center" FontSize="10" Margin="0,24,0,0"
                        Visibility="{Binding CanCalculateSalary, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <Button Content="Расчет ЗП" Margin="0,6,0,0"
+            <Button Content="Расчет зарплаты" Margin="0,6,0,0"
                     Visibility="{Binding CanCalculateSalary, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding ShowSalaryCalculationCommand}"/>
         </StackPanel>
@@ -171,8 +173,7 @@
                             Key="C" Modifiers="Control+Shift"/>
             </DataGrid.InputBindings>
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}"
-                       d:DataContext="{d:DesignInstance Type={x:Type viewModelsCommon:OrderLiteViewModel}, IsDesignTimeCreatable=True}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
                     <EventSetter Event="PreviewMouseDoubleClick" Handler="OnOrderRowDoubleClick"/>
                     <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext}"/>
                     <Setter Property="ContextMenu">

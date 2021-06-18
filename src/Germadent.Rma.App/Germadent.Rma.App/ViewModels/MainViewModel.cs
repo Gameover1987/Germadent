@@ -27,6 +27,7 @@ using Germadent.Rma.App.Views.Wizard;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
+using Germadent.UI.Windows;
 
 namespace Germadent.Rma.App.ViewModels
 {
@@ -34,7 +35,7 @@ namespace Germadent.Rma.App.ViewModels
     {
         private readonly IRmaServiceClient _rmaServiceClient;
         private readonly IEnvironment _environment;
-        private readonly IOrderUIOperations _orderUIOperations;
+        private readonly IOrderUIOperations _orderUiOperations;
         private readonly IShowDialogAgent _dialogAgent;
         private readonly ICustomerCatalogViewModel _customerCatalogViewModel;
         private readonly IResponsiblePersonCatalogViewModel _responsiblePersonCatalogViewModel;
@@ -45,7 +46,6 @@ namespace Germadent.Rma.App.ViewModels
         private readonly IUserManager _userManager;
         private readonly IRmaUserSettingsManager _userSettingsManager;
         private readonly IClipboardHelper _clipboardHelper;
-        private readonly ISignalRClient _signalRClient;
         private readonly ISalaryCalculationViewModel _salaryCalculationViewModel;
         private OrderLiteViewModel _selectedOrder;
         private bool _isBusy;
@@ -73,7 +73,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             _rmaServiceClient = rmaServiceClient;
             _environment = environment;
-            _orderUIOperations = orderUIOperations;
+            _orderUiOperations = orderUIOperations;
             _dialogAgent = dialogAgent;
             _customerCatalogViewModel = customerCatalogViewModel;
             _responsiblePersonCatalogViewModel = responsiblePersonCatalogViewModel;
@@ -84,10 +84,10 @@ namespace Germadent.Rma.App.ViewModels
             _userManager = userManager;
             _userSettingsManager = userSettingsManager;
             _clipboardHelper = clipboardHelper;
-            _signalRClient = signalRClient;
+            var signalRClient1 = signalRClient;
             _salaryCalculationViewModel = salaryCalculationViewModel;
-            _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
-            _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
+            signalRClient1.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
+            signalRClient1.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
             SelectedOrder = Orders.FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace Germadent.Rma.App.ViewModels
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ChangeColumnsVisibilityCommand = new DelegateCommand(ChangeColumnsVisibilityCommandHandler);
+            ShowAboutCommand = new DelegateCommand(ShowAboutCommandHandler);
 
             _collectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
             _collectionView.CustomSort = new OrderLiteComparerByDateTime();
@@ -186,6 +187,8 @@ namespace Germadent.Rma.App.ViewModels
 
         public IDelegateCommand ExitCommand { get; }
 
+        public IDelegateCommand ShowAboutCommand { get; }
+
         public IDelegateCommand ChangeColumnsVisibilityCommand { get; }
 
         public string SearchString
@@ -253,7 +256,7 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
-        private void SignalRClientOnWorkOrderStatusChanged(object? sender, OrderStatusChangedEventArgs e)
+        private void SignalRClientOnWorkOrderStatusChanged(object sender, OrderStatusChangedEventArgs e)
         {
             var workOrder = Orders.FirstOrDefault(x => x.WorkOrderId == e.WorkOrderId);
             if (workOrder == null)
@@ -273,7 +276,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateLabOrderCommandHandler()
         {
-            var labOrder = _orderUIOperations.CreateLabOrder(new OrderDto
+            var labOrder = _orderUiOperations.CreateLabOrder(new OrderDto
             {
                 BranchType = BranchType.Laboratory,
                 CreatorFullName = _rmaServiceClient.AuthorizationInfo.GetShortFullName()
@@ -289,7 +292,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CreateMillingCenterOrderCommandHandler()
         {
-            var millingCenterOrder = _orderUIOperations.CreateMillingCenterOrder(new OrderDto
+            var millingCenterOrder = _orderUiOperations.CreateMillingCenterOrder(new OrderDto
             {
                 BranchType = BranchType.MillingCenter,
                 CreatorFullName = _rmaServiceClient.AuthorizationInfo.GetShortFullName()
@@ -307,7 +310,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void FilterOrdersCommandHandler()
         {
-            var filter = _orderUIOperations.CreateOrdersFilter(_ordersFilter);
+            var filter = _orderUiOperations.CreateOrdersFilter(_ordersFilter);
             if (filter == null)
                 return;
 
@@ -366,7 +369,7 @@ namespace Germadent.Rma.App.ViewModels
         {
             using (var orderScope = _rmaServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
             {
-                _printModule.Print(orderScope.Order);
+                _printModule.PrintOrder(orderScope.Order);
             }
         }
 
@@ -393,11 +396,11 @@ namespace Germadent.Rma.App.ViewModels
                 var wizardMode = orderDto.Status != OrderStatus.Closed ? WizardMode.Edit : WizardMode.View;
                 if (orderDto.BranchType == BranchType.Laboratory)
                 {
-                    changedOrderDto = _orderUIOperations.CreateLabOrder(orderDto, wizardMode);
+                    changedOrderDto = _orderUiOperations.CreateLabOrder(orderDto, wizardMode);
                 }
                 else if (orderDto.BranchType == BranchType.MillingCenter)
                 {
-                    changedOrderDto = _orderUIOperations.CreateMillingCenterOrder(orderDto, wizardMode);
+                    changedOrderDto = _orderUiOperations.CreateMillingCenterOrder(orderDto, wizardMode);
                 }
 
                 if (changedOrderDto == null)
@@ -481,6 +484,17 @@ namespace Germadent.Rma.App.ViewModels
                 return;
 
             _environment.Shutdown();
+        }
+
+        private void ShowAboutCommandHandler()
+        {
+            var aboutViewModel = new AboutViewModel
+            {
+                ApplicationName = "Рабочее место администратора",
+                ApplicationVersion = "1.0.0.5",
+                Copyright = "Slava&Alex",
+            };
+            _dialogAgent.ShowDialog<AboutWindow>(aboutViewModel);
         }
     }
 }

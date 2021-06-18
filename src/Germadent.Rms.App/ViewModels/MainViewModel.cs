@@ -210,7 +210,7 @@ namespace Germadent.Rms.App.ViewModels
         {
             using (var orderScope = _rmsServiceClient.GetOrderById(SelectedOrder.WorkOrderId))
             {
-                _printModule.Print(orderScope.Order);
+                _printModule.PrintOrder(orderScope.Order);
             }
         }
 
@@ -285,7 +285,7 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        private void SignalRClientOnWorkOrderLockedOrUnlocked(object? sender, OrderLockedEventArgs e)
+        private void SignalRClientOnWorkOrderLockedOrUnlocked(object sender, OrderLockedEventArgs e)
         {
             var orderLiteViewModel = Orders.FirstOrDefault(x => x.WorkOrderId == e.Info.WorkOrderId);
             if (orderLiteViewModel == null)
@@ -303,7 +303,7 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        private void SignalRClientOnWorkOrderStatusChanged(object? sender, OrderStatusChangedEventArgs e)
+        private void SignalRClientOnWorkOrderStatusChanged(object sender, OrderStatusChangedEventArgs e)
         {
             var workOrder = Orders.FirstOrDefault(x => x.WorkOrderId == e.WorkOrderId);
             if (workOrder == null)

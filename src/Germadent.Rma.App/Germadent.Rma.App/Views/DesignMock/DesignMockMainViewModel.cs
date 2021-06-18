@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Germadent.Client.Common.DesignMock;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.Model.Production;
@@ -33,6 +35,13 @@ namespace Germadent.Rma.App.Views.DesignMock
 
     public class DesignMockUserSettingsManager : IRmaUserSettingsManager
     {
+        public DesignMockUserSettingsManager()
+        {
+            LastLogin = "Vasya";
+            UserNames = new List<string>();
+            Columns = new ColumnInfo[0];
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -132,14 +141,9 @@ namespace Germadent.Rma.App.Views.DesignMock
                 new DesignMockSignalRClient(),
                 new DesignMockSalaryCalculationViewModel())
         {
-        }
-    }
+            ThreadTaskExtensions.IsSyncRun = true;
 
-    public class DesignMockPrintModule : IPrintModule
-    {
-        public void Print(OrderDto order)
-        {
-            throw new System.NotImplementedException();
+            Initialize();
         }
     }
 

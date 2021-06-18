@@ -26,16 +26,33 @@ namespace Germadent.Client.Common.Reporting
             _baseClientOperationsServiceClient = baseClientOperationsServiceClient;
         }
 
-        public void Print(OrderDto order)
+        public void PrintOrder(OrderDto order)
         {
             var template = _baseClientOperationsServiceClient.GetTemplate(GetDocumentTemplateTypeByWorkOrder(order));
             var printableOrder = _converter.ConvertFrom(order);
             var wordDocument = _wordAssembler.Assembly(template, printableOrder.SerializeToJson());
 
-            const string fileFilter = "Word XML (*.docx)|*.docx";
+            const string fileFilter = "Документ Word (*.docx)|*.docx";
             string fileName;
            
             if (_dialogAgent.ShowSaveFileDialog(fileFilter, GetOrderDocumentName(order), out fileName) != true) 
+                return;
+
+            _fileManager.Save(wordDocument, fileName);
+            _fileManager.OpenFileByOS(fileName);
+        }
+
+        public void PrintSalaryReport(SalaryReport salaryReport)
+        {
+            var template = _baseClientOperationsServiceClient.GetTemplate(DocumentTemplateType.Salary);
+
+            var wordDocument = _wordAssembler.Assembly(template, salaryReport.SerializeToJson());
+            const string fileFilter = "Документ Word (*.docx)|*.docx";
+            string fileName;
+
+            var defaultFileName = $"ЗП {salaryReport.EmployeeFullName} с {salaryReport.DateFrom:dd-MM-yyyy HH-mm-ss} по {salaryReport.DateTo:dd-MM-yyyy HH-mm-ss}";
+           
+            if (_dialogAgent.ShowSaveFileDialog(fileFilter, defaultFileName, out fileName) != true) 
                 return;
 
             _fileManager.Save(wordDocument, fileName);

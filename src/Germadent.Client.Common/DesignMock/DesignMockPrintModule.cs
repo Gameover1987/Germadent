@@ -10,9 +10,14 @@ namespace Germadent.Client.Common.DesignMock
 {
     public class DesignMockPrintModule : IPrintModule
     {
-        public void Print(OrderDto order)
+        public void PrintOrder(OrderDto order)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void PrintSalaryReport(SalaryReport salaryReport)
+        {
+            throw new NotImplementedException();
         }
     }
 }
