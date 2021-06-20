@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Germadent.Model.Production;
 
 namespace Germadent.Client.Common.Reporting
@@ -11,6 +12,11 @@ namespace Germadent.Client.Common.Reporting
         
         public DateTime DateTo { get; set; }
         
-        public WorkDto[] Works { get; set; } 
+        public WorkDto[] Works { get; set; }
+
+        public decimal Salary
+        {
+            get { return Works.Sum(x => x.OperationCost); }
+        }
     }
 }
