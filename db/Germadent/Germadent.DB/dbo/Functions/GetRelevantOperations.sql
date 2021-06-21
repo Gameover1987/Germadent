@@ -74,12 +74,14 @@ RETURN
 	UNION 
 	SELECT teop.*, codes.ProductID, codes.ProductName, codes.ProductCount, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, teop.Rate * codes.ProductCount * dbo.GetUrgencyRatioForWO(@workOrderId) AS OperationCost
 	FROM teop, codes
-	WHERE LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL
+	WHERE codes.ProductName NOT LIKE '%Реализация%'
+		AND LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL
 
-	-- Исключаем из перечня те операции, что уже выбраны для выполнения, кроме операторских
+	-- Исключаем из перечня те операции, что уже выбраны для выполнения
 	EXCEPT
 	SELECT teop.*, wl.ProductID, p.ProductName, wl.Quantity, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, wl.OperationCost
-	FROM dbo.WorkList wl INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID, teop
+	FROM dbo.WorkList wl 
+		INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID
+		INNER JOIN teop ON teop.TechnologyOperationID = wl.TechnologyOperationID
 	WHERE wl.WorkOrderID = @workOrderId
-		AND teop.EmployeePositionID != 3
 )
