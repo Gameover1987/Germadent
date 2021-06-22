@@ -97,6 +97,8 @@
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Закончить работы"
                                           Command="{Binding FinishWorkByWorkOrderCommand}"/>
+                                <MenuItem Header="Показать список работ"
+                                          Command="{Binding ShowWorkListByWorkOrderCommand}"/>
                                 <MenuItem Header="Подтвердить прохождение контроля"
                                           Command="{Binding RealizeWorkOrderCommand}"/>
                                 <Separator/>

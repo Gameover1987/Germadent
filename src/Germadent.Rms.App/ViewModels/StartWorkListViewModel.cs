@@ -42,6 +42,8 @@ namespace Germadent.Rms.App.ViewModels
 
         public ObservableCollection<WorkViewModel> Works { get; } = new ObservableCollection<WorkViewModel>();
 
+        public ObservableCollection<WorkViewModel> AllWorks { get; } = new ObservableCollection<WorkViewModel>();
+
         public IDelegateCommand OkCommand { get; }
 
         public void Initialize(OrderDto orderDto)
@@ -61,6 +63,13 @@ namespace Germadent.Rms.App.ViewModels
             foreach (var technologyOperationByUserDto in works)
             {
                 Works.Add(new WorkViewModel(technologyOperationByUserDto));
+            }
+
+            var allWorks = _rmsServiceClient.GetWorksByWorkOrder(_order.WorkOrderId);
+            AllWorks.Clear();
+            foreach (var work in allWorks)
+            {
+                AllWorks.Add(new WorkViewModel(work));
             }
         }
 

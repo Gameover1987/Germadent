@@ -91,7 +91,9 @@
             <Grid Grid.Row="1" Grid.Column="1" Margin="12,6,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0.7*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Работы к подтверждению" FontSize="14" FontWeight="SemiBold"/>
                 <DataGrid Grid.Row="1" Margin="0,6,0,0"
@@ -135,6 +137,38 @@
                             <DataGridTextColumn.EditingElementStyle>
                                 <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource StlnTextBoxStyle}"/>
                             </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Grid.Row="2" Text="Все работы по заказ-наряду" FontSize="14" FontWeight="SemiBold" Margin="0,12,0,0"/>
+                <DataGrid Grid.Row="3" Margin="0,6,0,0" 
+                          AlternationCount="2"
+                          ItemsSource="{Binding AllWorks}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Код" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}" 
+                                        Binding="{Binding UserCode}"/>
+                        <DataGridTextColumn Header="Название операции" Width="*" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding DisplayName}"/>
+                        <DataGridTextColumn Header="Изделие" Width="*" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding ProductName}"/>
+                        <DataGridTextColumn Header="Кол-во" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding ProductCount}"/>
+                        <DataGridTextColumn Header="Исполнитель" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding UserFullName}"/>
+                        <DataGridTextColumn Header="Начата" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkStarted, StringFormat='dd.MM.yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
+                        <DataGridTextColumn Header="Закончена" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkCompleted, StringFormat='dd.MM.yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
+                        <DataGridTextColumn Header="Комментарий" Width="Auto" MinWidth="100" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding Comment}">
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
