@@ -1,18 +1,20 @@
-﻿using Germadent.Model.Production;
+﻿using System;
+using Germadent.Model.Production;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rms.App.ViewModels
+namespace Germadent.Client.Common.ViewModels
 {
     public class WorkViewModel : ViewModelBase
     {
         private readonly WorkDto _work;
-
         private bool _isChecked;
 
         public WorkViewModel(WorkDto work)
         {
             _work = work;
         }
+
+        public int WorkId => _work.WorkId;
 
         public bool IsChecked
         {
@@ -37,7 +39,30 @@ namespace Germadent.Rms.App.ViewModels
         public float UrgencyRatio => _work.UrgencyRatio;
 
         public decimal TotalCost => _work.OperationCost;
+
         public string ProductName => _work.ProductName;
+
+        public string UserFullName => _work.UserFullNameStarted;
+
+        public string TechnologyOperationName => _work.TechnologyOperationName;
+
+        public string TechnologyOperationUserCode => _work.TechnologyOperationUserCode;
+
+        public int Quantity => _work.Quantity;
+
+        public DateTime WorkStarted => _work.WorkStarted;
+
+        public DateTime? WorkCompleted => _work.WorkCompleted;
+
+        public string CustomerName => _work.CustomerName;
+
+        public string PatientFullName => _work.PatientFullName;
+
+        public int WorkOrderId => _work.WorkOrderId;
+
+        public string DocNumber => _work.DocNumber;
+
+        public decimal OperationCost => _work.OperationCost;
 
         public string Comment
         {

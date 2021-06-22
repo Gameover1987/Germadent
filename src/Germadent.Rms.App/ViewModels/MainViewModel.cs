@@ -76,6 +76,7 @@ namespace Germadent.Rms.App.ViewModels
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
+            ShowWorkListByWorkOrderCommand = new DelegateCommand(ShowWorkListByWorkOrderCommandHandler, CanShowWorkListByWorkOrderCommandHandler);
 
             CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);
         }
@@ -138,6 +139,8 @@ namespace Germadent.Rms.App.ViewModels
         public IDelegateCommand FinishWorkByWorkOrderCommand { get; }
 
         public IDelegateCommand RealizeWorkOrderCommand { get; }
+
+        public IDelegateCommand ShowWorkListByWorkOrderCommand { get; }
 
         public IDelegateCommand FilterOrdersCommand { get; }
 
@@ -283,6 +286,16 @@ namespace Germadent.Rms.App.ViewModels
             {
                 _environment.Shutdown();
             }
+        }
+
+        private bool CanShowWorkListByWorkOrderCommandHandler()
+        {
+            return SelectedOrder != null && !SelectedOrder.IsLocked;
+        }
+
+        private void ShowWorkListByWorkOrderCommandHandler()
+        {
+
         }
 
         private void SignalRClientOnWorkOrderLockedOrUnlocked(object sender, OrderLockedEventArgs e)

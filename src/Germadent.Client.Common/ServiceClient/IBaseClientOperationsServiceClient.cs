@@ -1,4 +1,5 @@
 ﻿using Germadent.Model;
+using Germadent.Model.Production;
 
 namespace Germadent.Client.Common.ServiceClient
 {
@@ -40,5 +41,12 @@ namespace Germadent.Client.Common.ServiceClient
         /// <param name="documentTemplateType"></param>
         /// <returns></returns>
         byte[] GetTemplate(DocumentTemplateType documentTemplateType);
+
+        /// <summary>
+        /// Возвращает список всех работ по заказ-наряду
+        /// </summary>
+        /// <param name="workOrderId"></param>
+        /// <returns></returns>
+        WorkDto[] GetWorksByWorkOrder(int workOrderId);
     }
 }

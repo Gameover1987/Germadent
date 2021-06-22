@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Rma.App.ViewModels.Salary;
 
 namespace Germadent.Rma.App.Views.Converters

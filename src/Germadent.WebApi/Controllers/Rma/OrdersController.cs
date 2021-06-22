@@ -1,6 +1,5 @@
 ﻿using System;
 using Germadent.Common.Extensions;
-using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.WebApi.DataAccess.Rma;
@@ -18,16 +17,14 @@ namespace Germadent.WebApi.Controllers.Rma
         private readonly IRmaDbOperations _rmaDbOperations;
         private readonly ILogger _logger;
         private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly IFileManager _fileManager;
 
-        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext, IFileManager fileManager)
+        public OrdersController(IRmaDbOperations rmaDbOperations, ILogger logger, IHubContext<NotificationHub> hubContext)
         {
             _rmaDbOperations = rmaDbOperations;
             _logger = logger;
             _hubContext = hubContext;
-            _fileManager = fileManager;
         }
-        
+
         [HttpPost]
         [Route("getByFilter")]
         public IActionResult GetOrders(OrdersFilter filter)
@@ -44,7 +41,7 @@ namespace Germadent.WebApi.Controllers.Rma
                 return BadRequest(exception);
             }
         }
-        
+
         [HttpGet("{workOrderId}/{userId}")]
         public IActionResult GetWorkOrderById(int workOrderId, int userId)
         {
@@ -141,6 +138,23 @@ namespace Germadent.WebApi.Controllers.Rma
                 if (notificationDto != null)
                     _hubContext.Clients.All.SendAsync("OrderStatusChanged", notificationDto.SerializeToJson());
                 return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                return BadRequest(exception);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetWorksByWorkOrder/{workOrderId}")]
+        public IActionResult GetWorksByWorkOrder(int workOrderId)
+        {
+            try
+            {
+                _logger.Info(nameof(GetWorksByWorkOrder));
+                var works = _rmaDbOperations.GetAllWorksByWorkOrder(workOrderId);
+                return Ok(works);
             }
             catch (Exception exception)
             {

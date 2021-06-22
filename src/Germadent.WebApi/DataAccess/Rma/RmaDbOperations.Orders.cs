@@ -82,7 +82,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 ChangeWorkOrderStatusImpl(transaction, workOrderId, userId, OrderStatus.Closed));
         }
 
-        public WorkDto[] GetWorksByWorkOrder(int workOrderId, int userId)
+        public WorkDto[] GetRelevantOperations(int workOrderId, int userId)
         {
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -124,6 +124,24 @@ namespace Germadent.WebApi.DataAccess.Rma
             return ExecuteInTransactionScope(transaction => GetWorksInProgressByWorkOrderImpl(transaction, workOrderId, userId));
         }
 
+        public WorkDto[] GetAllWorksByWorkOrder(int workOrderId)
+        {
+            return ExecuteInTransactionScope(transaction => GetAllWorksByWorkOrderImpl(transaction, workOrderId));
+        }
+
+        private WorkDto[] GetAllWorksByWorkOrderImpl(SqlTransaction transaction, int workOrderId)
+        {
+            var cmdText = $"select * from GetWorkListByWOId({workOrderId}, default)";
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
+            {
+                command.Transaction = transaction;
+                using (var reader = command.ExecuteReader())
+                {
+                    return GetWorksFromReader(reader);
+                }
+            }
+        }
+
         private WorkDto[] GetWorksInProgressByWorkOrderImpl(SqlTransaction transaction, int workOrderId, int? userId)
         {
             var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId == null ? "NULL" : userId.Value.ToString());
@@ -132,33 +150,38 @@ namespace Germadent.WebApi.DataAccess.Rma
                 command.Transaction = transaction;
                 using (var reader = command.ExecuteReader())
                 {
-                    var worksCollection = new List<WorkDto>();
-                    while (reader.Read())
-                    {
-                        var work = new WorkDto
-                        {
-                            WorkOrderId = reader["WorkOrderId"].ToInt(),
-                            WorkId = reader["WorkId"].ToInt(),
-                            ProductId = reader["ProductId"].ToIntOrNull(),
-                            ProductName = reader["ProductName"].ToString(),
-                            TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
-                            TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
-                            TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
-                            UserIdStarted = reader["UserIdStarted"].ToInt(),
-                            UserFullNameStarted = reader["UserFullNameStarted"].ToString(),
-                            Rate = reader["Rate"].ToDecimal(),
-                            Quantity = reader["Quantity"].ToInt(),
-                            UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
-                            OperationCost = reader["OperationCost"].ToDecimal(),
-                            WorkStarted = reader["WorkStarted"].ToDateTime(),
-                            WorkCompleted = reader["WorkCompleted"].ToDateTimeOrNull(),
-                            Comment = reader["Comment"].ToString()
-                        };
-                        worksCollection.Add(work);
-                    }
-                    return worksCollection.ToArray();
+                    return GetWorksFromReader(reader);
                 }
             }
+        }
+
+        private static WorkDto[] GetWorksFromReader(IDataReader reader)
+        {
+            var worksCollection = new List<WorkDto>();
+            while (reader.Read())
+            {
+                var work = new WorkDto
+                {
+                    WorkOrderId = reader["WorkOrderId"].ToInt(),
+                    WorkId = reader["WorkId"].ToInt(),
+                    ProductId = reader["ProductId"].ToIntOrNull(),
+                    ProductName = reader["ProductName"].ToString(),
+                    TechnologyOperationId = reader["TechnologyOperationId"].ToInt(),
+                    TechnologyOperationUserCode = reader["TechnologyOperationUserCode"].ToString(),
+                    TechnologyOperationName = reader["TechnologyOperationName"].ToString(),
+                    UserIdStarted = reader["UserIdStarted"].ToInt(),
+                    UserFullNameStarted = reader["UserFullNameStarted"].ToString(),
+                    Rate = reader["Rate"].ToDecimal(),
+                    Quantity = reader["Quantity"].ToInt(),
+                    UrgencyRatio = reader["UrgencyRatio"].ToFloat(),
+                    OperationCost = reader["OperationCost"].ToDecimal(),
+                    WorkStarted = reader["WorkStarted"].ToDateTime(),
+                    WorkCompleted = reader["WorkCompleted"].ToDateTimeOrNull(),
+                    Comment = reader["Comment"].ToString()
+                };
+                worksCollection.Add(work);
+            }
+            return worksCollection.ToArray();
         }
 
         public OrderStatusNotificationDto StartWorks(WorkDto[] works)
@@ -311,10 +334,12 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         }
 
+        // TODO: Transcation scope
         public OrderDto GetOrderDetails(int workOrderId, int userId)
         {
             var orderDto = GetWorkOrderById(workOrderId);
             orderDto.ToothCard = GetToothCard(workOrderId, orderDto.Stl);
+            orderDto.Works = GetAllWorksByWorkOrder(workOrderId);
 
             LockWorkOrder(workOrderId, userId);
 

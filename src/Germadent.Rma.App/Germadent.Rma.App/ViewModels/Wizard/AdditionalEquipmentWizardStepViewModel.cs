@@ -2,9 +2,11 @@
 using System.Linq;
 using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Repository;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Rma.App.ServiceClient.Repository;
+using Germadent.Rma.App.ViewModels.Salary;
 
 namespace Germadent.Rma.App.ViewModels.Wizard
 {
@@ -29,6 +31,8 @@ namespace Germadent.Rma.App.ViewModels.Wizard
         public ObservableCollection<AdditionalEquipmentViewModel> Equipments { get; } = new ObservableCollection<AdditionalEquipmentViewModel>();
 
         public ObservableCollection<AttributeViewModel> Attributes { get; } = new ObservableCollection<AttributeViewModel>();
+
+        public ObservableCollection<WorkViewModel> Works { get; } = new ObservableCollection<WorkViewModel>();
         
         public string WorkDescription
         {
@@ -79,6 +83,12 @@ namespace Germadent.Rma.App.ViewModels.Wizard
                 
                 var attributeViewModel = new AttributeViewModel(attributeGroup.First().AttributeName, selectedValue == null ? 0 : selectedValue.AttributeValueId, attributeGroup.ToArray());
                 Attributes.Add(attributeViewModel);
+            }
+
+            Works.Clear();
+            foreach (var work in order.Works)
+            {
+                Works.Add(new WorkViewModel(work));
             }
 
             _workAccepted = order.WorkAccepted;

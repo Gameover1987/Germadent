@@ -74,7 +74,7 @@ namespace Germadent.Model.Production
         /// <summary>
         /// ФИО исполнителя, закончившего технологическую операцию
         /// </summary>
-        public string? UserFullNameCompleted { get; set; }
+        public string UserFullNameCompleted { get; set; }
 
         /// <summary>
         /// Расценка за 1 операцию

@@ -121,7 +121,7 @@
             <TextBlock Text="Работа с заказ-нарядами" VerticalAlignment="Center" Margin="0,24,0,0" FontSize="10"/>
             <Button Content="Настроить фильтр" Margin="0,6,0,0"
                     Command="{Binding FilterOrdersCommand}"/>
-            <Button Content="Редактировать З-Н" Margin="0,6,0,0"
+            <Button Content="Открыть З-Н" Margin="0,6,0,0"
                     Command="{Binding OpenOrderCommand}"/>
             <Button Content="Закрыть З-Н" Margin="0,6,0,0"
                     Command="{Binding CloseOrderCommand}"/>
@@ -179,7 +179,7 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.Tag}">
-                                <MenuItem Header="Редактировать" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
+                                <MenuItem Header="Открыть" FontWeight="Bold" Command="{Binding OpenOrderCommand}"
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Распечатать" Command="{Binding PrintOrderCommand}"
                                           InputGestureText="Ctrl+P"/>

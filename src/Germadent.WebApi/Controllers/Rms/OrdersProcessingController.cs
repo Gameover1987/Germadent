@@ -25,13 +25,13 @@ namespace Germadent.WebApi.Controllers.Rms
             _hubContext = hubContext;
         }
 
-        [HttpGet("GetWorksByWorkOrder/{workOrderId}/{userId}")]
+        [HttpGet("GetRelevantOperations/{workOrderId}/{userId}")]
         public IActionResult GetWorksByWorkOrder(int workOrderId, int userid)
         {
             try
             {
                 _logger.Info(nameof(GetWorksByWorkOrder));
-                var operations = _rmaDbOperations.GetWorksByWorkOrder(workOrderId, userid);
+                var operations = _rmaDbOperations.GetRelevantOperations(workOrderId, userid);
                 return Ok(operations);
             }
             catch (Exception exception)

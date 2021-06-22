@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Data;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.Reporting.PropertyGrid;
+using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Production;
@@ -55,7 +56,7 @@ namespace Germadent.Rms.App.ViewModels
                 PropertyItems.Add(propertyItem);
             }
 
-            var works = _rmsServiceClient.GetWorksByWorkOrder(_order.WorkOrderId);
+            var works = _rmsServiceClient.GetRelevantOperations(_order.WorkOrderId);
             Works.Clear();
             foreach (var technologyOperationByUserDto in works)
             {

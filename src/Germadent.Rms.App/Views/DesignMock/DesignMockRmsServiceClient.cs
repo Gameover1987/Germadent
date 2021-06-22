@@ -9,7 +9,7 @@ namespace Germadent.Rms.App.Views.DesignMock
 {
     public class DesignMockRmsServiceClient : IRmsServiceClient
     {
-        public WorkDto[] GetWorksByWorkOrder(int workOrderId)
+        public WorkDto[] GetRelevantOperations(int workOrderId)
         {
             return new WorkDto[0];
         }
@@ -63,6 +63,11 @@ namespace Germadent.Rms.App.Views.DesignMock
         }
 
         public byte[] GetTemplate(DocumentTemplateType documentTemplateType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public WorkDto[] GetWorksByWorkOrder(int workOrderId)
         {
             throw new NotImplementedException();
         }

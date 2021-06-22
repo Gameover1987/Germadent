@@ -1,4 +1,5 @@
 ﻿using System;
+using Germadent.Model.Production;
 
 namespace Germadent.Model
 {
@@ -87,5 +88,7 @@ namespace Germadent.Model
         public UserDto LockedBy { get; set; }
 
         public DateTime LockDate { get; set; }
+
+        public WorkDto[] Works { get; set; }
     }
 }

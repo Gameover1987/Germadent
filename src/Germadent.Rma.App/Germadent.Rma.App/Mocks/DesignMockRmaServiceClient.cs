@@ -300,6 +300,11 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
+        public WorkDto[] GetWorksByWorkOrder(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
             var groups = new PriceGroupDto[]

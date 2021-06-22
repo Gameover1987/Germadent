@@ -7,7 +7,7 @@
              xmlns:wizard="clr-namespace:Germadent.Rma.App.ViewModels.Wizard"
              xmlns:model1="clr-namespace:Germadent.Model;assembly=Germadent.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="450" d:DesignWidth="1200"
              d:DataContext="{d:DesignInstance Type=designMock:DesignMockAdditionalEquipmentWizardStepViewModel, IsDesignTimeCreatable=True}">
     <Grid IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Дополнительная оснастка" FontSize="10"/>
-            <DataGrid Grid.Row="1" Grid.Column="0" IsReadOnly="False" Margin="0,6,0,0" Width="300"
+            <DataGrid Grid.Row="1" Grid.Column="0" IsReadOnly="False" Margin="0,6,0,0" Width="250"
                       ItemsSource="{Binding Equipments}"
                       AlternationCount="2">
                 <DataGrid.Columns>
@@ -44,9 +44,11 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-      
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -70,8 +72,8 @@
                                 <TextBlock Grid.Column="0" Text="{Binding AttributeName}" VerticalAlignment="Center"/>
 
                                 <ComboBox Grid.Column="1" Margin="6,0,0,0" 
-                                      ItemsSource="{Binding Values}"
-                                      SelectedItem="{Binding SelectedValue}">
+                                          ItemsSource="{Binding Values}"
+                                          SelectedItem="{Binding SelectedValue}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate DataType="{x:Type model1:AttributeDto}">
                                             <TextBlock Text="{Binding AttributeValue}"/>
@@ -80,18 +82,52 @@
                                 </ComboBox>
 
                                 <Button Grid.Column="2" Style="{StaticResource XButtonStyle}" Height="15" Width="15" Background="Transparent" 
-                                    Command="{Binding CleanupCommand}"
-                                    ToolTip="Очистить" Margin="6,0,0,0"/>
+                                        Command="{Binding CleanupCommand}"
+                                        ToolTip="Очистить" Margin="6,0,0,0"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <TextBlock Grid.Row="2" Text="Описание работ" FontSize="10" Margin="12,0,0,0"/>
-            <TextBox Grid.Row="3" Height="60" VerticalAlignment="Bottom" Margin="12,6,6,0" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" 
+
+            <TextBlock Grid.Row="2" Margin="12,12,0,0" Text="Список работ" FontSize="10"/>
+            <DataGrid Grid.Row="3" Margin="12,6,0,0" 
+                      AlternationCount="2"
+                      ItemsSource="{Binding Works}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Код" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}" 
+                                        Binding="{Binding UserCode}"/>
+                    <DataGridTextColumn Header="Название операции" Width="*" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding DisplayName}"/>
+                    <DataGridTextColumn Header="Изделие" Width="*" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding ProductName}"/>
+                    <DataGridTextColumn Header="Кол-во" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding ProductCount}"/>
+                    <DataGridTextColumn Header="Исполнитель" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding UserFullName}"/>
+                    <DataGridTextColumn Header="Начата" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkStarted, StringFormat='dd.MM.yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
+                    <DataGridTextColumn Header="Закончена" Width="Auto" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding WorkCompleted, StringFormat='dd.MM.yyyy HH:mm:ss', ConverterCulture='ru-RU'}"/>
+                    <DataGridTextColumn Header="Комментарий" Width="Auto" MinWidth="100" 
+                                        ElementStyle="{StaticResource DataGridTextBlockStyle}"
+                                        Binding="{Binding Comment}">
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Grid.Row="4" Text="Описание работ" FontSize="10" Margin="12,6,0,0"/>
+            <TextBox Grid.Row="5" Height="80" VerticalAlignment="Bottom" Margin="12,6,0,0" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" 
                      VerticalScrollBarVisibility="Auto"
                      Text="{Binding WorkDescription, UpdateSourceTrigger=PropertyChanged}"/>
-            <CheckBox Grid.Row="4" Content="Согласование работ" Margin="12,6,0,0"
+            <CheckBox Grid.Row="6" Content="Согласование работ" Margin="12,6,0,0"
                       IsChecked="{Binding WorkAccepted}"/>
         </Grid>
     </Grid>
