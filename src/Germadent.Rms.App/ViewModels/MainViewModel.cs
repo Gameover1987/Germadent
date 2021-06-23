@@ -31,6 +31,7 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IOrdersFilterViewModel _ordersFilterViewModel;
         private readonly IStartWorkListViewModel _startWorkListViewModel;
         private readonly IFinishWorkListViewModel _finishWorkListViewModel;
+        private readonly IOrderDetailsViewModel _orderDetailsViewModel;
         private readonly ISignalRClient _signalRClient;
         private readonly IPrintModule _printModule;
         private OrderLiteViewModel _selectedOrder;
@@ -48,6 +49,7 @@ namespace Germadent.Rms.App.ViewModels
             IOrdersFilterViewModel ordersFilterViewModel,
             IStartWorkListViewModel startWorkListViewModel,
             IFinishWorkListViewModel finishWorkListViewModel,
+            IOrderDetailsViewModel orderDetailsViewModel,
             ISignalRClient signalRClient,
             IPrintModule printModule)
         {
@@ -59,12 +61,13 @@ namespace Germadent.Rms.App.ViewModels
             _ordersFilterViewModel = ordersFilterViewModel;
             _startWorkListViewModel = startWorkListViewModel;
             _finishWorkListViewModel = finishWorkListViewModel;
+            _orderDetailsViewModel = orderDetailsViewModel;
             _signalRClient = signalRClient;
             _printModule = printModule;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
             _signalRClient.WorkOrderStatusChanged += SignalRClientOnWorkOrderStatusChanged;
 
-            _ordersView = (ListCollectionView)CollectionViewSource.GetDefaultView(Orders);
+            _ordersView = (ListCollectionView) CollectionViewSource.GetDefaultView(Orders);
             _ordersView.CustomSort = new OrderLiteComparerByDateTime();
             _ordersView.Filter = Filter;
 
@@ -76,14 +79,14 @@ namespace Germadent.Rms.App.ViewModels
             PrintOrderCommand = new DelegateCommand(x => PrintOrderCommandHandler(), x => CanPrintOrderCommandHandler());
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
-            ShowWorkListByWorkOrderCommand = new DelegateCommand(ShowWorkListByWorkOrderCommandHandler, CanShowWorkListByWorkOrderCommandHandler);
+            ShowOrderDetailsCommand = new DelegateCommand(ShowOrderDetailsCommandHandler, CanShowOrderDetailsCommandHandler);
 
             CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);
         }
 
         private bool Filter(object obj)
         {
-            var order = (OrderLiteViewModel)obj;
+            var order = (OrderLiteViewModel) obj;
             if (order.Status == OrderStatus.Closed)
                 return false;
 
@@ -140,7 +143,7 @@ namespace Germadent.Rms.App.ViewModels
 
         public IDelegateCommand RealizeWorkOrderCommand { get; }
 
-        public IDelegateCommand ShowWorkListByWorkOrderCommand { get; }
+        public IDelegateCommand ShowOrderDetailsCommand { get; }
 
         public IDelegateCommand FilterOrdersCommand { get; }
 
@@ -206,7 +209,7 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanPrintOrderCommandHandler()
         {
-            return SelectedOrder != null;
+            return SelectedOrder != null && !SelectedOrder.IsLocked;
         }
 
         private void PrintOrderCommandHandler()
@@ -219,8 +222,14 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanBeginWorksByWorkOrderCommandHandler()
         {
-            return SelectedOrder != null && (SelectedOrder.Status == OrderStatus.Created ||
-                                             SelectedOrder.Status == OrderStatus.InProgress);
+            if (SelectedOrder == null)
+                return false;
+            
+            if (SelectedOrder.IsLocked)
+                return false;
+            
+            return SelectedOrder.Status == OrderStatus.Created || 
+                   SelectedOrder.Status == OrderStatus.InProgress;
         }
 
         private void BeginWorksByWorkOrderCommandHandler()
@@ -238,7 +247,13 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanFinishWorksByWorkOrderCommandHandler()
         {
-            return SelectedOrder != null && SelectedOrder.Status == OrderStatus.InProgress;
+            if (SelectedOrder == null)
+                return false;
+            
+            if (SelectedOrder.IsLocked)
+                return false;
+            
+            return SelectedOrder.Status == OrderStatus.InProgress;
         }
 
         private void FinishWorkByWorkOrderCommandHandler()
@@ -256,6 +271,12 @@ namespace Germadent.Rms.App.ViewModels
 
         private bool CanRealizeWorkOrderCommandHandler()
         {
+            if (SelectedOrder == null)
+                return false;
+            
+            if (SelectedOrder.IsLocked)
+                return false;
+            
             if (!CanQualityControl)
                 return false;
 
@@ -288,14 +309,15 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
-        private bool CanShowWorkListByWorkOrderCommandHandler()
+        private bool CanShowOrderDetailsCommandHandler()
         {
             return SelectedOrder != null && !SelectedOrder.IsLocked;
         }
 
-        private void ShowWorkListByWorkOrderCommandHandler()
+        private void ShowOrderDetailsCommandHandler()
         {
-
+            _orderDetailsViewModel.Initialize(SelectedOrder.WorkOrderId);
+            _dialogAgent.ShowDialog<OrderDetailsWindow>(_orderDetailsViewModel);
         }
 
         private void SignalRClientOnWorkOrderLockedOrUnlocked(object sender, OrderLockedEventArgs e)

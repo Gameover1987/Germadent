@@ -17,9 +17,9 @@ namespace Germadent.Rms.App.Views
     /// <summary>
     /// Логика взаимодействия для AllWorksWindow.xaml
     /// </summary>
-    public partial class AllWorksWindow : Window
+    public partial class OrderDetailsWindow : Window
     {
-        public AllWorksWindow()
+        public OrderDetailsWindow()
         {
             InitializeComponent();
         }

@@ -81,6 +81,7 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<IOrdersFilterViewModel, OrdersFilterViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IStartWorkListViewModel, StartWorkListViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IFinishWorkListViewModel, FinishWorkListViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrderDetailsViewModel, OrderDetailsViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
             
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());

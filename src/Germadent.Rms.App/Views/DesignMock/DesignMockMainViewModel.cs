@@ -77,6 +77,7 @@ namespace Germadent.Rms.App.Views.DesignMock
                 new DesignMockOrdersFilterViewModel(), 
                 new DesignMockStartWorkListViewModelViewModel(), 
                 new DesignMockFinishWorkListViewModel(), 
+                new DesignMockOrderDetailsViewModel(),
                 new DesignMockSignalRClient(),
                 new DesignMockPrintModule())
         {

@@ -53,6 +53,8 @@
                     Command="{Binding BeginWorkByWorkOrderCommand}"/>
             <Button Content="Закончить работы по З-Н" Margin="0,6,0,0"
                     Command="{Binding FinishWorkByWorkOrderCommand}"/>
+            <Button Content="Показать З-Н" Margin="0,6,0,0"
+                    Command="{Binding ShowOrderDetailsCommand}"/>
             <Button Content="Подтвердить прохождение контроля" Margin="0,6,0,0"
                     Visibility="{Binding CanQualityControl, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding RealizeWorkOrderCommand}"/>
@@ -97,8 +99,8 @@
                                           InputGestureText="Enter"/>
                                 <MenuItem Header="Закончить работы"
                                           Command="{Binding FinishWorkByWorkOrderCommand}"/>
-                                <MenuItem Header="Показать список работ"
-                                          Command="{Binding ShowWorkListByWorkOrderCommand}"/>
+                                <MenuItem Header="Показать заказ-наряд"
+                                          Command="{Binding ShowOrderDetailsCommand}"/>
                                 <MenuItem Header="Подтвердить прохождение контроля"
                                           Command="{Binding RealizeWorkOrderCommand}"/>
                                 <Separator/>
