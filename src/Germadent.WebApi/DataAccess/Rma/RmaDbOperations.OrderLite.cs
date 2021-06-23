@@ -56,7 +56,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private string GetFilterCommandText(OrdersFilter filter)
         {
-            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, default, default, @jsonStringStatus)";
+            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus)";
             var cmdTextAdditional = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
 
             if (filter.Materials.Length == 0)
