@@ -17,4 +17,10 @@ namespace Germadent.Rms.App.ViewModels
 
         WorkDto[] GetWorks();
     }
+
+    public interface IAllWorkListViewModel
+    {
+        void Initialize(OrderDto orderDto);
+        WorkDto[] GetWorks();
+    }
 }

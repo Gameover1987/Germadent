@@ -25,6 +25,7 @@ namespace Germadent.Model
             UrgencyRatio = NormalUrgencyRatio;
             Cashless = true;
             Stl = true;
+            Works = new WorkDto[0];
         }
 
         public int WorkOrderId { get; set; }
