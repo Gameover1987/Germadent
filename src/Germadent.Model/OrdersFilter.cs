@@ -57,7 +57,7 @@ namespace Germadent.Model
 
         public OrderStatus[] Statuses { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public static OrdersFilter CreateDefault()
         {

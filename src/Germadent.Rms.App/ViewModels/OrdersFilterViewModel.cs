@@ -8,6 +8,7 @@ using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
 using Germadent.Common.Logging;
 using Germadent.Model;
+using Germadent.Rms.App.ServiceClient;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 
@@ -17,6 +18,7 @@ namespace Germadent.Rms.App.ViewModels
     {
         private readonly IDictionaryRepository _dictionaryRepository;
         private readonly ILogger _logger;
+        private readonly IRmsServiceClient _rmsServiceClient;
 
         private bool _millingCenter;
         private bool _laboratory;
@@ -34,11 +36,13 @@ namespace Germadent.Rms.App.ViewModels
         private bool _showQualityControl;
         private bool _showRealization;
         private bool _showClosed;
+        private bool _showOnlyMyOrders;
 
-        public OrdersFilterViewModel(IDictionaryRepository dictionaryRepository, ILogger logger)
+        public OrdersFilterViewModel(IDictionaryRepository dictionaryRepository, ILogger logger, IRmsServiceClient rmsServiceClient)
         {
             _dictionaryRepository = dictionaryRepository;
             _logger = logger;
+            _rmsServiceClient = rmsServiceClient;
 
             _millingCenter = true;
             _laboratory = true;
@@ -196,6 +200,18 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
+        public bool ShowOnlyMyOrders
+        {
+            get { return _showOnlyMyOrders; }
+            set
+            {
+                if (_showOnlyMyOrders == value)
+                    return;
+                _showOnlyMyOrders = value;
+                OnPropertyChanged(() => ShowOnlyMyOrders);
+            }
+        }
+
         public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
         public ObservableCollection<string> ValidationErrors { get; } = new ObservableCollection<string>();
@@ -278,7 +294,8 @@ namespace Germadent.Rms.App.ViewModels
                 Doctor = Doctor,
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray(),
-                Statuses = statuses.ToArray()
+                Statuses = statuses.ToArray(),
+                UserId = ShowOnlyMyOrders ? _rmsServiceClient.AuthorizationInfo.UserId : (int?) null
             };
             return filter;
         }
@@ -313,6 +330,7 @@ namespace Germadent.Rms.App.ViewModels
                 ShowRealization = filter.Statuses.Any(x => x == OrderStatus.Realization);
                 ShowClosed = filter.Statuses.Any(x => x == OrderStatus.Closed);
 
+                ShowOnlyMyOrders = filter.UserId == _rmsServiceClient.AuthorizationInfo.UserId;
             }
             catch (Exception e)
             {

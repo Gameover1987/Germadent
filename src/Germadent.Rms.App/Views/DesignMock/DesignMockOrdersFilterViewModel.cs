@@ -43,7 +43,7 @@ namespace Germadent.Rms.App.Views.DesignMock
 
     public class DesignMockOrdersFilterViewModel : OrdersFilterViewModel
     {
-        public DesignMockOrdersFilterViewModel() : base(new DesignMockDictionaryRepository(), new DesignMockLogger())
+        public DesignMockOrdersFilterViewModel() : base(new DesignMockDictionaryRepository(), new DesignMockLogger(), new DesignMockRmsServiceClient())
         {
             MillingCenter = true;
             Laboratory = true;
@@ -52,6 +52,7 @@ namespace Germadent.Rms.App.Views.DesignMock
             Customer = "Какой то заказчик";
             Doctor = "Какой то сотрудник";
             Patient = "Какой то пациент";
+            ShowOnlyMyOrders = true;
         }
     }
 }

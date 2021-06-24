@@ -48,6 +48,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@jsonStringStatus", SqlDbType.NVarChar)).Value = statusesJson;
                     command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
+                    command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar)).Value = filter.UserId.GetValueOrDbNull();
 
                     return GetOrderLiteCollectionFromReader(command, users);
                 }
