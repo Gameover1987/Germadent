@@ -84,3 +84,7 @@ src/Germadent.Client.Common/bin/
 src/Germadent.Client.Common/obj/
 src/Germadent.Model/obj/
 src/Germadent.Model/bin/
+src/Germadent.WebApi/Properties/PublishProfiles/
+src/Germadent.Rma.App/Germadent.Rma.App/Properties/PublishProfiles/
+src/Germadent.Rms.App/Properties/PublishProfiles/
+src/Germadent.Rma.App/Germadent.Rma.App/Germadent.Rma.App.csproj.user
