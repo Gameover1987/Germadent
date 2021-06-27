@@ -75,7 +75,7 @@ RETURN
 	SELECT teop.*, codes.ProductID, codes.ProductName, codes.ProductCount, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, teop.Rate * codes.ProductCount * dbo.GetUrgencyRatioForWO(@workOrderId) AS OperationCost
 	FROM teop, codes
 	WHERE codes.ProductName NOT LIKE '%Реализация%'
-		AND LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL
+		AND (LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL)
 
 	-- Исключаем из перечня те операции, что уже выбраны для выполнения
 	EXCEPT

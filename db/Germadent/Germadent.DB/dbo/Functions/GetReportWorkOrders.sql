@@ -49,48 +49,48 @@ WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNU
 ),
 
 -- Тащим работы моделировщика
-modelWorks(WorkOrderID, ProductID, ModellerRate, Employee, EmployeePositionID) AS
+modelWorks(WorkOrderID, ProductID, ModellerCost, EmployeePositionID) AS
 (
-SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+SELECT wl.WorkOrderID, wl.ProductID, SUM(wl.OperationCost), teop.EmployeePositionID
 FROM WorkList wl
 	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
 	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
-	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
 	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
 WHERE EmployeePositionID = 2
 	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+GROUP BY wl.WorkOrderID, wl.ProductID, teop.EmployeePositionID
 ),
 
 -- Тащим работы техника
-techWorks(WorkOrderID, ProductID, TechnicRate, Employee, EmployeePositionID) AS
+techWorks(WorkOrderID, ProductID, TechnicCost, EmployeePositionID) AS
 (
-SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+SELECT wl.WorkOrderID, wl.ProductID, SUM(wl.OperationCost), teop.EmployeePositionID
 FROM WorkList wl
 	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
 	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
-	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
 	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
 WHERE EmployeePositionID = 3
 	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+GROUP BY wl.WorkOrderID, wl.ProductID, teop.EmployeePositionID
 ),
 
 -- Тащим работы оператора
-operWorks(WorkOrderID, ProductID, OperatorRate, Employee, EmployeePositionID) AS
+operWorks(WorkOrderID, ProductID, OperatorCost, EmployeePositionID) AS
 (
-SELECT wl.WorkOrderID, wl.ProductID, wl.Rate * wo.UrgencyRatio, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS Employee, teop.EmployeePositionID
+SELECT wl.WorkOrderID, wl.ProductID, SUM(wl.OperationCost), teop.EmployeePositionID
 FROM WorkList wl
 	INNER JOIN WorkOrder wo ON wl.WorkOrderID = wo.WorkOrderID
 	INNER JOIN TechnologyOperations teop ON wl.TechnologyOperationID = teop.TechnologyOperationID
-	INNER JOIN Users u ON wl.EmployeeIDStarted = u.UserID
 	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
 WHERE EmployeePositionID = 4
 	AND created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+GROUP BY wl.WorkOrderID, wl.ProductID, teop.EmployeePositionID
 ),
 
 -- Соединяем это с основной выборкой...
-ord (		Created,				DocNumber,			CustomerName, EquipmentName, PatientFullName, ProductName,	  MaterialName,		 Color, Modeller, ModellerRate, Technic, TechnicRate, Operator, OperatorRate, ImplantSystem, Cashless, Cash) AS
+ord (		Created,				WorkOrderID,		DocNumber,		CustomerName, EquipmentName, PatientFullName, ProductID, ProductName,	  MaterialName,		 Color, ImplantSystem, Cashless, Cash) AS
 (
-SELECT  created.CreateDateTime,	wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, p.ProductName,  m.MaterialName, cs.Color, modelWorks.Employee, modelWorks.ModellerRate, techWorks.Employee, techWorks.TechnicRate, operWorks.Employee, operWorks.OperatorRate, ims.ImplantSystem,
+SELECT  created.CreateDateTime, wo.WorkOrderID, 	wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, p.ProductID, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
 	CASE wo.FlagCashless WHEN 1 THEN tc.Price END Cashless,
 	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash
 FROM dbo.WorkOrder wo
@@ -104,35 +104,34 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.Equipments e ON ae.EquipmentID = e.EquipmentID
 	LEFT JOIN cs ON cs.WorkOrderID = wo.WorkOrderID
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
-	LEFT JOIN modelWorks ON modelWorks.WorkOrderID = wo.WorkOrderID
-	LEFT JOIN techWorks ON techWorks.WorkOrderID = wo.WorkOrderID AND techWorks.ProductID = tc.ProductID
-	LEFT JOIN operWorks ON operWorks.WorkOrderID = wo.WorkOrderID AND operWorks.ProductID = tc.ProductID
 WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
 	AND (wo.WorkOrderID IN (SELECT OrderId FROM OPENJSON (@jsonStringWOId) WITH (OrderId int)) OR @jsonStringWOId IS NULL)
-)
+),
 -- ... и агрегируем
-SELECT
-FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') AS Created,
-DocNumber, 
-CustomerName, 
-ISNULL(EquipmentName, '') EquipmentName,
-ISNULL(PatientFullName, '') PatientFullName,
-ProductName, 
-ISNULL(MaterialName, '') MaterialName,
-ISNULL(Color, '') Color,
-COUNT(ProductName) Quantity,
-'' E1,
-ISNULL(Modeller, '') Modeller,
-ISNULL(SUM(ModellerRate), 0) ModellerCost,
-ISNULL(Technic, '') Technic,
-ISNULL(SUM(TechnicRate), 0) TechnicCost,
-ISNULL(Operator, '') Operator,
-ISNULL(SUM(OperatorRate), 0) OperatorCost,
-ISNULL(ImplantSystem, '') ImplantSystem,
-ISNULL(SUM(Cashless), 0) Cashless, 
-ISNULL(SUM(Cash), 0) Cash
+ordgrp (Created, WorkOrderID, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductID, ProductName, MaterialName, Color, Quantity, ImplantSystem, Cashless, Cash) AS 
+(SELECT Created, WorkOrderID, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductID, ProductName, MaterialName, Color, COUNT(ProductName), ImplantSystem, SUM(Cashless) Cashless, SUM(Cash) Cash
 FROM ord
-GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName,  MaterialName, Color, Modeller, Technic, Operator, ImplantSystem
+GROUP BY Created, WorkOrderID, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductID, ProductName,  MaterialName, Color, ImplantSystem)
 
+-- Цепляем зарплату
+SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Created, 
+	DocNumber, 
+	CustomerName, 
+	ISNULL(EquipmentName, '') EquipmentName, 
+	ISNULL(PatientFullName, '') PatientFullName,
+	ProductName,
+	ISNULL(MaterialName, '') MaterialName, 
+	ISNULL(Color, '') Color, 
+	Quantity, 
+	ISNULL(ModellerCost, 0) ModellerCost, 
+	ISNULL(TechnicCost, 0) TechnicCost, 
+	ISNULL(OperatorCost, 0) OperatorCost, 
+	ISNULL(ImplantSystem, '') ImplantSystem, 
+	ISNULL(Cashless, 0) Cashless,
+	ISNULL(Cash, 0) Cash
+FROM ordgrp
+	LEFT JOIN modelWorks ON modelWorks.WorkOrderID = ordgrp.WorkOrderID AND modelWorks.ProductID = ordgrp.ProductID
+	LEFT JOIN techWorks ON techWorks.WorkOrderID = ordgrp.WorkOrderID AND techWorks.ProductID = ordgrp.ProductID
+	LEFT JOIN operWorks ON operWorks.WorkOrderID = ordgrp.WorkOrderID AND operWorks.ProductID = ordgrp.ProductID
 )
