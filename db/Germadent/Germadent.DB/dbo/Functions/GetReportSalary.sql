@@ -6,10 +6,10 @@
 CREATE FUNCTION [dbo].[GetReportSalary]
 (		
 	@userId int, 
-	@dateStartedFrom datetime,
-	@dateStartedTo datetime,
-	@dateCompletedFrom datetime,
-	@dateCompletedTo datetime
+	--@dateCompletedFrom datetime,
+	--@dateCompletedTo datetime,
+	@dateStatusFrom datetime,
+	@dateStatusTo datetime
 )
 RETURNS TABLE 
 AS
@@ -52,6 +52,6 @@ RETURN
 		LEFT JOIN Products p ON wl.ProductID = p.ProductID
 	WHERE wl.EmployeeIDStarted = ISNULL(@userId, wl.EmployeeIDStarted)
 		AND ((wo.BranchTypeID = 2 AND currentStatus.Status = 100) OR (wo.BranchTypeID = 1 AND currentStatus.Status > 89))
-		AND wl.WorkStarted BETWEEN ISNULL(@dateStartedFrom, '17530101') AND ISNULL(@dateStartedTo, '99991231')
-		AND wl.WorkCompleted BETWEEN ISNULL(@dateCompletedFrom, '17530101') AND ISNULL(@dateCompletedTo, '99991231')
+		--AND wl.WorkCompleted BETWEEN ISNULL(@dateCompletedFrom, '17530101') AND ISNULL(@dateCompletedTo, '99991231')
+		AND currentStatus.StatusChangeDateTime BETWEEN ISNULL(@dateStatusFrom, '17530101') AND ISNULL(@dateStatusTo, '99991231')
 )
