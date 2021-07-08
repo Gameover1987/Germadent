@@ -163,6 +163,10 @@
                     <Run Text="Итого:"/>
                     <Run Text="{Binding Salary, Mode=OneWay, StringFormat=C, ConverterCulture='ru-RU'}" FontWeight="SemiBold"/>
                 </TextBlock>
+                <TextBlock FontSize="14" Margin="60,0,0,0">
+                    <Run Text="Общее количество изделий:"/>
+                    <Run Text="{Binding TotalQuantity, Mode=OneWay}" FontWeight="SemiBold"/>
+                </TextBlock>
             </StackPanel>
 
             <Border Grid.Row="0" Grid.RowSpan="2" Background="{x:Static SystemColors.ControlBrush}"
