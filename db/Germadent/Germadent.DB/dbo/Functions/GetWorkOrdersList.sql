@@ -14,8 +14,7 @@ CREATE FUNCTION [dbo].[GetWorkOrdersList]
 	, @doctorFullName nvarchar(150) = NULL
 	, @createDateFrom datetime = NULL
 	, @createDateTo datetime = NULL
-	, @closeDateFrom datetime = NULL
-	, @closeDateTo datetime = NULL
+	, @userId int = NULL
 	, @jsonStringStatus nvarchar(max) = NULL --'[{"StatusName": "Формируется"}]'
 )
 RETURNS TABLE 
@@ -70,4 +69,5 @@ RETURN
 				OR (rp.ResponsiblePerson IS NULL AND @doctorFullName IS NULL))
 		AND (swozero.StatusChangeDateTime BETWEEN ISNULL(@createDateFrom, '17530101') AND ISNULL(@createDateTo, '99991231'))
 		AND (se.Status IN (SELECT StatusNumber FROM OPENJSON(@jsonStringStatus) WITH (StatusNumber int)) OR @jsonStringStatus IS NULL)
+		AND (wo.WorkOrderID IN (SELECT DISTINCT WorkOrderID FROM WorkList wl WHERE wl.EmployeeIDStarted = @userId) OR @userId IS NULL)
 )

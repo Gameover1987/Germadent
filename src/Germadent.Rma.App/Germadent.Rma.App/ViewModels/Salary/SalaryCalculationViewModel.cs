@@ -60,6 +60,10 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         public ObservableCollection<WorkViewModel> Works { get; } = new ObservableCollection<WorkViewModel>();
 
+        public int TotalQuantity
+        {
+            get { return Works.Sum(x => x.Quantity); }
+        }
         public decimal Salary
         {
             get { return Works.Sum(x => x.OperationCost); }
@@ -259,6 +263,7 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         private void WorksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            OnPropertyChanged(() => TotalQuantity);
             OnPropertyChanged(() => Salary);
         }
     }

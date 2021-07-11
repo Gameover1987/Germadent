@@ -14,6 +14,11 @@ namespace Germadent.Client.Common.Reporting
         
         public WorkDto[] Works { get; set; }
 
+        public int TotalQuantity
+        {
+            get { return Works.Sum(x => x.Quantity); }
+        }
+
         public decimal Salary
         {
             get { return Works.Sum(x => x.OperationCost); }

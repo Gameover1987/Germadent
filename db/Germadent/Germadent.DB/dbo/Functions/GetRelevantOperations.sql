@@ -12,7 +12,7 @@ RETURNS TABLE
 AS
 RETURN 
 (
-	-- Вытаскиваем все доступные для данного специалиста технологические операции вместе с актуальными расценками с учётом совмещения должностей	 и наличия премиум-расценки и премиум-цены
+	-- Вытаскиваем все доступные для данного специалиста технологические операции вместе с актуальными расценками с учётом совмещения должностей, наличия премиум-расценки и премиум-цены
 	WITH teop (UserID, 
 				UserFullName, 
 				EmployeePositionID,
@@ -57,9 +57,9 @@ RETURN
 	adlc (CodeMC, ProductID, ProductName, ProductCount) AS(
 		SELECT cc.CodeMC, codes.ProductID, codes.ProductName, codes.ProductCount
 		FROM dbo.CodesCompliance cc, codes
-		WHERE cc.CodeDL IN (SELECT LEFT(PricePositionCode, 3) FROM codes))
+		WHERE LEFT(PricePositionCode, 3) = CodeDL),
 			   		 
-
+	unitedTeOp AS (
 	-- Выводим совмещённые данные
 	SELECT teop.*, codes.ProductID, codes.ProductName, codes.ProductCount, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, teop.Rate * codes.ProductCount * dbo.GetUrgencyRatioForWO(@workOrderId) AS OperationCost
 	FROM teop, codes
@@ -75,13 +75,12 @@ RETURN
 	SELECT teop.*, codes.ProductID, codes.ProductName, codes.ProductCount, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, teop.Rate * codes.ProductCount * dbo.GetUrgencyRatioForWO(@workOrderId) AS OperationCost
 	FROM teop, codes
 	WHERE codes.ProductName NOT LIKE '%Реализация%'
-		AND LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL
+		AND (LEN(teop.TechnologyOperationUserCode) = 0 OR teop.TechnologyOperationUserCode IS NULL))
 
-	-- Исключаем из перечня те операции, что уже выбраны для выполнения
-	EXCEPT
-	SELECT teop.*, wl.ProductID, p.ProductName, wl.Quantity, dbo.GetUrgencyRatioForWO(@workOrderId) AS UrgencyRatio, wl.OperationCost
-	FROM dbo.WorkList wl 
-		INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID
-		INNER JOIN teop ON teop.TechnologyOperationID = wl.TechnologyOperationID
-	WHERE wl.WorkOrderID = @workOrderId
+-- Исключаем из перечня те операции, что уже выбраны для выполнения
+	SELECT *
+	FROM unitedTeOp
+	WHERE TechnologyOperationID NOT IN (SELECT TechnologyOperationID 
+										FROM WorkList 
+										WHERE WorkOrderID = @workOrderId)
 )

@@ -16,12 +16,12 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             using (var connection = CreateAndOpenSqlConnection())
             {
-                var cmdText = $"select * from dbo.GetReportSalary(@userId, null, null, @dateCompletedFrom, @dateCompletedTo)";
+                var cmdText = $"select * from dbo.GetReportSalary(@userId, @dateStatusFrom, @dateStatusTo)";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = salaryFilter.UserId.GetValueOrDbNull();
-                    command.Parameters.Add(new SqlParameter("@dateCompletedFrom", SqlDbType.DateTime)).Value = salaryFilter.DateFrom;
-                    command.Parameters.Add(new SqlParameter("@dateCompletedTo", SqlDbType.DateTime)).Value = salaryFilter.DateTo;
+                    command.Parameters.Add(new SqlParameter("@dateStatusFrom", SqlDbType.DateTime)).Value = salaryFilter.DateFrom;
+                    command.Parameters.Add(new SqlParameter("@dateStatusTo", SqlDbType.DateTime)).Value = salaryFilter.DateTo;
 
                     using (var reader = command.ExecuteReader())
                     {

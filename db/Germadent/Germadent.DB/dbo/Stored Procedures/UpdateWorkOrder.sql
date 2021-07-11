@@ -65,6 +65,10 @@ BEGIN
 			, FlagCashless = @flagCashless
 
 		WHERE WorkOrderID = @workOrderID
+
+		UPDATE dbo.WorkList
+		SET OperationCost = Rate * Quantity * (SELECT UrgencyRatio FROM dbo.WorkOrder WHERE WorkOrderID = @workOrderID)
+		WHERE WorkOrderID = @workOrderID
 		
 		EXEC dbo.AddOrUpdateToothCardInWO @workOrderID, @jsonToothCardString
 		EXEC dbo.AddOrUpdateAdditionalEquipmentInWO @workOrderID, @jsonEquipmentsString
