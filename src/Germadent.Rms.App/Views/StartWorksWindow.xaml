@@ -35,7 +35,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1" Grid.Column="0" Width="400" Margin="0,6,0,0"
+            <Grid Grid.Row="1" Grid.Column="0" Width="400" Margin="0,0,0,0"
                   IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -185,7 +185,7 @@
                     Command="{Binding OkCommand}"
                     IsDefault="True"/>
             <Button Content="Отмена" Width="100" Margin="6,0,0,0" helpers:WindowCloseHelper.DialogResult="False"
-                    IsCancel="False"/>
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>
