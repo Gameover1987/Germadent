@@ -20,7 +20,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
         {
-            var cmdText = GetFilterCommandText(filter);
+            var cmdText = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet)";
 
             var users = _umcDbOperations.GetUsers();
 
@@ -41,31 +41,21 @@ namespace Germadent.WebApi.DataAccess.Rma
 
                     var statusesJson = filter.Statuses.Select(x => new { StatusNumber = (int)x }).ToArray().SerializeToJson(Formatting.Indented);
 
+                    string materialsJson = null;
+                    if (filter.Materials.Any())
+                        materialsJson = filter.Materials.SerializeToJson();
                     command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@createDateFrom", SqlDbType.DateTime)).Value = filter.PeriodBegin.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@createDateTo", SqlDbType.DateTime)).Value = filter.PeriodEnd.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@jsonStringStatus", SqlDbType.NVarChar)).Value = statusesJson;
-                    command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = filter.Materials.SerializeToJson();
+                    command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = materialsJson.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar)).Value = filter.UserId.GetValueOrDbNull();
 
                     return GetOrderLiteCollectionFromReader(command, users);
                 }
             }
-        }
-
-        private string GetFilterCommandText(OrdersFilter filter)
-        {
-            var cmdTextDefault = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus)";
-            var cmdTextAdditional = $"WHERE WorkOrderID IN (SELECT * FROM GetWorkOrderIdForMaterialSelect(@materialSet))";
-
-            if (filter.Materials.Length == 0)
-            {
-                return cmdTextDefault;
-            }
-
-            return cmdTextDefault + cmdTextAdditional;
         }
 
         private OrderLiteDto[] GetOrderLiteCollectionFromReader(SqlCommand command, UserDto[] users)

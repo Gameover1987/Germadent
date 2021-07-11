@@ -82,6 +82,9 @@ namespace Germadent.Common.Extensions
             if (obj.ToString().IsNullOrWhiteSpace())
                 return DBNull.Value;
 
+            if (obj.SerializeToJson().IsNullOrEmpty())
+                return DBNull.Value;
+
             return obj;
         }
     }
