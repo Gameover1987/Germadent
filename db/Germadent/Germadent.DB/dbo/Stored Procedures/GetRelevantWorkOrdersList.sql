@@ -17,7 +17,7 @@ CREATE PROCEDURE [dbo].[GetRelevantWorkOrdersList]
 	, @userId int = NULL	
 	, @jsonStringStatus nvarchar(max) = NULL
 	, @materialSet nvarchar(max) = NULL
-	, @showTheirWO bit = 0
+	, @showOnlyMyOrders bit = 0
 )
 
 AS
@@ -28,18 +28,14 @@ BEGIN
 	DECLARE @employeePositionId int
 				
 	CREATE TABLE #positionsId (EmployeePositionId int)
-	-- Во временную таблицу закидываем набор должностей для сотрудинка
+	-- Во временную таблицу закидываем набор должностей для сотрудника
 	INSERT #positionsId
 	SELECT EmployeePositionID
 	FROM dbo.EmployeePositionsCombination
 	WHERE EmployeeID = @userId
 
-	
-	IF (SELECT COUNT(WorkOrderID) FROM dbo.GetWorkOrderIdForMaterialSelect(@materialSet)) = 0 
-		SET @materialSet = NULL
-
 	-- Показывать весь список з-н, а не только со своими работами
-	IF @showTheirWO = 0
+	IF @showOnlyMyOrders = 0
 		SET @userId = NULL		
 
 	-- Если нет совмещения должностей - смотрим, кому какой список заказ-нарядов показывать
@@ -50,29 +46,25 @@ BEGIN
 		IF @employeePositionId = 4 -- оператор
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
 		WHERE (Status BETWEEN 9 AND 99 OR (BranchTypeID = 1 AND FlagStl = 1 AND Status = 0))
-			AND (WorkOrderID IN (SELECT * FROM dbo.GetWorkOrderIdForMaterialSelect(@materialSet)) OR @materialSet IS NULL) -- перечень материалов из фильтра, если таковой есть
 
 		IF @employeePositionId = 2 -- моделировщик
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
 		WHERE (BranchTypeID = 1 AND FlagStl = 0)
-			AND (WorkOrderID IN (SELECT * FROM dbo.GetWorkOrderIdForMaterialSelect(@materialSet)) OR @materialSet IS NULL)
 
 		IF @employeePositionId = 3 -- техник
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus)
-		WHERE WorkOrderID IN (SELECT * FROM dbo.GetWorkOrderIdForMaterialSelect(@materialSet)) OR @materialSet IS NULL
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
 		
 		END
 
 	ELSE SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus)
-		WHERE WorkOrderID IN (SELECT * FROM dbo.GetWorkOrderIdForMaterialSelect(@materialSet)) OR @materialSet IS NULL
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
 
 	DROP TABLE #positionsId
 END
