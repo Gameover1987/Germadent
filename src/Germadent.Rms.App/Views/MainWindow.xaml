@@ -210,6 +210,9 @@
                                     Binding="{Binding LockInfo}"/>
             </DataGrid.Columns>
         </DataGrid>
-
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,3,0,0">
+            <TextBlock Text="Записей:"/>
+            <TextBlock Text="{Binding Orders.Count}" Margin="3,0,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>

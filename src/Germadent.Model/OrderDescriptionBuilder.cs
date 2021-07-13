@@ -36,7 +36,7 @@ namespace Germadent.Model
             var descriptionBuilder = new StringBuilder();
             foreach (var product in tooth.Products)
             {
-                descriptionBuilder.Append(string.Format("{0} / {1}, ", product.ProductName, product.MaterialName));
+                descriptionBuilder.Append(string.Format("[{0}] {1} / {2}, ", product.PricePositionCode, product.ProductName, product.MaterialName));
             }
 
             var result = string.Format(" ({0})", descriptionBuilder.ToString().Trim(' ', ','));
