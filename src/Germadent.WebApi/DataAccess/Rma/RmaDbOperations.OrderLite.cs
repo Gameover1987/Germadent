@@ -20,8 +20,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
         {
-            var cmdText = $"SELECT * FROM GetWorkOrdersList(@branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet)";
-
+            var cmdText = $"EXEC dbo.GetRelevantWorkOrdersList @branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet, @showOnlyMyOrders";
             var users = _umcDbOperations.GetUsers();
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -44,6 +43,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     string materialsJson = null;
                     if (filter.Materials.Any())
                         materialsJson = filter.Materials.SerializeToJson();
+
                     command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = filter.Customer.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@patientFullName", SqlDbType.NVarChar)).Value = filter.Patient.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@doctorFullName", SqlDbType.NVarChar)).Value = filter.Doctor.GetValueOrDbNull();
@@ -52,6 +52,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@jsonStringStatus", SqlDbType.NVarChar)).Value = statusesJson;
                     command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = materialsJson.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar)).Value = filter.UserId.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@showOnlyMyOrders", SqlDbType.Bit)).Value = filter.ShowOnlyMyOrders;
 
                     return GetOrderLiteCollectionFromReader(command, users);
                 }

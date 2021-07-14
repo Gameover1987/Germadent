@@ -59,6 +59,8 @@ namespace Germadent.Model
 
         public int? UserId { get; set; }
 
+        public bool ShowOnlyMyOrders { get; set; }
+
         public static OrdersFilter CreateDefault()
         {
             var now = DateTime.Now;
@@ -70,6 +72,21 @@ namespace Germadent.Model
                 MillingCenter = true,
                 Laboratory = true,
                 Statuses = Enum.GetValues<OrderStatus>()
+            };
+        }
+
+        public static OrdersFilter CreateDefault(int userId)
+        {
+            var now = DateTime.Now;
+
+            return new OrdersFilter
+            {
+                PeriodBegin = now.AddMonths(-1),
+                PeriodEnd = now.AddHours(23).AddMinutes(59).AddSeconds(59),
+                MillingCenter = true,
+                Laboratory = true,
+                Statuses = Enum.GetValues<OrderStatus>(),
+                UserId = userId
             };
         }
     }

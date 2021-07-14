@@ -39,7 +39,7 @@ namespace Germadent.Rms.App.ViewModels
         private string _searchString;
 
         private readonly ListCollectionView _ordersView;
-        private OrdersFilter _ordersFilter = OrdersFilter.CreateDefault();
+        private OrdersFilter _ordersFilter;// = OrdersFilter.CreateDefault();
 
         public MainViewModel(ILogger logger,
             IRmsServiceClient rmsServiceClient,
@@ -71,6 +71,8 @@ namespace Germadent.Rms.App.ViewModels
             _ordersView.CustomSort = new OrderLiteComparerByDateTime();
             _ordersView.Filter = Filter;
 
+            _ordersFilter = OrdersFilter.CreateDefault(_userManager.AuthorizationInfo.UserId);
+
             BeginWorkByWorkOrderCommand = new DelegateCommand(BeginWorksByWorkOrderCommandHandler, CanBeginWorksByWorkOrderCommandHandler);
             FinishWorkByWorkOrderCommand = new DelegateCommand(FinishWorkByWorkOrderCommandHandler, CanFinishWorksByWorkOrderCommandHandler);
             RealizeWorkOrderCommand = new DelegateCommand(PerfrormQualityControlCommandHandler, CanRealizeWorkOrderCommandHandler);
@@ -81,7 +83,7 @@ namespace Germadent.Rms.App.ViewModels
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ShowOrderDetailsCommand = new DelegateCommand(ShowOrderDetailsCommandHandler, CanShowOrderDetailsCommandHandler);
 
-            CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);
+            CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);            
         }
 
         private bool Filter(object obj)

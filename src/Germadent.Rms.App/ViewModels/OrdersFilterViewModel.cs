@@ -164,6 +164,8 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
+        public int? UserId { get; private set; }
+
         public string Customer
         {
             get => _customer;
@@ -295,7 +297,8 @@ namespace Germadent.Rms.App.ViewModels
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray(),
                 Statuses = statuses.ToArray(),
-                UserId = ShowOnlyMyOrders ? _rmsServiceClient.AuthorizationInfo.UserId : (int?) null
+                ShowOnlyMyOrders = ShowOnlyMyOrders,
+                UserId = _rmsServiceClient.AuthorizationInfo.UserId
             };
             return filter;
         }
@@ -329,8 +332,9 @@ namespace Germadent.Rms.App.ViewModels
                 ShowQualityControl = filter.Statuses.Any(x => x == OrderStatus.QualityControl);
                 ShowRealization = filter.Statuses.Any(x => x == OrderStatus.Realization);
                 ShowClosed = filter.Statuses.Any(x => x == OrderStatus.Closed);
-
-                ShowOnlyMyOrders = filter.UserId == _rmsServiceClient.AuthorizationInfo.UserId;
+                UserId = filter.UserId;
+                ShowOnlyMyOrders = filter.ShowOnlyMyOrders;
+                //ShowOnlyMyOrders = filter.UserId == _rmsServiceClient.AuthorizationInfo.UserId;
             }
             catch (Exception e)
             {
