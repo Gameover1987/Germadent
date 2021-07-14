@@ -49,12 +49,12 @@ WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNU
 ),
 
 -- Соединяем это с основной выборкой...
-ord (		Created,				WorkOrderID,		DocNumber,		CustomerName, EquipmentName, PatientFullName, PricePositionCode, ProductID, ProductName,	  MaterialName,		 Color, ImplantSystem, Cashless, Cash, ResponsiblePerson) AS
+ord (		Created,				WorkOrderID,		DocNumber,		CustomerName, ResponsiblePerson, EquipmentName, PatientFullName, PricePositionCode, ProductID, ProductName,	  MaterialName,		 Color, ImplantSystem, Cashless, Cash) AS
 (
-SELECT  created.CreateDateTime, wo.WorkOrderID, 	wo.DocNumber, c.CustomerName, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
+SELECT  created.CreateDateTime, wo.WorkOrderID, 	wo.DocNumber, c.CustomerName, rp.ResponsiblePerson, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
 	CASE wo.FlagCashless WHEN 1 THEN tc.Price END Cashless,
-	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash,
-	rp.ResponsiblePerson
+	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash
+	
 FROM dbo.WorkOrder wo
 	INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
 	INNER JOIN dbo.ToothCard tc ON wo.WorkOrderID = tc.WorkOrderID
@@ -69,25 +69,29 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
 WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
+	AND (e.EquipmentName IN ('STL', 'Модель', 'Слепок') OR e.EquipmentID IS NULL)
 	AND (wo.WorkOrderID IN (SELECT OrderId FROM OPENJSON (@jsonStringWOId) WITH (OrderId int)) OR @jsonStringWOId IS NULL)
 )
 
 -- ... и агрегируем
-SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Created, 
-	DocNumber, 
-	CustomerName, 
-	ISNULL(EquipmentName, '') EquipmentName, 
-	ISNULL(PatientFullName, '') PatientFullName,
-	PricePositionCode,
-	ProductName,
-	ISNULL(MaterialName, '') MaterialName, 
-	ISNULL(Color, '') Color, 
-	COUNT(ProductName) Quantity,
-	ISNULL(ImplantSystem, '') ImplantSystem, 
-	ISNULL(SUM(Cashless), 0) Cashless, 
-	ISNULL(SUM(Cash), 0) Cash,
-	ISNULL(ResponsiblePerson, '') ResponsiblePerson
+SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Создан, 
+	DocNumber AS Номер, 
+	CustomerName AS Заказчик,	
+	ISNULL(EquipmentName, '') AS Основание, 
+	ISNULL(PatientFullName, '') AS Пациент,	
+	ProductName AS Изделие,
+	PricePositionCode AS [Код цены],
+	ISNULL(MaterialName, '') AS Материал, 
+	ISNULL(Color, '') AS Цвет, 
+	COUNT(ProductName) AS Количество,
+	'' Моделировщик,
+	'' Техник,
+	'' Оператор,
+	ISNULL(ImplantSystem, '') AS [Система имплантов], 
+	ISNULL(SUM(Cashless), 0) AS Безнал, 
+	ISNULL(SUM(Cash), 0) AS Нал,
+	ISNULL(ResponsiblePerson, '') AS [Доктор/техник]
 
 FROM ord
-GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, PricePositionCode, ProductName,  MaterialName, Color, ImplantSystem, ResponsiblePerson
+GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName, PricePositionCode,  MaterialName, Color, ImplantSystem, ResponsiblePerson
 )

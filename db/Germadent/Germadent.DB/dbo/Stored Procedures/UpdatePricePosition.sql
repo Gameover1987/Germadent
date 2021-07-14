@@ -29,6 +29,7 @@ BEGIN
 
 		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
 
+		IF @materialId IS NOT NULL
 		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @materialId --@jsonStringMaterial
 
 		EXEC dbo.AddOrUpdatePrices @pricePositionId, @jsonStringPrices

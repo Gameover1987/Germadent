@@ -43,6 +43,7 @@ BEGIN
 		EXEC dbo.AddOrUpdateProductSet @pricePositionId, @jsonStringProduct
 
 		-- Добавление набора материалов:
+		IF @materialId IS NOT NULL
 		EXEC dbo.AddOrUpdateMaterialSet @pricePositionId, @materialId --@jsonStringMaterial
 	
 		-- Добавление цены:
