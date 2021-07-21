@@ -16,7 +16,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         {
             using (var connection = CreateAndOpenSqlConnection())
             {
-                var cmdText = $"select * from dbo.GetReportSalary(@userId, @dateStatusFrom, @dateStatusTo)";
+                var cmdText = $"select * from dbo.GetReportVariousSalary(@userId, @dateStatusFrom, @dateStatusTo)";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = salaryFilter.UserId.GetValueOrDbNull();

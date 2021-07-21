@@ -47,19 +47,20 @@ BEGIN
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
 		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
-		WHERE (Status BETWEEN 9 AND 99 OR (BranchTypeID = 1 AND FlagStl = 1 AND Status = 0))
+		WHERE Status BETWEEN 9 AND 99 OR (BranchTypeID = 1 AND FlagStl = 1 AND Status = 0)
 
 		IF @employeePositionId = 2 -- моделировщик
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
 		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
-		WHERE (BranchTypeID = 1 AND FlagStl = 0)
+		WHERE BranchTypeID = 1 AND FlagStl = 0
 
 		IF @employeePositionId = 3 -- техник
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
 		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
-		
+		WHERE BranchTypeID = 2 OR (BranchTypeID = 1 AND FlagStl = 1) OR (BranchTypeID = 1 AND Status BETWEEN 9 AND 99)
+
 		END
 
 	ELSE SELECT * 
