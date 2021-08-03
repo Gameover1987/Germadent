@@ -334,7 +334,6 @@ namespace Germadent.Rms.App.ViewModels
                 ShowClosed = filter.Statuses.Any(x => x == OrderStatus.Closed);
                 UserId = filter.UserId;
                 ShowOnlyMyOrders = filter.ShowOnlyMyOrders;
-                //ShowOnlyMyOrders = filter.UserId == _rmsServiceClient.AuthorizationInfo.UserId;
             }
             catch (Exception e)
             {

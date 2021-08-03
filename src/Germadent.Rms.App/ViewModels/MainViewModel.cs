@@ -39,7 +39,7 @@ namespace Germadent.Rms.App.ViewModels
         private string _searchString;
 
         private readonly ListCollectionView _ordersView;
-        private OrdersFilter _ordersFilter;// = OrdersFilter.CreateDefault();
+        private OrdersFilter _ordersFilter;
 
         public MainViewModel(ILogger logger,
             IRmsServiceClient rmsServiceClient,

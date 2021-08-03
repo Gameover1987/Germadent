@@ -9,6 +9,7 @@ namespace Germadent.Model
         public string Customer { get; set; }
         public string EquipmentSubstring { get; set; }
         public string Patient { get; set; }
+        public string PricePositionCode { get; set; }
         public string ProstheticSubstring { get; set; }
         public string MaterialsStr { get; set; }
         public string ConstructionColor { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.WebApi.Configuration;
@@ -278,6 +279,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     Customer = orderDto.Customer,
                     EquipmentSubstring = string.Join("; ", equipments),
                     Patient = orderDto.Patient,
+                    //PricePositionCode = 
                     ProstheticSubstring = product.ProductName,
                     MaterialsStr = orderDto.MaterialsStr,
                     ConstructionColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),

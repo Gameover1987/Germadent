@@ -297,6 +297,36 @@ namespace Germadent.WebApi.DataAccess.Rma
             }
         }
 
+        private OrderStatusNotificationDto FinishAllWorksInWorkOrderIml(SqlTransaction transaction, int workOrderId,
+            int userId, OrderStatus status)
+        {
+            var cmdText = "FinishAllWorksInWO";
+            using (var command = new SqlCommand(cmdText, transaction.Connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Transaction = transaction;
+                command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.Int)).Value = workOrderId;
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int)).Value = userId;
+                command.Parameters.Add(new SqlParameter("@statusNext", SqlDbType.Int)).Value = 90;
+                command.Parameters.Add(new SqlParameter("@finishWorksDateTime", SqlDbType.DateTime) { Direction = ParameterDirection.Output });
+
+                command.ExecuteNonQuery();
+
+
+                var statusChangeDateTime = command.Parameters["@finishWorksDateTime"].Value.ToDateTimeOrNull();
+                if (statusChangeDateTime == null)
+                    return null;
+
+                return new OrderStatusNotificationDto
+                {
+                    WorkOrderId = workOrderId,
+                    UserId = userId,
+                    Status = status,
+                    StatusChangeDateTime = statusChangeDateTime.Value
+                };
+            }
+        }
+
         private void UpdateWorkOrder(OrderDto order, SqlConnection connection)
         {
             var jsonToothCardString = order.ToothCard.SelectMany(x => _converter.ConvertFromToothDto(x, order.Stl)).SerializeToJson(Formatting.Indented);
