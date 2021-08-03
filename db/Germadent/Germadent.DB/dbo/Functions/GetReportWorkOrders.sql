@@ -23,9 +23,8 @@ WHERE Status = 0
 ),
 
 -- Делаем выборку цветов конструкции из таблиц атрибутов...
-cs (WorkOrderID, Color) AS
-(
-SELECT aset.WorkOrderID, av.AttributeValue AS Color
+cs AS
+(SELECT aset.WorkOrderID, av.AttributeValue AS Color
 FROM dbo.WorkOrder wo 
 	LEFT JOIN dbo.AttributesSet aset ON wo.WorkOrderID = aset.WorkOrderID
 	INNER JOIN dbo.Attributes a ON aset.AttributeID = a.AttributeID
@@ -36,9 +35,8 @@ WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNU
 	AND a.AttributeID = 1
 ),
 -- ... затем - то же самое для систем имплантов
-ims (WorkOrderID, ImplantSystem) AS
-(
-SELECT aset.WorkOrderID, av.AttributeValue AS ImplantSystem
+ims AS
+(SELECT aset.WorkOrderID, av.AttributeValue AS ImplantSystem
 FROM dbo.WorkOrder wo 
 	LEFT JOIN dbo.AttributesSet aset ON wo.WorkOrderID = aset.WorkOrderID
 	INNER JOIN dbo.Attributes a ON aset.AttributeID = a.AttributeID
@@ -48,10 +46,30 @@ WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNU
 	AND a.AttributeID = 2
 ),
 
+-- Находим моделировщиков
+modellers AS
+(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
+FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 2
+	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
+),
+
+-- Находим техников
+technicians AS
+(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
+FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 3
+	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
+),
+
+-- Находим операторов
+operators AS
+(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
+FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 4
+	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
+),
+
 -- Соединяем это с основной выборкой...
-ord (		Created,				WorkOrderID,		DocNumber,		CustomerName, ResponsiblePerson, EquipmentName, PatientFullName, PricePositionCode, ProductID, ProductName,	  MaterialName,		 Color, ImplantSystem, Cashless, Cash) AS
-(
-SELECT  created.CreateDateTime, wo.WorkOrderID, 	wo.DocNumber, c.CustomerName, rp.ResponsiblePerson, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
+ord  AS
+(SELECT  created.CreateDateTime AS Created, wo.WorkOrderID, wo.DocNumber, c.CustomerName, rp.ResponsiblePerson, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, modellers.UserFullName AS Modeller, technicians.UserFullName AS Technician, operators.UserFullName AS Operator, cs.Color, ims.ImplantSystem,
 	CASE wo.FlagCashless WHEN 1 THEN tc.Price END Cashless,
 	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash
 	
@@ -67,6 +85,9 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.Equipments e ON ae.EquipmentID = e.EquipmentID
 	LEFT JOIN cs ON cs.WorkOrderID = wo.WorkOrderID
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
+	LEFT JOIN modellers ON wo.WorkOrderID = modellers.WorkOrderID AND p.ProductID = modellers.ProductID
+	LEFT JOIN technicians ON wo.WorkOrderID = technicians.WorkOrderID AND p.ProductID = technicians.ProductID
+	LEFT JOIN operators ON wo.WorkOrderID = operators.WorkOrderID AND p.ProductID = operators.ProductID
 WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
 	AND (e.EquipmentName IN ('STL', 'Модель', 'Слепок') OR e.EquipmentID IS NULL)
@@ -84,14 +105,14 @@ SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Создан,
 	ISNULL(MaterialName, '') AS Материал, 
 	ISNULL(Color, '') AS Цвет, 
 	COUNT(ProductName) AS Количество,
-	'' Моделировщик,
-	'' Техник,
-	'' Оператор,
+	ISNULL(Modeller, '') Моделировщик,
+	ISNULL(Technician, '') AS Техник,
+	ISNULL(Operator, '') AS Оператор,
 	ISNULL(ImplantSystem, '') AS [Система имплантов], 
 	ISNULL(SUM(Cashless), 0) AS Безнал, 
 	ISNULL(SUM(Cash), 0) AS Нал,
 	ISNULL(ResponsiblePerson, '') AS [Доктор/техник]
 
 FROM ord
-GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName, PricePositionCode,  MaterialName, Color, ImplantSystem, ResponsiblePerson
+GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName, PricePositionCode,  MaterialName, Modeller, Technician, Operator, Color, ImplantSystem, ResponsiblePerson
 )

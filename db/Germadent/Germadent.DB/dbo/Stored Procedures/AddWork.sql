@@ -47,8 +47,8 @@ BEGIN
 			REVERT
 		END
 
-		DECLARE @statusNext int,
-				@statusChangeDateTime datetime
+		--DECLARE @statusNext int,
+		--		@statusChangeDateTime datetime
 
 		-- Если в заказ-наряде нет подобных работ - переводим статус
 		--IF NOT EXISTS
@@ -61,7 +61,7 @@ BEGIN
 		--										AND wl.TechnologyOperationID = @technologyOperationId))
 		--	EXEC dbo.ChangeStatusWorkOrder @workOrderId, @userId, @technologyOperationId, @statusNext output, @statusChangeDateTime output
 		
-		-- После этого добавляем работу в список
+		-- Добавляем работу в список
 		INSERT INTO dbo.WorkList
 		(WorkOrderID, ProductID,		TechnologyOperationID, EmployeeIDStarted, Rate,		Quantity, OperationCost, WorkStarted,	Comment)
 		VALUES
@@ -69,6 +69,31 @@ BEGIN
 
 		SET @workId = SCOPE_IDENTITY()
 
+	COMMIT
+	
+	-- Закрытие работ моделировщика в ФЦ, когда оператор берёт в работу заказ-наряд
+	BEGIN TRAN
+		DECLARE @branchTypeID int,
+				@flagStl bit,
+				@employeePositionId int
+
+		SELECT @branchTypeID = BranchTypeID, @flagStl = FlagStl
+		FROM dbo.WorkOrder
+		WHERE WorkOrderID = @workOrderId
+	
+		SELECT @employeePositionId = EmployeePositionID
+		FROM dbo.TechnologyOperations
+		WHERE TechnologyOperationID = @technologyOperationId
+	
+		IF @branchTypeID = 1 AND @flagStl = 0 AND @employeePositionId IN (3, 4)
+			UPDATE dbo.WorkList
+			SET EmployeeIDCompleted = @userIdStarted,
+				WorkCompleted = GETDATE()
+			WHERE WorkOrderID = @workOrderId
+				AND TechnologyOperationID = 1
+				AND ProductID = @productId
+				AND EmployeeIDCompleted IS NULL
+				AND WorkCompleted IS NULL
 	COMMIT
 
 END
