@@ -129,7 +129,7 @@ FROM @salesOfProducts sop
 	INNER JOIN @currentStatus cs ON wo.WorkOrderID = cs.WorkOrderID
 --	LEFT JOIN @outsideWorks ow ON sop.WorkOrderID = ow.WorkOrderID AND sop.ProductID = ow.ProductID
 WHERE LEFT(sop.PricePositionCode, 3) = teop.TechnologyOperationUserCode
-	AND ((wo.BranchTypeID = 2 AND cs.Status = 100) OR (wo.BranchTypeID = 1 AND cs.Status > 89))
+	AND cs.Status = 100
 	AND cs.StatusChangeDateTime BETWEEN ISNULL(@dateStatusFrom, '17530101') AND ISNULL(@dateStatusTo, '99991231')
 END
 
@@ -161,7 +161,7 @@ INSERT @result
 		INNER JOIN @currentStatus cs ON wo.WorkOrderID = cs.WorkOrderID
 		INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID
 	WHERE wl.EmployeeIDStarted = ISNULL(@userId, wl.EmployeeIDStarted)
-		AND ((wo.BranchTypeID = 2 AND cs.Status = 100) OR (wo.BranchTypeID = 1 AND cs.Status > 89))
+		AND cs.Status = 100
 		AND cs.StatusChangeDateTime BETWEEN ISNULL(@dateStatusFrom, '17530101') AND ISNULL(@dateStatusTo, '99991231')
 		AND (wl.EmployeeIDStarted != @userSpecialId OR teop.TechnologyOperationID = 1)
 

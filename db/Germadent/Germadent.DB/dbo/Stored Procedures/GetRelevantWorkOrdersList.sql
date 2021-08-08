@@ -18,6 +18,9 @@ CREATE PROCEDURE [dbo].[GetRelevantWorkOrdersList]
 	, @jsonStringStatus nvarchar(max) = NULL
 	, @materialSet nvarchar(max) = NULL
 	, @showOnlyMyOrders bit = 0
+	, @modeller nvarchar(150) = NULL
+	, @technician nvarchar(150) = NULL
+	, @operator nvarchar(150) = NULL
 )
 
 AS
@@ -46,26 +49,26 @@ BEGIN
 		IF @employeePositionId = 4 -- оператор
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet, @modeller, @technician, @operator)
 		WHERE Status BETWEEN 9 AND 99 OR (BranchTypeID = 1 AND FlagStl = 1 AND Status = 0)
 
 		IF @employeePositionId = 2 -- моделировщик
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet, @modeller, @technician, @operator)
 		WHERE BranchTypeID = 1 AND FlagStl = 0
 
 		IF @employeePositionId = 3 -- техник
 		SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet, @modeller, @technician, @operator)
 		WHERE BranchTypeID = 2 OR (BranchTypeID = 1 AND FlagStl = 1) OR (BranchTypeID = 1 AND Status BETWEEN 9 AND 99)
 
 		END
 
 	ELSE SELECT * 
 		FROM dbo.GetWorkOrdersList
-		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet)
+		(@branchTypeID, @branchType, @workorderID, @docNumber, @customerName	, @patientFullName, @doctorFullName, @createDateFrom	, @createDateTo, @userId	, @jsonStringStatus, @materialSet, @modeller, @technician, @operator)
 
 	DROP TABLE #positionsId
 END
