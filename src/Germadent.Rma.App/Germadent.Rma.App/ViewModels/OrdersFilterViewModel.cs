@@ -25,6 +25,9 @@ namespace Germadent.Rma.App.ViewModels
         private string _customer;
         private string _doctor;
         private string _patient;
+        private string _modeller;
+        private string _technician;
+        private string _operator;
 
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
@@ -196,6 +199,42 @@ namespace Germadent.Rma.App.ViewModels
             }
         }
 
+        public string Modeller
+        {
+            get => _modeller;
+            set
+            {
+                if (_modeller == value)
+                    return;
+                _modeller = value;
+                OnPropertyChanged(() => Modeller);
+            }
+        }
+
+        public string Technician
+        {
+            get => _technician;
+            set
+            {
+                if (_technician == value)
+                    return;
+                _technician = value;
+                OnPropertyChanged(() => Technician);
+            }
+        }
+
+        public string Operator
+        {
+            get => _operator;
+            set
+            {
+                if (_operator == value)
+                    return;
+                _operator = value;
+                OnPropertyChanged(() => Operator);
+            }
+        }
+
         public ObservableCollection<CheckableDictionaryItemViewModel> Materials { get; } = new ObservableCollection<CheckableDictionaryItemViewModel>();
 
         public ObservableCollection<string> ValidationErrors { get; } = new ObservableCollection<string>();
@@ -278,7 +317,10 @@ namespace Germadent.Rma.App.ViewModels
                 Doctor = Doctor,
                 Patient = Patient,
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray(),
-                Statuses = statuses.ToArray()
+                Statuses = statuses.ToArray(),
+                Modeller = Modeller,
+                Technician = Technician,
+                Operator = Operator
             };
             return filter;
         }
@@ -296,6 +338,9 @@ namespace Germadent.Rma.App.ViewModels
                 Customer = filter.Customer;
                 Doctor = filter.Doctor;
                 Patient = filter.Patient;
+                Modeller = filter.Modeller;
+                Technician = filter.Technician;
+                Operator = filter.Operator;
 
                 var selectedMaterialIds = filter.Materials.Select(x => x.Id).ToArray();
 

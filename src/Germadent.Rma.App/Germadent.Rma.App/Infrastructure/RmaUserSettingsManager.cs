@@ -64,6 +64,9 @@ namespace Germadent.Rma.App.Infrastructure
                 new ColumnInfo {DisplayIndex = 6, Name = "General_ColumnDoctor", IsVisible = true},
                 new ColumnInfo {DisplayIndex = 7, Name = "General_ColumnCreator", IsVisible = true},
                 new ColumnInfo {DisplayIndex = 8, Name = "General_ColumnClosed", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 9, Name = "General_ColumnModeller", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 10, Name = "General_ColumnTechnician", IsVisible = true},
+                new ColumnInfo {DisplayIndex = 11, Name = "General_ColumnOperator", IsVisible = true},
             };
         }
 

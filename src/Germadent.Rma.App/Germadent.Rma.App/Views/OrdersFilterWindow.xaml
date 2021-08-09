@@ -12,7 +12,7 @@
         Title="Настройки фильтра заказ-нарядов"
         ShowInTaskbar="False"
         MinHeight="600"
-        Height="600"
+        Height="700"
         MinWidth="500"
         Width="600"
         WindowStartupLocation="CenterOwner"
@@ -40,6 +40,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -92,8 +95,20 @@
             <TextBox Grid.Row="5" Grid.Column="1" Margin="6,6,0,0" 
                      Text="{Binding Patient}"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
-            <ListBox Grid.Row="6" Grid.Column="1" Margin="6,6,0,0" 
+            <TextBlock Grid.Row="6" Text="Моделировщик"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Modeller}"/>
+
+            <TextBlock Grid.Row="7" Text="Техник"/>
+            <TextBox Grid.Row="7" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Technician}"/>
+
+            <TextBlock Grid.Row="8" Text="Оператор"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Margin="6,6,0,0" 
+                     Text="{Binding Operator}"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Материалы" VerticalAlignment="Top" Margin="0,6,0,0"/>
+            <ListBox Grid.Row="9" Grid.Column="1" Margin="6,6,0,0" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Materials}">
                 <ListBox.ItemTemplate>

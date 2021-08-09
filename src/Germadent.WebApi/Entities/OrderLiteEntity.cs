@@ -76,5 +76,20 @@ namespace Germadent.WebApi.Entities
         /// Данные о дате и времени блокировки заказ-наряда
         /// </summary>
         public DateTime? LockDate { get; set; }
+        
+        /// <summary>
+        /// Моделировщик
+        /// </summary>
+        public string Modeller { get; set; }
+
+        /// <summary>
+        /// Техник
+        /// </summary>
+        public string Technician { get; set; }
+
+        /// <summary>
+        /// Оператор
+        /// </summary>
+        public string Operator { get; set; }
     }
 }

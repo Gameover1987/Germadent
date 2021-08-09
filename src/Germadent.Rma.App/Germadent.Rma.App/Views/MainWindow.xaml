@@ -161,7 +161,8 @@
                   IsReadOnly="True"
                   ItemsSource="{Binding Orders}"
                   SelectedItem="{Binding SelectedOrder}"
-                  SelectionChanged="OrdersGrid_OnSelectionChanged">
+                  SelectionChanged="OrdersGrid_OnSelectionChanged"
+                  HorizontalScrollBarVisibility="Visible">
             <DataGrid.InputBindings>
                 <KeyBinding Command="{Binding OpenOrderCommand}"
                             Key="Enter"/>
@@ -285,6 +286,16 @@
                 <DataGridTextColumn Header="Блокировка" ElementStyle="{StaticResource DataGridTextBlockStyle}" MinWidth="100" Width="100"
                                     helpers:DataGridColumnNameHelper.Name="General_LockInfo"
                                     Binding="{Binding LockInfo}"/>
+                <DataGridTextColumn Header="Моделировщик" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnModeller"
+                                    Binding="{Binding Modeller}"/>
+                <DataGridTextColumn Header="Техник" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnTechnician"
+                                    Binding="{Binding Technician}"/>
+                <DataGridTextColumn Header="Оператор" ElementStyle="{StaticResource DataGridTextBlockStyle}"  Width="Auto"
+                                    helpers:DataGridColumnNameHelper.Name="General_ColumnOperator"
+                                    Binding="{Binding Operator}"/>
+                
             </DataGrid.Columns>
         </DataGrid>
 

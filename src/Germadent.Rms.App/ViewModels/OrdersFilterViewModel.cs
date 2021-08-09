@@ -27,6 +27,9 @@ namespace Germadent.Rms.App.ViewModels
         private string _customer;
         private string _doctor;
         private string _patient;
+        private string _modeller;
+        private string _technician;
+        private string _operator;
 
         public string PeriodValidationError = "Дата начала периода должна быть меньше даты окончания";
         public string DepartmentValidationError = "Необходимо выбрать хотя бы одно подразделение";
@@ -202,6 +205,42 @@ namespace Germadent.Rms.App.ViewModels
             }
         }
 
+        public string Modeller
+        {
+            get => _modeller;
+            set
+            {
+                if (_modeller == value)
+                    return;
+                _modeller = value;
+                OnPropertyChanged(() => Modeller);
+            }
+        }
+
+        public string Technician
+        {
+            get => _technician;
+            set
+            {
+                if (_technician == value)
+                    return;
+                _technician = value;
+                OnPropertyChanged(() => Technician);
+            }
+        }
+
+        public string Operator
+        {
+            get => _operator;
+            set
+            {
+                if (_operator == value)
+                    return;
+                _technician = value;
+                OnPropertyChanged(() => Operator);
+            }
+        }
+
         public bool ShowOnlyMyOrders
         {
             get { return _showOnlyMyOrders; }
@@ -298,7 +337,10 @@ namespace Germadent.Rms.App.ViewModels
                 Materials = Materials.Where(x => x.IsChecked).Select(x => x.Item).ToArray(),
                 Statuses = statuses.ToArray(),
                 ShowOnlyMyOrders = ShowOnlyMyOrders,
-                UserId = _rmsServiceClient.AuthorizationInfo.UserId
+                UserId = _rmsServiceClient.AuthorizationInfo.UserId,
+                Modeller = Modeller,
+                Technician = Technician,
+                Operator = Operator
             };
             return filter;
         }
@@ -316,6 +358,9 @@ namespace Germadent.Rms.App.ViewModels
                 Customer = filter.Customer;
                 Doctor = filter.Doctor;
                 Patient = filter.Patient;
+                Modeller = filter.Modeller;
+                Technician = filter.Technician;
+                Operator = filter.Operator;
 
                 var selectedMaterialIds = filter.Materials.Select(x => x.Id).ToArray();
 
@@ -334,7 +379,6 @@ namespace Germadent.Rms.App.ViewModels
                 ShowClosed = filter.Statuses.Any(x => x == OrderStatus.Closed);
                 UserId = filter.UserId;
                 ShowOnlyMyOrders = filter.ShowOnlyMyOrders;
-                //ShowOnlyMyOrders = filter.UserId == _rmsServiceClient.AuthorizationInfo.UserId;
             }
             catch (Exception e)
             {

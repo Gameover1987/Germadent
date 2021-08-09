@@ -32,6 +32,12 @@ namespace Germadent.Client.Common.ViewModels
 
         public string CreatorFullName => _dto.CreatorFullName;
 
+        public string Modeller => _dto.Modeller;
+
+        public string Technician => _dto.Technician;
+
+        public string Operator => _dto.Operator;
+
         public OrderStatus Status
         {
             get { return _dto.Status; }

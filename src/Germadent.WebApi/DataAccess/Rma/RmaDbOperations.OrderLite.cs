@@ -20,7 +20,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
         {
-            var cmdText = $"EXEC dbo.GetRelevantWorkOrdersList @branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet, @showOnlyMyOrders";
+            var cmdText = $"EXEC dbo.GetRelevantWorkOrdersList @branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet, @showOnlyMyOrders, @modeller, @technician, @operator";
             var users = _umcDbOperations.GetUsers();
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -53,6 +53,9 @@ namespace Germadent.WebApi.DataAccess.Rma
                     command.Parameters.Add(new SqlParameter("@materialSet", SqlDbType.NVarChar)).Value = materialsJson.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar)).Value = filter.UserId.GetValueOrDbNull();
                     command.Parameters.Add(new SqlParameter("@showOnlyMyOrders", SqlDbType.Bit)).Value = filter.ShowOnlyMyOrders;
+                    command.Parameters.Add(new SqlParameter("@modeller", SqlDbType.NVarChar)).Value = filter.Modeller.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@technician", SqlDbType.NVarChar)).Value = filter.Technician.GetValueOrDbNull();
+                    command.Parameters.Add(new SqlParameter("@operator", SqlDbType.NVarChar)).Value = filter.Operator.GetValueOrDbNull();
 
                     return GetOrderLiteCollectionFromReader(command, users);
                 }
@@ -75,6 +78,9 @@ namespace Germadent.WebApi.DataAccess.Rma
                     orderLiteDto.DocNumber = reader["DocNumber"].ToString();
                     orderLiteDto.Created = DateTime.Parse(reader["Created"].ToString());
                     orderLiteDto.CreatorFullName = reader["CreatorFullName"].ToString();
+                    orderLiteDto.Modeller = reader["Modeller"].ToString();
+                    orderLiteDto.Technician = reader["Technician"].ToString();
+                    orderLiteDto.Operator = reader["Operator"].ToString();
 
                     orderLiteDto.Status = (OrderStatus)reader[nameof(OrderLiteEntity.Status)].ToInt();
                     orderLiteDto.StatusChanged = DateTime.Parse(reader["StatusChangeDateTime"].ToString());

@@ -282,6 +282,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                     MaterialsStr = orderDto.MaterialsStr,
                     ConstructionColor = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ConstructionColor"),
                     ImplantSystem = OrderDescriptionBuilder.GetAttributesValuesToReport(orderDto, "ImplantSystem"),
+                    //PricePositionCode = 
                     Quantity = product.Quantity,
                     ProstheticArticul = orderDto.ProstheticArticul,
                     TotalPrice = orderDto.Cashless ? 0: product.TotalPrice,

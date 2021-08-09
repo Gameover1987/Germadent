@@ -29,5 +29,11 @@ namespace Germadent.Model
         public UserDto LockedBy { get; set; }
 
         public DateTime? LockDate { get; set; }
+
+        public string Modeller { get; set; }
+
+        public string Technician { get; set; }
+
+        public string Operator { get; set; }
     }
 }

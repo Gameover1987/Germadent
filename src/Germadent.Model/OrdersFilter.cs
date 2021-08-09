@@ -61,6 +61,12 @@ namespace Germadent.Model
 
         public bool ShowOnlyMyOrders { get; set; }
 
+        public string Modeller { get; set; }
+
+        public string Technician { get; set; }
+
+        public string Operator { get; set; }
+
         public static OrdersFilter CreateDefault()
         {
             var now = DateTime.Now;
