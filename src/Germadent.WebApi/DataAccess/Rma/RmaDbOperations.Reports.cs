@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Production;
@@ -57,6 +54,45 @@ namespace Germadent.WebApi.DataAccess.Rma
                         return works.ToArray();
                     }
                 }
+            }
+        }
+
+        public ReportListDto[] GetOrdersByProducts(int workOrderId)
+        {
+            using (var connection = CreateAndOpenSqlConnection())
+            {
+                var cmdText = $"select * from dbo.GetReportWorkOrders(default, default, default, @workOrderId)";
+                using (var command = new SqlCommand(cmdText, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@workOrderId", SqlDbType.NVarChar)).Value = workOrderId;
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var workOrders = new List<ReportListDto>();
+                        while (reader.Read())
+                        {
+                            var workOrder = new ReportListDto()
+                            {
+                                Created = reader["Created"].ToDateTime(),
+                                DocNumber = reader["DocNumber"].ToString(),
+                                Customer = reader["CustomerName"].ToString(),
+                                EquipmentSubstring = reader["EquipmentName"].ToString(),
+                                Patient = reader["PatientFullName"].ToString(),
+                                ProstheticSubstring = reader["ProductName"].ToString(),
+                                PricePositionCode = reader["PricePositionCode"].ToString(),
+                                MaterialsStr = reader["MaterialName"].ToString(),
+                                ConstructionColor = reader["Color"].ToString(),
+                                Quantity = reader["Quantity"].ToInt(),
+                                ImplantSystem = reader["ImplantSystem"].ToString(),
+                                TotalPriceCashless = reader["Cashless"].ToDecimal(),
+                                TotalPrice = reader["Cash"].ToDecimal(),
+                                ResponsiblePerson = reader["ResponsiblePerson"].ToString()
+                            };
+                            workOrders.Add(workOrder);
+                        }
+                        return workOrders.ToArray();
+                    }
+                }                    
             }
         }
     }

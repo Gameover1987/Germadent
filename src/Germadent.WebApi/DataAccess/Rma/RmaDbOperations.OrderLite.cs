@@ -20,7 +20,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderLiteDto[] GetOrdersByFilter(OrdersFilter filter)
         {
-            var cmdText = $"EXEC dbo.GetRelevantWorkOrdersList @branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet, @showOnlyMyOrders, @modeller, @technician, @operator";
+            var cmdText = $"exec dbo.GetRelevantWorkOrdersList @branchTypeId, default, default, default, @customerName, @patientFullName, @doctorFullName, @createDateFrom, @createDateTo, @userId, @jsonStringStatus, @materialSet, @showOnlyMyOrders, @modeller, @technician, @operator";
             var users = _umcDbOperations.GetUsers();
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
@@ -102,7 +102,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private ToothDto[] GetToothCard(int id, bool getPricesAsStl)
         {
-            var cmdText = string.Format("select * from GetToothCardByWOId({0})", id);
+            var cmdText = string.Format("select * from dbo.GetToothCardByWOId({0})", id);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();

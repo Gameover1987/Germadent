@@ -412,7 +412,7 @@ namespace Germadent.Rma.App.ViewModels
 
         private void CopyOrderToClipboardCommandHandler()
         {
-            var reports = _rmaServiceClient.GetWorkReport(SelectedOrder.WorkOrderId);
+            var reports = _rmaServiceClient.GetOrdersByProducts(SelectedOrder.WorkOrderId);
             if (reports.Length == 0)
                 return;
 
@@ -420,7 +420,7 @@ namespace Germadent.Rma.App.ViewModels
 
             foreach (var report in reports)
             {
-                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.PricePositionCode, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ConstructionColor, "\t", report.Quantity, "\t", "\t", "\t", "\t", "\t", report.ImplantSystem, "\t", report.TotalPriceCashless, "\t", report.TotalPrice, "\t", report.ResponsiblePerson, "\n").Trim();
+                var line = string.Concat(report.Created == DateTime.MinValue ? string.Empty : report.Created.ToString(), "\t", report.DocNumber, "\t", report.Customer, "\t", report.EquipmentSubstring, "\t", report.Patient, "\t", report.PricePositionCode, "\t", report.ProstheticSubstring, "\t", report.MaterialsStr, "\t", report.ConstructionColor, "\t", report.Quantity, "\t", report.ImplantSystem, "\t", report.TotalPriceCashless, "\t", report.TotalPrice, "\t", report.ResponsiblePerson, "\n").Trim();
                 builder.AppendLine(line);
             }
 

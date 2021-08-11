@@ -18,7 +18,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddPriceGroup", connection))
+                using (var command = new SqlCommand("dbo.AddPriceGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)priceGroupDto.BranchType;
@@ -39,7 +39,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UpdatePriceGroup", connection))
+                using (var command = new SqlCommand("dbo.UpdatePriceGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@priceGroupId", SqlDbType.Int)).Value = (int)priceGroupDto.PriceGroupId;
@@ -58,7 +58,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UnionPriceGroups", connection))
+                using (var command = new SqlCommand("dbo.UnionPriceGroups", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@oldPriceGroupId", SqlDbType.NVarChar)).Value = priceGroupId;
@@ -87,7 +87,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddPricePosition", connection))
+                using (var command = new SqlCommand("dbo.AddPricePosition", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@pricePositionCode", SqlDbType.NVarChar)).Value = pricePositionDto.UserCode;
@@ -114,7 +114,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UpdatePricePosition", connection))
+                using (var command = new SqlCommand("dbo.UpdatePricePosition", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = pricePositionDto.PricePositionId;
@@ -137,7 +137,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("DeletePricePosition", connection))
+                using (var command = new SqlCommand("dbo.DeletePricePosition", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@pricePositionId", SqlDbType.Int)).Value = pricePositionId;
@@ -158,7 +158,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PriceGroupDto[] GetPriceGroups(BranchType branchType)
         {
-            var cmdText = string.Format("select distinct PriceGroupID, PriceGroupName from GetPriceListForBranch({0})", (int)branchType);
+            var cmdText = string.Format("select distinct PriceGroupID, PriceGroupName from dbo.GetPriceListForBranch({0})", (int)branchType);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -187,8 +187,8 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public PricePositionDto[] GetPricePositions(BranchType branchType)
         {
-            var selectPricesCmd = "select * from Prices";
-            var prostheticTypesByPricePositionsCmd = "select * from GetProductSetsForPricePositions()";
+            var selectPricesCmd = "select * from dbo.Prices";
+            var prostheticTypesByPricePositionsCmd = "select * from dbo.GetProductSetsForPricePositions()";
             var cmdText = string.Format("select distinct PricePositionID, PriceGroupID, PricePositionCode, PricePositionName, MaterialID from GetPriceListForBranch({0}) \r\n{1} \r\n{2}", (int)branchType, selectPricesCmd, prostheticTypesByPricePositionsCmd);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
@@ -266,7 +266,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public ProductDto[] GetProducts()
         {
-            var cmdText = "select distinct BranchTypeID, PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProductID, ProductName, PriceSTL, PriceModel from GetPriceListForBranch(NULL)";
+            var cmdText = "select distinct BranchTypeID, PriceGroupID, PricePositionID, PricePositionCode, MaterialID, MaterialName, ProductID, ProductName, PriceSTL, PriceModel from dbo.GetPriceListForBranch(NULL)";
             using var connection = new SqlConnection(_configuration.ConnectionString);
             connection.Open();
 

@@ -100,7 +100,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("DeleteTechnologyOperation", connection))
+                using (var command = new SqlCommand("dbo.DeleteTechnologyOperation", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = technologyOperationId;
@@ -126,7 +126,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddTechnologyOperation", connection))
+                using (var command = new SqlCommand("dbo.AddTechnologyOperation", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@technologyOperationUserCode", SqlDbType.NVarChar)).Value = technologyOperationDto.UserCode;
@@ -151,7 +151,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UpdateTechnologyOperation", connection))
+                using (var command = new SqlCommand("dbo.UpdateTechnologyOperation", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@technologyOperationId", SqlDbType.Int)).Value = technologyOperationDto.TechnologyOperationId;

@@ -17,7 +17,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 connection.Open();
 
-                var cmdText = "AddOrDeleteOccupancyWO";
+                var cmdText = "dbo.AddOrDeleteOccupancyWO";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -36,7 +36,7 @@ namespace Germadent.WebApi.DataAccess.Rma
                 connection.Open();
 
                 string idText = workOrderId == null ? "NULL" : workOrderId.Value.ToString();
-                var cmdText = string.Format("select * from GetOccupancyWO({0})", idText);
+                var cmdText = string.Format("select * from dbo.GetOccupancyWO({0})", idText);
                 var lockers = new List<LockWorkOrderInfoEntity>();
                 using (var command = new SqlCommand(cmdText, connection))
                 {
@@ -63,7 +63,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 connection.Open();
 
-                var cmdText = "AddOrDeleteOccupancyWO";
+                var cmdText = "dbo.AddOrDeleteOccupancyWO";
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;

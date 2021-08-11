@@ -32,7 +32,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
             var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
 
-            using (var command = new SqlCommand("AddWorkOrder", connection))
+            using (var command = new SqlCommand("dbo.AddWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)order.BranchType;
@@ -88,7 +88,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             {
                 connection.Open();
 
-                var cmdText = string.Format("select * from GetRelevantOperations({0},{1})", userId, workOrderId);
+                var cmdText = string.Format("select * from dbo.GetRelevantOperations({0},{1})", userId, workOrderId);
                 using (var command = new SqlCommand(cmdText, connection))
                 {
                     var operations = new List<WorkDto>();
@@ -131,7 +131,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private WorkDto[] GetAllWorksByWorkOrderImpl(SqlTransaction transaction, int workOrderId)
         {
-            var cmdText = $"select * from GetWorkListByWOId({workOrderId}, default)";
+            var cmdText = $"select * from dbo.GetWorkListByWOId({workOrderId}, default)";
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.Transaction = transaction;
@@ -144,7 +144,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private WorkDto[] GetWorksInProgressByWorkOrderImpl(SqlTransaction transaction, int workOrderId, int? userId)
         {
-            var cmdText = string.Format("select * from GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId == null ? "NULL" : userId.Value.ToString());
+            var cmdText = string.Format("select * from dbo.GetWorkListByWOId({0}, {1}) where WorkCompleted is NULL", workOrderId, userId == null ? "NULL" : userId.Value.ToString());
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.Transaction = transaction;
@@ -232,7 +232,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private void StartWork(WorkDto work, SqlTransaction transaction)
         {
-            var cmdText = "AddWork";
+            var cmdText = "dbo.AddWork";
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -254,7 +254,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private void FinishWork(WorkDto work, SqlTransaction transaction)
         {
-            var cmdText = "FinishWork";
+            var cmdText = "dbo.FinishWork";
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -271,7 +271,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderStatusNotificationDto ChangeWorkOrderStatusImpl(SqlTransaction transaction, int workOrderId, int userId, OrderStatus status)
         {
-            var cmdText = "ChangeStatusWorkOrderEasy";
+            var cmdText = "dbo.ChangeStatusWorkOrderEasy";
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -299,7 +299,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderStatusNotificationDto FinishAllWorksInWorkOrderIml(SqlTransaction transaction, int workOrderId, int userId, OrderStatus status)
         {
-            var cmdText = "FinishAllWorksInWO";
+            var cmdText = "dbo.FinishAllWorksInWO";
             using (var command = new SqlCommand(cmdText, transaction.Connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -332,7 +332,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             var jsonEquipmentsString = order.AdditionalEquipment.SerializeToJson();
             var jsonAttributesString = order.Attributes.SerializeToJson(Formatting.Indented);
 
-            using (var command = new SqlCommand("UpdateWorkOrder", connection))
+            using (var command = new SqlCommand("dbo.UpdateWorkOrder", connection))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@branchTypeId", SqlDbType.Int)).Value = (int)order.BranchType;
@@ -385,7 +385,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         private OrderDto GetWorkOrderById(int workOrderId)
         {
-            var cmdText = string.Format("select * from GetWorkOrderById({0})", workOrderId);
+            var cmdText = string.Format("select * from dbo.GetWorkOrderById({0})", workOrderId);
 
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {

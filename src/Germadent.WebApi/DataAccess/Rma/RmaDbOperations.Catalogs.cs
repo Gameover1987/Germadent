@@ -15,7 +15,7 @@ namespace Germadent.WebApi.DataAccess.Rma
     {
         public CustomerDto[] GetCustomers(string name)
         {
-            var cmdText = string.Format("select * from GetCustomers(default, '{0}')", name);
+            var cmdText = string.Format("select * from dbo.GetCustomers(default, '{0}')", name);
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -47,7 +47,7 @@ namespace Germadent.WebApi.DataAccess.Rma
 
         public ResponsiblePersonDto[] GetResponsiblePersons()
         {
-            var cmdText = "select * from GetResponsiblePersons(default, default)";
+            var cmdText = "select * from dbo.GetResponsiblePersons(default, default)";
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
@@ -81,7 +81,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddRespPerson", connection))
+                using (var command = new SqlCommand("dbo.AddRespPerson", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@rp_position", SqlDbType.NVarChar)).Value = responsiblePerson.Position;
@@ -105,7 +105,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UpdateResponsiblePerson", connection))
+                using (var command = new SqlCommand("dbo.UpdateResponsiblePerson", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@responsiblePersonId", SqlDbType.Int)).Value = responsiblePerson.Id;
@@ -127,7 +127,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UnionResponsiblePersons", connection))
+                using (var command = new SqlCommand("dbo.UnionResponsiblePersons", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@oldResponsiblePersonId", SqlDbType.NVarChar)).Value = responsiblePersonId;
@@ -152,7 +152,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("AddCustomer", connection))
+                using (var command = new SqlCommand("dbo.AddCustomer", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@customerName", SqlDbType.NVarChar)).Value = customer.Name;
@@ -176,7 +176,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UpdateCustomer", connection))
+                using (var command = new SqlCommand("dbo.UpdateCustomer", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@customerId", SqlDbType.Int)).Value = customer.Id;
@@ -198,7 +198,7 @@ namespace Germadent.WebApi.DataAccess.Rma
             using (var connection = new SqlConnection(_configuration.ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand("UnionCustomers", connection))
+                using (var command = new SqlCommand("dbo.UnionCustomers", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@oldCustomerId", SqlDbType.NVarChar)).Value = customerId;

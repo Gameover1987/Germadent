@@ -53,7 +53,7 @@ namespace Germadent.WebApi.DataAccess.Rma
         /// </summary>
         /// <param name="workOrderId"></param>
         /// <returns></returns>
-        ReportListDto[] GetWorkReport(int workOrderId);
+        ReportListDto[] GetOrdersByProducts(int workOrderId);
 
         /// <summary>
         /// Возвращает список клиентов по вхождению в наименование

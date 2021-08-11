@@ -213,11 +213,6 @@ namespace Germadent.Rma.App.Mocks
             throw new NotImplementedException();
         }
 
-        public string GetWorkReport(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public CustomerDto[] GetCustomers(string mask)
         {
             throw new NotImplementedException();
@@ -232,11 +227,6 @@ namespace Germadent.Rma.App.Mocks
                     Email = "somethingmail@mail.com",
                     WebSite = "http://xn----8sbbcdtrifnipjk4bzlpa.xn--p1ai/nashi-ob-ekty/26-ooo-poshla-rodimaya"},
             };
-        }
-
-        ReportListDto[] IRmaServiceClient.GetWorkReport(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public CustomerDto UpdateCustomer(CustomerDto customerDto)
@@ -656,6 +646,11 @@ namespace Germadent.Rma.App.Mocks
         }
 
         public void UnLockOrder(int workOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReportListDto[] GetOrdersByProducts(int id)
         {
             throw new NotImplementedException();
         }

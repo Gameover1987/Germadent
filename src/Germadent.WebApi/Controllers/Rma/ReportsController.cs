@@ -37,13 +37,13 @@ namespace Germadent.WebApi.Controllers.Rma
             }
         }
 
-        [HttpGet("GetWorkReport/{workOrderId}")]
-        public IActionResult GetWorkReport(int workOrderId)
+        [HttpGet("GetOrdersByProducts/{workOrderId}")]
+        public IActionResult GetOrdersByProducts(int workOrderId)
         {
             try
             {
-                _logger.Info(nameof(GetWorkReport));
-                return Ok(_rmaDbOperations.GetWorkReport(workOrderId));
+                _logger.Info(nameof(GetOrdersByProducts));
+                return Ok(_rmaDbOperations.GetOrdersByProducts(workOrderId));
             }
             catch (Exception exception)
             {
