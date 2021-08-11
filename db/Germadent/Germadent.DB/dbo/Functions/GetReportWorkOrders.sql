@@ -5,9 +5,10 @@
 -- =============================================
 CREATE FUNCTION [dbo].[GetReportWorkOrders] 
 (	
-	@beginningDate datetime = NULL, 
-	@endDate datetime = NULL,
-	@jsonStringWOId varchar(max) = NULL
+	@dateFrom datetime = NULL, 
+	@dateTo datetime = NULL,
+	@jsonStringWOId varchar(max) = NULL,
+	@workOrderId int
 )
 RETURNS TABLE 
 AS
@@ -31,7 +32,7 @@ FROM dbo.WorkOrder wo
 	INNER JOIN dbo.AttrValues av ON aset.AttributeValueID = av.AttributeValueID
 	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
 
-WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+WHERE created.CreateDateTime BETWEEN ISNULL(@dateFrom, '17530101') AND ISNULL(@dateTo, '99991231')
 	AND a.AttributeID = 1
 ),
 -- ... затем - то же самое для систем имплантов
@@ -42,34 +43,13 @@ FROM dbo.WorkOrder wo
 	INNER JOIN dbo.Attributes a ON aset.AttributeID = a.AttributeID
 	INNER JOIN dbo.AttrValues av ON aset.AttributeValueID = av.AttributeValueID
 	INNER JOIN created ON wo.WorkOrderID = created.WorkOrderID
-WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+WHERE created.CreateDateTime BETWEEN ISNULL(@dateFrom, '17530101') AND ISNULL(@dateTo, '99991231')
 	AND a.AttributeID = 2
-),
-
--- Находим моделировщиков
-modellers AS
-(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
-FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 2
-	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
-),
-
--- Находим техников
-technicians AS
-(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
-FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 3
-	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
-),
-
--- Находим операторов
-operators AS
-(SELECT wl.WorkOrderID, wl.ProductID, CONCAT(u.FamilyName,' ', LEFT(u.FirstName, 1), '.', LEFT(u.Patronymic, 1), '.') AS UserFullName
-FROM dbo.WorkList wl INNER JOIN dbo.TechnologyOperations teop on wl.TechnologyOperationID = teop.TechnologyOperationID AND teop.EmployeePositionID = 4
-	INNER JOIN dbo.Users u on wl.EmployeeIDStarted = u.UserID
 ),
 
 -- Соединяем это с основной выборкой...
 ord  AS
-(SELECT  created.CreateDateTime AS Created, wo.WorkOrderID, wo.DocNumber, c.CustomerName, rp.ResponsiblePerson, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, modellers.UserFullName AS Modeller, technicians.UserFullName AS Technician, operators.UserFullName AS Operator, cs.Color, ims.ImplantSystem,
+(SELECT  created.CreateDateTime AS Created, wo.WorkOrderID, wo.DocNumber, c.CustomerName, rp.ResponsiblePerson, e.EquipmentName, wo.PatientFullName, pp.PricePositionCode, p.ProductID, p.ProductName,  m.MaterialName, cs.Color, ims.ImplantSystem,
 	CASE wo.FlagCashless WHEN 1 THEN tc.Price END Cashless,
 	CASE wo.FlagCashless WHEN 0 THEN tc.Price END Cash
 	
@@ -85,34 +65,29 @@ FROM dbo.WorkOrder wo
 	LEFT JOIN dbo.Equipments e ON ae.EquipmentID = e.EquipmentID
 	LEFT JOIN cs ON cs.WorkOrderID = wo.WorkOrderID
 	LEFT JOIN ims ON ims.WorkOrderID = wo.WorkOrderID
-	LEFT JOIN modellers ON wo.WorkOrderID = modellers.WorkOrderID AND p.ProductID = modellers.ProductID
-	LEFT JOIN technicians ON wo.WorkOrderID = technicians.WorkOrderID AND p.ProductID = technicians.ProductID
-	LEFT JOIN operators ON wo.WorkOrderID = operators.WorkOrderID AND p.ProductID = operators.ProductID
-WHERE created.CreateDateTime BETWEEN ISNULL(@beginningDate, '17530101') AND ISNULL(@endDate, '99991231')
+WHERE created.CreateDateTime BETWEEN ISNULL(@dateFrom, '17530101') AND ISNULL(@dateTo, '99991231')
 	AND (ae.QuantityIn > 0 OR ae.QuantityIn IS NULL)
 	AND (e.EquipmentName IN ('STL', 'Модель', 'Слепок') OR e.EquipmentID IS NULL)
 	AND (wo.WorkOrderID IN (SELECT OrderId FROM OPENJSON (@jsonStringWOId) WITH (OrderId int)) OR @jsonStringWOId IS NULL)
+	AND wo.WorkOrderID = @workOrderId
 )
 
 -- ... и агрегируем
-SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Создан, 
-	DocNumber AS Номер, 
-	CustomerName AS Заказчик,	
-	ISNULL(EquipmentName, '') AS Основание, 
-	ISNULL(PatientFullName, '') AS Пациент,	
-	ProductName AS Изделие,
-	PricePositionCode AS [Код цены],
-	ISNULL(MaterialName, '') AS Материал, 
-	ISNULL(Color, '') AS Цвет, 
-	COUNT(ProductName) AS Количество,
-	ISNULL(Modeller, '') Моделировщик,
-	ISNULL(Technician, '') AS Техник,
-	ISNULL(Operator, '') AS Оператор,
-	ISNULL(ImplantSystem, '') AS [Система имплантов], 
-	ISNULL(SUM(Cashless), 0) AS Безнал, 
-	ISNULL(SUM(Cash), 0) AS Нал,
-	ISNULL(ResponsiblePerson, '') AS [Доктор/техник]
+SELECT FORMAT(Created, 'dd.MM.yyyy HH:mm:ss') Created, 
+	DocNumber, 
+	CustomerName,	
+	ISNULL(EquipmentName, '') AS EquipmentName, 
+	ISNULL(PatientFullName, '') AS PatientFullName,	
+	ProductName,
+	PricePositionCode,
+	ISNULL(MaterialName, '') AS MaterialName, 
+	ISNULL(Color, '') AS Color, 
+	COUNT(ProductName) AS Quantity,
+	ISNULL(ImplantSystem, '') AS ImplantSystem, 
+	ISNULL(SUM(Cashless), 0) AS Cashless, 
+	ISNULL(SUM(Cash), 0) AS Cash,
+	ISNULL(ResponsiblePerson, '') AS ResponsiblePerson
 
 FROM ord
-GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName, PricePositionCode,  MaterialName, Modeller, Technician, Operator, Color, ImplantSystem, ResponsiblePerson
+GROUP BY Created, DocNumber, CustomerName, EquipmentName, PatientFullName, ProductName, PricePositionCode,  MaterialName, Color, ImplantSystem, ResponsiblePerson
 )

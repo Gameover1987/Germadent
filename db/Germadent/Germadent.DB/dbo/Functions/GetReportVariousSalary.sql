@@ -27,6 +27,7 @@ RETURNS
 	, Quantity int
 	, UrgencyRatio float
 	, OperationCost money
+	, StatusChangeDateTime datetime
 	, WorkStarted datetime
 	, WorkCompleted datetime
 )
@@ -70,6 +71,7 @@ BEGIN
 	, Quantity int
 	, UrgencyRatio float
 	, OperationCost money
+	, StatusChangeDateTime datetime
 	, WorkStarted datetime
 	, WorkCompleted datetime);
 
@@ -117,6 +119,7 @@ IF @userId = @userSpecialId OR @userId IS NULL BEGIN
 	, sop.Quantity
 	, wo.UrgencyRatio
 	, sop.OperationCost /*- ISNULL(ow.OutsideOperationCost, 0)*/ AS OperationCost
+	, cs.StatusChangeDateTime
 	, wl.WorkStarted
 	, wl.WorkCompleted
 FROM @salesOfProducts sop
@@ -150,6 +153,7 @@ INSERT @result
 	, wl.Quantity
 	, wo.UrgencyRatio
 	, CASE WHEN wl.EmployeeIDStarted = @userSpecialId AND teop.TechnologyOperationID = 1 THEN 220 * wl.Quantity * wo.UrgencyRatio ELSE wl.OperationCost END OperationCost
+	, cs.StatusChangeDateTime
 	, wl.WorkStarted
 	, wl.WorkCompleted
 
