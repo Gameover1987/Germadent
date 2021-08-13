@@ -49,11 +49,6 @@ BEGIN
 	, Quantity int
 	, OperationCost money)
 
-	--DECLARE @outsideWorks TABLE
-	--(WorkOrderID int
-	--, ProductID int
-	--, OutsideOperationCost money)
-
 	DECLARE @specialSalary TABLE
 	(UserID int
 	, UserFullName nvarchar(150)
@@ -86,21 +81,13 @@ BEGIN
 IF @userId = @userSpecialId OR @userId IS NULL BEGIN
 
 	INSERT @salesOfProducts
-	SELECT tc.WorkOrderID, tc.PricePositionID, pp.PricePositionCode, tc.ProductID, COUNT(tc.ProductID), SUM(Price) * 0.3
+	SELECT tc.WorkOrderID, tc.PricePositionID, pp.PricePositionCode, tc.ProductID, COUNT(tc.ProductID), SUM(Price) * 0.3 + 220 * COUNT(tc.ProductID)
 	FROM ToothCard tc
 		INNER JOIN PricePositions pp ON tc.PricePositionID = pp.PricePositionID
 	WHERE tc.WorkOrderID IN (SELECT WorkOrderID 
 								FROM dbo.WorkList
 								WHERE EmployeeIDStarted = @userSpecialId)
 	GROUP BY tc.WorkOrderID, tc.PricePositionID, pp.PricePositionCode, tc.ProductID
-
-	--INSERT @outsideWorks
-	--SELECT WorkOrderID, ProductID, SUM(OperationCost) AS OutsideOperationCost
-	--FROM WorkList
-	--WHERE WorkOrderID IN (SELECT WorkOrderID
-	--						FROM @salesOfProducts)
-	--	AND EmployeeIDStarted != @userSpecialId
-	--GROUP BY WorkOrderID, ProductID
 
 	INSERT @specialSalary
 	SELECT wl.EmployeeIDStarted AS UserID
@@ -115,10 +102,10 @@ IF @userId = @userSpecialId OR @userId IS NULL BEGIN
 	, teop.TechnologyOperationUserCode
 	, teop.TechnologyOperationName
 	, wl.WorkID
-	, ROUND((sop.OperationCost /*- ISNULL(ow.OutsideOperationCost, 0)*/)/ wo.UrgencyRatio / sop.Quantity, 2) AS Rate
+	, ROUND((sop.OperationCost)/ wo.UrgencyRatio / sop.Quantity, 2) AS Rate
 	, sop.Quantity
 	, wo.UrgencyRatio
-	, sop.OperationCost /*- ISNULL(ow.OutsideOperationCost, 0)*/ AS OperationCost
+	, sop.OperationCost AS OperationCost
 	, cs.StatusChangeDateTime
 	, wl.WorkStarted
 	, wl.WorkCompleted
@@ -130,7 +117,6 @@ FROM @salesOfProducts sop
 	INNER JOIN dbo.Customers c ON wo.CustomerID = c.CustomerID
 	INNER JOIN dbo.Products p ON wl.ProductID = p.ProductID
 	INNER JOIN @currentStatus cs ON wo.WorkOrderID = cs.WorkOrderID
---	LEFT JOIN @outsideWorks ow ON sop.WorkOrderID = ow.WorkOrderID AND sop.ProductID = ow.ProductID
 WHERE LEFT(sop.PricePositionCode, 3) = teop.TechnologyOperationUserCode
 	AND cs.Status = 100
 	AND cs.StatusChangeDateTime BETWEEN ISNULL(@dateStatusFrom, '17530101') AND ISNULL(@dateStatusTo, '99991231')
