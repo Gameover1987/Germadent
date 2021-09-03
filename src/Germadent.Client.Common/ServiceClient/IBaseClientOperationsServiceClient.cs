@@ -1,4 +1,5 @@
-﻿using Germadent.Model;
+﻿using System;
+using Germadent.Model;
 using Germadent.Model.Production;
 
 namespace Germadent.Client.Common.ServiceClient
@@ -7,7 +8,7 @@ namespace Germadent.Client.Common.ServiceClient
     /// Сервис клиент с поддержкой базовых операций по работе с заказ-нарядами
     /// </summary>
     public interface IBaseClientOperationsServiceClient : IAuthSupportableServiceClient
-    { 
+    {
         /// <summary>
         /// Возвращает список заказ-нарядов по фильтру
         /// </summary>
@@ -48,5 +49,17 @@ namespace Germadent.Client.Common.ServiceClient
         /// <param name="workOrderId"></param>
         /// <returns></returns>
         WorkDto[] GetWorksByWorkOrder(int workOrderId);
+
+        /// <summary>
+        /// Возвращает список всех пользователей
+        /// </summary>
+        /// <returns></returns>
+        UserDto[] GetAllUsers();
+
+        /// <summary>
+        /// Возвращает список выполненных сотрудником работ за период
+        /// </summary>
+        /// <returns></returns>
+        WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo);
     }
 }

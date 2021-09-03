@@ -71,5 +71,15 @@ namespace Germadent.Rms.App.Views.DesignMock
         {
             throw new NotImplementedException();
         }
+
+        public UserDto[] GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -9,12 +9,14 @@ using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
+using Germadent.Client.Common.ViewModels.Salary;
 using Germadent.Common.Logging;
 using Germadent.Model;
 using Germadent.Model.Pricing;
 using Germadent.Model.Production;
 using Germadent.Rms.App.ServiceClient;
 using Germadent.Rms.App.ViewModels;
+using Germadent.Rms.App.ViewModels.Salary;
 using Germadent.UI.Commands;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels.DesignTime;
@@ -66,6 +68,15 @@ namespace Germadent.Rms.App.Views.DesignMock
         public event EventHandler<OrderStatusChangedEventArgs> WorkOrderStatusChanged;
     }
 
+    public class DesignMockMySalaryViewModel : MySalaryCalculationViewModel
+    {
+        public DesignMockMySalaryViewModel() 
+            : base(new DesignMockRmsServiceClient(), new DesignMockComandExceptionHandler(), new DesignMockPrintModule())
+        {
+            
+        }
+    }
+
     public class DesignMockMainViewModel : MainViewModel
     {
         public DesignMockMainViewModel() 
@@ -78,6 +89,7 @@ namespace Germadent.Rms.App.Views.DesignMock
                 new DesignMockStartWorkListViewModelViewModel(), 
                 new DesignMockFinishWorkListViewModel(), 
                 new DesignMockOrderDetailsViewModel(),
+                new DesignMockMySalaryViewModel(), 
                 new DesignMockSignalRClient(),
                 new DesignMockPrintModule())
         {

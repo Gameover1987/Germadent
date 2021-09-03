@@ -64,6 +64,10 @@
                     Command="{Binding FilterOrdersCommand}"/>
         </StackPanel>
 
+        <Button Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom"
+                Content="Моя зарплата"
+                Command="{Binding ShowMySalaryCalculationCommand}"/>
+
         <DataGrid x:Name="OrdersGrid" Grid.Column="1" Grid.Row="1" Margin="6,0,0,0"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"

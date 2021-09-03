@@ -9,6 +9,7 @@ using Germadent.Client.Common.ServiceClient;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ServiceClient.Repository;
 using Germadent.Client.Common.ViewModels;
+using Germadent.Client.Common.ViewModels.Salary;
 using Germadent.Common;
 using Germadent.Common.FileSystem;
 using Germadent.Common.Logging;
@@ -16,6 +17,8 @@ using Germadent.Model;
 using Germadent.Rms.App.Infrastructure.Repository;
 using Germadent.Rms.App.ServiceClient;
 using Germadent.Rms.App.ViewModels;
+using Germadent.Rms.App.ViewModels.Salary;
+using Germadent.Rms.App.Views;
 using Germadent.UI.Infrastructure;
 using Germadent.UI.ViewModels;
 using Unity;
@@ -82,6 +85,7 @@ namespace Germadent.Rms.App.Infrastructure
             _container.RegisterType<IStartWorkListViewModel, StartWorkListViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IFinishWorkListViewModel, FinishWorkListViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrderDetailsViewModel, OrderDetailsViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ISalaryCalculationViewModel, MySalaryCalculationViewModel>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPropertyItemsCollector, PropertyItemsCollector>(new ContainerControlledLifetimeManager());
             
             _container.RegisterType<ISignalRClient, SignalRClient>(new ContainerControlledLifetimeManager());

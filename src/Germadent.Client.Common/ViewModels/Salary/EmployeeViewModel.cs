@@ -1,6 +1,6 @@
 ﻿using Germadent.Model;
 
-namespace Germadent.Rma.App.ViewModels.Salary
+namespace Germadent.Client.Common.ViewModels.Salary
 {
     public class EmployeeViewModel
     {

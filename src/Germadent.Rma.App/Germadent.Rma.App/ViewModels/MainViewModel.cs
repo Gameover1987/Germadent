@@ -8,6 +8,7 @@ using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
+using Germadent.Client.Common.ViewModels.Salary;
 using Germadent.Common.Extensions;
 using Germadent.Common.Logging;
 using Germadent.Model;

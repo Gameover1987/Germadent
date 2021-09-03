@@ -169,16 +169,5 @@ namespace Germadent.Rma.App.ServiceClient
         {
             return ExecuteHttpDelete<DeleteResult>(Configuration.DataServiceUrl + $"/api/Rma/Technology/DeleteOperation/" + technologyOperationId);
         }
-
-        public UserDto[] GetAllUsers()
-        {
-            return ExecuteHttpGet<UserDto[]>(Configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
-        }
-
-        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
-        {
-            var api = Configuration.DataServiceUrl + "/api/Rma/Reports/GetSalaryReport";
-            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter{ UserId = userId, DateFrom = dateFrom, DateTo = dateTo} );
-        }
     }
 }

@@ -1,23 +1,23 @@
-﻿<Window x:Class="Germadent.Rma.App.Views.SalaryCalculationWindow"
+﻿<Window x:Class="Germadent.Rms.App.Views.MySalaryCalculationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Germadent.Rma.App.Views"
-        xmlns:designMock="clr-namespace:Germadent.Rma.App.Views.DesignMock"
-        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
+        xmlns:local="clr-namespace:Germadent.Rms.App.Views"
         xmlns:converters="clr-namespace:Germadent.Client.Common.Converters;assembly=Germadent.Client.Common"
+        xmlns:controls="clr-namespace:Germadent.UI.Controls;assembly=Germadent.UI"
         xmlns:salary="clr-namespace:Germadent.Client.Common.ViewModels.Salary;assembly=Germadent.Client.Common"
+        xmlns:designMock="clr-namespace:Germadent.Rms.App.Views.DesignMock"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
         Background="{x:Static SystemColors.ControlBrush}"
-        Title="Расчет заработной платы" 
+        Title="{Binding Title}" 
         MinHeight="600"
         Height="900" 
         MinWidth="1000"
         Width="1200"
-        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockSalaryCalculationViewModel}, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type={x:Type designMock:DesignMockMySalaryViewModel}, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <ResourceDictionary>
             <converters:WorksCollectionToSummaryConverter x:Key="WorksCollectionToSummaryConverter"/>
@@ -42,20 +42,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Сотрудник" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" Margin="6,0,0,0" Width="350"
-                      ItemsSource="{Binding Employees}"
-                      SelectedItem="{Binding SelectedEmployee}">
-                <ComboBox.Resources>
-                    <DataTemplate DataType="{x:Type salary:AllEmployeeViewModel}">
-                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type salary:EmployeeViewModel}">
-                        <TextBlock Text="{Binding DisplayName}"/>
-                    </DataTemplate>
-                </ComboBox.Resources>
-            </ComboBox>
-            <TextBlock Grid.Column="2" Text="Период с" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <TextBlock Grid.Column="2" Text="Период с" VerticalAlignment="Center" Margin="0,0,0,0"/>
             <DatePicker Grid.Column="3" Margin="6,0,0,0" Width="100"
                         SelectedDate="{Binding DateFrom}"/>
             <TextBlock Grid.Column="4" Text="по" VerticalAlignment="Center" Margin="12,0,0,0"/>
@@ -154,7 +141,7 @@
                                         ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                         Binding="{Binding OperationCost, StringFormat=C, ConverterCulture='ru-RU'}"/>
 
-                   
+
                 </DataGrid.Columns>
             </DataGrid>
 

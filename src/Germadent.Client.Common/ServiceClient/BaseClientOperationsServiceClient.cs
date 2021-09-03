@@ -1,4 +1,5 @@
-﻿using Germadent.Client.Common.Configuration;
+﻿using System;
+using Germadent.Client.Common.Configuration;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Model;
 using Germadent.Model.Production;
@@ -42,6 +43,17 @@ namespace Germadent.Client.Common.ServiceClient
         public void UnLockOrder(int workOrderId)
         {
             ExecuteHttpGet<OrderDto>(Configuration.DataServiceUrl + $"/api/Rma/orders/UnlockWorkOrder/{workOrderId}");
+        }
+
+        public UserDto[] GetAllUsers()
+        {
+            return ExecuteHttpGet<UserDto[]>(Configuration.DataServiceUrl + "/api/userManagement/users/GetUsers");
+        }
+
+        public WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo)
+        {
+            var api = Configuration.DataServiceUrl + "/api/Rma/Reports/GetSalaryReport";
+            return ExecuteHttpPost<WorkDto[]>(api, new SalaryFilter { UserId = userId, DateFrom = dateFrom, DateTo = dateTo });
         }
     }
 }

@@ -12,6 +12,7 @@ using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
 using Germadent.Client.Common.ServiceClient.Notifications;
 using Germadent.Client.Common.ViewModels;
+using Germadent.Client.Common.ViewModels.Salary;
 using Germadent.Model;
 using Germadent.Model.Rights;
 using Germadent.Rma.App.Views;
@@ -32,6 +33,7 @@ namespace Germadent.Rms.App.ViewModels
         private readonly IStartWorkListViewModel _startWorkListViewModel;
         private readonly IFinishWorkListViewModel _finishWorkListViewModel;
         private readonly IOrderDetailsViewModel _orderDetailsViewModel;
+        private readonly ISalaryCalculationViewModel _salaryCalculationViewModel;
         private readonly ISignalRClient _signalRClient;
         private readonly IPrintModule _printModule;
         private OrderLiteViewModel _selectedOrder;
@@ -50,6 +52,7 @@ namespace Germadent.Rms.App.ViewModels
             IStartWorkListViewModel startWorkListViewModel,
             IFinishWorkListViewModel finishWorkListViewModel,
             IOrderDetailsViewModel orderDetailsViewModel,
+            ISalaryCalculationViewModel salaryCalculationViewModel,
             ISignalRClient signalRClient,
             IPrintModule printModule)
         {
@@ -62,6 +65,7 @@ namespace Germadent.Rms.App.ViewModels
             _startWorkListViewModel = startWorkListViewModel;
             _finishWorkListViewModel = finishWorkListViewModel;
             _orderDetailsViewModel = orderDetailsViewModel;
+            _salaryCalculationViewModel = salaryCalculationViewModel;
             _signalRClient = signalRClient;
             _printModule = printModule;
             _signalRClient.WorkOrderLockedOrUnlocked += SignalRClientOnWorkOrderLockedOrUnlocked;
@@ -82,6 +86,7 @@ namespace Germadent.Rms.App.ViewModels
             LogOutCommand = new DelegateCommand(LogOutCommandHandler);
             ExitCommand = new DelegateCommand(ExitCommandHandler);
             ShowOrderDetailsCommand = new DelegateCommand(ShowOrderDetailsCommandHandler, CanShowOrderDetailsCommandHandler);
+            ShowMySalaryCalculationCommand = new DelegateCommand(ShowMySalaryCalculationCommandHandler);
 
             CanQualityControl = _userManager.HasRight(RmsUserRights.QualityControl);            
         }
@@ -146,6 +151,8 @@ namespace Germadent.Rms.App.ViewModels
         public IDelegateCommand RealizeWorkOrderCommand { get; }
 
         public IDelegateCommand ShowOrderDetailsCommand { get; }
+
+        public IDelegateCommand ShowMySalaryCalculationCommand { get; }
 
         public IDelegateCommand FilterOrdersCommand { get; }
 
@@ -309,6 +316,12 @@ namespace Germadent.Rms.App.ViewModels
             {
                 _environment.Shutdown();
             }
+        }
+
+        private void ShowMySalaryCalculationCommandHandler()
+        {
+            _salaryCalculationViewModel.Initialize();
+            _dialogAgent.ShowDialog<MySalaryCalculationWindow>(_salaryCalculationViewModel);
         }
 
         private bool CanShowOrderDetailsCommandHandler()

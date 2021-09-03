@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Germadent.Client.Common.Infrastructure;
 using Germadent.Client.Common.Reporting;
@@ -11,18 +14,18 @@ using Germadent.Client.Common.ViewModels.Salary;
 using Germadent.Common.Extensions;
 using Germadent.Model;
 using Germadent.Model.Production;
-using Germadent.Rma.App.ServiceClient;
+using Germadent.Rms.App.ServiceClient;
 using Germadent.UI.Commands;
 using Germadent.UI.ViewModels;
 
-namespace Germadent.Rma.App.ViewModels.Salary
+namespace Germadent.Rms.App.ViewModels.Salary
 {
-    public class SalaryCalculationViewModel : ViewModelBase, ISalaryCalculationViewModel
+    public class MySalaryCalculationViewModel : ViewModelBase, ISalaryCalculationViewModel
     {
-        private readonly IRmaServiceClient _rmaServiceClient;
+        private readonly IRmsServiceClient _rmsServiceClient;
         private readonly ICommandExceptionHandler _commandExceptionHandler;
         private readonly IPrintModule _printModule;
-        private EmployeeViewModel _selectedEmployee;
+
         private DateTime _dateFrom;
         private DateTime _dateTo;
         private string _datesValidationError;
@@ -32,9 +35,9 @@ namespace Germadent.Rma.App.ViewModels.Salary
         private bool _isBusy;
         private SalaryReport _salaryReport;
 
-        public SalaryCalculationViewModel(IRmaServiceClient rmaServiceClient, ICommandExceptionHandler commandExceptionHandler, IPrintModule printModule)
+        public MySalaryCalculationViewModel(IRmsServiceClient rmsServiceClient, ICommandExceptionHandler commandExceptionHandler, IPrintModule printModule)
         {
-            _rmaServiceClient = rmaServiceClient;
+            _rmsServiceClient = rmsServiceClient;
             _commandExceptionHandler = commandExceptionHandler;
             _printModule = printModule;
 
@@ -43,20 +46,6 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
             CalculateSalaryCommand = new DelegateCommand(CalculateSalaryCommandHandler, CanCalculateSalaryCommandHandler);
             PrintSalaryReportCommand = new DelegateCommand(SaveSalaryReportCommandHandler, CanSaveSalaryReportCommandHandler);
-        }
-
-        public ObservableCollection<EmployeeViewModel> Employees { get; } = new ObservableCollection<EmployeeViewModel>();
-
-        public EmployeeViewModel SelectedEmployee
-        {
-            get => _selectedEmployee;
-            set
-            {
-                if (_selectedEmployee == value)
-                    return;
-                _selectedEmployee = value;
-                OnPropertyChanged(() => SelectedEmployee);
-            }
         }
 
         public ObservableCollection<WorkViewModel> Works { get; } = new ObservableCollection<WorkViewModel>();
@@ -143,44 +132,17 @@ namespace Germadent.Rma.App.ViewModels.Salary
 
         public IDelegateCommand PrintSalaryReportCommand { get; }
 
-        public async void Initialize()
+        public void Initialize()
         {
             _dateFrom = DateTime.Now.AddMonths(-1).Date;
             _dateTo = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-            Employees.Clear();
+            
             Works.Clear();
 
-            try
-            {
-                BusyReason = "Инициализация";
-                UserDto[] allUsers = null;
-                await ThreadTaskExtensions.Run(() =>
-                {
-                    allUsers = _rmaServiceClient
-                        .GetAllUsers()
-                        .Where(x => x.IsEmployee)
-                        .OrderBy(x => x.FullName)
-                        .ToArray();
-                });
-
-                Employees.Add(AllEmployeeViewModel.Instance);
-                foreach (var userDto in allUsers)
-                {
-                    Employees.Add(new EmployeeViewModel(userDto));
-                }
-
-                SelectedEmployee = AllEmployeeViewModel.Instance;
-            }
-            catch (Exception exception)
-            {
-                _commandExceptionHandler.HandleCommandException(exception);
-            }
-            finally
-            {
-                BusyReason = null;
-            }
+            Title = $"Расчет заработной платы по сотруднику '{_rmsServiceClient.AuthorizationInfo.GetShortFullName()}'";
         }
+
+        public string Title { get;  private set; }
 
         private void ValidateDates()
         {
@@ -201,44 +163,28 @@ namespace Germadent.Rma.App.ViewModels.Salary
             if (IsBusy)
                 return false;
 
-            return SelectedEmployee != null && DatesValidationError == null;
+            return DatesValidationError == null;
         }
 
         private async void CalculateSalaryCommandHandler()
         {
             try
             {
-                BusyReason = $"Расчет заработной платы";
+                BusyReason = "Расчет заработной платы...";
                 Works.Clear();
                 _salaryReport = null;
 
                 _salaryView.GroupDescriptions.Clear();
-                if (SelectedEmployee == AllEmployeeViewModel.Instance)
-                {
-                    _salaryView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(WorkViewModel.UserFullName)));
-                }
 
                 WorkDto[] works = null;
                 await ThreadTaskExtensions.Run(() =>
                 {
-                    works = _rmaServiceClient.GetSalaryReport(SelectedEmployee.UserId, DateFrom, DateTo);
+                    works = _rmsServiceClient.GetSalaryReport(_rmsServiceClient.AuthorizationInfo.UserId, DateFrom, DateTo);
                 });
 
                 foreach (var workDto in works)
                 {
                     Works.Add(new WorkViewModel(workDto));
-                }
-
-
-                if (SelectedEmployee != AllEmployeeViewModel.Instance)
-                {
-                    _salaryReport = new SalaryReport
-                    {
-                        EmployeeFullName = SelectedEmployee.DisplayName,
-                        DateFrom = DateFrom,
-                        DateTo = DateTo,
-                        Works = works
-                    };
                 }
             }
             catch (Exception exception)

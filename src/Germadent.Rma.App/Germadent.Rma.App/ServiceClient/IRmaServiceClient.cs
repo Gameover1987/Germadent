@@ -191,17 +191,5 @@ namespace Germadent.Rma.App.ServiceClient
         /// <param name="technologyOperationId"></param>
         /// <returns></returns>
         DeleteResult DeleteTechnologyOperation(int technologyOperationId);
-
-        /// <summary>
-        /// Возвращает список всех пользователей
-        /// </summary>
-        /// <returns></returns>
-        UserDto[] GetAllUsers();
-
-        /// <summary>
-        /// Возвращает список выполненных сотрудником работ за период
-        /// </summary>
-        /// <returns></returns>
-        WorkDto[] GetSalaryReport(int? userId, DateTime dateFrom, DateTime dateTo);
     }
 }
